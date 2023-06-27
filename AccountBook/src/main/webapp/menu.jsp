@@ -10,11 +10,11 @@ $(function() {
 	});
 });
 </script>
-<h2><i class="fi fi-rr-money-check-edit"></i> 가계부</h2>
-<ul>
-	<li class="active"><i class="fi fi-rr-home"></i> 메인페이지</li>
-	<li><i class="fi fi-rr-add"></i> 수입/지출 관리</li>		
-	<li><i class="fi fi-rr-coins"></i> 자산관리</li>		
-	<li><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
-	<li><i class="fi fi-rs-chart-histogram"></i> 목표지출</li>		
+<h2 class="h2"><i class="fi fi-rr-money-check-edit"></i> 가계부</h2>
+<ul class="menu-group">
+	<li class="menu active"><i class="fi fi-rr-home"></i> 메인페이지</li>
+	<li class="menu"><i class="fi fi-rr-add"></i> 수입/지출 관리</li>		
+	<li class="menu"><i class="fi fi-rr-coins"></i> 자산관리</li>		
+	<li class="menu"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
+	<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표지출</li>		
 </ul>

@@ -1,8 +1,8 @@
 @charset "UTF-8";
-ul {
+.menu-group {
 		list-style: none;
 }
-li {
+.menu {
 	padding: 12px 10px 12px 20px;
 	margin-top: 30px;
 	width: 200px;
@@ -13,31 +13,36 @@ li {
 	/* border: 1.5px solid #2C952C;
 	border-radius: 10px; */
 }
-li:hover {
+.menu:hover {
 	background: #2C952C;
 	color: white;
 }
-li.active {
+.menu.active {
 	background: #2C952C;
 	color: white;
 }
-#menu {
+.sidebar {
 	width: 15%;
 	height: 1000px;
 	float: left;
 	border-right: 1px solid lightgray;
 }
-#content {
+.content {
 	width: 80%;
 	float: left;
 }
-h2 {
+.h2 {
 	font-size: 35px;
 	font-weight: normal;
 	margin: 20px;
 }
-h3 {
+.h3 {
 	font-size: 28px;
+	font-weight: normal;
+	margin: 20px;
+}
+.h4 {
+	font-size: 23px;
 	font-weight: normal;
 	margin: 20px;
 }
@@ -62,4 +67,78 @@ h3 {
 }
 .card-body{
 	padding-top: 100px;
+}
+.container {
+	margin: 30px;
+}
+.table {
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+.table td {
+	width: 200px;
+	height: 60px;
+	font-size: 18px;
+	padding: 10px;
+	border: 1px solid lightgray;
+	border-left: 0;
+	border-right: 0;
+}
+.input {
+	width: 350px;
+	border-radius: 5px;
+	border: 1px solid lightgray;
+	padding: 12px 10px;
+    font-size: 16px;
+}
+.input.birth {
+	width: 158px;
+}
+.input.tel {
+	width: 142px;
+}
+.input.email {
+	width: 150px;
+}
+.select input[type="radio"] {
+	display: none;
+}
+.select input[type="radio"]+label {
+	width: 158px;
+	padding: 10px;
+	display: inline-block;
+	border: 1px solid lightgray;
+	border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+}
+.select input[type="radio"]:checked+label{
+	border-color: #2C952C;
+	color: #2C952C;
+}
+.btn {
+	width: 150px;
+	height: 42px;
+	padding: 10px;
+	border: 0;
+	border-radius: 10px;
+	line-height: 20px;
+	font-size: 16px;
+}
+.btn:hover {
+	cursor: pointer;
+}
+.btn.green {
+	background: #2C952C;
+	color: white;
+}
+.btn.outline-green {
+	background: white;
+	color: #2C952C;
+	border: 1px solid #2C952C;
+}
+.btn.outline-green:hover {
+	background: #2C952C;
+	color: white;
 }

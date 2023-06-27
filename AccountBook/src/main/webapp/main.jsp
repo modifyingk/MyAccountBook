@@ -20,17 +20,17 @@
 <body>
 	<div>
 		<!-- 메누 -->
-		<div id="menu">
+		<div class="sidebar">
 			<jsp:include page="menu.jsp"></jsp:include>
 		</div>
 		
 		<!-- 내용 -->
-		<div id="content">
-			<h3><i class="fi fi-rr-home"></i> 메인페이지</h3>
+		<div class="content">
+			<h3 class="h3"><i class="fi fi-rr-home"></i> 메인페이지</h3>
 			<%
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
-				<h3>수입/지출 관리</h3>
+				<h3 class="h3">수입/지출 관리</h3>
 			<% }
 			/* 로그인이 되어 있지 않을 때 */
 			else { %>
