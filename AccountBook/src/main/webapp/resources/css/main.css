@@ -1,17 +1,15 @@
 @charset "UTF-8";
 .menu-group {
-		list-style: none;
+	list-style: none;
 }
 .menu {
 	padding: 12px 10px 12px 20px;
-	margin-top: 30px;
-	width: 200px;
+	margin-top: 40px;
+	width: 80%;
 	height: 30px;
 	line-height: 28px;
 	font-size: 18px;
 	border-radius: 10px;
-	/* border: 1.5px solid #2C952C;
-	border-radius: 10px; */
 }
 .menu:hover {
 	background: #2C952C;
@@ -30,6 +28,7 @@
 .content {
 	width: 80%;
 	float: left;
+	margin-left: 2%;
 }
 .h2 {
 	font-size: 35px;
@@ -47,15 +46,14 @@
 	margin: 20px;
 }
 .card {
-	width: 400px;
+	width: 23%;
 	height: 450px;
 	float: left;
-	margin: 20px;
+	margin: 2%;
 	border: 1px solid lightgray;
 	border-radius: 10px;
 	text-align: center;
 	font-size: 25px;
-	margin-left: 50px;
 	color: gray;
 }
 .card i {
@@ -141,4 +139,9 @@
 .btn.outline-green:hover {
 	background: #2C952C;
 	color: white;
+}
+.checkDiv {
+	font-size: 14px;
+	padding: 8px;
+	color: gray;
 }
