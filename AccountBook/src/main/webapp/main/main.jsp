@@ -7,24 +7,24 @@
 <title>가계부</title>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
-<link rel="stylesheet" type="text/css" href="resources/css/main.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
 	$(function() {
 		$("#sign").click(function() {
-			location.href = "member/sign_up.jsp";
+			location.href = "../member/sign_up.jsp";
 		})
 	})
 </script>
 </head>
 <body>
 	<div>
-		<!-- 메누 -->
+		<!-- 사이드바 -->
 		<div class="sidebar">
-			<jsp:include page="menu.jsp"></jsp:include>
+			<jsp:include page="sidebar.jsp"></jsp:include>
 		</div>
 		
-		<!-- 내용 -->
+		<!-- 컨텐츠 -->
 		<div class="content">
 			<h3 class="h3"><i class="fi fi-rr-home"></i> 메인페이지</h3>
 			<%
