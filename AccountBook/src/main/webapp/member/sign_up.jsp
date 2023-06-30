@@ -34,7 +34,7 @@
 				})
 			}
 		})
-		// 비밀번호 형식
+		// 비밀번호 형식 확인
 		$("#pw").blur(function() {
 			var pwReg = RegExp(/^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/);
 			if(!pwReg.test($('#pw').val())){
@@ -60,17 +60,22 @@
 				$("#email2").attr("value", $(this).val());
 			}
 		})
+		// 이름 형식 확인 (한글, 영어만 입력)
+		
+		// 생년월일 형식 확인 (숫자만 입력)
+		// 전화번호 형식 확인 (숫자만 입력)
+		// 빈값일 때 어떻게 할지 적용
 	})
 </script>
 </head>
 <body>
 	<div>
-		<!-- 메누 -->
+		<!-- 사이드바 -->
 		<div class="sidebar">
-			<jsp:include page="../main/menu.jsp"></jsp:include>
+			<jsp:include page="../main/sidebar.jsp"></jsp:include>
 		</div>
 
-		<!-- 내용 -->
+		<!-- 컨텐츠 -->
 		<div class="content">
 			<h3 class="h3"><i class="fi fi-rs-user-add"></i> 회원가입</h3>
 			<div class="container" style="border: 1px solid lightgray; border-radius: 10px; width: 750px; padding: 0 20px 20px 20px;">

@@ -12,19 +12,19 @@
 <script>
 	$(function() {
 		$("#sign").click(function() {
-			location.href = "member/sign_up.jsp";
+			location.href = "../member/sign_up.jsp";
 		})
 	})
 </script>
 </head>
 <body>
 	<div>
-		<!-- 메뉴 -->
+		<!-- 사이드바 -->
 		<div class="sidebar">
-			<jsp:include page="menu.jsp"></jsp:include>
+			<jsp:include page="sidebar.jsp"></jsp:include>
 		</div>
 		
-		<!-- 내용 -->
+		<!-- 컨텐츠 -->
 		<div class="content">
 			<h3 class="h3"><i class="fi fi-rr-home"></i> 메인페이지</h3>
 			<%
