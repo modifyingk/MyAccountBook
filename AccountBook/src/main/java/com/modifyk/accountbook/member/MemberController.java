@@ -10,13 +10,14 @@ public class MemberController {
 	MemberDAO mDao;
 	
 	// 아이디 중복 확인
-		@RequestMapping("member/isOverlapId")
-		public String isOverlapId(String userid) {
-			String idExist = mDao.isOverlapId(userid);
-			if(idExist != null) { // 아이디가 존재하는 경우
-				return "member/impossible_id";
-			} else {
-				return "member/possible_id";
-			}
+	@RequestMapping("member/isOverlapId")
+	public String isOverlapId(String userid) {
+		String idExist = mDao.isOverlapId(userid);
+		if(idExist != null) { // 아이디가 존재하는 경우
+			return "member/impossible_id";
+		} else {
+			return "member/possible_id";
 		}
+	}
+	
 }

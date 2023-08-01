@@ -10,15 +10,26 @@
 <link rel="stylesheet" type="text/css" href="../resources/css/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
+	var idChk = false;
+	var pwChk = false;
+	var pwChk2 = false;
+	var nameChk = false;
+	var genderChk = false;
+	var birthChk = false;
+	var emailChk = false;
+	
 	$(function() {
 		// 아이디 형식 확인
 		$("#userid").blur(function() {
-			// 영문자로 시작하는 영문자 또는 숫자 6~20자 
-			var idReg = RegExp(/^[a-z]+[a-z0-9]{5,19}$/g);
+			// 영문자, 숫자, 언더바(_), 점(.) 조합 5~20자
+			var idReg = RegExp(/^[a-zA-Z0-9_\.]{5,20}$/);
 			
-			if(!idReg.test($('#userid').val())){ // 정규식에 맞지 않을 때
-				$("#idCheck").html("<i style='color : red;'>영문자로 시작하는 영문자, 숫자 조합 6~20자</i>");
+			if(!idReg.test($("#userid").val())){ // 정규식에 맞지 않을 때
+				$("#idCheck").html("<i style='color : red;'>영문자, 숫자, 언더바(_), 점(.)을 이용한 5~20자</i>");
+				idChk = false;
 			} else {
+				$("#idCheck").html("<i>영문자, 숫자, 언더바(_), 점(.)을 이용한 5~20자</i>");
+				
 				// 아이디 중복 확인
 				$("#overlapBtn").click(function() {
 					$.ajax({
@@ -29,26 +40,32 @@
 						},
 						success : function(x) {
 							$("#idCheck").html(x);
+							if(x.includes("가능")) {
+								idChk = true;
+							} else {
+								idChk = false;
+							}
 						}
 					})
 				})
 			}
 		})
-		// 비밀번호 형식 확인
-		$("#pw").blur(function() {
-			var pwReg = RegExp(/^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/);
-			if(!pwReg.test($('#pw').val())){
-				$("#pwRegCheck").html("<i style='color : red;'>8 ~ 16자 영문, 숫자, 특수문자 조합</i>");
+		// 비밀번호  확인
+		$("#pw, #pw2").blur(function() {
+			var pwReg = RegExp(/^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,20}/);
+			if(!pwReg.test($("#pw").val())){
+				$("#pwRegCheck").html("<i style='color : red;'>10 ~ 20자 영문, 숫자, 특수문자 조합</i>");
+				pwChk = false;
 			} else {
-				$("#pwRegCheck").html("");
+				$("#pwRegCheck").html("<i>10 ~ 20자 영문, 숫자, 특수문자 조합</i>");
+				pwChk = true;
 			}
-		})
-		// 비밀번호 확인
-		$("#pw2").blur(function() {
 			if($("#pw2").val() != $("#pw").val()) { // 비밀번호가 일치하지 않는 경우
-				$("#pwCheck").html("<i style='color : red;'>비밀번호가 일치하지 않습니다.</i>");
+				$("#pwCheck").html("<i style='color : red;'>비밀번호가 일치하지 않습니다</i>");
+				pwChk2 = false;
 			} else { // 비밀번호가 일치하는 경우
 				$("#pwCheck").html("");
+				pwChk2 = true;
 			}
 		})
 		// 이메일 주소 select
@@ -61,10 +78,79 @@
 			}
 		})
 		// 이름 형식 확인 (한글, 영어만 입력)
+		$("#username").keyup(function() {
+			var nameReg = /[^a-zA-zㄱ-ㅎㅏ-ㅣ가-힣]/g; // 영어, 한글이 아닌 값 정규식
+			$(this).val($("#username").val().replace(nameReg, ""));
+		})	
+		$("#username").blur(function() {
+			var nameReg = RegExp(/^[a-zA-Z가-힣]{2,10}$/); // 한글, 영어 2~10글자
+			if(!nameReg.test($("#username").val())) {
+				$("#nameCheck").html("<i style='color : red;'>이름이 정확한지 확인해주세요</i>");
+				nameChk = false;
+			} else {
+				$("#nameCheck").html("");
+				nameChk = true;
+			}
+		})
+		// 숫자만 입력되도록 (생년월일 & 전화번호)
+		$("#year, #date, #tel1, #tel2, #tel3").keyup(function() {
+			var numReg = /[^0-9]/g;	// 숫자가 아닌 값 정규식
+			$(this).val($(this).val().replace(numReg, ""));
+		})
+		// 생년월일 잘못된 값 입력방지
+		$("#year, #month, #date").blur(function() {
+			var today = new Date();
+			if($("#year").val() > today.getFullYear() || $("#year").val() < today.getFullYear() - 100) { // 현재연도보다 늦은 연도를 입력하거나 현재연도로부터 100년전 연도를 입력할 경우
+				$("#birthCheck").html("<i style='color: red;'> 생년월일이 정확한지 확인해주세요</i>");
+				birthChk = false;
+			} else if($("#year").val() == today.getFullYear()) { // 현재연도와 입력연도가 같을 때
+				if($("#month").val() > today.getMonth() + 1) { // 현재 월보다 클 때
+					$("#birthCheck").html("<i style='color: red;'> 생년월일이 정확한지 확인해주세요</i>");
+					birthChk = false;
+				} else if($("#month").val() == today.getMonth() + 1) { // 현재 월과 같을 때
+					if($("#date").val() > today.getDate()) { // 현재 일보다 크면
+						$("#birthCheck").html("<i style='color: red;'> 생년월일이 정확한지 확인해주세요</i>");
+						birthChk = false;
+					} else {
+						$("#birthCheck").html("");
+						birthChk = true;
+					}
+				} else {
+					$("#birthCheck").html("");
+					birthChk = true;
+				}
+			} else {
+				$("#birthCheck").html("");
+				birthChk = true;
+			}
+		})
+		$("#date").blur(function() {
+			// 일 값이 1에서 31까지만 입력 가능하도록
+			if($("#date").val() > 31 || $("#date").val() < 1) {
+				$("#birthCheck").html("<i style='color: red;'> 생년월일이 정확한지 확인해주세요</i>");
+				birthChk = false;
+			} else {
+				$("#birthCheck").html("");
+				birthChk = true;
+			}
+		})
 		
-		// 생년월일 형식 확인 (숫자만 입력)
-		// 전화번호 형식 확인 (숫자만 입력)
-		// 빈값일 때 어떻게 할지 적용
+		// 회원가입 버튼 클릭
+		$("#signUpBtn").click(function() {
+			// 성별 선택 체크
+			var gender = $("input[name=gender]:checked").val(); // 선택된 성별 값 gender 변수에 저장
+			if(gender == "남" || gender == "여") { // gender가 남 또는 여라는 값을 가진다면
+				genderChk = true;
+			} else {
+				genderChk = false;
+			}
+			// 회원가입
+			if(idChk && pwChk && pwChk2 && nameChk && genderChk && birthChk && emailChk) {	// 모든 입력값에 문제가 없다면
+				alert("회원가입 가능")
+			} else {
+				alert("입력 값들을 확인해주세요")
+			}
+		})
 	})
 </script>
 </head>
@@ -78,42 +164,58 @@
 		<!-- 컨텐츠 -->
 		<div class="content">
 			<h3 class="h3"><i class="fi fi-rs-user-add"></i> 회원가입</h3>
-			<div class="container" style="border: 1px solid lightgray; border-radius: 10px; width: 750px; padding: 0 20px 20px 20px;">
-			<h3 class="h4">회원가입</h3>
+			<div class="container" style="border: 1px solid lightgray; border-radius: 10px; width: 950px; padding: 0 20px 20px 20px;">
+			<h3 class="h4">회원가입 <i class="redFont" style="float: right; font-size: 14px;">*은 필수 입력사항입니다</i></h3>
 			<table class="table">
 				<tr>
-					<td>아이디</td>
-					<td><input class="input" type="text" id="userid" maxlength="20"><div class="checkDiv" id="idCheck"><i>영문자로 시작하는 영문자, 숫자 조합 6~20자</i></div></td>
-					<td><button type="button" class="btn green" id="overlapBtn">중복확인</button></td>
+					<td class="field">아이디<i class="redFont">*</i></td>
+					<td>
+						<div>
+							<input class="input" type="text" id="userid" maxlength="20">
+							<button type="button" class="btn green" id="overlapBtn">중복확인</button>
+						</div>
+						<div class="checkDiv" id="idCheck"><i>영문자, 숫자, 언더바(_), 점(.)을 이용한 5~20자</i></div>
+					</td>
 				</tr>
 				<tr>
-					<td>비밀번호</td>
-					<td><input class="input" type="password" id="pw" maxlength="16"><div class="checkDiv" id="pwRegCheck"><i>8 ~ 16자 영문, 숫자, 특수문자 조합</i></div></td>
-					<td></td>
+					<td class="field">비밀번호<i class="redFont">*</i></td>
+					<td>
+						<div>
+							<input class="input" type="password" id="pw" maxlength="20">
+						</div>
+						<div class="checkDiv" id="pwRegCheck"><i>10 ~ 20자 영문, 숫자, 특수문자 조합</i></div>
+					</td>
 				</tr>
 				<tr>
-					<td>비밀번호 확인</td>
-					<td><input class="input" type="password" id="pw2" maxlength="16"><div class="checkDiv" id="pwCheck"></div></td>
-					<td></td>
+					<td class="field">비밀번호 확인<i class="redFont">*</i></td>
+					<td>
+						<div>
+							<input class="input" type="password" id="pw2" maxlength="16">
+						</div>
+						<div class="checkDiv" id="pwCheck"></div>
+					</td>
 				</tr>
 				<tr>
-					<td>이름</td>
-					<td><input class="input" type="text" id="username" required></td>
-					<td></td>
+					<td class="field">이름<i class="redFont">*</i></td>
+					<td>
+						<div>
+							<input class="input" type="text" id="username" maxlength="10">
+						</div>
+						<div class="checkDiv" id="nameCheck"></div>
+					</td>
 				</tr>
 				<tr>
-					<td>성별</td>
+					<td class="field">성별<i class="redFont">*</i></td>
 					<td>
 						<div class="select">
 							<input type="radio" name="gender" id="male" value="남"><label for="male">남자</label>
 							<input type="radio" name="gender" id="female" value="여"><label for="female">여자</label>
 						</div>
 					</td>
-						<td></td>
 				</tr>
 				<tr>
-					<td>생년월일</td>
-					<td colspan="2">
+					<td class="field">생년월일<i class="redFont">*</i></td>
+					<td>
 						<input class="input birth" type="text" id="year" placeholder="년(4자)" maxlength="4">
 						<select class="input birth" id="month">
 							<option>월</option>
@@ -130,33 +232,41 @@
 							<option value="11">11</option>
 							<option value="12">12</option>
 						</select>
-						<input class="input birth" type="text" id="day" placeholder="일" maxlength="2">
+						<input class="input birth" type="text" id="date" placeholder="일" maxlength="2">
+						<div class="checkDiv" id="birthCheck"></div>
 					</td>
 				</tr>
 				<tr>
-					<td>전화번호</td>
-					<td colspan="2">
-						<input class="input tel" type="text" id="tel1"> -
-						<input class="input tel" type="text" id="tel2"> -
-						<input class="input tel" type="text" id="tel3">
+					<td class="field">전화번호</td>
+					<td>
+						<input class="input tel" type="text" id="tel1" maxlength="3"> -
+						<input class="input tel" type="text" id="tel2" maxlength="4"> -
+						<input class="input tel" type="text" id="tel3" maxlength="4">
 					</td>
 				</tr>
 				<tr>
-					<td>이메일</td>
-					<td colspan="2">
-						<input class="input email" type="text" id="email1"> @
-						<input class="input email" type="text" id="email2">
-						<select class="input email" id="selectEmail">
-							<option value="self">직접입력</option>
-							<option value="naver.com">naver.com</option>
-							<option value="google.com">google.com</option>
-							<option value="kakao.com">kakao.com</option>
-							<option value="nate.com">nate.com</option>
-						</select>
+					<td class="field">이메일<i class="redFont">*</i></td>
+					<td>
+						<div>
+							<input class="input email" type="text" id="email1"> @
+							<input class="input email" type="text" id="email2">
+							<select class="input email" id="selectEmail">
+								<option value="self">직접입력</option>
+								<option value="naver.com">naver.com</option>
+								<option value="google.com">google.com</option>
+								<option value="kakao.com">kakao.com</option>
+								<option value="nate.com">nate.com</option>
+							</select>
+							<button class="btn green" id="makeCodeBtn">인증번호 받기</button>
+						</div>
+						<div style="margin-top: 10px;">
+							<input class="input" type="text" id="inputCode">
+							<button class="btn outline-green" id="verifCodeBtn">인증하기</button>
+						</div>
 					</td>
 				</tr>
 			</table>
-			<button type="submit" class="btn green" id="signUpBtn" style="width: 750px; height: 50px;">회원가입</button>
+			<button type="submit" class="btn green" id="signUpBtn" style="width: 940px; height: 50px;">회원가입</button>
 			</div>
 		</div>
 	</div>

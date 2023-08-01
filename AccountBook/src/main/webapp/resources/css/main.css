@@ -74,13 +74,16 @@
 	margin-bottom: 20px;
 }
 .table td {
-	width: 200px;
+	width: 700px;
 	height: 60px;
 	font-size: 18px;
 	padding: 10px;
 	border: 1px solid lightgray;
 	border-left: 0;
 	border-right: 0;
+}
+td.field {
+	width: 200px;
 }
 .input {
 	width: 350px;
@@ -144,4 +147,7 @@
 	font-size: 14px;
 	padding: 8px;
 	color: gray;
+}
+.redFont {
+	color: #db3030;
 }
