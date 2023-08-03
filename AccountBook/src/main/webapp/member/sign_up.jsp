@@ -134,7 +134,20 @@
 				birthChk = true;
 			}
 		})
-		
+		// 인증번호 받기 버튼 클릭
+		$("#makeCodeBtn").click(function() {
+			var email = $("#email1").val() + "@" + $("#email2").val();
+			$.ajax({
+				type : "post",
+				url : "sendCode",
+				data : {
+					email : email
+				},
+				success : function(x) {
+					
+				}
+			})
+		})
 		// 회원가입 버튼 클릭
 		$("#signUpBtn").click(function() {
 			// 성별 선택 체크
