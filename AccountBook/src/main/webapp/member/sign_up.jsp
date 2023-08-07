@@ -144,10 +144,22 @@
 					email : email
 				},
 				success : function(x) {
-					
+					alert("인증번호가 전송되었습니다.")
+					// 인증번호 확인 버튼
+					$("#verifCodeBtn").click(function() {
+						var code = $("#inputCode").val();
+						if(x == code) {
+							alert("인증 성공");
+							emailChk = true;
+						}
+						else {
+							alert("인증 실패");
+							emailChk = false;
+						}
+					})
 				}
 			})
-		})
+		})		
 		// 회원가입 버튼 클릭
 		$("#signUpBtn").click(function() {
 			// 성별 선택 체크
