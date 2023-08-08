@@ -13,4 +13,9 @@ public class MemberDAO {
 	public String isOverlapId(String userid) {
 		return my.selectOne("memberMapper.isOverlapId", userid);
 	}
+	
+	// 회원가입
+	public int insertMember(MemberVO memberVO) {
+		return my.insert("memberMapper.insertMember", memberVO);
+	}
 }

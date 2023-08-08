@@ -39,10 +39,12 @@
 							userid : $("#userid").val()
 						},
 						success : function(x) {
-							$("#idCheck").html(x);
-							if(x.includes("가능")) {
+							if(x == "possible") {
+								$("#idCheck").html("<i style='color: green;'>사용 가능한 아이디입니다</i>");
 								idChk = true;
-							} else {
+							}
+							else {
+								$("#idCheck").html("<i style='color: red;'>사용할 수 없는  아이디입니다</i>");
 								idChk = false;
 							}
 						}
@@ -144,16 +146,16 @@
 					email : email
 				},
 				success : function(x) {
-					alert("인증번호가 전송되었습니다.")
+					alert("인증메일이 발송되었습니다.")
 					// 인증번호 확인 버튼
 					$("#verifCodeBtn").click(function() {
 						var code = $("#inputCode").val();
 						if(x == code) {
-							alert("인증 성공");
+							alert("인증되었습니다.");
 							emailChk = true;
 						}
 						else {
-							alert("인증 실패");
+							alert("인증에 실패하였습니다.");
 							emailChk = false;
 						}
 					})
@@ -171,7 +173,31 @@
 			}
 			// 회원가입
 			if(idChk && pwChk && pwChk2 && nameChk && genderChk && birthChk && emailChk) {	// 모든 입력값에 문제가 없다면
-				alert("회원가입 가능")
+				if($("#date").val().length == 1) {
+					var date = "0" + $("#date").val();
+				}
+				var birth = $("#year").val() + $("#month").val() + date;
+				var email = $("#email1").val() + "@" + $("#email2").val();
+				$.ajax({
+					type : "post",
+					url : "insertMember",
+					data : {
+						userid : $("#userid").val(),
+						pw : $("#pw").val(),
+						username : $("#username").val(),
+						gender : gender,
+						birth : birth,
+						tel : $("#tel").val(),
+						email : email
+					},
+					success : function(x) {
+						if(x == "success") {
+							location.href = "../main/main.jsp"
+						} else {
+							alert("회원가입에 실패했습니다. 다시 시도해주세요!)");
+						}
+					}
+				})
 			} else {
 				alert("입력 값들을 확인해주세요")
 			}

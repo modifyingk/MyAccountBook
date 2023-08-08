@@ -17,13 +17,14 @@ public class MemberController {
 	SendMailService sendMailSvc;
 	
 	// 아이디 중복 확인
+	@ResponseBody
 	@RequestMapping("member/isOverlapId")
 	public String isOverlapId(String userid) {
 		String idExist = mDao.isOverlapId(userid);
 		if(idExist != null) { // 아이디가 존재하는 경우
-			return "member/impossible_id";
+			return "impossible";
 		} else {
-			return "member/possible_id";
+			return "possible";
 		}
 	}
 	
@@ -44,6 +45,18 @@ public class MemberController {
 		
 		if(result.equals("success")) {
 			return code;
+		} else {
+			return "fail";
+		}
+	}
+	
+	// 회원 가입
+	@ResponseBody
+	@RequestMapping("member/insertMember")
+	public String insertMember(MemberVO memberVO) {
+		int result = mDao.insertMember(memberVO);
+		if(result == 1) {
+			return "success";
 		} else {
 			return "fail";
 		}
