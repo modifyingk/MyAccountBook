@@ -1,5 +1,7 @@
 package com.modifyk.accountbook.member;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,6 +60,20 @@ public class MemberController {
 		if(result == 1) {
 			return "success";
 		} else {
+			return "fail";
+		}
+	}
+	
+	// 로그인
+	@ResponseBody
+	@RequestMapping("member/login")
+	public String login(MemberVO memberVO, HttpSession session) {
+		String loginid = mDao.login(memberVO);
+		
+		if(loginid != null) { // 로그인 성공
+			session.setAttribute("userid", memberVO.getUserid());
+			return loginid;
+		} else { // 로그인 실패
 			return "fail";
 		}
 	}

@@ -6,7 +6,6 @@ public class MemberVO {
 	private String username;
 	private String gender;
 	private String birth;
-	private String tel;
 	private String email;
 	
 	public String getUserid() {
@@ -39,12 +38,6 @@ public class MemberVO {
 	public void setBirth(String birth) {
 		this.birth = birth;
 	}
-	public String getTel() {
-		return tel;
-	}
-	public void setTel(String tel) {
-		this.tel = tel;
-	}
 	public String getEmail() {
 		return email;
 	}
@@ -55,7 +48,7 @@ public class MemberVO {
 	@Override
 	public String toString() {
 		return "MemberVO [userid=" + userid + ", pw=" + pw + ", username=" + username + ", gender=" + gender
-				+ ", birth=" + birth + ", tel=" + tel + ", email=" + email + "]";
+				+ ", birth=" + birth + ", email=" + email + "]";
 	}
 	
 }

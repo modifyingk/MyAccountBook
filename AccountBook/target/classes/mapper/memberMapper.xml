@@ -9,6 +9,11 @@
 	
 	<!-- 회원가입 -->
 	<insert id="insertMember" parameterType="memberVO">
-		insert into member values (#{userid}, #{pw}, #{username}, #{gender}, #{birth}, #{tel}, #{email})
+		insert into member values (#{userid}, #{pw}, #{username}, #{gender}, #{birth}, #{email})
 	</insert>
+	
+	<!-- 로그인 -->
+	<select id="login" parameterType="memberVO" resultType="String">
+		select userid from member where userid = #{userid} and pw = #{pw}
+	</select>
 </mapper>

@@ -5,7 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>가계부 | 회원가입</title>
-<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -94,8 +93,8 @@
 				nameChk = true;
 			}
 		})
-		// 숫자만 입력되도록 (생년월일 & 전화번호)
-		$("#year, #date, #tel1, #tel2, #tel3").keyup(function() {
+		// 숫자만 입력되도록 (생년월일)
+		$("#year, #date").keyup(function() {
 			var numReg = /[^0-9]/g;	// 숫자가 아닌 값 정규식
 			$(this).val($(this).val().replace(numReg, ""));
 		})
@@ -206,118 +205,112 @@
 </script>
 </head>
 <body>
-	<div>
-		<!-- 사이드바 -->
-		<div class="sidebar">
-			<jsp:include page="../main/sidebar.jsp"></jsp:include>
-		</div>
+	<div class="content">
+		<div>
+			<!-- 사이드바 -->
+			<div class="left-30">
+				<img src="../resources/img/logo.png" class="side-logo" onclick="location.href='../main/main.jsp'">
+			</div>
 
-		<!-- 컨텐츠 -->
-		<div class="content">
-			<h3 class="h3"><i class="fi fi-rs-user-add"></i> 회원가입</h3>
-			<div class="container" style="border: 1px solid lightgray; border-radius: 10px; width: 950px; padding: 0 20px 20px 20px;">
-			<h3 class="h4">회원가입 <i class="redFont" style="float: right; font-size: 14px;">*은 필수 입력사항입니다</i></h3>
-			<table class="table">
-				<tr>
-					<td class="field">아이디<i class="redFont">*</i></td>
-					<td>
-						<div>
-							<input class="input" type="text" id="userid" maxlength="20">
-							<button type="button" class="btn green" id="overlapBtn">중복확인</button>
-						</div>
-						<div class="checkDiv" id="idCheck"><i>영문자, 숫자, 언더바(_), 점(.)을 이용한 5~20자</i></div>
-					</td>
-				</tr>
-				<tr>
-					<td class="field">비밀번호<i class="redFont">*</i></td>
-					<td>
-						<div>
-							<input class="input" type="password" id="pw" maxlength="20">
-						</div>
-						<div class="checkDiv" id="pwRegCheck"><i>10 ~ 20자 영문, 숫자, 특수문자 조합</i></div>
-					</td>
-				</tr>
-				<tr>
-					<td class="field">비밀번호 확인<i class="redFont">*</i></td>
-					<td>
-						<div>
-							<input class="input" type="password" id="pw2" maxlength="16">
-						</div>
-						<div class="checkDiv" id="pwCheck"></div>
-					</td>
-				</tr>
-				<tr>
-					<td class="field">이름<i class="redFont">*</i></td>
-					<td>
-						<div>
-							<input class="input" type="text" id="username" maxlength="10">
-						</div>
-						<div class="checkDiv" id="nameCheck"></div>
-					</td>
-				</tr>
-				<tr>
-					<td class="field">성별<i class="redFont">*</i></td>
-					<td>
-						<div class="select">
-							<input type="radio" name="gender" id="male" value="남"><label for="male">남자</label>
-							<input type="radio" name="gender" id="female" value="여"><label for="female">여자</label>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="field">생년월일<i class="redFont">*</i></td>
-					<td>
-						<input class="input birth" type="text" id="year" placeholder="년(4자)" maxlength="4">
-						<select class="input birth" id="month">
-							<option>월</option>
-							<option value="01">1</option>
-							<option value="02">2</option>
-							<option value="03">3</option>
-							<option value="04">4</option>
-							<option value="05">5</option>
-							<option value="06">6</option>
-							<option value="07">7</option>
-							<option value="08">8</option>
-							<option value="09">9</option>
-							<option value="10">10</option>
-							<option value="11">11</option>
-							<option value="12">12</option>
-						</select>
-						<input class="input birth" type="text" id="date" placeholder="일" maxlength="2">
-						<div class="checkDiv" id="birthCheck"></div>
-					</td>
-				</tr>
-				<tr>
-					<td class="field">전화번호</td>
-					<td>
-						<input class="input tel" type="text" id="tel1" maxlength="3"> -
-						<input class="input tel" type="text" id="tel2" maxlength="4"> -
-						<input class="input tel" type="text" id="tel3" maxlength="4">
-					</td>
-				</tr>
-				<tr>
-					<td class="field">이메일<i class="redFont">*</i></td>
-					<td>
-						<div>
-							<input class="input email" type="text" id="email1"> @
-							<input class="input email" type="text" id="email2">
-							<select class="input email" id="selectEmail">
-								<option value="self">직접입력</option>
-								<option value="naver.com">naver.com</option>
-								<option value="google.com">google.com</option>
-								<option value="kakao.com">kakao.com</option>
-								<option value="nate.com">nate.com</option>
+			<!-- 컨텐츠 -->
+			<div class="right-70">
+				<div class="signup-container">
+				<h2 class="h2"><i class="fi fi-rs-user-add"></i> 회원가입</h2>
+				<br>
+				<table class="signup-table">
+					<tr>
+						<td class="field">아이디</td>
+						<td>
+							<div>
+								<input class="signup-input" type="text" id="userid" maxlength="20">
+								<button type="button" class="btn green" id="overlapBtn">중복확인</button>
+							</div>
+							<div class="checkDiv" id="idCheck"><i>영문자, 숫자, 언더바(_), 점(.)을 이용한 5~20자</i></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="field">비밀번호</td>
+						<td>
+							<div>
+								<input class="signup-input" type="password" id="pw" maxlength="20">
+							</div>
+							<div class="checkDiv" id="pwRegCheck"><i>10 ~ 20자 영문, 숫자, 특수문자 조합</i></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="field">비밀번호 확인</td>
+						<td>
+							<div>
+								<input class="signup-input" type="password" id="pw2" maxlength="16">
+							</div>
+							<div class="checkDiv" id="pwCheck"></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="field">이름</td>
+						<td>
+							<div>
+								<input class="signup-input" type="text" id="username" maxlength="10">
+							</div>
+							<div class="checkDiv" id="nameCheck"></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="field">성별</td>
+						<td>
+							<div class="signup-select">
+								<input type="radio" name="gender" id="male" value="남"><label for="male">남자</label>
+								<input type="radio" name="gender" id="female" value="여"><label for="female">여자</label>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="field">생년월일</td>
+						<td>
+							<input class="signup-input birth" type="text" id="year" placeholder="년(4자)" maxlength="4">
+							<select class="signup-input birth" id="month">
+								<option>월</option>
+								<option value="01">1</option>
+								<option value="02">2</option>
+								<option value="03">3</option>
+								<option value="04">4</option>
+								<option value="05">5</option>
+								<option value="06">6</option>
+								<option value="07">7</option>
+								<option value="08">8</option>
+								<option value="09">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
 							</select>
-							<button class="btn green" id="makeCodeBtn">인증번호 받기</button>
-						</div>
-						<div style="margin-top: 10px;">
-							<input class="input" type="text" id="inputCode">
-							<button class="btn outline-green" id="verifCodeBtn">인증하기</button>
-						</div>
-					</td>
-				</tr>
-			</table>
-			<button type="submit" class="btn green" id="signUpBtn" style="width: 940px; height: 50px;">회원가입</button>
+							<input class="signup-input birth" type="text" id="date" placeholder="일" maxlength="2">
+							<div class="checkDiv" id="birthCheck"></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="field">이메일</td>
+						<td>
+							<div>
+								<input class="signup-input email" type="text" id="email1"> @
+								<input class="signup-input email" type="text" id="email2">
+								<select class="signup-input email" id="selectEmail">
+									<option value="self">직접입력</option>
+									<option value="naver.com">naver.com</option>
+										<option value="google.com">google.com</option>
+									<option value="kakao.com">kakao.com</option>
+									<option value="nate.com">nate.com</option>
+								</select>
+								<button class="btn green" id="makeCodeBtn">인증번호 받기</button>
+							</div>
+							<div style="margin-top: 10px;">
+								<input class="signup-input" type="text" id="inputCode">
+								<button class="btn outline-green" id="verifCodeBtn">인증하기</button>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<button type="submit" class="btn green" id="signUpBtn">회원가입</button>
+				</div>
 			</div>
 		</div>
 	</div>

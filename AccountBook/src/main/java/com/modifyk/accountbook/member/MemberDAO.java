@@ -18,4 +18,9 @@ public class MemberDAO {
 	public int insertMember(MemberVO memberVO) {
 		return my.insert("memberMapper.insertMember", memberVO);
 	}
+	
+	// 로그인
+	public String login(MemberVO memberVO) {
+		return my.selectOne("memberMapper.login", memberVO);
+	}
 }

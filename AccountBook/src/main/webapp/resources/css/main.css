@@ -5,7 +5,7 @@
 .menu {
 	padding: 12px 10px 12px 20px;
 	margin-top: 40px;
-	width: 80%;
+	width: 75%;
 	height: 30px;
 	line-height: 28px;
 	font-size: 18px;
@@ -19,16 +19,42 @@
 	background: #2C952C;
 	color: white;
 }
-.sidebar {
-	width: 15%;
-	height: 1000px;
+.left-20 {
+	width: 18%;
+	height: 1050px;
 	float: left;
-	border-right: 1px solid lightgray;
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	background: linear-gradient(to bottom, white 70%, #6F4F28);
+	box-shadow: 2px 2px 0 lightgray;
+}
+.right-80 {
+	width: 80%;
+	margin-left: 1px;
+	float: left;
 }
 .content {
-	width: 80%;
+	width: 100%;
+	height: 1050px;
+}
+.left-30 {
+	width: 30%;
+	height: 1050px;
 	float: left;
-	margin-left: 2%;
+	border-right: 1px solid lightgray;
+	border-radius: 20px;
+	box-shadow: 2px 2px 5px lightgray;
+}
+.right-70 {
+	width: 68%;
+	float: left;
+	display: flex;
+	justify-content: center;
+}
+.side-logo {
+	width: 80%;
+	margin-left: 4%;
+	margin-top: 50%;
 }
 .h2 {
 	font-size: 35px;
@@ -45,66 +71,42 @@
 	font-weight: normal;
 	margin: 20px;
 }
-.card {
-	width: 23%;
-	height: 450px;
-	float: left;
-	margin: 2%;
-	border: 1px solid lightgray;
-	border-radius: 10px;
-	text-align: center;
-	font-size: 25px;
-	color: gray;
+.signup-container {
+	margin: 5%;
+	margin-left: 10%;
+	width: 90%;
+	padding: 0 20px 20px 20px;
 }
-.card i {
-	font-size: 100px;
-}
-.card:hover {
-	background: #2C952C;
-	color: white;
-}
-.card-body{
-	padding-top: 100px;
-}
-.container {
-	margin: 30px;
-}
-.table {
+.signup-table {
 	border-collapse: collapse;
 	margin-bottom: 20px;
 }
-.table td {
-	width: 700px;
-	height: 60px;
+.signup-table td {
+	width: 90%;
+	height: 100%;
 	font-size: 18px;
 	padding: 10px;
-	border: 1px solid lightgray;
-	border-left: 0;
-	border-right: 0;
 }
-td.field {
-	width: 200px;
+.signup-table td.field {
+	width: 20%;
 }
-.input {
+.signup-input {
 	width: 350px;
 	border-radius: 5px;
 	border: 1px solid lightgray;
 	padding: 12px 10px;
     font-size: 16px;
 }
-.input.birth {
+.signup-input.birth {
 	width: 158px;
 }
-.input.tel {
-	width: 142px;
-}
-.input.email {
+.signup-input.email {
 	width: 150px;
 }
-.select input[type="radio"] {
+.signup-select input[type="radio"] {
 	display: none;
 }
-.select input[type="radio"]+label {
+.signup-select input[type="radio"]+label {
 	width: 158px;
 	padding: 10px;
 	display: inline-block;
@@ -114,7 +116,7 @@ td.field {
     text-align: center;
     font-size: 16px;
 }
-.select input[type="radio"]:checked+label{
+.signup-select input[type="radio"]:checked+label{
 	border-color: #2C952C;
 	color: #2C952C;
 }
@@ -126,6 +128,10 @@ td.field {
 	border-radius: 10px;
 	line-height: 20px;
 	font-size: 16px;
+}
+.btn.middle {
+	width: 250px;
+	height: 50px;
 }
 .btn:hover {
 	cursor: pointer;
@@ -143,11 +149,47 @@ td.field {
 	background: #2C952C;
 	color: white;
 }
+#signUpBtn {
+	width: 500px;
+	height: 50px;
+	margin-top: 30px;
+}
 .checkDiv {
 	font-size: 14px;
 	padding: 8px;
 	color: gray;
 }
-.redFont {
-	color: #db3030;
+#watering {
+	position: absolute;
+	top: 25%;
+	right: 25%;
+}
+#watering:active {
+	transform: rotate(-45deg);
+}
+#water {
+	 position: absolute;
+	 top: 35%;
+	 right: 35%;
+	 display: none;
+}
+#money {
+	position: absolute;
+	top: 45%;
+	right: 35%;
+}
+.mainText {
+	color:#2C952C;
+	font-size: 50px;
+	font-weight: bold;
+	text-align: center;
+}
+.login-container {
+	margin: 20%;
+	width: 90%;
+}
+#loginBtn {
+	width: 500px;
+	height: 50px;
+	margin-top: 30px;
 }
