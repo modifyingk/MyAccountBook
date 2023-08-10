@@ -54,7 +54,7 @@
 .side-logo {
 	width: 80%;
 	margin-left: 4%;
-	margin-top: 50%;
+	margin-top: 30%;
 }
 .h2 {
 	font-size: 35px;
@@ -130,8 +130,9 @@
 	font-size: 16px;
 }
 .btn.middle {
-	width: 250px;
-	height: 50px;
+	width: 300px;
+	height: 60px;
+	margin: 2%;
 }
 .btn:hover {
 	cursor: pointer;
@@ -149,6 +150,11 @@
 	background: #2C952C;
 	color: white;
 }
+.btn:disabled {
+	background: lightgray;
+	color: gray;
+	cursor: default;
+}
 #signUpBtn {
 	width: 500px;
 	height: 50px;
@@ -162,21 +168,25 @@
 #watering {
 	position: absolute;
 	top: 25%;
-	right: 25%;
+	right: 15%;
 }
 #watering:active {
 	transform: rotate(-45deg);
 }
 #water {
 	 position: absolute;
-	 top: 35%;
-	 right: 35%;
+	 top: 38%;
+	 right: 25%;
 	 display: none;
 }
 #money {
 	position: absolute;
 	top: 45%;
-	right: 35%;
+	right: 30%;
+}
+.main-menu {
+	margin-left: 20%;
+	margin-top: 45%;
 }
 .mainText {
 	color:#2C952C;
@@ -191,5 +201,72 @@
 #loginBtn {
 	width: 500px;
 	height: 50px;
-	margin-top: 30px;
+	margin-top: 10px;
+}
+.find-container {
+	margin: 20%;
+	margin-left: 15%;
+	width: 100%;
+}
+#findidBtn {
+	width: 500px;
+	height: 50px;
+	margin-top: 10px;
+}
+#findpwBtn {
+	width: 500px;
+	height: 50px;
+	margin-top: 10px;
+}
+.warningMsg {
+	color : red;
+	font-size: 16px;
+	margin: 1% 0 0 0;
+}
+.infoMsg {
+	color: gray;
+	font-size: 16px;
+	margin: 1% 0 0 0;
+}
+.safeMsg {
+	color: green;
+	font-size: 16px;
+	margin: 1% 0 0 0;
+}
+.table-container {
+	border: 1px solid lightgray;
+	border-radius: 10px;
+}
+.find-table {
+	margin-bottom: 20px;
+	text-align: center;
+	border: 1px solid lightgray;
+	border-radius: 10px;
+}
+.find-table tr {
+	border: 1px solid lightgray;
+	border-radius: 10px;
+}
+.find-table td {
+	width: 90%;
+	height: 100%;
+	font-size: 18px;
+	padding: 10px;
+}
+.find-table td.field {
+	width: 20%;
+}
+.find-table td.field.th {
+	font-weight: bold;
+	border-bottom: 1px solid lightgray;
+}
+#goLogin {
+	width: 200px;
+	height: 50px;
+	margin-top: 10px;
+}
+#goFindpw {
+	width: 200px;
+	height: 50px;
+	margin-top: 10px;
 }

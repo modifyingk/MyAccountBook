@@ -7,6 +7,7 @@ public class MemberVO {
 	private String gender;
 	private String birth;
 	private String email;
+	private String joindate;
 	
 	public String getUserid() {
 		return userid;
@@ -44,11 +45,16 @@ public class MemberVO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	public String getJoindate() {
+		return joindate;
+	}
+	public void setJoindate(String joindate) {
+		this.joindate = joindate;
+	}
 	
 	@Override
 	public String toString() {
 		return "MemberVO [userid=" + userid + ", pw=" + pw + ", username=" + username + ", gender=" + gender
-				+ ", birth=" + birth + ", email=" + email + "]";
+				+ ", birth=" + birth + ", email=" + email + ", joindate=" + joindate + "]";
 	}
-	
 }

@@ -8,7 +8,7 @@ $(function() {
 		$("li").removeClass("active"); // active 클래스 지워줌
 		$(this).addClass("active"); // 클릭한 것에 active 클래스 추가
 		if(idx == 0) {
-			location.href = "/accountbook/main/main.jsp";
+			location.href = "/accountbook/member/mypage.jsp";
 		} else if(idx == 1) {
 			location.href = ""; // 수입지출관리 페이지로
 		} else if(idx == 2) {
@@ -21,10 +21,9 @@ $(function() {
 	});
 });
 </script>
-<!-- <h2 class="h2"><i class="fi fi-rr-money-check-edit"></i> 가계부</h2> -->
 <img src="../resources/img/logo.png" style="width: 90%;">
 <ul class="menu-group">
-	<li class="menu active"><i class="fi fi-rr-home"></i> 메인페이지</li>
+	<li class="menu"><i class="fi fi-rr-home"></i> 메인페이지</li>
 	<li class="menu"><i class="fi fi-rr-add"></i> 수입/지출 관리</li>		
 	<li class="menu"><i class="fi fi-rr-coins"></i> 자산관리</li>		
 	<li class="menu"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		

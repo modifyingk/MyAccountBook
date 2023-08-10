@@ -1,5 +1,7 @@
 package com.modifyk.accountbook.member;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,5 +24,26 @@ public class MemberDAO {
 	// 로그인
 	public String login(MemberVO memberVO) {
 		return my.selectOne("memberMapper.login", memberVO);
+	}
+	
+	// 아이디 찾기
+	public String findId(MemberVO memberVO) {
+		return my.selectOne("memberMapper.findId", memberVO);
+	}
+	
+	// 아이디 보여주기
+	public List<MemberVO> showId(MemberVO memberVO) {
+		List<MemberVO> idList = my.selectList("memberMapper.showId", memberVO);
+		return idList;
+	}
+
+	// 비밀번호 찾기
+	public String findPw(MemberVO memberVO) {
+		return my.selectOne("memberMapper.findPw", memberVO);
+	}
+	
+	// 비밀번호 변경
+	public int updatePw(MemberVO memberVO) {
+		return my.update("memberMapper.updatePw", memberVO);
 	}
 }
