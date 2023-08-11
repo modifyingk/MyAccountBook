@@ -22,22 +22,19 @@
 			<%
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
-				<div>
-					<div class="right-80">
-						<div>
-							<div class="left-60">
-								<h2 class="h2"><i class="fi fi-rs-user"></i> <%= session.getAttribute("userid") %></h2>
-								<a href="../member/myInfo.jsp"><button class="btn long outline-green">내 정보 관리</button></a>
-							</div>
-							<div class="right-40">
-								<br>
-								<a href="../member/logout"><button class="btn outline-gray" id="logoutBtn">로그아웃</button></a>
-							</div>
-						</div>
-					</div>
-					<div class="right-20">
-						
-					</div>
+				<div class="info-container">
+					<h3 class="h3"><i class="fi fi-rr-key"></i> 비밀번호 확인</h3>
+				<table class="info-table">
+					<tr>
+						<td class="field">아이디</td>
+						<td><input class="signup-input" type="text" value="<%= session.getAttribute("userid") %>" disabled="true"></td>
+					</tr>
+					<tr>
+						<td class="field">비밀번호</td>
+						<td><input class="signup-input" type="password"></td>
+					</tr>
+				</table>
+				<button class="btn long green">확인</button>
 				</div>
 			<% }
 			/* 로그인이 되어 있지 않을 때 */

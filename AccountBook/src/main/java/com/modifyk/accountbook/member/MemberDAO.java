@@ -46,4 +46,10 @@ public class MemberDAO {
 	public int updatePw(MemberVO memberVO) {
 		return my.update("memberMapper.updatePw", memberVO);
 	}
+	
+	// 회원정보
+	public MemberVO userInfo(String userid) {
+		MemberVO info = my.selectOne("memberMapper.userInfo", userid);
+		return info;
+	}
 }

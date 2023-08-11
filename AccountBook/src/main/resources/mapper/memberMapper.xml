@@ -36,4 +36,9 @@
 	<update id="updatePw" parameterType="memberVO">
 		update member set pw = #{pw} where userid = #{userid}
 	</update>
+	
+	<!-- 회원 정보 -->
+	<select id="userInfo" parameterType="String" resultType="memberVO">
+		select * from member where userid = #{userid};
+	</select>
 </mapper>

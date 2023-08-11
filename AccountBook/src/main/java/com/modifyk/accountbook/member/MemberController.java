@@ -143,4 +143,11 @@ public class MemberController {
 			return "fail";
 		}
 	}
+	
+	// 회원정보
+	@RequestMapping("member/userInfo")
+	public void userInfo(String userid, Model model) {
+		MemberVO info = mDao.userInfo(userid);
+		model.addAttribute("info", info);
+	}
 }
