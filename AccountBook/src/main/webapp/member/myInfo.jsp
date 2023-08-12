@@ -10,12 +10,71 @@
 <link rel="stylesheet" type="text/css" href="../resources/css/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
+	var nameChk = true;
+	var birthChk = true;
+	
 	$(function() {
-		$("#chgPwBtn").click(function() {
-			location.href = "checkPw.jsp";
+		// 회원정보 수정 유효성 검사
+		// 이름 형식 확인 (한글, 영어만 입력)
+		$("#username").keyup(function() {
+			var nameReg = /[^a-zA-zㄱ-ㅎㅏ-ㅣ가-힣]/g; // 영어, 한글이 아닌 값 정규식
+			$(this).val($("#username").val().replace(nameReg, ""));
+		})	
+		$("#username").blur(function() {
+			var nameReg = RegExp(/^[a-zA-Z가-힣]{2,10}$/); // 한글, 영어 2~10글자
+			if(!nameReg.test($("#username").val())) {
+				$("#nameCheck").html("<p class='warningMsg'>이름이 정확한지 확인해주세요</p>");
+				nameChk = false;
+			} else {
+				$("#nameCheck").html("");
+				nameChk = true;
+			}
+		})
+		// 숫자만 입력되도록 (생년월일)
+		$("#year, #date").keyup(function() {
+			var numReg = /[^0-9]/g;	// 숫자가 아닌 값 정규식
+			$(this).val($(this).val().replace(numReg, ""));
+		})
+		// 생년월일 잘못된 값 입력방지
+		$("#year, #month, #date").blur(function() {
+			var today = new Date();
+			if($("#year").val() > today.getFullYear() || $("#year").val() < today.getFullYear() - 100) { // 현재연도보다 늦은 연도를 입력하거나 현재연도로부터 100년전 연도를 입력할 경우
+				$("#birthCheck").html("<p class='warningMsg'> 생년월일이 정확한지 확인해주세요</p>");
+				birthChk = false;
+			} else if($("#year").val() == today.getFullYear()) { // 현재연도와 입력연도가 같을 때
+				if($("#month").val() > today.getMonth() + 1) { // 현재 월보다 클 때
+					$("#birthCheck").html("<p class='warningMsg'> 생년월일이 정확한지 확인해주세요</p>");
+					birthChk = false;
+				} else if($("#month").val() == today.getMonth() + 1) { // 현재 월과 같을 때
+					if($("#date").val() > today.getDate()) { // 현재 일보다 크면
+						$("#birthCheck").html("<p class='warningMsg'> 생년월일이 정확한지 확인해주세요</p>");
+						birthChk = false;
+					} else {
+						$("#birthCheck").html("");
+						birthChk = true;
+					}
+				} else {
+					$("#birthCheck").html("");
+					birthChk = true;
+				}
+			} else {
+				$("#birthCheck").html("");
+				birthChk = true;
+			}
+		})
+		$("#date").blur(function() {
+			// 일 값이 1에서 31까지만 입력 가능하도록
+			if($("#date").val() > 31 || $("#date").val() < 1) {
+				$("#birthCheck").html("<p class='warningMsg'> 생년월일이 정확한지 확인해주세요</p>");
+				birthChk = false;
+			} else {
+				$("#birthCheck").html("");
+				birthChk = true;
+			}
 		})
 		
 		var userid = "<%= session.getAttribute("userid") %>";
+		// 현재 세션의 정보 가져오기
 		$.ajax({
 			type : "post",
 			url : "userInfo",
@@ -42,6 +101,36 @@
 				$("#date").attr("value", birth[2]);
 			}
 		})
+
+		// 비밀번호 변경 클릭 시 비밀번호 변경 페이지로
+		$("#chgPwBtn").click(function() {
+			location.href = "check_pw.jsp";
+		})
+		
+		// 개인정보 변경 클릭 시
+		$("#updateMemBtn").click(function() {
+			if(nameChk && birthChk) {
+				$.ajax({
+					type : "post",
+					url : "updateMember",
+					data : {
+						userid : userid,
+						username : $("#username").val(),
+						gender : $("input[name=gender]:checked").val(),
+						birth : $("#year").val() + $("#month").val() + $("#date").val()
+					},
+					success : function(x) {
+						if(x == "success") {
+							alert("회원정보가 수정되었습니다.");
+						} else {
+							alert("다시 시도해주세요.");
+						}
+					}
+				})
+			} else {
+				alert("입력 값을 다시 확인해주세요");				
+			}
+		})
 	})
 </script>
 </head>
@@ -61,16 +150,15 @@
 					<h2 class="h2"><i class="fi fi-rs-user"></i> <%= session.getAttribute("userid") %></h2>
 				<table class="info-table">
 					<tr>
-						<td class="field">아이디</td>
-						<td><input class="signup-input" type="text" value="<%= session.getAttribute("userid") %>" maxlength="20"></td>
-					</tr>
-					<tr>
 						<td class="field">비밀번호</td>
-						<td><button class="btn outline-gray" id="chgPwBtn">비밀번호 변경</button></td>
+						<td><button class="btn long outline-gray" id="chgPwBtn">비밀번호 변경</button></td>
 					</tr>
 					<tr>
 						<td class="field">이름</td>
-						<td><input class="signup-input" type="text" id="username" maxlength="10"></td>
+						<td>
+							<input class="signup-input" type="text" id="username" maxlength="10">
+							<div id="nameCheck"></div>					
+						</td>
 					</tr>
 					<tr>
 						<td class="field">성별</td>
@@ -101,11 +189,12 @@
 								<option value="12">12</option>
 							</select>
 							<input class="signup-input birth" type="text" id="date" placeholder="일" maxlength="2">
+							<div id="birthCheck"></div>
 						</td>
 					</tr>
 				</table>
-				<button class="btn long green">개인정보 수정</button>
-				<button class="btn long outline-green">회원탈퇴</button>
+				<button class="btn long green" id="updateMemBtn">개인정보 수정</button>
+				<button class="btn long outline-green" id="deleteMemBtn">회원탈퇴</button>
 				</div>
 			<% }
 			/* 로그인이 되어 있지 않을 때 */

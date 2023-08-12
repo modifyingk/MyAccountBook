@@ -9,6 +9,27 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+	$(function() {
+		$("#checkPwBtn").click(function() {
+			$.ajax({
+				type : "post",
+				url : "checkPw",
+				data : {
+					userid : $("#userid").val(),
+					pw : $("#pw").val()
+				},
+				success : function(x) {
+					if(x == "success") {
+						location.href = "update_pw.jsp";
+					} else {
+						alert("비밀번호가 일치하지 않습니다.");
+					}
+				}
+			})
+		})
+	})
+</script>
 </head>
 <body>
 	<div class="">
@@ -27,14 +48,14 @@
 				<table class="info-table">
 					<tr>
 						<td class="field">아이디</td>
-						<td><input class="signup-input" type="text" value="<%= session.getAttribute("userid") %>" disabled="true"></td>
+						<td><input class="signup-input" type="text" value="<%= session.getAttribute("userid") %>" disabled="true" id="userid"></td>
 					</tr>
 					<tr>
 						<td class="field">비밀번호</td>
-						<td><input class="signup-input" type="password"></td>
+						<td><input class="signup-input" type="password" id="pw"></td>
 					</tr>
 				</table>
-				<button class="btn long green">확인</button>
+				<button class="btn long green" id="checkPwBtn">확인</button>
 				</div>
 			<% }
 			/* 로그인이 되어 있지 않을 때 */

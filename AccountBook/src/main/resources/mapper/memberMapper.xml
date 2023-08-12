@@ -41,4 +41,14 @@
 	<select id="userInfo" parameterType="String" resultType="memberVO">
 		select * from member where userid = #{userid};
 	</select>
+	
+	<!-- 회원정보 수정 -->
+	<update id="updateMember" parameterType="memberVO">
+		update member set username = #{username}, gender = #{gender}, birth = #{birth} where userid = #{userid}
+	</update>
+	
+	<!-- 비밀번호 확인 -->
+	<select id="checkPw" parameterType="memberVO" resultType="String">
+		select userid from member where userid = #{userid} and pw = #{pw}
+	</select>
 </mapper>

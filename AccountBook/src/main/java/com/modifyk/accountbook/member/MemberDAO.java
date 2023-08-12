@@ -52,4 +52,14 @@ public class MemberDAO {
 		MemberVO info = my.selectOne("memberMapper.userInfo", userid);
 		return info;
 	}
+	
+	// 회원정보 수정
+	public int updateMember(MemberVO memberVO) {
+		return my.update("memberMapper.updateMember", memberVO);
+	}
+	
+	// 비밀번호 확인
+	public String checkPw(MemberVO memberVO) {
+		return my.selectOne("memberMapper.checkPw", memberVO);
+	}
 }

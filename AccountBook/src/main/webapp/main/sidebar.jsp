@@ -21,7 +21,7 @@ $(function() {
 	});
 });
 </script>
-<img src="../resources/img/logo.png" style="width: 90%;">
+<img src="../resources/img/logo.png" style="width: 90%;" onclick="location.href='../main/main.jsp'">
 <ul class="menu-group">
 	<li class="menu active"><i class="fi fi-rr-home"></i> 메인페이지</li>
 	<li class="menu"><i class="fi fi-rr-add"></i> 수입/지출 관리</li>		

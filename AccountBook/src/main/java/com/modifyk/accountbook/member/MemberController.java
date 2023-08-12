@@ -121,7 +121,7 @@ public class MemberController {
 	// 임시 비밀번호 발급
 	@ResponseBody
 	@RequestMapping("member/tempPw")
-	public String updatePw(MemberVO memberVO) {
+	public String tempPw(MemberVO memberVO) {
 		String tmpPw = makePwSvc.makePw(); // 임시 비밀번호 생성
 		memberVO.setPw(tmpPw); // 임시 비밀번호 셋팅
 		
@@ -149,5 +149,41 @@ public class MemberController {
 	public void userInfo(String userid, Model model) {
 		MemberVO info = mDao.userInfo(userid);
 		model.addAttribute("info", info);
+	}
+	
+	// 회원정보 수정
+	@ResponseBody
+	@RequestMapping("member/updateMember")
+	public String updateMember(MemberVO memberVO) {
+		int result = mDao.updateMember(memberVO);
+		if(result == 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
+	// 비밀번호 확인
+	@ResponseBody
+	@RequestMapping("member/checkPw")
+	public String checkPw(MemberVO memberVO) {
+		String result = mDao.checkPw(memberVO);
+		if(result != null) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
+	// 비밀번호 변경
+	@ResponseBody
+	@RequestMapping("member/updatePw")
+	public String updatePw(MemberVO memberVO) {
+		int result = mDao.updatePw(memberVO);
+		if(result == 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
 	}
 }
