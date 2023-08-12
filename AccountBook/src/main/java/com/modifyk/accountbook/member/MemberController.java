@@ -186,4 +186,16 @@ public class MemberController {
 			return "fail";
 		}
 	}
+	
+	// 회원 탈퇴
+	@ResponseBody
+	@RequestMapping("member/deleteMember")
+	public String deleteMember(String userid) {
+		int result = mDao.deleteMember(userid);
+		if(result == 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
 }

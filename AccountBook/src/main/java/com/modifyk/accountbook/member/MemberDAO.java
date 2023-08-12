@@ -62,4 +62,9 @@ public class MemberDAO {
 	public String checkPw(MemberVO memberVO) {
 		return my.selectOne("memberMapper.checkPw", memberVO);
 	}
+	
+	// 회원 탈퇴
+	public int deleteMember(String userid) {
+		return my.delete("memberMapper.deleteMember", userid);
+	}
 }

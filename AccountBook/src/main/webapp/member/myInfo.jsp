@@ -131,6 +131,35 @@
 				alert("입력 값을 다시 확인해주세요");				
 			}
 		})
+		
+		// 회원탈퇴 클릭 시
+		$("#deleteMemBtn").click(function() {
+			var op = confirm("정말로 탈퇴하시겠습니까?");
+			if(op) {
+				var chkID = prompt("탈퇴하실 아이디를 입력하시면 성공적으로 탈퇴가 완료됩니다.");
+				if(chkID == userid) {
+					$.ajax({
+						type : "post",
+						url : "deleteMember",
+						data : {
+							userid : userid
+						},
+						success : function(x) {
+							if(x == "success") {
+								alert("탈퇴가 성공적으로 완료되었습니다.");
+								location.href = "logout";
+							} else {
+								alert("다시 시도해주세요.");
+							}
+						}
+					})
+				} else if(chkID == null){
+					
+				} else {
+					alert("입력하신 값과 아이디가 일치하지않습니다.")
+				}
+			}
+		})
 	})
 </script>
 </head>

@@ -51,4 +51,9 @@
 	<select id="checkPw" parameterType="memberVO" resultType="String">
 		select userid from member where userid = #{userid} and pw = #{pw}
 	</select>
+
+	<!-- 회원탈퇴  -->
+	<delete id="deleteMember" parameterType="String">
+		delete from member where userid = #{userid}
+	</delete>
 </mapper>
