@@ -176,6 +176,8 @@
 			if(idChk && pwChk && pwChk2 && nameChk && genderChk && birthChk && emailChk) {	// 모든 입력값에 문제가 없다면
 				if($("#date").val().length == 1) {
 					var date = "0" + $("#date").val();
+				} else {
+					var date = $("#date").val();
 				}
 				var birth = $("#year").val() + $("#month").val() + date;
 				var email = $("#email1").val() + "@" + $("#email2").val();

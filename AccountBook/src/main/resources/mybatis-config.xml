@@ -5,9 +5,13 @@
 	<!-- SQL문 정의 시 VO 간단히 표현 -->
    <typeAliases>
       <typeAlias type="com.modifyk.accountbook.member.MemberVO" alias="memberVO"></typeAlias>
+      <typeAlias type="com.modifyk.accountbook.asset.AssetGroupVO" alias="assetGroupVO"></typeAlias>
+      <typeAlias type="com.modifyk.accountbook.asset.AssetVO" alias="assetVO"></typeAlias>
    </typeAliases>
    <mappers>
    <!-- SQL문 정의하는 파일들의 목록 -->
       <mapper resource="mapper/memberMapper.xml" />
+      <mapper resource="mapper/assetMapper.xml" />
+      <mapper resource="mapper/assetgroupMapper.xml" />
    </mappers>
 </configuration>

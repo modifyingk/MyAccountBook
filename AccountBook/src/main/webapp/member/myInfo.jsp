@@ -82,11 +82,9 @@
 				userid : userid
 			},
 			success : function(info) {
-				var infoArr = info.split("/");
-				
-				var username = infoArr[0];
-				var gender = infoArr[1];
-				var birth = (infoArr[2]).split("-");
+				var username = info.username;
+				var gender = info.gender;
+				var birth = info.birth.split("-");
 				
 				$("#username").attr("value", username);
 				

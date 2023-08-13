@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.modifyk.accountbook.asset.AssetGroupVO;
+
 @Controller
 public class MemberController {
 	@Autowired
@@ -23,6 +25,9 @@ public class MemberController {
 	
 	@Autowired
 	MakePwService makePwSvc;
+	
+	@Autowired
+	InsertAstGroupService astGroupSvc;
 	
 	// 아이디 중복 확인
 	@ResponseBody
@@ -59,7 +64,15 @@ public class MemberController {
 	@ResponseBody
 	@RequestMapping("member/insertMember")
 	public String insertMember(MemberVO memberVO) {
+		
+
 		int result = mDao.insertMember(memberVO);
+		
+		// assetgroup 기본값 삽입
+		AssetGroupVO astgroupVO = new AssetGroupVO();
+		astgroupVO.setUserid(memberVO.getUserid());
+		astGroupSvc.insertGroup(astgroupVO);
+		
 		if(result == 1) {
 			return "success";
 		} else {
@@ -145,10 +158,11 @@ public class MemberController {
 	}
 	
 	// 회원정보
+	@ResponseBody
 	@RequestMapping("member/userInfo")
-	public void userInfo(String userid, Model model) {
+	public MemberVO userInfo(String userid) {
 		MemberVO info = mDao.userInfo(userid);
-		model.addAttribute("info", info);
+		return info;
 	}
 	
 	// 회원정보 수정

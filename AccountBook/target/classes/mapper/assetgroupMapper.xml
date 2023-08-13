@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="assetgroupMapper">
+	<!-- 자산그룹 추가 -->
+	<insert id="insertGroup" parameterType="assetGroupVO">
+		insert into assetgroup values (#{astgroup}, #{userid});
+	</insert>
+	
+	<!-- 전체 자산그룹 -->
+	<select id="astGroupInfo" parameterType="String" resultType="String">
+		select astgroup from assetgroup where userid = #{userid};
+	</select>
+</mapper>

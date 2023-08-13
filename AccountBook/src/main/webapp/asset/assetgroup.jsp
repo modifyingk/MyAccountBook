@@ -11,8 +11,27 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
 	$(function() {
-		$("#sign").click(function() {
-			location.href = "../member/sign_up.jsp";
+		var userid = "<%= session.getAttribute("userid") %>";
+		
+		$.ajax({
+			type : "post",
+			url : "astGroupInfo",
+			data : {
+				userid : userid
+			},
+			success : function(groupList) {
+				var group = groupList;
+				var groupTable = "<table class='signup-table' id='grouptable'>";
+				for(let i = 0; i < group.length; i++) {
+					groupTable += "<tr><td style='border: 1px solid lightgray; border-radius: 10px; padding: 20px; width: 250px;'>" + group[i] + "</td><td><i class='fi fi-rr-square-x'></i></td></tr>";
+				}
+				groupTable += "</table>";
+				$("#assetGroupDiv").html(groupTable);
+			}
+		})
+		$(document).on("click","#grouptable tr",function() {
+			alert($(this).text());
+			$("#modal").show();
 		})
 	})
 </script>
@@ -23,37 +42,23 @@
 		<div class="left-20">
 			<jsp:include page="../main/sidebar.jsp"></jsp:include>
 		</div>
-		
+
 		<!-- 컨텐츠 -->
 		<div class="right-80">
-			<h3 class="h3"><i class="fi fi-rr-home"></i> 메인페이지</h3>
 			<%
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
-				<h3 class="h3">수입/지출 관리</h3>
+				<h3 class="h3"><i class="fi fi-rr-coins"></i> 자산그룹 관리</h3>
+				<div id="assetGroupDiv"></div>
+				<div class="modal" id="modal" hidden>
+					<div class="modal-content">
+					
+					</div>
+				</div>
 			<% }
 			/* 로그인이 되어 있지 않을 때 */
 			else { %>
-				<div class="card-group">
-					<div class="card" id="sign">
-						<div class="card-body">
-							<i class="fi fi-rs-user-add"></i><br>
-							회원가입
-						</div>
-					</div>
-					<div class="card" id="login">
-						<div class="card-body">
-							<i class="fi fi-rs-user"></i><br>
-							로그인
-						</div>
-					</div>
-					<div class="card" id="find">
-						<div class="card-body">
-							<i class="fi fi-rr-search"></i><br>
-							아이디/비밀번호 찾기
-						</div>
-					</div>
-				</div>
+				<script>location.href = "../member/login.jsp";</script>
 			<% } %>
 		</div>
 	</div>
