@@ -14,14 +14,6 @@ public class AssetController {
 	@Autowired
 	AssetDAO aDao;
 	
-	// 자산 그룹 리스트
-	@ResponseBody
-	@RequestMapping("asset/astGroupInfo")
-	public List<String> astGroupInfo(String userid) {
-		List<String> groupList = aDao.astGroupInfo(userid);
-		return groupList;
-	}
-	
 	// 자산 리스트
 	@ResponseBody
 	@RequestMapping("asset/assetInfo")
@@ -29,5 +21,4 @@ public class AssetController {
 		List<AssetVO> assetList = aDao.assetInfo(userid);
 		return assetList;
 	}
-	
 }

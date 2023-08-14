@@ -11,16 +11,6 @@ public class AssetDAO {
 	@Autowired
 	SqlSessionTemplate my;
 	
-	// 자산 그룹 삽입
-	public int insertGroup(AssetGroupVO astgroupVO) {
-		return my.insert("assetgroupMapper.insertGroup", astgroupVO);
-	}
-	
-	// 자산 그룹 list
-	public List<String> astGroupInfo(String userid) {
-		return my.selectList("assetgroupMapper.astGroupInfo", userid);
-	}
-	
 	// 자산 list
 	public List<AssetVO> assetInfo(String userid) {
 		return my.selectList("assetMapper.assetInfo", userid);

@@ -4,13 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.modifyk.accountbook.asset.AssetDAO;
+import com.modifyk.accountbook.asset.AssetGroupDAO;
 import com.modifyk.accountbook.asset.AssetGroupVO;
 
 @Service
 public class InsertAstGroupService {
 	
 	@Autowired
-	AssetDAO agDao;
+	AssetGroupDAO agDao;
 	
 	// assetgroup 기본값 삽입
 	public void insertGroup(AssetGroupVO astgroupVO) {

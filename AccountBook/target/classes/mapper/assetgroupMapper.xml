@@ -11,4 +11,19 @@
 	<select id="astGroupInfo" parameterType="String" resultType="String">
 		select astgroup from assetgroup where userid = #{userid};
 	</select>
+	
+	<!-- 자산그룹 수정 -->
+	<update id="updateGroup" parameterType="map">
+		update assetgroup set astgroup = #{updateName} where astgroup = #{originName} and userid = #{userid};
+	</update>
+	
+	<!-- 자산그룹 삭제 -->
+	<delete id="deleteGroup" parameterType="assetGroupVO">
+		delete from assetgroup where astgroup = #{astgroup} and userid = #{userid};
+	</delete>
+	
+	<!-- 자산 그룹 중복 확인 -->
+	<select id="isOverlapGroup" parameterType="assetGroupVO" resultType="String">
+		select astgroup from assetgroup where astgroup = #{astgroup} and userid = #{userid};
+	</select>
 </mapper>

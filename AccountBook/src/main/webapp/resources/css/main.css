@@ -256,7 +256,7 @@
 	margin-top: 10px;
 }
 .warningMsg {
-	color : red;
+	color : #E34234;
 	font-size: 16px;
 	margin: 1% 0 0 0;
 }
@@ -342,4 +342,59 @@
 	background-color: white;
 	border-radius: 10px;
 	transform: translateX(-50%) translateY(-50%);
+}
+.modal-content.mini {
+	height: 400px;
+}
+.modal-body {
+	height: 580px;
+	overflow-y: auto;
+}
+.modal-body.mini {
+	height: 220px;
+	overflow-y: auto;
+}
+.group {
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	padding: 15px;
+	width: 250px;
+}
+.group:hover {
+	background: #F3F3F3;
+	border-color: lightgray;
+	cursor: pointer;
+}
+#groupCheck {
+	margin: 2% 0 2% 0;
+}
+#upGroupCheck {
+	margin: 2% 0 2% 0;
+}
+#insertGroup {
+	width: 480px;
+	height: 50px;
+}
+#insertGroup2 {
+	margin-top: 2%;
+}
+#updateGroup {
+	margin-top: 2%;
+}
+.modal-body {
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	padding: 10px;
+	margin: 10px;
+}
+.deleteIcon {
+	border-radius: 10px;
+	padding: 5px 5px 2px 5px;
+	font-size: 25px;
+	color: #E34234;
+}
+.deleteIcon:hover {
+	font-size: 28px;
+	cursor: pointer;
+	color: #D1180B;
 }
