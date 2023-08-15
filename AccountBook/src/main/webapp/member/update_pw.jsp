@@ -18,14 +18,14 @@
 		$("#pw, #pw2").blur(function() {
 			var pwReg = RegExp(/^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,20}/);
 			if(!pwReg.test($("#pw").val())){
-				$("#pwRegCheck").html("<p class='warningMsg'>10 ~ 20자 영문, 숫자, 특수문자 조합</p>");
+				$("#pwRegCheck").html("<p class='msg warning'>10 ~ 20자 영문, 숫자, 특수문자 조합</p>");
 				pwChk = false;
 			} else {
-				$("#pwRegCheck").html("<p class='infoMsg'>10 ~ 20자 영문, 숫자, 특수문자 조합</p>");
+				$("#pwRegCheck").html("<p class='msg info'>10 ~ 20자 영문, 숫자, 특수문자 조합</p>");
 				pwChk = true;
 			}
 			if($("#pw2").val() != $("#pw").val()) { // 비밀번호가 일치하지 않는 경우
-				$("#pwCheck").html("<p class='warningMsg'>비밀번호가 일치하지 않습니다</p>");
+				$("#pwCheck").html("<p class='msg warning'>비밀번호가 일치하지 않습니다</p>");
 				pwChk2 = false;
 			} else { // 비밀번호가 일치하는 경우
 				$("#pwCheck").html("");
@@ -61,31 +61,31 @@
 </script>
 </head>
 <body>
-	<div class="">
+	<div>
 		<!-- 사이드바 -->
-		<div class="left-20">
+		<div class="col-2 is-border is-shadow">
 			<jsp:include page="../main/sidebar.jsp"></jsp:include>
 		</div>
 		
 		<!-- 컨텐츠 -->
-		<div class="right-80">
+		<div class="col-8">
 			<%
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
 				<div class="info-container">
-					<h3 class="h3"><i class="fi fi-rr-key"></i> 비밀번호 변경</h3>
-				<table class="info-table">
+					<h3 class="h-normal fs-28"><i class="fi fi-rr-key"></i> 비밀번호 변경</h3>
+				<table class="table">
 					<tr>
-						<td class="field">변경할 비밀번호</td>
+						<th>변경할 비밀번호</th>
 						<td>
-							<input class="signup-input" type="password" id="pw" maxlength="20">
-							<div class="checkDiv" id="pwRegCheck"><p class='infoMsg'>10 ~ 20자 영문, 숫자, 특수문자 조합</p></div>
+							<input class="input" type="password" id="pw" maxlength="20">
+							<div class="checkDiv" id="pwRegCheck"><p class='msg info'>10 ~ 20자 영문, 숫자, 특수문자 조합</p></div>
 						</td>
 					</tr>
 					<tr>
-						<td class="field">비밀번호 확인</td>
+						<th>비밀번호 확인</th>
 						<td>
-							<input class="signup-input" type="password" id="pw2" maxlength="20">
+							<input class="input" type="password" id="pw2" maxlength="20">
 							<div class="checkDiv" id="pwCheck"></div>
 						</td>
 					</tr>

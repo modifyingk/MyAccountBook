@@ -2,7 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="assetMapper">
+	<!-- 자산 목록 -->
 	<select id="assetInfo" parameterType="String" resultType="assetVO">
-		select * from asset where userid = #{userid};
+		select * from asset where userid = #{userid} order by astgroup;
+	</select>
+	
+	<!-- 자산 업데이트 -->
+	<update id="updateAsset" parameterType="map">
+		update asset set astname = #{updateAsset}, astgroup = #{updateGroup}, astmemo = #{updateMemo}
+		where astname = #{originAsset} and astgroup = #{originGroup} and userid = #{userid};
+	</update>
+	
+	<!-- 자산 그룹 중복 확인 -->
+	<select id="isOverlapAsset" parameterType="assetVO" resultType="String">
+		select astname from asset where astname = #{astname} and astgroup = #{astgroup} and userid = #{userid};
 	</select>
 </mapper>

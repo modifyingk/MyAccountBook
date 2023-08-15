@@ -23,7 +23,7 @@
 		$("#username").blur(function() {
 			var nameReg = RegExp(/^[a-zA-Z가-힣]{2,10}$/); // 한글, 영어 2~10글자
 			if(!nameReg.test($("#username").val())) {
-				$("#nameCheck").html("<p class='warningMsg'>이름이 정확한지 확인해주세요</p>");
+				$("#nameCheck").html("<p class='msg warning'>이름이 정확한지 확인해주세요</p>");
 				nameChk = false;
 			} else {
 				$("#nameCheck").html("");
@@ -39,15 +39,15 @@
 		$("#year, #month, #date").blur(function() {
 			var today = new Date();
 			if($("#year").val() > today.getFullYear() || $("#year").val() < today.getFullYear() - 100) { // 현재연도보다 늦은 연도를 입력하거나 현재연도로부터 100년전 연도를 입력할 경우
-				$("#birthCheck").html("<p class='warningMsg'> 생년월일이 정확한지 확인해주세요</p>");
+				$("#birthCheck").html("<p class='msg warning'> 생년월일이 정확한지 확인해주세요</p>");
 				birthChk = false;
 			} else if($("#year").val() == today.getFullYear()) { // 현재연도와 입력연도가 같을 때
 				if($("#month").val() > today.getMonth() + 1) { // 현재 월보다 클 때
-					$("#birthCheck").html("<p class='warningMsg'> 생년월일이 정확한지 확인해주세요</p>");
+					$("#birthCheck").html("<p class='msg warning'> 생년월일이 정확한지 확인해주세요</p>");
 					birthChk = false;
 				} else if($("#month").val() == today.getMonth() + 1) { // 현재 월과 같을 때
 					if($("#date").val() > today.getDate()) { // 현재 일보다 크면
-						$("#birthCheck").html("<p class='warningMsg'> 생년월일이 정확한지 확인해주세요</p>");
+						$("#birthCheck").html("<p class='msg warning'> 생년월일이 정확한지 확인해주세요</p>");
 						birthChk = false;
 					} else {
 						$("#birthCheck").html("");
@@ -65,7 +65,7 @@
 		$("#date").blur(function() {
 			// 일 값이 1에서 31까지만 입력 가능하도록
 			if($("#date").val() > 31 || $("#date").val() < 1) {
-				$("#birthCheck").html("<p class='warningMsg'> 생년월일이 정확한지 확인해주세요</p>");
+				$("#birthCheck").html("<p class='msg warning'> 생년월일이 정확한지 확인해주세요</p>");
 				birthChk = false;
 			} else {
 				$("#birthCheck").html("");
@@ -162,45 +162,45 @@
 </script>
 </head>
 <body>
-	<div class="">
+	<div>
 		<!-- 사이드바 -->
-		<div class="left-20">
+		<div class="col-2 is-border is-shadow">
 			<jsp:include page="../main/sidebar.jsp"></jsp:include>
 		</div>
 		
 		<!-- 컨텐츠 -->
-		<div class="right-80">
+		<div class="col-8 is-center">
 			<%
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
-				<div class="info-container">
-					<h2 class="h2"><i class="fi fi-rs-user"></i> <%= session.getAttribute("userid") %></h2>
-				<table class="info-table">
+				<div class="container margin-medium is-border width-50">
+					<h2 class="h-normal fs-35"><i class="fi fi-rs-user"></i> <%= session.getAttribute("userid") %></h2>
+				<table class="table">
 					<tr>
-						<td class="field">비밀번호</td>
-						<td><button class="btn long outline-gray" id="chgPwBtn">비밀번호 변경</button></td>
+						<th>비밀번호</th>
+						<td><button class="btn medium outline-gray" id="chgPwBtn">비밀번호 변경</button></td>
 					</tr>
 					<tr>
-						<td class="field">이름</td>
+						<th>이름</th>
 						<td>
-							<input class="signup-input" type="text" id="username" maxlength="10">
+							<input class="input" type="text" id="username" maxlength="10">
 							<div id="nameCheck"></div>					
 						</td>
 					</tr>
 					<tr>
-						<td class="field">성별</td>
+						<th>성별</th>
 						<td>
-							<div class="signup-select">
+							<div class="select">
 								<input type="radio" name="gender" id="male" value="남"><label for="male">남자</label>
 								<input type="radio" name="gender" id="female" value="여"><label for="female">여자</label>
 							</div>
 						</td>
 					</tr>
 					<tr>
-						<td class="field">생년월일</td>
+						<th>생년월일</th>
 						<td>
-							<input class="signup-input birth" type="text" id="year" placeholder="년(4자)" maxlength="4">
-							<select class="signup-input birth" id="month">
+							<input class="input small" type="text" id="year" placeholder="년(4자)" maxlength="4">
+							<select class="input small" id="month">
 								<option>월</option>
 								<option value="01">1</option>
 								<option value="02">2</option>
@@ -215,13 +215,13 @@
 								<option value="11">11</option>
 								<option value="12">12</option>
 							</select>
-							<input class="signup-input birth" type="text" id="date" placeholder="일" maxlength="2">
+							<input class="input small" type="text" id="date" placeholder="일" maxlength="2">
 							<div id="birthCheck"></div>
 						</td>
 					</tr>
 				</table>
-				<button class="btn long green" id="updateMemBtn">개인정보 수정</button>
-				<button class="btn long outline-green" id="deleteMemBtn">회원탈퇴</button>
+				<button class="btn medium green" id="updateMemBtn">개인정보 수정</button>
+				<button class="btn medium outline-green" id="deleteMemBtn">회원탈퇴</button>
 				</div>
 			<% }
 			/* 로그인이 되어 있지 않을 때 */

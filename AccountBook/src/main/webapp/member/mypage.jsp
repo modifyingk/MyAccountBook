@@ -11,31 +11,31 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 <body>
-	<div class="">
+	<div>
 		<!-- 사이드바 -->
-		<div class="left-20">
+		<div class="col-2 is-border is-shadow">
 			<jsp:include page="../main/sidebar.jsp"></jsp:include>
 		</div>
 		
 		<!-- 컨텐츠 -->
-		<div class="right-80">
+		<div class="col-8">
 			<%
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
 				<div>
-					<div class="right-80">
+					<div class="col-8">
 						<div>
-							<div class="left-60">
-								<h2 class="h2"><i class="fi fi-rs-user"></i> <%= session.getAttribute("userid") %></h2>
+							<div class="col-7">
+								<h2 class="h-normal fs-35"><i class="fi fi-rs-user"></i> <%= session.getAttribute("userid") %></h2>
 								<a href="../member/myInfo.jsp"><button class="btn long outline-green">내 정보 관리</button></a>
 							</div>
-							<div class="right-40">
+							<div class="col-3">
 								<br>
 								<a href="../member/logout"><button class="btn outline-gray" id="logoutBtn">로그아웃</button></a>
 							</div>
 						</div>
 					</div>
-					<div class="right-20">
+					<div class="col-2">
 						
 					</div>
 				</div>

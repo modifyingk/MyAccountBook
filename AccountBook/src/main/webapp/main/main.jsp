@@ -55,7 +55,7 @@
 <body>
 	<div class="">
 		<!-- 사이드바 -->
-		<div class="left-30">
+		<div class="col-3 is-border is-shadow">
 			<jsp:include page="../main/mainbar.jsp"></jsp:include>
 			<img src="../resources/img/logo.png" class="side-logo" onclick="location.href='../main/main.jsp'">
 			<ul class="menu-group">
@@ -68,7 +68,7 @@
 		</div>
 		
 		<!-- 컨텐츠 -->
-		<div class="right-70">
+		<div class="col-7 is-center">
 			<%
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
@@ -76,19 +76,19 @@
 			<% }
 			/* 로그인이 되어 있지 않을 때 */
 			else { %>
-				<div class="signup-container">
+				<div class="container margin-small">
 					<div>
-						<h2 class="mainText"><i class="fi fi-ts-seedling"></i>  Water Your Money!</h2>
-						<p class="infoMsg" style="text-align: center; font-size: 18px;">물 뿌리개를 클릭해보세요</p>
+						<h2 class="main-text"><i class="fi fi-ts-seedling"></i>  Water Your Money!</h2>
+						<p class="msg info" style="text-align: center; font-size: 18px;">물 뿌리개를 클릭해보세요</p>
 						<img src="../resources/img/watering.png" width="200px" id="watering">
 						<img src="../resources/img/water.png" width="80px;" id="water">
 						<img src="../resources/img/moneyseed.png" id="money" width="200px;">
 					</div>
 					<div class="main-menu">
-						<button class="btn middle outline-green" id="sign">회원가입</button>
-						<button class="btn middle green" id="login">로그인</button> <br>
-						<button class="btn middle outline-green" id="find_id">아이디 찾기</button>
-						<button class="btn middle outline-green" id="find_pw">비밀번호 찾기</button>
+						<button class="btn menu-btn outline-green" id="sign">회원가입</button>
+						<button class="btn menu-btn green" id="login">로그인</button> <br>
+						<button class="btn menu-btn outline-green" id="find_id">아이디 찾기</button>
+						<button class="btn menu-btn outline-green" id="find_pw">비밀번호 찾기</button>
 					</div>
 				</div>			
 			<% } %>

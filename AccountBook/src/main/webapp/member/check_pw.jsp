@@ -32,30 +32,30 @@
 </script>
 </head>
 <body>
-	<div class="">
+	<div>
 		<!-- 사이드바 -->
-		<div class="left-20">
+		<div class="col-2 is-border is-shadow">
 			<jsp:include page="../main/sidebar.jsp"></jsp:include>
 		</div>
 		
 		<!-- 컨텐츠 -->
-		<div class="right-80">
+		<div class="col-8 is-center">
 			<%
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
-				<div class="info-container">
-					<h3 class="h3"><i class="fi fi-rr-key"></i> 비밀번호 확인</h3>
-				<table class="info-table">
-					<tr>
-						<td class="field">아이디</td>
-						<td><input class="signup-input" type="text" value="<%= session.getAttribute("userid") %>" disabled="true" id="userid"></td>
-					</tr>
-					<tr>
-						<td class="field">비밀번호</td>
-						<td><input class="signup-input" type="password" id="pw"></td>
-					</tr>
-				</table>
-				<button class="btn long green" id="checkPwBtn">확인</button>
+				<div class="container margin-medium is-border width-50">
+					<h3 class="h-normal fs-28"><i class="fi fi-rr-key"></i> 비밀번호 확인</h3>
+					<table class="table">
+						<tr>
+							<th>아이디</th>
+							<td><input class="input" type="text" value="<%= session.getAttribute("userid") %>" disabled="true" id="userid"></td>
+						</tr>
+						<tr>
+							<th>비밀번호</th>
+							<td><input class="input" type="password" id="pw"></td>
+						</tr>
+					</table>
+					<button class="btn long green" id="checkPwBtn">확인</button>
 				</div>
 			<% }
 			/* 로그인이 되어 있지 않을 때 */

@@ -68,10 +68,10 @@
 </script>
 </head>
 <body>
-	<div class="content">
+	<div>
 		<div>
 			<!-- 사이드바 -->
-			<div class="left-30">
+			<div class="col-3 is-border is-shadow">
 				<jsp:include page="../main/mainbar.jsp"></jsp:include>
 				<img src="../resources/img/logo.png" class="side-logo" onclick="location.href='../main/main.jsp'">
 				<ul class="menu-group">
@@ -84,29 +84,29 @@
 			</div>
 
 			<!-- 컨텐츠 -->
-			<div class="right-70">
-				<div class="find-container">
-				<h2 class="h2"><i class="fi fi-rr-search"></i> 아이디 찾기</h2>
+			<div class="col-7 is-center">
+				<div class="container margin-big">
+				<h2 class="h-normal fs-35"><i class="fi fi-rr-search"></i> 아이디 찾기</h2>
 				<br>
-				<p class="infoMsg">&nbsp 본인확인 이메일 주소와 입력한 이메일 주소가 같아야, 인증번호를 받을 수 있습니다.</p>
+				<p class="msg info">&nbsp 본인확인 이메일 주소와 입력한 이메일 주소가 같아야, 인증번호를 받을 수 있습니다.</p>
 				<br><br>
 				<form method="post" action="showId">
-				<table class="signup-table">
+				<table class="table">
 					<tr>
-						<td class="field">이름</td>
+						<th>이름</th>
 						<td>
 							<div>
-								<input class="signup-input" type="text" name="username" id="username">
+								<input class="input" type="text" name="username" id="username">
 							</div>
 						</td>
 					</tr>
 					<tr>
-						<td class="field">이메일</td>
+						<th>이메일</th>
 						<td>
 							<div>
-								<input class="signup-input email" type="text" id="email1"> @
-								<input class="signup-input email" type="text" id="email2">
-								<select class="signup-input email" id="selectEmail">
+								<input class="input small" type="text" id="email1"> @
+								<input class="input small" type="text" id="email2">
+								<select class="input small" id="selectEmail">
 									<option value="self">직접입력</option>
 									<option value="naver.com">naver.com</option>
 									<option value="google.com">google.com</option>
@@ -116,7 +116,7 @@
 								<button type="button" class="btn green" id="makeCodeBtn">인증번호 받기</button>
 							</div>
 							<div style="margin-top: 10px;">
-								<input class="signup-input" type="text" id="inputCode">
+								<input class="input" type="text" id="inputCode">
 								<button type="button" class="btn outline-green" id="verifCodeBtn">인증하기</button>
 							</div>
 						</td>
@@ -125,7 +125,7 @@
 						<td colspan="2"><input name="email" id="email"></td>
 					</tr>
 				</table>
-				<button type="submit" class="btn green" id="findidBtn" disabled>아이디 찾기</button>
+				<button type="submit" class="btn long green" id="findidBtn" disabled>아이디 찾기</button>
 				</form>
 				</div>
 			</div>

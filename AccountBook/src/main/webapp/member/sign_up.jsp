@@ -26,10 +26,10 @@
 			var idReg = RegExp(/^[a-zA-Z0-9_\.]{5,20}$/);
 			
 			if(!idReg.test($("#userid").val())){ // 정규식에 맞지 않을 때
-				$("#idCheck").html("<p class='warningMsg'>영문자, 숫자, 언더바(_), 점(.)을 이용한 5~20자</p>");
+				$("#idCheck").html("<p class='msg warning'>영문자, 숫자, 언더바(_), 점(.)을 이용한 5~20자</p>");
 				idChk = false;
 			} else {
-				$("#idCheck").html("<p class='infoMsg'>영문자, 숫자, 언더바(_), 점(.)을 이용한 5~20자</p>");
+				$("#idCheck").html("<p class='msg info'>영문자, 숫자, 언더바(_), 점(.)을 이용한 5~20자</p>");
 				
 				// 아이디 중복 확인
 				$("#overlapBtn").click(function() {
@@ -41,11 +41,11 @@
 						},
 						success : function(x) {
 							if(x == "possible") {
-								$("#idCheck").html("<p class='safeMsg'>사용 가능한 아이디입니다</p>");
+								$("#idCheck").html("<p class='msg safe'>사용 가능한 아이디입니다</p>");
 								idChk = true;
 							}
 							else {
-								$("#idCheck").html("<p class='warningMsg'>사용할 수 없는  아이디입니다</p>");
+								$("#idCheck").html("<p class='msg warning'>사용할 수 없는  아이디입니다</p>");
 								idChk = false;
 							}
 						}
@@ -57,14 +57,14 @@
 		$("#pw, #pw2").blur(function() {
 			var pwReg = RegExp(/^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,20}/);
 			if(!pwReg.test($("#pw").val())){
-				$("#pwRegCheck").html("<p class='warningMsg'>10 ~ 20자 영문, 숫자, 특수문자 조합</p>");
+				$("#pwRegCheck").html("<p class='msg warning'>10 ~ 20자 영문, 숫자, 특수문자 조합</p>");
 				pwChk = false;
 			} else {
-				$("#pwRegCheck").html("<p class='infoMsg'>10 ~ 20자 영문, 숫자, 특수문자 조합</p>");
+				$("#pwRegCheck").html("<p class='msg info'>10 ~ 20자 영문, 숫자, 특수문자 조합</p>");
 				pwChk = true;
 			}
 			if($("#pw2").val() != $("#pw").val()) { // 비밀번호가 일치하지 않는 경우
-				$("#pwCheck").html("<p class='warningMsg'>비밀번호가 일치하지 않습니다</p>");
+				$("#pwCheck").html("<p class='msg warning'>비밀번호가 일치하지 않습니다</p>");
 				pwChk2 = false;
 			} else { // 비밀번호가 일치하는 경우
 				$("#pwCheck").html("");
@@ -88,7 +88,7 @@
 		$("#username").blur(function() {
 			var nameReg = RegExp(/^[a-zA-Z가-힣]{2,10}$/); // 한글, 영어 2~10글자
 			if(!nameReg.test($("#username").val())) {
-				$("#nameCheck").html("<p class='warningMsg'>이름이 정확한지 확인해주세요</p>");
+				$("#nameCheck").html("<p class='msg warning'>이름이 정확한지 확인해주세요</p>");
 				nameChk = false;
 			} else {
 				$("#nameCheck").html("");
@@ -104,15 +104,15 @@
 		$("#year, #month, #date").blur(function() {
 			var today = new Date();
 			if($("#year").val() > today.getFullYear() || $("#year").val() < today.getFullYear() - 100) { // 현재연도보다 늦은 연도를 입력하거나 현재연도로부터 100년전 연도를 입력할 경우
-				$("#birthCheck").html("<p class='warningMsg'> 생년월일이 정확한지 확인해주세요</p>");
+				$("#birthCheck").html("<p class='msg warning'> 생년월일이 정확한지 확인해주세요</p>");
 				birthChk = false;
 			} else if($("#year").val() == today.getFullYear()) { // 현재연도와 입력연도가 같을 때
 				if($("#month").val() > today.getMonth() + 1) { // 현재 월보다 클 때
-					$("#birthCheck").html("<p class='warningMsg'> 생년월일이 정확한지 확인해주세요</p>");
+					$("#birthCheck").html("<p class='msg warning'> 생년월일이 정확한지 확인해주세요</p>");
 					birthChk = false;
 				} else if($("#month").val() == today.getMonth() + 1) { // 현재 월과 같을 때
 					if($("#date").val() > today.getDate()) { // 현재 일보다 크면
-						$("#birthCheck").html("<p class='warningMsg'> 생년월일이 정확한지 확인해주세요</p>");
+						$("#birthCheck").html("<p class='msg warning'> 생년월일이 정확한지 확인해주세요</p>");
 						birthChk = false;
 					} else {
 						$("#birthCheck").html("");
@@ -130,7 +130,7 @@
 		$("#date").blur(function() {
 			// 일 값이 1에서 31까지만 입력 가능하도록
 			if($("#date").val() > 31 || $("#date").val() < 1) {
-				$("#birthCheck").html("<p class='warningMsg'> 생년월일이 정확한지 확인해주세요</p>");
+				$("#birthCheck").html("<p class='msg warning'> 생년월일이 정확한지 확인해주세요</p>");
 				birthChk = false;
 			} else {
 				$("#birthCheck").html("");
@@ -209,10 +209,10 @@
 </script>
 </head>
 <body>
-	<div class="content">
+	<div>
 		<div>
 			<!-- 사이드바 -->
-			<div class="left-30">
+			<div class="col-3 is-border is-shadow">
 				<jsp:include page="../main/mainbar.jsp"></jsp:include>
 				<img src="../resources/img/logo.png" class="side-logo" onclick="location.href='../main/main.jsp'">
 				<ul class="menu-group">
@@ -225,62 +225,62 @@
 			</div>
 
 			<!-- 컨텐츠 -->
-			<div class="right-70">
-				<div class="signup-container">
-				<h2 class="h2"><i class="fi fi-rs-user-add"></i> 회원가입</h2>
+			<div class="col-7 is-center">
+				<div class="container margin-small">
+				<h2 class="h-normal fs-35"><i class="fi fi-rs-user-add"></i> 회원가입</h2>
 				<br>
-				<table class="signup-table">
+				<table class="table">
 					<tr>
-						<td class="field">아이디</td>
+						<th>아이디</th>
 						<td>
 							<div>
-								<input class="signup-input" type="text" id="userid" maxlength="20">
+								<input class="input" type="text" id="userid" maxlength="20">
 								<button type="button" class="btn green" id="overlapBtn">중복확인</button>
 							</div>
-							<div class="checkDiv" id="idCheck"><p class='infoMsg'>영문자, 숫자, 언더바(_), 점(.)을 이용한 5~20자</p></div>
+							<div id="idCheck"><p class='msg info'>영문자, 숫자, 언더바(_), 점(.)을 이용한 5~20자</p></div>
 						</td>
 					</tr>
 					<tr>
-						<td class="field">비밀번호</td>
+						<th>비밀번호</th>
 						<td>
 							<div>
-								<input class="signup-input" type="password" id="pw" maxlength="20">
+								<input class="input" type="password" id="pw" maxlength="20">
 							</div>
-							<div class="checkDiv" id="pwRegCheck"><p class='infoMsg'>10 ~ 20자 영문, 숫자, 특수문자 조합</p></div>
+							<div id="pwRegCheck"><p class='msg info'>10 ~ 20자 영문, 숫자, 특수문자 조합</p></div>
 						</td>
 					</tr>
 					<tr>
-						<td class="field">비밀번호 확인</td>
+						<th>비밀번호 확인</th>
 						<td>
 							<div>
-								<input class="signup-input" type="password" id="pw2" maxlength="16">
+								<input class="input" type="password" id="pw2" maxlength="16">
 							</div>
-							<div class="checkDiv" id="pwCheck"></div>
+							<div id="pwCheck"></div>
 						</td>
 					</tr>
 					<tr>
-						<td class="field">이름</td>
+						<th>이름</th>
 						<td>
 							<div>
-								<input class="signup-input" type="text" id="username" maxlength="10">
+								<input class="input" type="text" id="username" maxlength="10">
 							</div>
-							<div class="checkDiv" id="nameCheck"></div>
+							<div id="nameCheck"></div>
 						</td>
 					</tr>
 					<tr>
-						<td class="field">성별</td>
+						<th>성별</th>
 						<td>
-							<div class="signup-select">
+							<div class="select">
 								<input type="radio" name="gender" id="male" value="남"><label for="male">남자</label>
 								<input type="radio" name="gender" id="female" value="여"><label for="female">여자</label>
 							</div>
 						</td>
 					</tr>
 					<tr>
-						<td class="field">생년월일</td>
+						<th>생년월일</th>
 						<td>
-							<input class="signup-input birth" type="text" id="year" placeholder="년(4자)" maxlength="4">
-							<select class="signup-input birth" id="month">
+							<input class="input small" type="text" id="year" placeholder="년(4자)" maxlength="4"> /
+							<select class="input small" id="month">
 								<option>월</option>
 								<option value="01">1</option>
 								<option value="02">2</option>
@@ -294,18 +294,18 @@
 								<option value="10">10</option>
 								<option value="11">11</option>
 								<option value="12">12</option>
-							</select>
-							<input class="signup-input birth" type="text" id="date" placeholder="일" maxlength="2">
-							<div class="checkDiv" id="birthCheck"></div>
+							</select> /
+							<input class="input small" type="text" id="date" placeholder="일" maxlength="2">
+							<div id="birthCheck"></div>
 						</td>
 					</tr>
 					<tr>
-						<td class="field">이메일</td>
+						<th>이메일</th>
 						<td>
 							<div>
-								<input class="signup-input email" type="text" id="email1"> @
-								<input class="signup-input email" type="text" id="email2">
-								<select class="signup-input email" id="selectEmail">
+								<input class="input small" type="text" id="email1"> @
+								<input class="input small" type="text" id="email2">
+								<select class="input small" id="selectEmail">
 									<option value="self">직접입력</option>
 									<option value="naver.com">naver.com</option>
 										<option value="google.com">google.com</option>
@@ -315,13 +315,13 @@
 								<button class="btn green" id="makeCodeBtn">인증번호 받기</button>
 							</div>
 							<div style="margin-top: 10px;">
-								<input class="signup-input" type="text" id="inputCode">
+								<input class="input" type="text" id="inputCode">
 								<button class="btn outline-green" id="verifCodeBtn">인증하기</button>
 							</div>
 						</td>
 					</tr>
 				</table>
-				<button type="submit" class="btn green" id="signUpBtn">회원가입</button>
+				<button type="submit" class="btn long green" id="signUpBtn">회원가입</button>
 				</div>
 			</div>
 		</div>
