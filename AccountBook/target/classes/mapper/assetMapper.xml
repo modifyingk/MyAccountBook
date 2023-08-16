@@ -4,7 +4,7 @@
 <mapper namespace="assetMapper">
 	<!-- 자산 목록 -->
 	<select id="assetInfo" parameterType="String" resultType="assetVO">
-		select * from asset where userid = #{userid} order by astgroup;
+		select * from asset where userid = #{userid};
 	</select>
 	
 	<!-- 자산 업데이트 -->
@@ -17,4 +17,14 @@
 	<select id="isOverlapAsset" parameterType="assetVO" resultType="String">
 		select astname from asset where astname = #{astname} and astgroup = #{astgroup} and userid = #{userid};
 	</select>
+	
+	<!-- 자산 추가 -->
+	<insert id="insertAsset">
+		insert into asset values (#{astname}, #{astgroup}, #{astname}, #{userid});
+	</insert>
+	
+	<!-- 자산 삭제 -->
+	<delete id="deleteAsset">
+		delete from asset where astname = #{astname} and astgroup = #{astgroup} and userid = #{userid};
+	</delete>
 </mapper>

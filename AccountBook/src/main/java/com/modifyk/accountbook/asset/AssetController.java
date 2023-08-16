@@ -15,23 +15,22 @@ public class AssetController {
 	@Autowired
 	AssetDAO aDao;
 	
+	@Autowired
+	AssetToMapService toMapSvc;
+	
 	// 자산 리스트
 	@ResponseBody
 	@RequestMapping("asset/assetInfo")
-	public List<AssetVO> assetInfo(String userid, Model model) {
+	public HashMap<String, Object> assetInfo(String userid, Model model) {
 		List<AssetVO> assetList = aDao.assetInfo(userid);
-		for(int i = 0; i < assetList.size(); i++) { // 값이 들어있지 않으면 공백으로 채워서 전달
-			if(assetList.get(i).getAstmemo() == null) {
-				assetList.get(i).setAstmemo("");
-			}
-		}
-		return assetList;
+		HashMap<String, Object> map = toMapSvc.toMap(assetList); // List 타입의 자산 리스트 결과를 HashMap으로 변환
+		return map;
 	}
 	
 	// 자산 수정
 	@ResponseBody
 	@RequestMapping("asset/updateAsset")
-	public String updateGroup(String originAsset, String originGroup, String updateAsset, String updateGroup, String updateMemo, String userid) {
+	public String updateAsset(String originAsset, String originGroup, String updateAsset, String updateGroup, String updateMemo, String userid) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("originAsset", originAsset);
 		map.put("originGroup", originGroup);
@@ -58,6 +57,30 @@ public class AssetController {
 			return "impossible";
 		} else {
 			return "possible";
+		}
+	}
+	
+	// 자산 추가
+	@ResponseBody
+	@RequestMapping("asset/insertAsset")
+	public String insertAsset(AssetVO assetVO) {
+		int result = aDao.insertAsset(assetVO);
+		if(result == 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
+	// 자산 삭제
+	@ResponseBody
+	@RequestMapping("asset/deleteAsset")
+	public String deleteAsset(AssetVO assetVO) {
+		int result = aDao.deleteAsset(assetVO);
+		if(result == 1) {
+			return "success";
+		} else {
+			return "fail";
 		}
 	}
 }

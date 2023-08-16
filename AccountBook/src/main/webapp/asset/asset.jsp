@@ -21,17 +21,18 @@
 			data : {
 				userid : userid
 			},
-			success : function(assetList) {
+			success : function(map) {
 				var html = "<table class='table'>"; // 자산 목록 테이블 만들기
-				var group = "";
-				for(let i = 0; i < assetList.length; i++) {
-					if(!group.includes(assetList[i].astgroup)) { // 해당 자산 그룹이 존재하지 않으면
-						html += "<tr><td>" + assetList[i].astgroup + "</td></tr>"; // 자산 그룹 행을 추가
+				html += "<table class='table'>";
+				for(var key in map ) {
+					html += "<tr><td>" + key + "</td></tr>"; // key 값인 자산 그룹 이름 출력
+					var value = map[key].split(","); // 자산 그룹에 해당하는 자산이 여러 개이면 ,로 구분되어 있으므로 ,를 기준으로 분리하여 value 변수에 저장
+					for(var i = 0; i < value.length; i++) {
+						var asset = value[i].split("/"); // 자산이름과 자산메모는 /로 구분되어 있으므로 /를 기준으로 분리하여 asset 변수에 저장
+							html += "<tr class='asset-name'><td class='group-list is-border'>" + asset[0] + "</td>"; // asset[0]은 자산 이름
+							html += "<td style='display:none;'> " + key + "</td>"; // key는 자산 그룹 (클릭 시 값 넘기기 위한 것으로, 화면에는 보이지 않도록 생성)
+							html += "<td style='display:none;'> " + asset[1] + "</td></tr>"; // asset[1]은 자산 메모 (클릭 시 값 넘기기 위한 것으로, 화면에는 보이지 않도록 생성)
 					}
-					html += "<tr class='asset-name'><td class='group-list is-border'>" + assetList[i].astname + "</td>" // 자산 이름 추가
-					html += "<td style='display:none;'> " + assetList[i].astgroup + "</td>" // 자산 그룹 행 화면에 안보이게 생성 (클릭 시 값 넘기기 위함)
-					html += "<td style='display:none;'> " + assetList[i].astmemo + "</td><tr>" // 자산 메모 행 화면에 안보이게 생성 (클릭 시 값 넘기기 위함)
-					group += assetList[i].astgroup; // 받아온 assetList의 astgroup을 group 변수에 추가
 				}
 				html += "</table>";
 				$("#asset-list-div").html(html);
@@ -39,13 +40,14 @@
 		})
 		// 자산 수정
 		$(document).on("click", ".asset-name", function() { // asset-name 행 클릭 시
-			var value = $(this).text().split(" "); // tr의 td들(자산과 자산그룹)을 공백 한 칸으로 분리해놓았으므로 분리하여 value변수에 저장
+			var value = $(this).text().split(" "); // tr의 td들(자산, 자산그룹, 자산메모)을 공백 한 칸으로 분리해놓았으므로 분리하여 value 변수에 저장
 			$("#up-asset-modal").show(); // 자산 수정 모달 열기
 			var html ="";
-			html += "<table class='table'><tr><th>그룹</th><td><input class='input' id='up-astgroup-name' value='" + value[1] + "' readonly></td><tr>";
+			html += "<table class='table'><tr><th>그룹</th><td><input class='input' id='up-astgroup-name' value='" + value[1] + "' readonly></td><tr>"; // value[1]은 자산그룹
 			html += "<tr><th>이름</th><td><input class='input' id='up-asset-name' value='" + value[0] + "'></td></tr>"; // value[0]은 자산
 			html += "<tr><th>메모</th><td><textarea rows='5' class='input' id='up-astmemo-name'>" + value[2] + "</textarea></td></tr></table>"; // value[2]은 자산메모
-			html += "<button class='btn medium green' id='up-asset-btn'>수정</button>";
+			html += "<button class='btn medium green' id='up-asset-btn'>수정</button> ";
+			html += "<button class='btn outline-green' style='height: 48px;' id='del-asset-btn'>삭제</button>";
 			$("#up-asset-div").html(html);
 			
 			$("#up-asset-btn").click(function() { // 자산 수정 버튼 클릭 시
@@ -93,6 +95,28 @@
 					})
 				}
 			})
+			$("#del-asset-btn").click(function() { // 자산 삭제 버튼 클릭 시
+				var op = confirm($("#up-astgroup-name").val() + " 자산을 삭제하시겠습니까?");
+				if(op == true) {
+					$.ajax({
+						type : "post",
+						url : "deleteAsset",
+						data : {
+							astgroup : $("#up-astgroup-name").val(),
+							astname : $("#up-asset-name").val(),
+							userid : userid
+						},
+						success : function(x) {
+							if(x == "success") {
+								$("#up-asset-modal").hide();
+								window.location.reload();
+							} else {
+								alert("다시 시도해주세요")
+							}
+						}
+					})
+				}
+			})
 			
 			$("#up-astgroup-name").click(function() { // 자산 그룹 클릭 시
 				$.ajax({
@@ -129,10 +153,87 @@
 			$("#select-group-modal").hide();
 		})
 		
+		// 자산 추가 페이지 버튼
+		$("#add-asset-page").click(function() {
+			$("#add-asset-modal").show();
+			
+			$("#add-asset-btn").click(function() {
+				// 자산 이름 정규식
+				var assetReg = RegExp(/^[a-zA-Z가-힣]{1,10}$/);
+				if(!assetReg.test($("#add-asset-name").val())){ // 정규식에 맞지 않을 때
+					$("#add-asset-check p").attr("class", "msg warning");
+				} else {
+					$("#add-asset-check p").attr("class", "msg info");
+					// 자산 중복 확인
+					$.ajax({
+						type : "post",
+						url : "isOverlapAsset",
+						data : {
+							astgroup : $("#add-astgroup-name").val(),
+							astname : $("#add-asset-name").val(),
+							userid : userid
+						},
+						success : function(x) {
+							if(x == "possible") { // 자산이 중복되지 않으면 수정
+								$.ajax({
+									type : "post",
+									url : "insertAsset",
+									data : {
+										userid : userid,
+										astname : $("#add-asset-name").val(),
+										astgroup : $("#add-astgroup-name").val(),
+										astmemo : $("#add-astmemo-name").val(),
+									},
+									success : function(x) {
+										if(x == "success") {
+											$("#add-asset-modal").hide();
+											window.location.reload();
+										} else {
+											alert("다시 시도해주세요")
+										}
+									}
+								})
+							} else { // 자산이 중복되는 경우
+								alert("중복되는 자산입니다");
+							}
+						}
+					})
+				}
+			})
+			$("#add-astgroup-name").click(function() { // 자산 그룹 클릭 시
+				$.ajax({
+					type : "post",
+					url : "astGroupInfo",
+					data : {
+						userid : userid
+					},
+					success : function(groupList) {
+						var group = groupList; // 자산 그룹 리스트
+						var html = "<table class'table' id='select-table'>";
+						for(let i = 0; i < group.length; i++) {
+							html += "<tr><td class='group-list is-border'>" + group[i] + "</td></tr>";
+						}
+						html += "</table>";
+						$("#select-group-div").html(html); // 자산 그룹  출력
+					}
+				})
+				$("#select-group-modal").show(); // 자산 그룹 선택 모달 열기
+			})
+		})
+		$(document).on("click","#select-table .group-list",function() { // 자산 그룹 선택 테이블의 td 클릭 시
+			var idx = $(this).parent().index(); // 클릭한 값의 부모(tr)의 인덱스값을 가져옴
+			var option = $("#select-table .group-list").eq(idx).text(); // 자산 그룹 선택 테이블의 idx번째 td 값을 가져옴
+			$("#select-group-modal").hide(); // 자산 그룹 선택 모달 닫기
+			$("#add-astgroup-name").attr("value", option);
+		})
+		// 자산 추가 모달 닫기
+		$("#close-add-asset").click(function() {
+			$("#add-asset-modal").hide();
+		})
 		/* ------------------------------------------------------------------------------------------------------------------ */
 		/* ------------- 자산 그룹 목록 관련 jquery ------------- */
 		// 자산 그룹 목록 보기
-		$("#astGroupBtn").click(function() {
+		$("#astgroup-btn").click(function() {
 			$.ajax({
 				type : "post",
 				url : "astGroupInfo",
@@ -246,7 +347,7 @@
 		
 		/* ------------- 자산 그룹 추가 관련 jquery ------------- */
 		// 자산 그룹 추가 페이지 버튼
-		$("#insert-group-page").click(function() {
+		$("#add-group-page").click(function() {
 			$("#add-group-modal").show();
 			$("#astgroup").focus();
 		})
@@ -317,7 +418,8 @@
 				<div>
 				
 				<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산관리</h3>
-				<button class="btn long gray" id="astGroupBtn">자산그룹</button>
+				<button class="btn long gray" id="astgroup-btn">자산그룹</button>
+				<button class="btn long outline-green" id="add-asset-page">자산 추가</button>
 				<div id="asset-list-div"></div>
 				<!-- 자산 모달 -->
 				<div class="modal" id="up-asset-modal" hidden="true">
@@ -339,6 +441,46 @@
 						</div>
 					</div>
 				</div>
+				<!-- 자산 추가 모달 -->
+				<div class="modal" id="add-asset-modal" hidden="true">
+					<div class="modal-content medium">
+						<div class="modal-title">
+							<div>
+								<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산 추가</h3>
+							</div>
+						</div>
+						<div class="modal-body medium">
+							<div id="add-asset-div">
+								<table class='table'>
+									<tr>
+										<th>그룹</th>
+										<td>
+											<input class='input' id='add-astgroup-name' readonly>
+										</td>
+									<tr>
+									<tr>
+										<th>이름</th>
+										<td>
+											<input class='input' id='add-asset-name'>
+										</td>
+									</tr>
+									<tr>
+										<th>메모</th>
+										<td>
+											<textarea rows='5' class='input' id='add-astmemo-name'></textarea>
+										</td>
+									</tr>
+								</table>
+								<button class='btn medium green' id='add-asset-btn'>추가</button>
+							</div>
+							<br>
+							<div id='add-asset-check'><p class='msg info'>자산명은 영문이나 한글 1~10자만 입력 가능</p></div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn right outline-green" id="close-add-asset">닫기</button>
+						</div>
+					</div>
+				</div>
 				<!-- 그룹 선택 모달 -->
 				<div class="modal" id="select-group-modal" hidden="true">
 					<div class="modal-content">
@@ -355,7 +497,6 @@
 						</div>
 					</div>
 				</div>
-				
 				<!-- -------------------------------------------------------------------------------------------------- -->
 				<!-- 자산 그룹 모달 -->
 				<div class="modal" id="group-modal" hidden="true">
@@ -363,7 +504,7 @@
 						<div class="modal-title">
 							<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산그룹 관리</h3>
 						</div>
-						<button class="btn medium green" id="insert-group-page" style="margin-left: 10px;">추가</button>
+						<button class="btn medium green" id="add-group-page" style="margin-left: 10px;">추가</button>
 						<div class="modal-body">
 							<div id="group-list-div"></div>
 						</div>

@@ -26,4 +26,14 @@ public class AssetDAO {
 	public String isOverlapAsset(AssetVO assetVO) {
 		return my.selectOne("assetMapper.isOverlapAsset", assetVO);
 	}
+	
+	// 자산 추가
+	public int insertAsset(AssetVO assetVO) {
+		return my.insert("assetMapper.insertAsset", assetVO);
+	}
+	
+	// 자산 삭제
+	public int deleteAsset(AssetVO assetVO) {
+		return my.delete("assetMapper.deleteAsset", assetVO);
+	}
 }
