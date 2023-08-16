@@ -52,51 +52,74 @@
 			
 			$("#up-asset-btn").click(function() { // 자산 수정 버튼 클릭 시
 				// 자산 이름 정규식
-				var assetReg = RegExp(/^[a-zA-Z가-힣]{1,10}$/);
+				var assetReg = RegExp(/^[a-zA-Z가-힣\s]{1,10}$/);
 				if(!assetReg.test($("#up-asset-name").val())){ // 정규식에 맞지 않을 때
 					$("#up-asset-check p").attr("class", "msg warning");
 				} else {
 					$("#up-asset-check p").attr("class", "msg info");
-					// 자산 중복 확인
-					$.ajax({
-						type : "post",
-						url : "isOverlapAsset",
-						data : {
-							astgroup : $("#up-astgroup-name").val(),
-							astname : $("#up-asset-name").val(),
-							userid : userid
-						},
-						success : function(x) {
-							if(x == "possible") { // 자산이 중복되지 않으면 수정
-								$.ajax({
-									type : "post",
-									url : "updateAsset",
-									data : {
-										userid : userid,
-										originAsset : value[0],
-										originGroup : value[1],
-										updateAsset : $("#up-asset-name").val(),
-										updateGroup : $("#up-astgroup-name").val(),
-										updateMemo : $("#up-astmemo-name").val()
-									},
-									success : function(x) {
-										if(x == "success") {
-											$("#up-asset-modal").hide();
-											window.location.reload();
-										} else {
-											alert("다시 시도해주세요")
+					// 자산이 변경되었을 때 자산 중복 확인
+					if(value[0] != $("#up-asset-name").val()) {
+						$.ajax({
+							type : "post",
+							url : "isOverlapAsset",
+							data : {
+								astgroup : $("#up-astgroup-name").val(),
+								astname : $("#up-asset-name").val(),
+								userid : userid
+							},
+							success : function(x) {
+								if(x == "possible") { // 자산이 중복되지 않으면 수정
+									$.ajax({
+										type : "post",
+										url : "updateAsset",
+										data : {
+											userid : userid,
+											originAsset : value[0],
+											originGroup : value[1],
+											updateAsset : $("#up-asset-name").val(),
+											updateGroup : $("#up-astgroup-name").val(),
+											updateMemo : $("#up-astmemo-name").val()
+										},
+										success : function(x) {
+											if(x == "success") {
+												$("#up-asset-modal").hide();
+												window.location.reload();
+											} else {
+												alert("다시 시도해주세요")
+											}
 										}
-									}
-								})
-							} else { // 자산이 중복되는 경우
-								alert("중복되는 자산입니다");
+									})
+								} else { // 자산이 중복되는 경우
+									alert("중복되는 자산입니다");
+								}
 							}
-						}
-					})
+						})
+					} else {
+						$.ajax({
+							type : "post",
+							url : "updateAsset",
+							data : {
+								userid : userid,
+								originAsset : value[0],
+								originGroup : value[1],
+								updateAsset : $("#up-asset-name").val(),
+								updateGroup : $("#up-astgroup-name").val(),
+								updateMemo : $("#up-astmemo-name").val()
+							},
+							success : function(x) {
+								if(x == "success") {
+									$("#up-asset-modal").hide();
+									window.location.reload();
+								} else {
+									alert("다시 시도해주세요")
+								}
+							}
+						})
+					}
 				}
 			})
 			$("#del-asset-btn").click(function() { // 자산 삭제 버튼 클릭 시
-				var op = confirm($("#up-astgroup-name").val() + " 자산을 삭제하시겠습니까?");
+				var op = confirm($("#up-asset-name").val() + " 자산을 삭제하시겠습니까?");
 				if(op == true) {
 					$.ajax({
 						type : "post",
@@ -159,7 +182,7 @@
 			
 			$("#add-asset-btn").click(function() {
 				// 자산 이름 정규식
-				var assetReg = RegExp(/^[a-zA-Z가-힣]{1,10}$/);
+				var assetReg = RegExp(/^[a-zA-Z가-힣\s]{1,10}$/);
 				if(!assetReg.test($("#add-asset-name").val())){ // 정규식에 맞지 않을 때
 					$("#add-asset-check p").attr("class", "msg warning");
 				} else {
@@ -244,7 +267,7 @@
 					var group = groupList;
 					var html = "<table class='table' id='astgroup-table'>";
 					for(let i = 0; i < group.length; i++) {
-						html += "<tr><td class='group-list is-border'>" + group[i] + "</td>";
+						html += "<tr><td class='group-list is-border del-group'>" + group[i] + "</td>";
 						html += "<td class='del-group-td'><i class='fi fi-sr-minus-circle del-icon'></i></td></tr>";
 					}
 					html += "</table>";
@@ -262,7 +285,7 @@
 		// 자산 그룹 삭제
 		$(document).on("click","#astgroup-table tr .del-group-td",function() {
 			var idx = $(this).parent().index();
-			var delGroup = $(".group").eq(idx).text();
+			var delGroup = $(".del-group").eq(idx).text();
 			var op = confirm(delGroup + " 그룹을 삭제하시겠습니까?");
 			if(op == true) {
 				$.ajax({
@@ -300,7 +323,7 @@
 			
 			$("#up-group-btn").click(function() {
 				// 자산 그룹 정규식
-				var groupReg = RegExp(/^[a-zA-Z가-힣]{1,10}$/);
+				var groupReg = RegExp(/^[a-zA-Z가-힣\s]{1,10}$/);
 				if(!groupReg.test($("#up-group-name").val())){ // 정규식에 맞지 않을 때
 					$("#up-group-check p").attr("class", "msg warning");
 				} else { // 정규식에 맞으면
@@ -360,7 +383,7 @@
 			var astgroup = $("#astgroup").val();
 			
 			// 자산 그룹 정규식 (영어, 한글 1~10 글자)
-			var groupReg = RegExp(/^[a-zA-Z가-힣]{1,10}$/);
+			var groupReg = RegExp(/^[a-zA-Z가-힣\s]{1,10}$/);
 			
 			if(!groupReg.test($("#astgroup").val())){ // 정규식에 맞지 않을 때
 				$("#add-group-check p").attr("class", "msg warning"); // 글자 빨간색으로 하는 warning-msg

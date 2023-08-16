@@ -20,7 +20,7 @@
 	
 	<!-- 자산 추가 -->
 	<insert id="insertAsset">
-		insert into asset values (#{astname}, #{astgroup}, #{astname}, #{userid});
+		insert into asset values (#{astname}, #{astgroup}, #{astmemo}, #{userid});
 	</insert>
 	
 	<!-- 자산 삭제 -->
