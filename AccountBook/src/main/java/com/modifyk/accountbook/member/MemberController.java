@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.modifyk.accountbook.account.CategoryVO;
 import com.modifyk.accountbook.asset.AssetGroupVO;
 
 @Controller
@@ -28,6 +29,9 @@ public class MemberController {
 	
 	@Autowired
 	InsertAstGroupService astGroupSvc;
+	
+	@Autowired
+	InsertCategoryService categorySvc;
 	
 	// 아이디 중복 확인
 	@ResponseBody
@@ -68,10 +72,15 @@ public class MemberController {
 
 		int result = mDao.insertMember(memberVO);
 		
-		// assetgroup 기본값 삽입
+		// asset group 기본값 삽입
 		AssetGroupVO astgroupVO = new AssetGroupVO();
 		astgroupVO.setUserid(memberVO.getUserid());
 		astGroupSvc.insertGroup(astgroupVO);
+		
+		// category 기본값 삽입
+		CategoryVO categoryVO = new CategoryVO();
+		categoryVO.setUserid(memberVO.getUserid());
+		categorySvc.insertCategory(categoryVO);
 		
 		if(result == 1) {
 			return "success";

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="categoryMapper">
+	<!-- 카테고리 추가 -->
+	<insert id="insertCategory" parameterType="categoryVO">
+		insert into category values (#{moneytype}, #{catename}, #{userid});
+	</insert>
+	
+	<!-- 카테고리 수정 -->
+	<update id="updateCategory" parameterType="map">
+		update category set catename = #{updateName} where moneytype = #{moneytype} and catename = #{originName} and userid = #{userid};
+	</update>	
+	
+	<!-- 카테고리 삭제 -->
+	<delete id="deleteCategory" parameterType="categoryVO">
+		delete from category where moneytype = #{moneytype} and catename = #{catename} and userid = #{userid};
+	</delete>
+	
+	<!-- 카테고리 list -->
+	<select id="CategoryInfo" parameterType="String" resultType="categoryVO">
+		select * from category where userid = #{userid};
+	</select>
+</mapper>

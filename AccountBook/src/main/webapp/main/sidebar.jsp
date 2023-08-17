@@ -10,7 +10,7 @@ $(function() {
 		if(idx == 0) {
 			location.href = "/accountbook/member/mypage.jsp";
 		} else if(idx == 1) {
-			location.href = ""; // 수입지출관리 페이지로
+			location.href = "/accountbook/account/account.jsp"; // 수입지출관리 페이지로
 		} else if(idx == 2) {
 			location.href = "/accountbook/asset/asset.jsp"; // 자산관리 페이지로
 		} else if(idx == 3) {

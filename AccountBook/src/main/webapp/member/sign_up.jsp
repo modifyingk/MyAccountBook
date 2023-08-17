@@ -195,7 +195,7 @@
 					},
 					success : function(x) {
 						if(x == "success") {
-							location.href = "../main/main.jsp"
+							location.href = "../member/login.jsp"
 						} else {
 							alert("회원가입에 실패했습니다. 다시 시도해주세요!)");
 						}
