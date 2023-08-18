@@ -9,7 +9,7 @@
 	
 	<!-- 카테고리 수정 -->
 	<update id="updateCategory" parameterType="map">
-		update category set catename = #{updateName} where moneytype = #{moneytype} and catename = #{originName} and userid = #{userid};
+		update category set moneytype = #{updateType}, catename = #{updateName} where moneytype = #{originType} and catename = #{originName} and userid = #{userid};
 	</update>	
 	
 	<!-- 카테고리 삭제 -->
@@ -18,7 +18,12 @@
 	</delete>
 	
 	<!-- 카테고리 list -->
-	<select id="CategoryInfo" parameterType="String" resultType="categoryVO">
+	<select id="categoryInfo" parameterType="String" resultType="categoryVO">
 		select * from category where userid = #{userid};
+	</select>
+	
+	<!-- 카테고리 중복 검사 -->
+	<select id="isOverlapCate" parameterType="categoryVO" resultType="String">
+		select catename from category where moneytype = #{moneytype} and catename = #{catename} and userid = #{userid};
 	</select>
 </mapper>

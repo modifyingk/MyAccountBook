@@ -29,10 +29,11 @@ public class CategoryController {
 	// 카테고리 수정
 	@ResponseBody
 	@RequestMapping("account/updateCategory")
-	public String updateCategory(String moneytype, String originName, String updateName, String userid) {
+	public String updateCategory(String originType, String originName, String updateType, String updateName, String userid) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("moneytype", moneytype);
+		map.put("originType", originType);
 		map.put("originName", originName);
+		map.put("updateType", updateType);
 		map.put("updateName", updateName);
 		map.put("userid", userid);
 
@@ -62,5 +63,17 @@ public class CategoryController {
 	public List<CategoryVO> CategoryInfo(CategoryVO categoryVO) {
 		List<CategoryVO> cateList = cDao.CategoryInfo(categoryVO);
 		return cateList;
+	}
+	
+	// 카테고리 중복 검사
+	@ResponseBody
+	@RequestMapping("account/isOverlapCate")
+	public String isOverlapCate(CategoryVO categoryVO) {
+		String result = cDao.isOverlapCate(categoryVO);
+		if(result != null) {
+			return "impossible";
+		} else {
+			return "possible";
+		}
 	}
 }

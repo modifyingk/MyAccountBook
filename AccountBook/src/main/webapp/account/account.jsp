@@ -26,7 +26,8 @@
 
 				for(let i = 0; i < cateList.length; i++) {
 					if(cateList[i].moneytype == "수입") {
-						in_html += "<tr><td class='group-list is-border'>" + cateList[i].catename + "</td></tr>"
+						in_html += "<tr><td style='display: none;'>" + cateList[i].moneytype + "</td>"
+						in_html += "<td class='group-list is-border'> " + cateList[i].catename + "</td></tr>"
 					}
 				}
 				in_html += "</table>";
@@ -34,7 +35,8 @@
 				var out_html = "<table class='table' id='out-category-table'>";
 				for(let i = 0; i < cateList.length; i++) {
 					if(cateList[i].moneytype == "지출") {
-						out_html += "<tr><td class='group-list is-border'>" + cateList[i].catename + "</td></tr>"
+						out_html += "<tr><td style='display: none;'>" + cateList[i].moneytype + "</td>"
+						out_html += "<td class='group-list is-border'> " + cateList[i].catename + "</td></tr>"
 					}
 				}
 				out_html += "</table>";
@@ -63,126 +65,126 @@
 		// 카테고리 추가 모달 열기
 		$("#add-in-category-page").click(function() { // 수입 추가
 			$("#add-category-modal").show();
-			
 			$("#moneytype").attr("value", "수입");
 		})	
 		$("#add-out-category-page").click(function() { // 지출 추가
 			$("#add-category-modal").show();
-		
 			$("#moneytype").attr("value", "지출");
 		})
-		$("#add-category-btn").click(function() {
-			$.ajax({
-				type : "post",
-				url : "insertCategory",
-				data : {
-					moneytype : $("#moneytype").val(),
-					catename : $("#catename").val(),
-					userid : userid
-				},
-				success : function(x) {
-					if(x == "success") {
-						window.location.reload();
-					} else {
-						alert("다시 시도해주세요");
+		
+		var cateReg = RegExp(/^[a-zA-Z가-힣0-9\s]{1,10}$/); // 카테고리 이름 정규식
+		
+		$("#add-category-btn").click(function() { // 카테고리 추가 버튼 클릭 시
+			if(!cateReg.test($("#catename").val())){ // 정규식에 맞지 않을 때
+				$("#add-catename-check-div p").attr("class", "msg warning");
+			} else {
+				$("#add-catename-check-div p").attr("class", "msg info");
+				$.ajax({	// 카테고리가 중복되는지 확인
+					type : "post",
+					url : "isOverlapCate",
+					data : {
+						moneytype : $("#moneytype").val(),
+						catename : $("catename").val(),
+						userid : userid
+					},
+					success : function(x) {
+						if(x == "possible") { // 카테고리가 중복되지 않는 경우
+							$.ajax({
+								type : "post",
+								url : "insertCategory",
+								data : {
+									moneytype : $("#moneytype").val(),
+									catename : $("#catename").val(),
+									userid : userid
+								},
+								success : function(x) {
+									if(x == "success") { // 카테고리 추가 성공
+										window.location.reload();
+									} else { // 카테고리 추가 실패
+										alert("다시 시도해주세요");
+									}
+								}
+							})
+						} else { // 카테고리가 중복되는 경우
+							alert("중복되는 카테고리입니다.");
+						}
 					}
-				}
-			})
-		})
-		// 수입/지출 선택 모달
-		$("#moneytype").click(function() {
-			$("#select-moneytype-modal").show();
-			$("#in").click(function() {
-				$("#moneytype").attr("value", "수입");
-				$("#select-moneytype-modal").hide();
-			})
-			$("#out").click(function() {
-				$("#moneytype").attr("value", "지출");
-				$("#select-moneytype-modal").hide();
-			})
-		})
-		// 수입/지출 선택 모달 닫기
-		$("#close-select-moneytype").click(function() {
-			$("#select-moneytype-modal").hide();
+				})
+			}
 		})
 		// 카테고리 추가 모달 닫기
 		$("#close-add-category").click(function() {
 			$("#add-category-modal").hide();
 		})
 		
-		// 수입분류 수정 모달 열기
-		$(document).on("click", "#in-category-table .group-list", function() {
-			// 수정 모달 input에 현재 값 넣어두기
-			var originName = $(this).text();
-			$("#in-catename").attr("value", originName);
-			// 모달 열기
-			$("#up-in-category-modal").show();
+		// 분류 수정 모달 열기
+		var originName;
+		
+		$(document).on("click", "#in-category-table tr", function() {
+			originName = $(this).text().split(" ");
+			$("#up-moneytype").attr("value", originName[0]); // 수정 모달 input에 현재 분류 값 삽입
+			$("#up-catename").attr("value", originName[1]); // 수정 모달 input에 현재 이름 값 삽입
 			
-			$("#up-in-category-btn").click(function() {
-				// 수정 버튼 클릭
-				$.ajax({
-					type : "post",
-					url : "updateCategory",
-					data : {
-						moneytype : "수입",
-						originName : originName,
-						updateName : $("#in-catename").val(),
-						userid : userid
-					},
-					success : function(x) {
-						if(x == "success") {
-							window.location.reload();
-						} else {
-							alert("다시 시도해주세요");
-						}
-					}
-				})
-			})
-			$("#del-in-category-btn").click(function() {
-				// 삭제 버튼 클릭
-				var op = confirm($("#in-catename").val() + " 카테고리를 삭제하시겠습니까?");
-				if(op) {
-					$.ajax({
-						type : "post",
-						url : "deleteCategory",
-						data : {
-							moneytype : "수입",
-							catename : $("#in-catename").val(),
-							userid : userid
-						},
-						success : function(x) {
-							if(x == "success") {
-								window.location.reload();
-							} else {
-								alert("다시 시도해주세요");
-							}
-						}
-					})
-				}
-			})
+			$("#up-category-modal").show(); // 모달 열기
 		})
-		// 수입분류 수정 모달 닫기
-		$("#close-up-in-category").click(function() {
-			$("#up-in-category-modal").hide();
+		$(document).on("click", "#out-category-table tr", function() {
+			originName = $(this).text().split(" ");
+			$("#up-moneytype").attr("value", originName[0]); // 수정 모달 input에 현재 분류 값 삽입
+			$("#up-catename").attr("value", originName[1]); // 수정 모달 input에 현재 이름 값 삽입
+			
+			$("#up-category-modal").show(); // 모달 열기
 		})
 		
-		// 지출분류 수정 모달 열기
-		$(document).on("click", "#out-category-table .group-list", function() {
-			// 수정 모달 input에 현재 값 넣어두기
-			var originName = $(this).text();
-			$("#out-catename").attr("value", originName);
-			// 모달 열기
-			$("#up-out-category-modal").show();
-			
-			$("#up-out-category-btn").click(function() {
-				// 수정 버튼 클릭
+		$("#up-category-btn").click(function() { // 수정 버튼 클릭
+			if(!cateReg.test($("#up-catename").val())){ // 정규식에 맞지 않을 때
+				$("#up-catename-check-div p").attr("class", "msg warning");
+			} else {
+				$("#up-catename-check-div p").attr("class", "msg info");
+				$.ajax({	// 카테고리가 중복되는지 확인
+					type : "post",
+					url : "isOverlapCate",
+					data : {
+						moneytype : $("#up-moneytype").val(),
+						catename : $("#up-catename").val(),
+						userid : userid
+					},
+					success : function(x) {
+						if(x == "possible") { // 카테고리가 중복되지 않는 경우
+							$.ajax({
+								type : "post",
+								url : "updateCategory",
+								data : {
+									originType : originName[0],
+									originName : originName[1],
+									updateType : $("#up-moneytype").val(),
+									updateName : $("#up-catename").val(),
+									userid : userid
+								},
+								success : function(x) {
+									if(x == "success") {
+										window.location.reload();
+									} else {
+										alert("다시 시도해주세요");
+									}
+								}
+							})
+						} else { // 카테고리가 중복되는 경우
+							alert("중복되는 카테고리입니다.");
+						}
+					}
+				})
+			}
+		})
+		$("#del-category-btn").click(function() {
+			// 삭제 버튼 클릭
+			var op = confirm($("#up-catename").val() + " 카테고리를 삭제하시겠습니까?");
+			if(op) {
 				$.ajax({
 					type : "post",
-					url : "updateCategory",
+					url : "deleteCategory",
 					data : {
-						moneytype : "지출",
-						originName : originName,
-						updateName : $("#out-catename").val(),
+						moneytype : $("#up-moneytype").val(),
+						catename : $("#up-catename").val(),
 						userid : userid
 					},
 					success : function(x) {
@@ -193,33 +195,30 @@
 						}
 					}
 				})
+			}
+		})
+		// 분류 수정 모달 닫기
+		$("#close-up-category").click(function() {
+			$("#up-category-modal").hide();
+		})
+		
+		// 수입/지출 선택 모달
+		$("#moneytype, #up-moneytype").click(function() {
+			$("#select-moneytype-modal").show();
+			$("#in").click(function() {
+				$("#moneytype").attr("value", "수입");
+				$("#up-moneytype").attr("value", "수입");
+				$("#select-moneytype-modal").hide();
 			})
-			$("#del-out-category-btn").click(function() {
-				// 삭제 버튼 클릭
-				var op = confirm($("#out-catename").val() + " 카테고리를 삭제하시겠습니까?");
-				if(op) {
-					$.ajax({
-						type : "post",
-						url : "deleteCategory",
-						data : {
-							moneytype : "지출",
-							catename : $("#out-catename").val(),
-							userid : userid
-						},
-						success : function(x) {
-							if(x == "success") {
-								window.location.reload();
-							} else {
-								alert("다시 시도해주세요");
-							}
-						}
-					})
-				}
+			$("#out").click(function() {
+				$("#moneytype").attr("value", "지출");
+				$("#up-moneytype").attr("value", "지출");
+				$("#select-moneytype-modal").hide();
 			})
 		})
-		// 지출분류 수정 모달 닫기
-		$("#close-up-out-category").click(function() {
-			$("#up-out-category-modal").hide();
+		// 수입/지출 선택 모달 닫기
+		$("#close-select-moneytype").click(function() {
+			$("#select-moneytype-modal").hide();
 		})
 	})
 </script>
@@ -257,32 +256,6 @@
 						</div>
 					</div>
 				</div>
-				<!-- 수입 카테고리 수정 모달 -->
-				<div class="modal" id="up-in-category-modal" hidden="true">
-					<div class="modal-content small">
-						<div class="modal-title">
-							<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 수입 카테고리 수정</h3>
-						</div>
-						<hr>
-						<div class="modal-body small">
-							<h5 class='h-normal fs-20'><i class="fi fi-rr-pencil"></i> 카테고리명</h5>
-							<div id="up-in-category-div">
-								<table class='table'>
-									<tr>
-										<th>이름</th>
-										<td><input type="text" class="input" id='in-catename'></td>
-									</tr>
-								</table>
-								<button class="btn medium green" id="up-in-category-btn">수정</button>
-								<button class="btn outline-green" id="del-in-category-btn" style='height: 48px;'>삭제</button>
-							</div>
-						</div>
-						<hr>
-						<div class="modal-footer">
-							<button class="btn right outline-green" id="close-up-in-category">닫기</button>
-						</div>
-					</div>
-				</div>
 				<!-- 지출 카테고리 모달 -->
 				<div class="modal" id="out-category-modal" hidden="true">
 					<div class="modal-content">
@@ -298,32 +271,42 @@
 						</div>
 					</div>
 				</div>
-				<!-- 지출 카테고리 수정 모달 -->
-				<div class="modal" id="up-out-category-modal" hidden="true">
+				
+				<!-- 카테고리 수정 모달 -->
+				<div class="modal" id="up-category-modal" hidden="true">
 					<div class="modal-content small">
 						<div class="modal-title">
-							<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 지출 카테고리 수정</h3>
+							<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 카테고리 수정</h3>
 						</div>
 						<hr>
 						<div class="modal-body small">
 							<h5 class='h-normal fs-20'><i class="fi fi-rr-pencil"></i> 카테고리명</h5>
-							<div id="up-out-category-div">
+							<div id="up-in-category-div">
 								<table class='table'>
 									<tr>
+										<th>분류</th>
+										<td><input type="text" class="input" id='up-moneytype' readonly></td>
+									</tr>
+									<tr>
 										<th>이름</th>
-										<td><input type="text" class="input" id='out-catename'></td>
+										<td><input type="text" class="input" id='up-catename'></td>
 									</tr>
 								</table>
-								<button class="btn medium green" id="up-out-category-btn">수정</button>
-								<button class="btn outline-green" id="del-out-category-btn" style='height: 48px;'>삭제</button>
+								<div id="up-catename-check-div">
+									<p class="msg info">이름은 특수문자 제외, 한 글자 이상 입력</p>
+								</div>
+								<br>
+								<button class="btn medium green" id="up-category-btn">수정</button>
+								<button class="btn outline-green" id="del-category-btn" style='height: 48px;'>삭제</button>
 							</div>
 						</div>
 						<hr>
 						<div class="modal-footer">
-							<button class="btn right outline-green" id="close-up-out-category">닫기</button>
+							<button class="btn right outline-green" id="close-up-category">닫기</button>
 						</div>
 					</div>
 				</div>
+				
 				<!-- 카테고리 추가 모달 -->
 				<div class="modal" id="add-category-modal" hidden="true">
 					<div class="modal-content small">
@@ -344,6 +327,10 @@
 										<td><input type="text" class="input" id='catename'></td>
 									</tr>
 								</table>
+								<div id="add-catename-check-div">
+									<p class="msg info">이름은 특수문자 제외, 한 글자 이상 입력</p>
+								</div>
+								<br>
 								<button class="btn medium green" id="add-category-btn">추가</button>
 							</div>
 						</div>

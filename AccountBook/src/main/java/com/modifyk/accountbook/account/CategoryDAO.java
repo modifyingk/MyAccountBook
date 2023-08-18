@@ -30,6 +30,11 @@ public class CategoryDAO {
 	
 	// 카테고리 list
 	public List<CategoryVO> CategoryInfo(CategoryVO categoryVO) {
-		return my.selectList("categoryMapper.CategoryInfo", categoryVO);
+		return my.selectList("categoryMapper.categoryInfo", categoryVO);
+	}
+	
+	// 카테고리 중복 검사
+	public String isOverlapCate(CategoryVO categoryVO) {
+		return my.selectOne("categoryMapper.isOverlapCate", categoryVO);
 	}
 }

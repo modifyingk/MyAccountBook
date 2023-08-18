@@ -275,10 +275,10 @@
 }
 /* Modal 작은 크기 */
 .modal-content.small { 
-	height: 450px;
+	height: 470px;
 }
 .modal-body.small {
-	height: 280px;
+	height: 300px;
 	overflow-y: auto;
 }
 /* ---------------------------------------------------------------- */
