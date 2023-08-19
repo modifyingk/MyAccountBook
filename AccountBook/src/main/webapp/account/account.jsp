@@ -53,6 +53,7 @@
 		$("#close-in-category").click(function() {
 			$("#in-category-modal").hide();
 		})
+		
 		// 지출 분류 모달 열기
 		$("#out-category-btn").click(function() {
 			$("#out-category-modal").show();
@@ -220,6 +221,8 @@
 		$("#close-select-moneytype").click(function() {
 			$("#select-moneytype-modal").hide();
 		})
+		
+		
 	})
 </script>
 </head>

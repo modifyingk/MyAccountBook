@@ -30,10 +30,9 @@ public class AssetController {
 	// 자산 수정
 	@ResponseBody
 	@RequestMapping("asset/updateAsset")
-	public String updateAsset(String originAsset, String originGroup, String updateAsset, String updateGroup, String updateMemo, String userid) {
+	public String updateAsset(String originAsset, String updateAsset, String updateGroup, String updateMemo, String userid) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("originAsset", originAsset);
-		map.put("originGroup", originGroup);
 		map.put("updateAsset", updateAsset);
 		map.put("updateGroup", updateGroup);
 		map.put("updateMemo", updateMemo);

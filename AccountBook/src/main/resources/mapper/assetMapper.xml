@@ -10,12 +10,12 @@
 	<!-- 자산 업데이트 -->
 	<update id="updateAsset" parameterType="map">
 		update asset set astname = #{updateAsset}, astgroup = #{updateGroup}, astmemo = #{updateMemo}
-		where astname = #{originAsset} and astgroup = #{originGroup} and userid = #{userid};
+		where astname = #{originAsset} and userid = #{userid};
 	</update>
 	
-	<!-- 자산 그룹 중복 확인 -->
+	<!-- 자산 중복 확인 -->
 	<select id="isOverlapAsset" parameterType="assetVO" resultType="String">
-		select astname from asset where astname = #{astname} and astgroup = #{astgroup} and userid = #{userid};
+		select astname from asset where astname = #{astname} and userid = #{userid};
 	</select>
 	
 	<!-- 자산 추가 -->
@@ -25,6 +25,6 @@
 	
 	<!-- 자산 삭제 -->
 	<delete id="deleteAsset" parameterType="assetVO">
-		delete from asset where astname = #{astname} and astgroup = #{astgroup} and userid = #{userid};
+		delete from asset where astname = #{astname} and userid = #{userid};
 	</delete>
 </mapper>

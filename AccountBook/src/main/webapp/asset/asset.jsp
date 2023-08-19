@@ -39,99 +39,68 @@
 			}
 		})
 		// 자산 수정
+		var originAsset;
 		$(document).on("click", ".asset-name", function() { // asset-name 행 클릭 시
-			var value = $(this).text().split(" "); // tr의 td들(자산, 자산그룹, 자산메모)을 공백 한 칸으로 분리해놓았으므로 분리하여 value 변수에 저장
+			originAsset = $(this).text().split(" "); // tr의 td들(자산, 자산그룹, 자산메모)을 공백 한 칸으로 분리해놓았으므로 분리하여 value 변수에 저장
 			$("#up-asset-modal").show(); // 자산 수정 모달 열기
-			var html ="";
-			html += "<table class='table'><tr><th>그룹</th><td><input class='input' id='up-astgroup-name' value='" + value[1] + "' readonly></td><tr>"; // value[1]은 자산그룹
-			html += "<tr><th>이름</th><td><input class='input' id='up-asset-name' value='" + value[0] + "'></td></tr>"; // value[0]은 자산
-			html += "<tr><th>메모</th><td><textarea rows='5' class='input' id='up-astmemo-name'>" + value[2] + "</textarea></td></tr></table>"; // value[2]은 자산메모
-			html += "<button class='btn medium green' id='up-asset-btn'>수정</button> ";
-			html += "<button class='btn outline-green' style='height: 48px;' id='del-asset-btn'>삭제</button>";
-			$("#up-asset-div").html(html);
 			
-			$("#up-asset-btn").click(function() { // 자산 수정 버튼 클릭 시
-				// 자산 이름 정규식
-				var assetReg = RegExp(/^[a-zA-Z가-힣\s]{1,10}$/);
-				if(!assetReg.test($("#up-asset-name").val())){ // 정규식에 맞지 않을 때
-					$("#up-asset-check p").attr("class", "msg warning");
-				} else {
-					$("#up-asset-check p").attr("class", "msg info");
-					// 자산이 변경되었을 때 자산 중복 확인
-					if(value[0] != $("#up-asset-name").val()) {
-						$.ajax({
-							type : "post",
-							url : "isOverlapAsset",
-							data : {
-								astgroup : $("#up-astgroup-name").val(),
-								astname : $("#up-asset-name").val(),
-								userid : userid
-							},
-							success : function(x) {
-								if(x == "possible") { // 자산이 중복되지 않으면 수정
-									$.ajax({
-										type : "post",
-										url : "updateAsset",
-										data : {
-											userid : userid,
-											originAsset : value[0],
-											originGroup : value[1],
-											updateAsset : $("#up-asset-name").val(),
-											updateGroup : $("#up-astgroup-name").val(),
-											updateMemo : $("#up-astmemo-name").val()
-										},
-										success : function(x) {
-											if(x == "success") {
-												$("#up-asset-modal").hide();
-												window.location.reload();
-											} else {
-												alert("다시 시도해주세요")
-											}
-										}
-									})
-								} else { // 자산이 중복되는 경우
-									alert("중복되는 자산입니다");
-								}
-							}
-						})
-					} else {
-						$.ajax({
-							type : "post",
-							url : "updateAsset",
-							data : {
-								userid : userid,
-								originAsset : value[0],
-								originGroup : value[1],
-								updateAsset : $("#up-asset-name").val(),
-								updateGroup : $("#up-astgroup-name").val(),
-								updateMemo : $("#up-astmemo-name").val()
-							},
-							success : function(x) {
-								if(x == "success") {
-									$("#up-asset-modal").hide();
-									window.location.reload();
-								} else {
-									alert("다시 시도해주세요")
-								}
-							}
-						})
-					}
-				}
-			})
-			$("#del-asset-btn").click(function() { // 자산 삭제 버튼 클릭 시
-				var op = confirm($("#up-asset-name").val() + " 자산을 삭제하시겠습니까?");
-				if(op == true) {
-					$.ajax({
+			$("#up-astgroup-name").attr("value", originAsset[1]);
+			$("#up-asset-name").attr("value", originAsset[0]);
+			$("#up-astmemo-name").val(originAsset[2]);
+		})
+		$("#up-asset-btn").click(function() { // 자산 수정 버튼 클릭 시
+			var assetReg = RegExp(/^[a-zA-Z가-힣0-9\s]{1,10}$/); // 자산 이름 정규식
+			if(!assetReg.test($("#up-asset-name").val())){ // 정규식에 맞지 않을 때
+				$("#up-asset-check p").attr("class", "msg warning");
+			} else {
+				$("#up-asset-check p").attr("class", "msg info");
+				
+				if($("#up-asset-name").val() != originAsset[0]) {
+					$.ajax({ // 자산 중복 확인
 						type : "post",
-						url : "deleteAsset",
+						url : "isOverlapAsset",
 						data : {
-							astgroup : $("#up-astgroup-name").val(),
 							astname : $("#up-asset-name").val(),
 							userid : userid
 						},
 						success : function(x) {
+							if(x == "possible") { // 자산이 중복되지 않으면 수정
+								$.ajax({
+									type : "post",
+									url : "updateAsset",
+									data : {
+										userid : userid,
+										originAsset : originAsset[0],
+										updateAsset : $("#up-asset-name").val(),
+										updateGroup : $("#up-astgroup-name").val(),
+										updateMemo : $("#up-astmemo-name").val()
+									},
+									success : function(x) {
+										if(x == "success") {
+											window.location.reload();
+										} else {
+											alert("다시 시도해주세요")
+										}
+									}
+								})
+							} else { // 자산이 중복되는 경우
+								alert("중복되는 자산입니다");
+							}
+						}
+					})
+				} else {
+					$.ajax({
+						type : "post",
+						url : "updateAsset",
+						data : {
+							userid : userid,
+							originAsset : originAsset[0],
+							updateAsset : $("#up-asset-name").val(),
+							updateGroup : $("#up-astgroup-name").val(),
+							updateMemo : $("#up-astmemo-name").val()
+						},
+						success : function(x) {
 							if(x == "success") {
-								$("#up-asset-modal").hide();
 								window.location.reload();
 							} else {
 								alert("다시 시도해주세요")
@@ -139,41 +108,56 @@
 						}
 					})
 				}
-			})
-			
-			$("#up-astgroup-name").click(function() { // 자산 그룹 클릭 시
+				
+			}
+		})
+		// 자산 수정 모달 닫기
+		$("#close-up-asset").click(function() {
+			$("#up-asset-modal").hide();
+		})
+		
+		// 자산 삭제
+		$("#del-asset-btn").click(function() { // 자산 삭제 버튼 클릭 시
+			var op = confirm(originAsset[0] + " 자산을 삭제하시겠습니까?");
+			if(op == true) {
 				$.ajax({
 					type : "post",
-					url : "astGroupInfo",
+					url : "deleteAsset",
 					data : {
+						astname : $("#up-asset-name").val(),
 						userid : userid
 					},
-					success : function(groupList) {
-						var group = groupList; // 자산 그룹 리스트
-						var html = "<table class'table' id='select-table'>";
-						for(let i = 0; i < group.length; i++) {
-							html += "<tr><td class='group-list is-border'>" + group[i] + "</td></tr>";
+					success : function(x) {
+						if(x == "success") {
+							window.location.reload();
+						} else {
+							alert("다시 시도해주세요")
 						}
-						html += "</table>";
-						$("#select-group-div").html(html); // 자산 그룹  출력
 					}
 				})
-				$("#select-group-modal").show(); // 자산 그룹 선택 모달 열기
-			})
+			}
 		})
+			
+		// 자산 수정에서 자산 그룹 선택 모달 열기
+		$("#up-astgroup-name, #add-astgroup-name").click(function() { // 자산 그룹 클릭 시
+			$("#select-group-modal").show(); // 자산 그룹 선택 모달 열기
+		})
+		// 자산 수정에서 자산그룹 선택 모달 닫기
+		$("#close-select-group").click(function() {
+			$("#select-group-modal").hide();
+		})
+		
 		$(document).on("click","#select-table .group-list",function() { // 자산 그룹 선택 테이블의 td 클릭 시
 			var idx = $(this).parent().index(); // 클릭한 값의 부모(tr)의 인덱스값을 가져옴
 			var option = $("#select-table .group-list").eq(idx).text(); // 자산 그룹 선택 테이블의 idx번째 td 값을 가져옴
 			$("#select-group-modal").hide(); // 자산 그룹 선택 모달 닫기
 			$("#up-astgroup-name").attr("value", option);
 		})
-		// 자산 수정 모달 닫기
-		$("#close-up-asset").click(function() {
-			$("#up-asset-modal").hide();
-		})
-		// 자산 수정에서 자산그룹 선택 모달 닫기
-		$("#close-select-group").click(function() {
-			$("#select-group-modal").hide();
+		$(document).on("click","#select-table .group-list",function() { // 자산 그룹 선택 테이블의 td 클릭 시
+			var idx = $(this).parent().index(); // 클릭한 값의 부모(tr)의 인덱스값을 가져옴
+			var option = $("#select-table .group-list").eq(idx).text(); // 자산 그룹 선택 테이블의 idx번째 td 값을 가져옴
+			$("#select-group-modal").hide(); // 자산 그룹 선택 모달 닫기
+			$("#add-astgroup-name").attr("value", option);
 		})
 		
 		// 자산 추가 페이지 버튼
@@ -182,7 +166,7 @@
 			
 			$("#add-asset-btn").click(function() {
 				// 자산 이름 정규식
-				var assetReg = RegExp(/^[a-zA-Z가-힣\s]{1,10}$/);
+				var assetReg = RegExp(/^[a-zA-Z가-힣0-9\s]{1,10}$/);
 				if(!assetReg.test($("#add-asset-name").val())){ // 정규식에 맞지 않을 때
 					$("#add-asset-check p").attr("class", "msg warning");
 				} else {
@@ -192,12 +176,11 @@
 						type : "post",
 						url : "isOverlapAsset",
 						data : {
-							astgroup : $("#add-astgroup-name").val(),
 							astname : $("#add-asset-name").val(),
 							userid : userid
 						},
 						success : function(x) {
-							if(x == "possible") { // 자산이 중복되지 않으면 수정
+							if(x == "possible") { // 자산이 중복되지 않으면 추가
 								$.ajax({
 									type : "post",
 									url : "insertAsset",
@@ -209,7 +192,6 @@
 									},
 									success : function(x) {
 										if(x == "success") {
-											$("#add-asset-modal").hide();
 											window.location.reload();
 										} else {
 											alert("다시 시도해주세요")
@@ -223,31 +205,6 @@
 					})
 				}
 			})
-			$("#add-astgroup-name").click(function() { // 자산 그룹 클릭 시
-				$.ajax({
-					type : "post",
-					url : "astGroupInfo",
-					data : {
-						userid : userid
-					},
-					success : function(groupList) {
-						var group = groupList; // 자산 그룹 리스트
-						var html = "<table class'table' id='select-table'>";
-						for(let i = 0; i < group.length; i++) {
-							html += "<tr><td class='group-list is-border'>" + group[i] + "</td></tr>";
-						}
-						html += "</table>";
-						$("#select-group-div").html(html); // 자산 그룹  출력
-					}
-				})
-				$("#select-group-modal").show(); // 자산 그룹 선택 모달 열기
-			})
-		})
-		$(document).on("click","#select-table .group-list",function() { // 자산 그룹 선택 테이블의 td 클릭 시
-			var idx = $(this).parent().index(); // 클릭한 값의 부모(tr)의 인덱스값을 가져옴
-			var option = $("#select-table .group-list").eq(idx).text(); // 자산 그룹 선택 테이블의 idx번째 td 값을 가져옴
-			$("#select-group-modal").hide(); // 자산 그룹 선택 모달 닫기
-			$("#add-astgroup-name").attr("value", option);
 		})
 		// 자산 추가 모달 닫기
 		$("#close-add-asset").click(function() {
@@ -256,23 +213,30 @@
 		/* ------------------------------------------------------------------------------------------------------------------ */
 		/* ------------- 자산 그룹 목록 관련 jquery ------------- */
 		// 자산 그룹 목록 보기
-		$("#astgroup-btn").click(function() {
-			$.ajax({
-				type : "post",
-				url : "astGroupInfo",
-				data : {
-					userid : userid
-				},
-				success : function(groupList) {
-					var html = "<table class='table' id='astgroup-table'>";
-					for(let i = 0; i < groupList.length; i++) {
-						html += "<tr><td class='group-list is-border del-group'>" + groupList[i] + "</td>";
-						html += "<td class='del-group-td'><i class='fi fi-sr-minus-circle del-icon'></i></td></tr>";
-					}
-					html += "</table>";
-					$("#group-list-div").html(html);
+		$.ajax({
+			type : "post",
+			url : "astGroupInfo",
+			data : {
+				userid : userid
+			},
+			success : function(groupList) {
+				var group_html = "<table class='table' id='astgroup-table'>";
+				var astgroup_html = "<table class'table' id='select-table'>";
+				
+				for(let i = 0; i < groupList.length; i++) {
+					group_html += "<tr><td class='group-list is-border del-group'>" + groupList[i] + "</td>";
+					group_html += "<td class='del-group-td'><i class='fi fi-sr-minus-circle del-icon'></i></td></tr>";
+
+					astgroup_html += "<tr><td class='group-list is-border'>" + groupList[i] + "</td></tr>";
 				}
-			})
+				group_html += "</table>";
+				astgroup_html += "</table>";
+
+				$("#group-list-div").html(group_html); // 자산 그룹 목록 div
+ 				$("#select-group-div").html(astgroup_html); // 자산 그룹 선택 div
+			}
+		})
+		$("#astgroup-btn").click(function() {
 			$("#group-modal").show();
 		})
 		// 자산 그룹 모달 닫기
@@ -296,8 +260,7 @@
 					},
 					success : function(x) {
 						if(x == "success") {
-							$("#up-group-modal").hide();
-							$("#group-modal").hide();
+							window.location.reload();
 						} else if(x == "constraint") {
 							alert("자산이 존재하는 자산 그룹은 삭제할 수 없습니다");
 						} else {
@@ -310,57 +273,51 @@
 		})
 		/* ------------- 자산 그룹 수정 관련 jquery ------------- */
 		// 자산 그룹 수정
+		var originGroup;
 		$(document).on("click","#astgroup-table tr .group-list",function() { // 수정하려는 자산 그룹(테이블 행) 클릭 시
-			var originName = $(this).text(); // 클릭한 자산 그룹 이름 변수에 저장
+			originGroup = $(this).text(); // 클릭한 자산 그룹 이름 변수에 저장
 			$("#up-group-modal").show(); // 자산 그룹 수정 모달 보여주기
-			
-			var html = "<div>"; 
-			html += "<input class='input' id='up-group-name' value='" + originName + "'>";
-			html += "<br><br><button class='btn medium green' id='up-group-btn'>수정</button>";
-			$("#up-group-div").html(html);
+			$("#up-group-name").attr("value", originGroup);
 			$("#up-group-name").focus();
-			
-			$("#up-group-btn").click(function() {
-				// 자산 그룹 정규식
-				var groupReg = RegExp(/^[a-zA-Z가-힣\s]{1,10}$/);
-				if(!groupReg.test($("#up-group-name").val())){ // 정규식에 맞지 않을 때
-					$("#up-group-check p").attr("class", "msg warning");
-				} else { // 정규식에 맞으면
-					$("#up-group-check p").attr("class", "msg info");
-					// 자산 그룹 중복 확인
-					$.ajax({
-						type : "post",
-						url : "isOverlapGroup",
-						data : {
-							astgroup : $("#up-group-name").val(),
-							userid : userid
-						},
-						success : function(x) {
-							if(x == "possible") { // 자산 그룹 이름이 중복되지 않으면 해당 이름으로 수정
-								$.ajax({
-									type : "post",
-									url : "updateGroup",
-									data : {
-										originName : originName,
-										updateName : $("#up-group-name").val(),
-										userid : userid
-									},
-									success : function(x) {
-										if(x == "success") { // 수정에 성공하면 모달 닫기
-											$("#up-group-modal").hide();
-											$("#group-modal").hide();
-										} else {
-											alert("다시 시도해주세요");
-										}
+		})
+		$("#up-group-btn").click(function() { // 수정 버튼 클릭 시
+			var groupReg = RegExp(/^[a-zA-Z가-힣0-9\s]{1,10}$/); // 자산 그룹 정규식
+			if(!groupReg.test($("#up-group-name").val())){ // 정규식에 맞지 않을 때
+				$("#up-group-check p").attr("class", "msg warning");
+			} else { // 정규식에 맞으면
+				$("#up-group-check p").attr("class", "msg info");
+				// 자산 그룹 중복 확인
+				$.ajax({
+					type : "post",
+					url : "isOverlapGroup",
+					data : {
+						astgroup : $("#up-group-name").val(),
+						userid : userid
+					},
+					success : function(x) {
+						if(x == "possible") { // 자산 그룹 이름이 중복되지 않으면 해당 이름으로 수정
+							$.ajax({
+								type : "post",
+								url : "updateGroup",
+								data : {
+									originName : originGroup,
+									updateName : $("#up-group-name").val(),
+									userid : userid
+								},
+								success : function(x) {
+									if(x == "success") { // 수정에 성공하면 모달 닫기
+										window.location.reload();
+									} else {
+										alert("다시 시도해주세요");
 									}
-								})
-							} else { // 자산 그룹 이름이 중복되는 경우
-								alert("중복되는 자산 그룹 이름입니다");
-							}
+								}
+							})
+						} else { // 자산 그룹 이름이 중복되는 경우
+							alert("중복되는 자산 그룹 이름입니다");
 						}
-					})
-				}
-			})
+					}
+				})
+			}
 		})
 		// 자산 그룹 수정 모달 닫기
 		$("#close-up-group").click(function() {
@@ -381,8 +338,8 @@
 		$("#add-group-btn").click(function() {
 			var astgroup = $("#astgroup").val();
 			
-			// 자산 그룹 정규식 (영어, 한글 1~10 글자)
-			var groupReg = RegExp(/^[a-zA-Z가-힣\s]{1,10}$/);
+			// 자산 그룹 정규식
+			var groupReg = RegExp(/^[a-zA-Z가-힣0-9\s]{1,10}$/);
 			
 			if(!groupReg.test($("#astgroup").val())){ // 정규식에 맞지 않을 때
 				$("#add-group-check p").attr("class", "msg warning"); // 글자 빨간색으로 하는 warning-msg
@@ -407,9 +364,7 @@
 								},
 								success : function(x) {
 									if(x == "success") { // 추가되었으면 모달창 닫기
-										$("#add-group-modal").hide();
-										$("#up-group-modal").hide();
-										$("#group-modal").hide();
+										window.location.reload();
 									} else {
 										alert("다시 시도해주세요");
 									}
@@ -453,9 +408,34 @@
 						</div>
 						<hr>
 						<div class="modal-body medium">
-							<div id="up-asset-div"></div>
+							<div id="up-asset-div">
+								<table class='table'>
+									<tr>
+										<th>그룹</th>
+										<td>
+											<input class="input" id="up-astgroup-name" readonly>
+										</td>
+									<tr>
+									<tr>
+										<th>이름</th>
+										<td>
+											<input class="input" id="up-asset-name" maxlength="10">
+										</td>
+									</tr>
+									<tr>
+										<th>메모</th>
+										<td>
+											<textarea rows="5" class="input" id="up-astmemo-name"></textarea>
+										</td>
+									</tr>
+								</table>
+								<button class="btn medium green" id="up-asset-btn">수정</button>
+								<button class="btn outline-green" style="height: 48px;" id="del-asset-btn">삭제</button>
+							</div>
 							<br>
-							<div id='up-asset-check'><p class='msg info'>자산명은 영문이나 한글 1~10자만 입력 가능</p></div>
+							<div id='up-asset-check'>
+								<p class='msg info'>자산명은 특수문자 제외, 1~10 글자 입력</p>
+							</div>
 						</div>
 						<hr>
 						<div class="modal-footer">
@@ -483,7 +463,7 @@
 									<tr>
 										<th>이름</th>
 										<td>
-											<input class='input' id='add-asset-name'>
+											<input class='input' id='add-asset-name' maxlength="10">
 										</td>
 									</tr>
 									<tr>
@@ -496,7 +476,9 @@
 								<button class='btn medium green' id='add-asset-btn'>추가</button>
 							</div>
 							<br>
-							<div id='add-asset-check'><p class='msg info'>자산명은 영문이나 한글 1~10자만 입력 가능</p></div>
+							<div id='add-asset-check'>
+								<p class='msg info'>자산명은 특수문자 제외, 1~10 글자 입력</p>
+							</div>
 						</div>
 						<div class="modal-footer">
 							<button class="btn right outline-green" id="close-add-asset">닫기</button>
@@ -543,9 +525,15 @@
 						<hr>
 						<div class="modal-body small">
 							<h5 class='h-normal fs-20'><i class="fi fi-rr-pencil"></i> 자산 그룹명</h5>
-							<div id='up-group-check'><p class='msg info'>영문이나 한글 1~10자만 입력 가능</p></div>
+							<div id='up-group-check'>
+								<p class='msg info'>그룹명은 특수문자 제외, 1~10 글자 입력</p>
+							</div>
 							<br>
-							<div id="up-group-div"></div>
+							<div id="up-group-div">
+								<input class="input" id="up-group-name">
+								<br><br>
+								<button class="btn medium green" id="up-group-btn">수정</button>
+							</div>
 							<br>
 							<div><p class="msg warning">* 변경 시 관련된 자산의 자산 그룹 이름도 함께 변경됩니다 *</p></div>
 						</div>
@@ -564,7 +552,9 @@
 						<div class="modal-body small">
 							<div id="add-group-div">
 								<h5 class='h-normal fs-20'><i class="fi fi-rr-pencil"></i> 자산 그룹명</h5>
-								<div id="add-group-check"><p class='msg info'>영문이나 한글 1~10자만 입력 가능</p></div>
+								<div id="add-group-check">
+									<p class='msg info'>그룹명은 특수문자 제외, 1~10 글자 입력</p>
+								</div>
 								<br>
 								<input type="text" class="input" id="astgroup" maxlength="10">
 								<br><br>
