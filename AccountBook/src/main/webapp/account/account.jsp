@@ -222,7 +222,39 @@
 			$("#select-moneytype-modal").hide();
 		})
 		
+		// 수입/지출 추가 모달 열기
+		$("#add-account-page").click(function() {
+			$("#add-account-modal").show();
+		})
+		// 수입/지출 추가 모달 닫기
+		$("#close-add-account").click(function() {
+			$("#add-account-modal").hide();
+		})
 		
+		// 수입/지출 추가 버튼
+		$("#add-account-btn").click(function() {
+			$.ajax({
+				type : "post",
+				url : "insertAccount",
+				data : {
+					date : $("#add-actdate").val(),
+					moneytype : $("#add-actmoneytype").val(),
+					astname : $("#add-actasset").val(),
+					catename : $("#add-actcatename").val(),
+					total : $("#add-total").val(),
+					content : $("#add-actcontent").val(),
+					memo : $("#add-actmemo").val(),
+					userid : userid
+				},
+				success : function(x) {
+					if(x == "success") {
+						alert("추가 성공");
+					} else {
+						alert("추가 실패")
+					}
+				}
+			})
+		})
 	})
 </script>
 </head>
@@ -243,6 +275,7 @@
 				<h3 class="h-normal fs-28"><i class="fi fi-rr-add"></i> 수입/지출 관리</h3>
 				<button class="btn long gray" id="in-category-btn">수입 분류</button>
 				<button class="btn long gray" id="out-category-btn">지출 분류</button>
+				<button class="btn long gray" id="add-account-page">수입/지출 추가</button>
 				
 				<!-- 수입 카테고리 모달 -->
 				<div class="modal" id="in-category-modal" hidden="true">
@@ -365,6 +398,56 @@
 						<hr>
 						<div class="modal-footer">
 							<button class="btn right outline-green" id="close-select-moneytype">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 자산 추가 모달 -->
+				<div class="modal" id="add-account-modal" hidden="true">
+					<div class="modal-content">
+						<div class="modal-title">
+							<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 분류</h3>
+						</div>
+						<hr>
+						<div class="modal-body">
+							<div id="add-account-div">
+								<table class='table'>
+									<tr>
+										<td>날짜</td>
+										<td><input type="date" class="input" id="add-actdate"></td>
+									</tr>
+									<tr>
+										<td>수입/지출</td>
+										<td><input type="text" class="input" id="add-actmoneytype"></td>
+									</tr>
+									<tr>
+										<td>자산</td>
+										<td><input type="text" class="input" id="add-actasset"></td>
+									</tr>
+									<tr>
+										<td>분류</td>
+										<td><input type="text" class="input" id="add-actcatename"></td>
+									</tr>
+									<tr>
+										<td>금액</td>
+										<td><input type="text" class="input" id="add-acttotal"></td>
+									</tr>
+									<tr>
+										<td>내용</td>
+										<td><input type="text" class="input" id="add-actcontent"></td>
+									</tr>
+									<tr>
+										<td>메모</td>
+										<td><input type="text" class="input" id="add-actmemo"></td>
+									</tr>
+								</table>
+								<button class="btn medium green" id="add-account-btn">추가</button>
+							</div>
+						</div>
+						<hr>
+						<div class="modal-footer">
+							<button class="btn right outline-green" id="close-add-account">닫기</button>
 						</div>
 					</div>
 				</div>
