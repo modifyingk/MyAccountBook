@@ -2,6 +2,7 @@ package com.modifyk.accountbook.account;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,5 +44,13 @@ public class AccountController {
 		} else {
 			return "fail";
 		}
+	}
+	
+	// 수입/지출 목록
+	@ResponseBody
+	@RequestMapping("account/accountInfo")
+	public List<AccountVO> accountInfo(String userid) {
+		List<AccountVO> accountList = aDao.accountInfo(userid);
+		return accountList;
 	}
 }

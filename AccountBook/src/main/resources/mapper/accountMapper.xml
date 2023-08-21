@@ -6,4 +6,8 @@
 	<insert id="insertAccount" parameterType="accountVO">
 		insert into account values (#{accountid}, #{moneytype}, #{date}, #{astname}, #{catename}, #{content}, #{total}, #{memo}, #{mark}, #{repeat}, #{userid});
 	</insert>
+	
+	<select id="accountInfo" parameterType="String" resultType="accountVO">
+		select * from account where userid = #{userid};
+	</select>
 </mapper>

@@ -264,6 +264,11 @@
 	border-radius: 10px;
 	padding: 10px;
 	margin: 10px;
+	overflow-y: auto;
+}
+/* Modal 넓은 크기 */
+.modal-content.wide { 
+	width: 600px;
 }
 /* Modal 중간 크기 */
 .modal-content.medium { 
@@ -271,7 +276,6 @@
 }
 .modal-body.medium {
 	height: 430px;
-	overflow-y: auto;
 }
 /* Modal 작은 크기 */
 .modal-content.small { 
@@ -279,7 +283,6 @@
 }
 .modal-body.small {
 	height: 300px;
-	overflow-y: auto;
 }
 /* ---------------------------------------------------------------- */
 /* asset.jsp */

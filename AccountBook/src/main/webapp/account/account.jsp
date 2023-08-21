@@ -10,9 +10,42 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<style>
+	.list-table {
+		border-collapse: collapse;
+	}
+	.list-table td {
+		width: 30%;
+		padding: 10px;
+	}
+	.list-table tr {
+		border: 1px solid lightgray;
+		border-radius: 10px;
+	}
+</style>
 <script>
 	$(function() {
 		var userid = "<%= session.getAttribute("userid") %>";
+		// 수입/지출 목록 가져오기
+		$.ajax({
+			type : "post",
+			url : "accountInfo",
+			data : {
+				userid : userid
+			},
+			success : function(accountList) {
+				var account_html = "<table class='list-table'>";
+				for(let i = 0; i < accountList.length; i++) {
+					account_html += "<tr><td>" + accountList[i].date + "</td></tr>";
+					account_html += "<tr><td>" + accountList[i].catename + "</td>";
+					account_html += "<td>" + accountList[i].content + "</td>";
+					account_html += "<td>" + accountList[i].total + "</td></tr>";
+				}
+				account_html += "</table>";
+				$("#account-list-div").html(account_html);
+			}
+		})
+		
 		
 		// 전체 카테고리 목록 가져오기
 		$.ajax({
@@ -43,6 +76,8 @@
 				
 				$("#in-category-list-div").html(in_html);
 				$("#out-category-list-div").html(out_html);
+				$("#select-incate-list-div").html(in_html);
+				$("#select-outcate-list-div").html(out_html);
 			}
 		})
 		// 수입 분류 모달 열기
@@ -121,14 +156,14 @@
 		// 분류 수정 모달 열기
 		var originName;
 		
-		$(document).on("click", "#in-category-table tr", function() {
+		$(document).on("click", "#in-category-list-div #in-category-table tr", function() {
 			originName = $(this).text().split(" ");
 			$("#up-moneytype").attr("value", originName[0]); // 수정 모달 input에 현재 분류 값 삽입
 			$("#up-catename").attr("value", originName[1]); // 수정 모달 input에 현재 이름 값 삽입
 			
 			$("#up-category-modal").show(); // 모달 열기
 		})
-		$(document).on("click", "#out-category-table tr", function() {
+		$(document).on("click", "#out-category-list-div #out-category-table tr", function() {
 			originName = $(this).text().split(" ");
 			$("#up-moneytype").attr("value", originName[0]); // 수정 모달 input에 현재 분류 값 삽입
 			$("#up-catename").attr("value", originName[1]); // 수정 모달 input에 현재 이름 값 삽입
@@ -231,17 +266,79 @@
 			$("#add-account-modal").hide();
 		})
 		
+		// 수입/지출 추가 (카테고리 선택)
+		$("#add-actcatename").click(function() {
+			var mtype = $("input[name=select-mtype]:checked").val(); // 선택된 값 변수에 저장
+			if(mtype == "수입") {
+				// 수입 카테고리 리스트 모달
+				$("#select-incate-modal").show();
+			} else {
+				// 지출 카테고리 리스트 모달
+				$("#select-outcate-modal").show();
+			}
+		})
+		$(document).on("click", "#select-incate-list-div #in-category-table tr", function() {
+			originName = $(this).text().split(" ");
+			$("#add-actcatename").attr("value", originName[1]); // 수정 모달 input에 현재 이름 값 삽입
+			$("#select-incate-modal").hide();
+		})
+		$(document).on("click", "#select-outcate-list-div #out-category-table tr", function() {
+			originName = $(this).text().split(" ");
+			$("#add-actcatename").attr("value", originName[1]); // 수정 모달 input에 현재 이름 값 삽입
+			$("#select-outcate-modal").hide();
+		})
+		// 카테고리 선택 모달 닫기
+		$("#close-select-incate").click(function() {
+			$("#select-incate-modal").hide();
+		})
+		$("#close-select-outcate").click(function() {
+			$("#select-outcate-modal").hide();
+		})
+		// 자산 목록 보기
+		$.ajax({
+			type : "post",
+			url : "../asset/assetInfo",
+			dataType : "json",
+			data : {
+				userid : userid
+			},
+			success : function(map) {
+				var html = "<table class='table' id='asset-table'>"; // 자산 목록 테이블 만들기
+				for(var key in map ) {
+					var value = map[key].split(","); // 자산 그룹에 해당하는 자산이 여러 개이면 ,로 구분되어 있으므로 ,를 기준으로 분리하여 value 변수에 저장
+					for(var i = 0; i < value.length; i++) {
+						var asset = value[i].split("/"); // 자산이름과 자산메모는 /로 구분되어 있으므로 /를 기준으로 분리하여 asset 변수에 저장
+							html += "<tr class='asset-name'><td class='group-list is-border'>" + asset[0] + "</td></tr>"; // asset[0]은 자산 이름
+					}
+				}
+				html += "</table>";
+				$("#asset-list-div").html(html);
+			}
+		})
+		// 수입/지출 추가 (자산 선택)
+		$("#add-actasset").click(function() {
+			$("#select-asset-modal").show();
+		})
+		$("#close-select-asset").click(function() {
+			$("#select-asset-modal").hide();
+		})
+		$(document).on("click", "#asset-table tr", function() {
+			var assetName = $(this).text();
+			$("#add-actasset").attr("value", assetName);
+			$("#select-asset-modal").hide();
+		})
 		// 수입/지출 추가 버튼
 		$("#add-account-btn").click(function() {
+			var mtype = $("input[name=select-mtype]:checked").val();
 			$.ajax({
 				type : "post",
 				url : "insertAccount",
 				data : {
 					date : $("#add-actdate").val(),
-					moneytype : $("#add-actmoneytype").val(),
+					moneytype : mtype,
 					astname : $("#add-actasset").val(),
 					catename : $("#add-actcatename").val(),
-					total : $("#add-total").val(),
+					total : $("#add-acttotal").val(),
 					content : $("#add-actcontent").val(),
 					memo : $("#add-actmemo").val(),
 					userid : userid
@@ -276,6 +373,10 @@
 				<button class="btn long gray" id="in-category-btn">수입 분류</button>
 				<button class="btn long gray" id="out-category-btn">지출 분류</button>
 				<button class="btn long gray" id="add-account-page">수입/지출 추가</button>
+				
+				<div id="account-list-div">
+				
+				</div>
 				
 				<!-- 수입 카테고리 모달 -->
 				<div class="modal" id="in-category-modal" hidden="true">
@@ -403,52 +504,103 @@
 				</div>
 			</div>
 			
-			<!-- 자산 추가 모달 -->
-				<div class="modal" id="add-account-modal" hidden="true">
-					<div class="modal-content">
-						<div class="modal-title">
-							<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 분류</h3>
+			<!-- 수입/지출 추가 모달 -->
+			<div class="modal" id="add-account-modal" hidden="true">
+				<div class="modal-content wide">
+					<div class="modal-title">
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 분류</h3>
+					</div>
+					<hr>
+					<div class="modal-body">
+						<div id="add-account-div">
+							<table class='table'>
+								<tr>
+									<td colspan="2">
+										<div class="select">
+											<input type="radio" name="select-mtype" id="select-in" value="수입"><label for="select-in">수입</label>
+											<input type="radio" name="select-mtype" id="select-out" value="지출" checked><label for="select-out">지출</label>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>날짜</td>
+									<td><input type="date" class="input" id="add-actdate" ></td>
+								</tr>
+								<tr>
+									<td>자산</td>
+									<td><input type="text" class="input" id="add-actasset" readonly></td>
+								</tr>
+								<tr>
+									<td>분류</td>
+									<td><input type="text" class="input" id="add-actcatename" readonly></td>
+								</tr>
+								<tr>
+									<td>금액</td>
+									<td><input type="text" class="input" id="add-acttotal"></td>
+								</tr>
+								<tr>
+									<td>내용</td>
+									<td><input type="text" class="input" id="add-actcontent"></td>
+								</tr>
+								<tr>
+									<td>메모</td>
+									<td>
+										<textarea rows="3" class="input" id="add-actmemo"></textarea>
+									</td>
+								</tr>
+							</table>
+							<button class="btn medium green" id="add-account-btn">추가</button>
 						</div>
-						<hr>
-						<div class="modal-body">
-							<div id="add-account-div">
-								<table class='table'>
-									<tr>
-										<td>날짜</td>
-										<td><input type="date" class="input" id="add-actdate"></td>
-									</tr>
-									<tr>
-										<td>수입/지출</td>
-										<td><input type="text" class="input" id="add-actmoneytype"></td>
-									</tr>
-									<tr>
-										<td>자산</td>
-										<td><input type="text" class="input" id="add-actasset"></td>
-									</tr>
-									<tr>
-										<td>분류</td>
-										<td><input type="text" class="input" id="add-actcatename"></td>
-									</tr>
-									<tr>
-										<td>금액</td>
-										<td><input type="text" class="input" id="add-acttotal"></td>
-									</tr>
-									<tr>
-										<td>내용</td>
-										<td><input type="text" class="input" id="add-actcontent"></td>
-									</tr>
-									<tr>
-										<td>메모</td>
-										<td><input type="text" class="input" id="add-actmemo"></td>
-									</tr>
-								</table>
-								<button class="btn medium green" id="add-account-btn">추가</button>
-							</div>
+					</div>
+					<hr>
+					<div class="modal-footer">
+						<button class="btn right outline-green" id="close-add-account">닫기</button>
+					</div>
+				</div>
+			</div>
+			<!-- 자산 선택 모달 -->
+			<div class="modal" id="select-asset-modal" hidden="true">
+				<div class="modal-content">
+					<div class="modal-title">
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산</h3>
+					</div>
+					<hr>
+					<div class="modal-body">
+						<div id="asset-list-div">
 						</div>
-						<hr>
-						<div class="modal-footer">
-							<button class="btn right outline-green" id="close-add-account">닫기</button>
-						</div>
+					</div>
+					<hr>
+					<div class="modal-footer">
+						<button class="btn right outline-green" id="close-select-asset">닫기</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- 수입 카테고리 선택 모달 -->
+			<div class="modal" id="select-incate-modal" hidden="true">
+				<div class="modal-content">
+					<div class="modal-title">
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 수입 카테고리</h3>
+					</div>
+					<div class="modal-body">
+						<div id="select-incate-list-div"></div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn right outline-green" id="close-select-incate">닫기</button>
+					</div>
+				</div>
+			</div>
+			<!-- 지출 카테고리 선택 모달 -->
+			<div class="modal" id="select-outcate-modal" hidden="true">
+				<div class="modal-content">
+					<div class="modal-title">
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 지출 카테고리</h3>
+					</div>
+					<div class="modal-body">
+						<div id="select-outcate-list-div"></div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn right outline-green" id="close-select-outcate">닫기</button>
 					</div>
 				</div>
 			</div>

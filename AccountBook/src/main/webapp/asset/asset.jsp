@@ -23,7 +23,6 @@
 			},
 			success : function(map) {
 				var html = "<table class='table'>"; // 자산 목록 테이블 만들기
-				html += "<table class='table'>";
 				for(var key in map ) {
 					html += "<tr><td>" + key + "</td></tr>"; // key 값인 자산 그룹 이름 출력
 					var value = map[key].split(","); // 자산 그룹에 해당하는 자산이 여러 개이면 ,로 구분되어 있으므로 ,를 기준으로 분리하여 value 변수에 저장
@@ -146,7 +145,6 @@
 		$("#close-select-group").click(function() {
 			$("#select-group-modal").hide();
 		})
-		
 		$(document).on("click","#select-table .group-list",function() { // 자산 그룹 선택 테이블의 td 클릭 시
 			var idx = $(this).parent().index(); // 클릭한 값의 부모(tr)의 인덱스값을 가져옴
 			var option = $("#select-table .group-list").eq(idx).text(); // 자산 그룹 선택 테이블의 idx번째 td 값을 가져옴

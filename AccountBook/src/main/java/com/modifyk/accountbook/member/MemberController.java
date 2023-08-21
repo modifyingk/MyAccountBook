@@ -68,7 +68,6 @@ public class MemberController {
 	@ResponseBody
 	@RequestMapping("member/insertMember")
 	public String insertMember(MemberVO memberVO) {
-		
 
 		int result = mDao.insertMember(memberVO);
 		
