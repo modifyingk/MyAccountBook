@@ -26,6 +26,8 @@
 <script>
 	$(function() {
 		var userid = "<%= session.getAttribute("userid") %>";
+
+		/* ---------------------------- 수입/지출 목록 ---------------------------- */
 		// 수입/지출 목록 가져오기
 		$.ajax({
 			type : "post",
@@ -33,20 +35,26 @@
 			data : {
 				userid : userid
 			},
-			success : function(accountList) {
+			success : function(map) {
 				var account_html = "<table class='list-table'>";
-				for(let i = 0; i < accountList.length; i++) {
-					account_html += "<tr><td>" + accountList[i].date + "</td></tr>";
-					account_html += "<tr><td>" + accountList[i].catename + "</td>";
-					account_html += "<td>" + accountList[i].content + "</td>";
-					account_html += "<td>" + accountList[i].total + "</td></tr>";
+				for(var key in map) {
+					account_html += "<tr><td>" + key + "</td></tr>";
+					var value = map[key].split(",");
+					for(var i = 0; i < value.length; i++) {
+						var account = value[i].split("/");
+						account_html += "<tr><td style='display:none;'>" + account[0] + "</td>";
+						account_html += "<td>" + account[1] + "</td>";
+						account_html += "<td>" + account[2] + "</td>";
+						account_html += "<td>" + account[3] + "</td>";
+						account_html += "<td>" + account[4] + "원</td></tr>";
+					}
 				}
 				account_html += "</table>";
 				$("#account-list-div").html(account_html);
 			}
 		})
 		
-		
+		/* ---------------------------- 카테고리 ---------------------------- */
 		// 전체 카테고리 목록 가져오기
 		$.ajax({
 			type : "post",
@@ -80,24 +88,22 @@
 				$("#select-outcate-list-div").html(out_html);
 			}
 		})
-		// 수입 분류 모달 열기
+		// 수입 카테고리 모달 열기
 		$("#in-category-btn").click(function() {
 			$("#in-category-modal").show();
 		})
-		// 수입 분류 모달 닫기
+		// 수입 카테고리 모달 닫기
 		$("#close-in-category").click(function() {
 			$("#in-category-modal").hide();
 		})
-		
-		// 지출 분류 모달 열기
+		// 지출 카테고리 모달 열기
 		$("#out-category-btn").click(function() {
 			$("#out-category-modal").show();
 		})	
-		// 지출 분류 모달 닫기
+		// 지출 카테고리 모달 닫기
 		$("#close-out-category").click(function() {
 			$("#out-category-modal").hide();
 		})
-		
 		// 카테고리 추가 모달 열기
 		$("#add-in-category-page").click(function() { // 수입 추가
 			$("#add-category-modal").show();
@@ -153,7 +159,7 @@
 			$("#add-category-modal").hide();
 		})
 		
-		// 분류 수정 모달 열기
+		// 카테고리 수정 모달 열기
 		var originName;
 		
 		$(document).on("click", "#in-category-list-div #in-category-table tr", function() {
@@ -233,7 +239,7 @@
 				})
 			}
 		})
-		// 분류 수정 모달 닫기
+		// 카테고리 수정 모달 닫기
 		$("#close-up-category").click(function() {
 			$("#up-category-modal").hide();
 		})
@@ -257,6 +263,7 @@
 			$("#select-moneytype-modal").hide();
 		})
 		
+		/* ---------------------------- 수입/지출 추가 ---------------------------- */
 		// 수입/지출 추가 모달 열기
 		$("#add-account-page").click(function() {
 			$("#add-account-modal").show();
@@ -265,8 +272,7 @@
 		$("#close-add-account").click(function() {
 			$("#add-account-modal").hide();
 		})
-		
-		// 수입/지출 추가 (카테고리 선택)
+		// 수입/지출 추가 - 카테고리 선택
 		$("#add-actcatename").click(function() {
 			var mtype = $("input[name=select-mtype]:checked").val(); // 선택된 값 변수에 저장
 			if(mtype == "수입") {
@@ -294,7 +300,7 @@
 		$("#close-select-outcate").click(function() {
 			$("#select-outcate-modal").hide();
 		})
-		// 자산 목록 보기
+		// 자산 목록가져오기
 		$.ajax({
 			type : "post",
 			url : "../asset/assetInfo",
@@ -315,7 +321,7 @@
 				$("#asset-list-div").html(html);
 			}
 		})
-		// 수입/지출 추가 (자산 선택)
+		// 수입/지출 추가 - 자산 선택
 		$("#add-actasset").click(function() {
 			$("#select-asset-modal").show();
 		})
@@ -345,9 +351,9 @@
 				},
 				success : function(x) {
 					if(x == "success") {
-						alert("추가 성공");
+						window.location.reload();
 					} else {
-						alert("추가 실패")
+						alert("다시 시도해주세요.")
 					}
 				}
 			})
@@ -508,7 +514,7 @@
 			<div class="modal" id="add-account-modal" hidden="true">
 				<div class="modal-content wide">
 					<div class="modal-title">
-						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 분류</h3>
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 수입/지출 추가</h3>
 					</div>
 					<hr>
 					<div class="modal-body">
