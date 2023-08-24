@@ -305,3 +305,26 @@
 	cursor: pointer;
 	color: #D1180B;
 }
+
+.list-table {
+	border-collapse: collapse;
+}
+.list-table td {
+	width: 30%;
+	padding: 10px;
+}
+.list-table tr {
+	border: 1px solid lightgray;
+	border-radius: 10px;
+}
+.list-table tr:hover {
+	background: #F3F3F3;
+	border-color: lightgray;
+	cursor: pointer;
+}
+.blue {
+	color : #0C70F2;
+}
+.red {
+	color : #E34234;
+}

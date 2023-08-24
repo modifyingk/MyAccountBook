@@ -10,19 +10,6 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<style>
-	.list-table {
-		border-collapse: collapse;
-	}
-	.list-table td {
-		width: 30%;
-		padding: 10px;
-	}
-	.list-table tr {
-		border: 1px solid lightgray;
-		border-radius: 10px;
-	}
-</style>
 <script>
 	$(function() {
 		var userid = "<%= session.getAttribute("userid") %>";
@@ -38,22 +25,129 @@
 			success : function(map) {
 				var account_html = "<table class='list-table'>";
 				for(var key in map) {
-					account_html += "<tr><td>" + key + "</td></tr>";
+					account_html += "<tr class='tr-date'><td colspan='5'>" + key + "</td></tr>";
 					var value = map[key].split(",");
 					for(var i = 0; i < value.length; i++) {
 						var account = value[i].split("/");
-						account_html += "<tr><td style='display:none;'>" + account[0] + "</td>";
-						account_html += "<td>" + account[1] + "</td>";
-						account_html += "<td>" + account[2] + "</td>";
-						account_html += "<td>" + account[3] + "</td>";
-						account_html += "<td>" + account[4] + "원</td></tr>";
+						account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
+						account_html += "<td style='display:none;'> " + account[0] + "</td>"; // 수입/지출 ID
+						account_html += "<td style='display:none;'> " + account[1] + "</td>"; // 수입 또는 지출(moneytype)
+						account_html += "<td style='display:none;'> " + account[2] + "</td>"; // 자산
+						account_html += "<td> " + account[3] + "</td>"; // 카테고리
+						account_html += "<td> " + account[4] + "</td>"; // 내용
+						if(account[1] == "수입") {
+							account_html += "<td class='blue'> " + account[5] + "원</td>"; // 돈
+						} else {
+							account_html += "<td class='red'> " + account[5] + "원</td>";
+						}
+						account_html += "<td style='display:none;'> ," + account[6] + "</td></tr>"; // 메모
 					}
 				}
 				account_html += "</table>";
 				$("#account-list-div").html(account_html);
 			}
 		})
-		
+		// 날짜 tr 클릭 시
+		$(document).on("click", ".tr-date", function() {
+			var date = $(this).text();
+			$("#add-account-modal").show();
+			$("#add-actdate").attr("value", date);
+		})
+		// 내용 tr 클릭 시
+		$(document).on("click", ".tr-content", function() {
+			var content = $(this).text().split(" ");
+			$("#up-account-modal").show();
+			
+			$("#up-actdate").attr("value", content[0]);
+			$("#up-actid").attr("value", content[1]);
+			$("#up-actasset").attr("value", content[3]);
+			$("#up-actcatename").attr("value", content[4]);
+			$("#up-actcontent").attr("value", content[5]);
+			$("#up-acttotal").attr("value", content[6].split("원")[0]);
+			$("#up-actmemo").attr("value", content[7]);
+			
+			if(content[2] == "수입") {
+				$("input:radio[name='up-mtype'][value='수입']").attr("checked", true);
+			} else {
+				$("input:radio[name='up-mtype'][value='지출']").attr("checked", true);
+			}
+		})
+		// 수입/지출 수정 - 자산 선택
+		$("#up-actasset").click(function() {
+			$("#select-asset-modal").show();
+		})
+		$(document).on("click", "#asset-table tr", function() {
+			var assetName = $(this).text();
+			$("#up-actasset").attr("value", assetName);
+			$("#select-asset-modal").hide();
+		})
+		// 수입/지출 수정 - 카테고리 선택
+		$("#up-actcatename").click(function() {
+			var mtype = $("input[name=up-mtype]:checked").val(); // 선택된 값 변수에 저장
+			if(mtype == "수입") {
+				// 수입 카테고리 리스트 모달
+				$("#select-incate-modal").show();
+			} else {
+				// 지출 카테고리 리스트 모달
+				$("#select-outcate-modal").show();
+			}
+		})
+		// 수입/지출 수정에서 수입/지출 radio 클릭 시 카테고리 선택 모닯 띄우기
+		$("input:radio[name='up-mtype']").click(function() {
+			$("#up-actcatename").attr("value", "");
+			var mtype = $("input[name=up-mtype]:checked").val(); // 선택된 값 변수에 저장
+			if(mtype == "수입") {
+				// 수입 카테고리 리스트 모달
+				$("#select-incate-modal").show();
+			} else {
+				// 지출 카테고리 리스트 모달
+				$("#select-outcate-modal").show();
+			}
+		})
+		$(document).on("click", "#select-incate-list-div #in-category-table tr", function() {
+			originName = $(this).text().split(" ");
+			$("#up-actcatename").attr("value", originName[1]); // 수정 모달 input에 현재 이름 값 삽입
+			$("#select-incate-modal").hide();
+		})
+		$(document).on("click", "#select-outcate-list-div #out-category-table tr", function() {
+			originName = $(this).text().split(" ");
+			$("#up-actcatename").attr("value", originName[1]); // 수정 모달 input에 현재 이름 값 삽입
+			$("#select-outcate-modal").hide();
+		})
+		// 수입/지출 수정 모달 닫기
+		$("#close-up-account").click(function() {
+			$("#up-account-modal").hide();
+		})
+		// 수정 버튼 클릭
+		$("#up-account-btn").click(function() {
+			$.ajax({
+				type : "post",
+				url : "updateAccount",
+				data : {
+					moneytype :  $("input[name=up-mtype]:checked").val(),
+					date : $("#up-actdate").val(),
+					astname : $("#up-actasset").val(),
+					catename : $("#up-actcatename").val(),
+					content : $("#up-actcontent").val(),
+					total : $("#up-acttotal").val(),
+					memo : $("#up-actmemo").val(),
+					accountid : $("#up-actid").val(),
+					userid : userid
+				},
+				success : function(x) {
+					if(x == "success") {
+						window.location.reload();
+					} else {
+						alert("다시 시도해주세요.");
+					}
+				}
+			})
+		})
+		// 금액에 숫자만 입력되도록
+		$("#up-acttotal, #add-acttotal").keyup(function() {
+			var numReg = /[^0-9]/g;	// 숫자가 아닌 값 정규식
+			$(this).val($(this).val().replace(numReg, ""));
+		})
 		/* ---------------------------- 카테고리 ---------------------------- */
 		// 전체 카테고리 목록 가져오기
 		$.ajax({
@@ -267,6 +361,9 @@
 		// 수입/지출 추가 모달 열기
 		$("#add-account-page").click(function() {
 			$("#add-account-modal").show();
+			// 자산, 카테고리 값 다 비우고 추가 (수입/지출내역 수정할 때 자산, 카테고리 선택하면 같이 변경되므로)
+			$("#add-actasset").attr("value", "");
+			$("#add-actcatename").attr("value", "");
 		})
 		// 수입/지출 추가 모달 닫기
 		$("#close-add-account").click(function() {
@@ -379,6 +476,7 @@
 				<button class="btn long gray" id="in-category-btn">수입 분류</button>
 				<button class="btn long gray" id="out-category-btn">지출 분류</button>
 				<button class="btn long gray" id="add-account-page">수입/지출 추가</button>
+				<button class="btn long gray" id="mark-page">즐겨찾기</button>
 				
 				<div id="account-list-div">
 				
@@ -564,6 +662,64 @@
 					</div>
 				</div>
 			</div>
+			<!-- 수입/지출 수정 모달 -->
+			<div class="modal" id="up-account-modal" hidden="true">
+				<div class="modal-content">
+					<div class="modal-title">
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 수입/지출 수정</h3>
+					</div>
+					<hr>
+					<div class="modal-body">
+						<div id="up-account-div">
+							<table class='table'>
+								<tr hidden="true">
+									<td>ID</td>
+									<td><input type="text" class="input" id="up-actid" ></td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<div class="select">
+											<input type="radio" name="up-mtype" id="up-in" value="수입"><label for="up-in">수입</label>
+											<input type="radio" name="up-mtype" id="up-out" value="지출"><label for="up-out">지출</label>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>날짜</td>
+									<td><input type="date" class="input" id="up-actdate" ></td>
+								</tr>
+								<tr>
+									<td>자산</td>
+									<td><input type="text" class="input" id="up-actasset" readonly></td>
+								</tr>
+								<tr>
+									<td>분류</td>
+									<td><input type="text" class="input" id="up-actcatename" readonly></td>
+								</tr>
+								<tr>
+									<td>금액</td>
+									<td><input type="text" class="input" id="up-acttotal"></td>
+								</tr>
+								<tr>
+									<td>내용</td>
+									<td><input type="text" class="input" id="up-actcontent"></td>
+								</tr>
+								<tr>
+									<td>메모</td>
+									<td>
+										<textarea rows="3" class="input" id="up-actmemo"></textarea>
+									</td>
+								</tr>
+							</table>
+							<button class="btn medium green" id="up-account-btn">수정</button>
+						</div>
+					</div>
+					<hr>
+					<div class="modal-footer">
+						<button class="btn right outline-green" id="close-up-account">닫기</button>
+					</div>
+				</div>
+			</div>
 			<!-- 자산 선택 모달 -->
 			<div class="modal" id="select-asset-modal" hidden="true">
 				<div class="modal-content">
@@ -581,7 +737,6 @@
 					</div>
 				</div>
 			</div>
-
 			<!-- 수입 카테고리 선택 모달 -->
 			<div class="modal" id="select-incate-modal" hidden="true">
 				<div class="modal-content">

@@ -21,4 +21,10 @@ public class AccountDAO {
 	public List<AccountVO> accountInfo(String userid) {
 		return my.selectList("accountMapper.accountInfo", userid);
 	}
+	
+	// 수입/지출 수정
+	public int updateAccount(AccountVO accountVO) {
+		System.out.println(my.update("accountMapper.updateAccount", accountVO));
+		return my.update("accountMapper.updateAccount", accountVO);
+	}
 }

@@ -45,4 +45,17 @@ public class AccountController {
 		HashMap<String, Object> map = toMapSvc.toMap(accountList);
 		return map;
 	}
+	
+	// 수입/지출 수정
+	@ResponseBody
+	@RequestMapping("account/updateAccount")
+	public String updateAccount(AccountVO accountVO) {
+		System.out.println(accountVO);
+		int result = aDao.updateAccount(accountVO);
+		if(result == 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
 }
