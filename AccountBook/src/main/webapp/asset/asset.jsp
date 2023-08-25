@@ -29,8 +29,8 @@
 					for(var i = 0; i < value.length; i++) {
 						var asset = value[i].split("/"); // 자산이름과 자산메모는 /로 구분되어 있으므로 /를 기준으로 분리하여 asset 변수에 저장
 							html += "<tr class='asset-name'><td class='group-list is-border'>" + asset[0] + "</td>"; // asset[0]은 자산 이름
-							html += "<td style='display:none;'> " + key + "</td>"; // key는 자산 그룹 (클릭 시 값 넘기기 위한 것으로, 화면에는 보이지 않도록 생성)
-							html += "<td style='display:none;'> " + asset[1] + "</td></tr>"; // asset[1]은 자산 메모 (클릭 시 값 넘기기 위한 것으로, 화면에는 보이지 않도록 생성)
+							html += "<td style='display:none;'>" + key + "</td>"; // key는 자산 그룹 (클릭 시 값 넘기기 위한 것으로, 화면에는 보이지 않도록 생성)
+							html += "<td style='display:none;'>" + asset[1] + "</td></tr>"; // asset[1]은 자산 메모 (클릭 시 값 넘기기 위한 것으로, 화면에는 보이지 않도록 생성)
 					}
 				}
 				html += "</table>";
@@ -39,13 +39,18 @@
 		})
 		// 자산 수정
 		var originAsset;
+		var originActgroup;
+		var originMemo;
 		$(document).on("click", ".asset-name", function() { // asset-name 행 클릭 시
-			originAsset = $(this).text().split(" "); // tr의 td들(자산, 자산그룹, 자산메모)을 공백 한 칸으로 분리해놓았으므로 분리하여 value 변수에 저장
+			// tr의 td들(자산, 자산그룹, 자산메모)을 공백 한 칸으로 분리해놓았으므로 분리하여 value 변수에 저장
+			originAsset = $(this).children().eq(0).text();
+			originActgroup = $(this).children().eq(1).text();
+			originMemo = $(this).children().eq(2).text();
 			$("#up-asset-modal").show(); // 자산 수정 모달 열기
 			
-			$("#up-astgroup-name").attr("value", originAsset[1]);
-			$("#up-asset-name").attr("value", originAsset[0]);
-			$("#up-astmemo-name").val(originAsset[2]);
+			$("#up-astgroup-name").attr("value",originActgroup);
+			$("#up-asset-name").attr("value", originAsset);
+			$("#up-astmemo-name").val(originMemo);
 		})
 		$("#up-asset-btn").click(function() { // 자산 수정 버튼 클릭 시
 			var assetReg = RegExp(/^[a-zA-Z가-힣0-9\s]{1,10}$/); // 자산 이름 정규식
@@ -54,7 +59,7 @@
 			} else {
 				$("#up-asset-check p").attr("class", "msg info");
 				
-				if($("#up-asset-name").val() != originAsset[0]) {
+				if($("#up-asset-name").val() != originAsset) {
 					$.ajax({ // 자산 중복 확인
 						type : "post",
 						url : "isOverlapAsset",
@@ -69,7 +74,7 @@
 									url : "updateAsset",
 									data : {
 										userid : userid,
-										originAsset : originAsset[0],
+										originAsset : originAsset,
 										updateAsset : $("#up-asset-name").val(),
 										updateGroup : $("#up-astgroup-name").val(),
 										updateMemo : $("#up-astmemo-name").val()
@@ -93,7 +98,7 @@
 						url : "updateAsset",
 						data : {
 							userid : userid,
-							originAsset : originAsset[0],
+							originAsset : originAsset,
 							updateAsset : $("#up-asset-name").val(),
 							updateGroup : $("#up-astgroup-name").val(),
 							updateMemo : $("#up-astmemo-name").val()
@@ -117,7 +122,7 @@
 		
 		// 자산 삭제
 		$("#del-asset-btn").click(function() { // 자산 삭제 버튼 클릭 시
-			var op = confirm(originAsset[0] + " 자산을 삭제하시겠습니까?");
+			var op = confirm(originAsset + " 자산을 삭제하시겠습니까?");
 			if(op == true) {
 				$.ajax({
 					type : "post",

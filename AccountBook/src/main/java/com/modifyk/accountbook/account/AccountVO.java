@@ -9,8 +9,6 @@ public class AccountVO {
 	private String content;
 	private int total;
 	private String memo;
-	private String mark;
-	private String repeat;
 	private String userid;
 	
 	public String getAccountid() {
@@ -61,18 +59,6 @@ public class AccountVO {
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
-	public String getMark() {
-		return mark;
-	}
-	public void setMark(String mark) {
-		this.mark = mark;
-	}
-	public String getRepeat() {
-		return repeat;
-	}
-	public void setRepeat(String repeat) {
-		this.repeat = repeat;
-	}
 	public String getUserid() {
 		return userid;
 	}
@@ -84,7 +70,7 @@ public class AccountVO {
 	public String toString() {
 		return "AccountVO [accountid=" + accountid + ", moneytype=" + moneytype + ", date=" + date + ", astname="
 				+ astname + ", catename=" + catename + ", content=" + content + ", total=" + total + ", memo=" + memo
-				+ ", mark=" + mark + ", repeat=" + repeat + ", userid=" + userid + "]";
+				+ ", userid=" + userid + "]";
 	}
 	
 }

@@ -24,25 +24,28 @@
 			},
 			success : function(map) {
 				var account_html = "<table class='list-table'>";
+				var addmark_html = "<table class='list-table'>";
+
 				for(var key in map) {
 					account_html += "<tr class='tr-date'><td colspan='5'>" + key + "</td></tr>";
 					var value = map[key].split(",");
 					for(var i = 0; i < value.length; i++) {
 						var account = value[i].split("/");
 						account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
-						account_html += "<td style='display:none;'> " + account[0] + "</td>"; // 수입/지출 ID
-						account_html += "<td style='display:none;'> " + account[1] + "</td>"; // 수입 또는 지출(moneytype)
-						account_html += "<td style='display:none;'> " + account[2] + "</td>"; // 자산
-						account_html += "<td> " + account[3] + "</td>"; // 카테고리
-						account_html += "<td> " + account[4] + "</td>"; // 내용
+						account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
+						account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
+						account_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
+						account_html += "<td>" + account[3] + "</td>"; // 카테고리
+						account_html += "<td>" + account[4] + "</td>"; // 내용
 						if(account[1] == "수입") {
-							account_html += "<td class='text-right blue'> " + account[5] + "원</td>"; // 돈
+							account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
 						} else {
-							account_html += "<td class='text-right red'> " + account[5] + "원</td>";
+							account_html += "<td class='text-right red'>" + account[5] + "원</td>";
 						}
-						account_html += "<td style='display:none;'> ," + account[6] + "</td></tr>"; // 메모
+						account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
 					}
 				}
+				
 				account_html += "</table>";
 				$("#account-list-div").html(account_html);
 			}
@@ -55,18 +58,25 @@
 		})
 		// 내용 tr 클릭 시
 		$(document).on("click", ".tr-content", function() {
-			var content = $(this).text().split(" ");
+			var actdate = $(this).children().eq(0).text();
+			var actid = $(this).children().eq(1).text();
+			var actmoneytype = $(this).children().eq(2).text();
+			var actasset = $(this).children().eq(3).text();
+			var actcatename = $(this).children().eq(4).text();
+			var actcontent = $(this).children().eq(5).text();
+			var acttotal = $(this).children().eq(6).text();
+			var actmemo = $(this).children().eq(7).text();
+			
 			$("#up-account-modal").show();
+			$("#up-actdate").attr("value", actdate);
+			$("#up-actid").attr("value", actid);
+			$("#up-actasset").attr("value", actasset);
+			$("#up-actcatename").attr("value", actcatename);
+			$("#up-actcontent").attr("value", actcontent);
+			$("#up-acttotal").attr("value", acttotal.split("원")[0]);
+			$("#up-actmemo").html(actmemo);
 			
-			$("#up-actdate").attr("value", content[0]);
-			$("#up-actid").attr("value", content[1]);
-			$("#up-actasset").attr("value", content[3]);
-			$("#up-actcatename").attr("value", content[4]);
-			$("#up-actcontent").attr("value", content[5]);
-			$("#up-acttotal").attr("value", content[6].split("원")[0]);
-			$("#up-actmemo").attr("value", content[7]);
-			
-			if(content[2] == "수입") {
+			if(actmoneytype == "수입") {
 				$("input:radio[name='up-mtype'][value='수입']").attr("checked", true);
 			} else {
 				$("input:radio[name='up-mtype'][value='지출']").attr("checked", true);
@@ -105,13 +115,13 @@
 			}
 		})
 		$(document).on("click", "#select-incate-list-div #in-category-table tr", function() {
-			originName = $(this).text().split(" ");
-			$("#up-actcatename").attr("value", originName[1]); // 수정 모달 input에 현재 이름 값 삽입
+			originName = $(this).children().eq(1).text();
+			$("#up-actcatename").attr("value", originName); // 수정 모달 input에 현재 이름 값 삽입
 			$("#select-incate-modal").hide();
 		})
 		$(document).on("click", "#select-outcate-list-div #out-category-table tr", function() {
-			originName = $(this).text().split(" ");
-			$("#up-actcatename").attr("value", originName[1]); // 수정 모달 input에 현재 이름 값 삽입
+			originName = $(this).children().eq(1).text();
+			$("#up-actcatename").attr("value", originName); // 수정 모달 input에 현재 이름 값 삽입
 			$("#select-outcate-modal").hide();
 		})
 		// 수입/지출 수정 모달 닫기
@@ -182,8 +192,8 @@
 
 				for(let i = 0; i < cateList.length; i++) {
 					if(cateList[i].moneytype == "수입") {
-						in_html += "<tr><td style='display: none;'>" + cateList[i].moneytype + "</td>"
-						in_html += "<td class='group-list is-border'> " + cateList[i].catename + "</td></tr>"
+						in_html += "<tr><td style='display: none;'>" + cateList[i].moneytype + "</td>";
+						in_html += "<td class='group-list is-border'>" + cateList[i].catename + "</td></tr>";
 					}
 				}
 				in_html += "</table>";
@@ -191,8 +201,8 @@
 				var out_html = "<table class='table' id='out-category-table'>";
 				for(let i = 0; i < cateList.length; i++) {
 					if(cateList[i].moneytype == "지출") {
-						out_html += "<tr><td style='display: none;'>" + cateList[i].moneytype + "</td>"
-						out_html += "<td class='group-list is-border'> " + cateList[i].catename + "</td></tr>"
+						out_html += "<tr><td style='display: none;'>" + cateList[i].moneytype + "</td>";
+						out_html += "<td class='group-list is-border'>" + cateList[i].catename + "</td></tr>";
 					}
 				}
 				out_html += "</table>";
@@ -275,19 +285,22 @@
 		})
 		
 		// 카테고리 수정 모달 열기
+		var originCate;
 		var originName;
 		
 		$(document).on("click", "#in-category-list-div #in-category-table tr", function() {
-			originName = $(this).text().split(" ");
-			$("#up-moneytype").attr("value", originName[0]); // 수정 모달 input에 현재 분류 값 삽입
-			$("#up-catename").attr("value", originName[1]); // 수정 모달 input에 현재 이름 값 삽입
+			originCate = $(this).children().eq(0).text();
+			originName = $(this).children().eq(1).text();
+			$("#up-moneytype").attr("value", originCate); // 수정 모달 input에 현재 분류 값 삽입
+			$("#up-catename").attr("value", originName); // 수정 모달 input에 현재 이름 값 삽입
 			
 			$("#up-category-modal").show(); // 모달 열기
 		})
 		$(document).on("click", "#out-category-list-div #out-category-table tr", function() {
-			originName = $(this).text().split(" ");
-			$("#up-moneytype").attr("value", originName[0]); // 수정 모달 input에 현재 분류 값 삽입
-			$("#up-catename").attr("value", originName[1]); // 수정 모달 input에 현재 이름 값 삽입
+			originCate = $(this).children().eq(0).text();
+			originName = $(this).children().eq(1).text();
+			$("#up-moneytype").attr("value", originCate); // 수정 모달 input에 현재 분류 값 삽입
+			$("#up-catename").attr("value", originName); // 수정 모달 input에 현재 이름 값 삽입
 			
 			$("#up-category-modal").show(); // 모달 열기
 		})
@@ -311,8 +324,8 @@
 								type : "post",
 								url : "updateCategory",
 								data : {
-									originType : originName[0],
-									originName : originName[1],
+									originType : originCate,
+									originName : originName,
 									updateType : $("#up-moneytype").val(),
 									updateName : $("#up-catename").val(),
 									userid : userid
@@ -402,13 +415,13 @@
 			}
 		})
 		$(document).on("click", "#select-incate-list-div #in-category-table tr", function() {
-			originName = $(this).text().split(" ");
-			$("#add-actcatename").attr("value", originName[1]); // 수정 모달 input에 현재 이름 값 삽입
+			originName = $(this).children().eq(1).text();
+			$("#add-actcatename").attr("value", originName); // 수정 모달 input에 현재 이름 값 삽입
 			$("#select-incate-modal").hide();
 		})
 		$(document).on("click", "#select-outcate-list-div #out-category-table tr", function() {
-			originName = $(this).text().split(" ");
-			$("#add-actcatename").attr("value", originName[1]); // 수정 모달 input에 현재 이름 값 삽입
+			originName = $(this).children().eq(1).text();
+			$("#add-actcatename").attr("value", originName); // 수정 모달 input에 현재 이름 값 삽입
 			$("#select-outcate-modal").hide();
 		})
 		// 카테고리 선택 모달 닫기
@@ -476,6 +489,26 @@
 				}
 			})
 		})
+		
+		// 즐겨찾기 모달 열기
+		$("#bookmark-page").click(function() {
+			$("#bookmark-modal").show();
+		})
+		// 즐겨찾기 모달 닫기
+		$("#close-bookmark").click(function() {
+			$("#bookmark-modal").hide();
+		})
+		// 즐겨찾기 추가 모달 열기
+		$("#add-bookmark-page").click(function() {
+			$("#add-bookmark-modal").show();
+		})
+		$("#close-add-bookmark").click(function() {
+			$("#add-bookmark-modal").hide();
+		})
+		// 수입/지출 내역 tr 클릭 시 즐겨찾기에 추가되도록
+		$(document).on("click", ".tr-addmark", function() {
+			alert($(this).text());
+		})
 	})
 </script>
 </head>
@@ -497,7 +530,7 @@
 				<button class="btn long gray" id="in-category-btn">수입 분류</button>
 				<button class="btn long gray" id="out-category-btn">지출 분류</button>
 				<button class="btn long gray" id="add-account-page">수입/지출 추가</button>
-				<button class="btn long gray" id="mark-page">즐겨찾기</button>
+				<button class="btn long gray" id="bookmark-page">즐겨찾기</button>
 				
 				<div id="account-list-div">
 				
