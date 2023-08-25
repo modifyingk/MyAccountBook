@@ -16,4 +16,9 @@
 	<update id="updateAccount" parameterType="accountVO">
 		update account set moneytype = #{moneytype}, date = #{date}, astname = #{astname}, catename = #{catename}, content = #{content}, total = #{total}, memo = #{memo} where userid = #{userid} and accountid = #{accountid};
 	</update>
+	
+	<!-- 수입/지출 내역 삭제 -->
+	<delete id="deleteAccount" parameterType="accountVO">
+		delete from account where accountid = #{accountid} and userid = #{userid};
+	</delete>
 </mapper>

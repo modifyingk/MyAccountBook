@@ -24,7 +24,11 @@ public class AccountDAO {
 	
 	// 수입/지출 수정
 	public int updateAccount(AccountVO accountVO) {
-		System.out.println(my.update("accountMapper.updateAccount", accountVO));
 		return my.update("accountMapper.updateAccount", accountVO);
+	}
+	
+	// 수입/지출 삭제
+	public int deleteAccount(AccountVO accountVO) {
+		return my.delete("accountMapper.deleteAccount", accountVO);
 	}
 }

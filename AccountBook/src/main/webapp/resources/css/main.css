@@ -322,6 +322,9 @@
 	border-color: lightgray;
 	cursor: pointer;
 }
+.text-right {
+	text-align: right;
+}
 .blue {
 	color : #0C70F2;
 }

@@ -50,8 +50,19 @@ public class AccountController {
 	@ResponseBody
 	@RequestMapping("account/updateAccount")
 	public String updateAccount(AccountVO accountVO) {
-		System.out.println(accountVO);
 		int result = aDao.updateAccount(accountVO);
+		if(result == 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
+	// 수입/지출 삭제
+	@ResponseBody
+	@RequestMapping("account/deleteAccount")
+	public String deleteAccount(AccountVO accountVO) {
+		int result = aDao.deleteAccount(accountVO);
 		if(result == 1) {
 			return "success";
 		} else {

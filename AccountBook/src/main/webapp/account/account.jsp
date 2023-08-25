@@ -36,9 +36,9 @@
 						account_html += "<td> " + account[3] + "</td>"; // 카테고리
 						account_html += "<td> " + account[4] + "</td>"; // 내용
 						if(account[1] == "수입") {
-							account_html += "<td class='blue'> " + account[5] + "원</td>"; // 돈
+							account_html += "<td class='text-right blue'> " + account[5] + "원</td>"; // 돈
 						} else {
-							account_html += "<td class='red'> " + account[5] + "원</td>";
+							account_html += "<td class='text-right red'> " + account[5] + "원</td>";
 						}
 						account_html += "<td style='display:none;'> ," + account[6] + "</td></tr>"; // 메모
 					}
@@ -142,6 +142,27 @@
 					}
 				}
 			})
+		})
+		// 수입/지출 삭제
+		$("#del-account-btn").click(function() {
+			var op = confirm("내역을 삭제하시겠습니까?")
+			if(op) {
+				$.ajax({
+					type : "post",
+					url : "deleteAccount",
+					data : {
+						accountid : $("#up-actid").val(),
+						userid : userid
+					},
+					success : function(x) {
+						if(x == "success") {
+							window.location.reload();
+						} else {
+							alert("다시 시도해주세요.");
+						}
+					}
+				})
+			}
 		})
 		// 금액에 숫자만 입력되도록
 		$("#up-acttotal, #add-acttotal").keyup(function() {
@@ -712,6 +733,7 @@
 								</tr>
 							</table>
 							<button class="btn medium green" id="up-account-btn">수정</button>
+							<button class="btn outline-green" style="height: 48px;" id="del-account-btn">삭제</button>
 						</div>
 					</div>
 					<hr>
