@@ -31,4 +31,24 @@ public class AccountDAO {
 	public int deleteAccount(AccountVO accountVO) {
 		return my.delete("accountMapper.deleteAccount", accountVO);
 	}
+	
+	// 즐겨찾는 지출 내역 중복 없이 가져오기
+	public List<AccountVO> addBookmarkInfo(String userid) {
+		return my.selectList("accountMapper.addBookmarkInfo", userid);
+	}
+	
+	// 즐겨찾기 추가
+	public int insertBookmark(BookmarkVO bookmarkVO) {
+		return my.insert("bookmarkMapper.insertBookmark", bookmarkVO);
+	}
+	
+	// 즐겨찾기 추가
+	public List<BookmarkVO> bookmarkInfo(String userid) {
+		return my.selectList("bookmarkMapper.bookmarkInfo", userid);
+	}
+	
+	// 즐겨찾기 삭제
+	public int deleteBookmark(BookmarkVO bookmarkVO) {
+		return my.delete("bookmarkMapper.deleteBookmark", bookmarkVO);
+	}
 }

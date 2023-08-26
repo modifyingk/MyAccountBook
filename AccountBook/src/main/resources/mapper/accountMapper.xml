@@ -21,4 +21,9 @@
 	<delete id="deleteAccount" parameterType="accountVO">
 		delete from account where accountid = #{accountid} and userid = #{userid};
 	</delete>
+	
+	<!-- 즐겨찾는 지출 내역 중복 없이 가져오기 -->
+	<select id="addBookmarkInfo" parameterType="String" resultType="accountVO">
+		select distinct catename, content, total from account where userid = #{userid} and moneytype = "지출";
+	</select>
 </mapper>

@@ -27,7 +27,7 @@
 				var addmark_html = "<table class='list-table'>";
 
 				for(var key in map) {
-					account_html += "<tr class='tr-date'><td colspan='5'>" + key + "</td></tr>";
+					account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
 					var value = map[key].split(",");
 					for(var i = 0; i < value.length; i++) {
 						var account = value[i].split("/");
@@ -44,6 +44,7 @@
 						}
 						account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
 					}
+					account_html += "<tr style='border : 0;'><td></td></tr>";
 				}
 				
 				account_html += "</table>";
@@ -394,10 +395,13 @@
 		/* ---------------------------- 수입/지출 추가 ---------------------------- */
 		// 수입/지출 추가 모달 열기
 		$("#add-account-page").click(function() {
-			$("#add-account-modal").show();
 			// 자산, 카테고리 값 다 비우고 추가 (수입/지출내역 수정할 때 자산, 카테고리 선택하면 같이 변경되므로)
 			$("#add-actasset").attr("value", "");
 			$("#add-actcatename").attr("value", "");
+			$("#add-actcontent").attr("value", "");
+			$("#add-acttotal").attr("value", "");
+
+			$("#add-account-modal").show();
 		})
 		// 수입/지출 추가 모달 닫기
 		$("#close-add-account").click(function() {
@@ -489,7 +493,7 @@
 				}
 			})
 		})
-		
+		/* ---------------------------- 즐겨찾기 ---------------------------- */
 		// 즐겨찾기 모달 열기
 		$("#bookmark-page").click(function() {
 			$("#bookmark-modal").show();
@@ -505,9 +509,102 @@
 		$("#close-add-bookmark").click(function() {
 			$("#add-bookmark-modal").hide();
 		})
+		$.ajax({
+			type : "post",
+			url : "addBookmarkInfo",
+			data : {
+				userid : userid
+			},
+			success : function(addmarkList) {
+				var addmark_html = "<table class='list-table'>";
+				for(var i = 0; i < addmarkList.length; i++) {
+					addmark_html += "<tr class='tr-addmark'><td>" + addmarkList[i].catename + "</td>";
+					addmark_html += "<td>" + addmarkList[i].content + "</td>";
+					addmark_html += "<td class='text-right red'>" + addmarkList[i].total + "원</td></tr>";
+				}
+				addmark_html += "</table>";
+				$("#add-bookmark-list-div").html(addmark_html);
+			}
+		})
 		// 수입/지출 내역 tr 클릭 시 즐겨찾기에 추가되도록
 		$(document).on("click", ".tr-addmark", function() {
-			alert($(this).text());
+			var catename = $(this).children().eq(0).text();
+			var content = $(this).children().eq(1).text();
+			var total = $(this).children().eq(2).text().split("원")[0];
+			
+			// 즐겨찾기 추가
+			$.ajax({
+				type : "post",
+				url : "insertBookmark",
+				data : {
+					catename : catename,
+					content : content,
+					total : total,
+					userid : userid
+				},
+				success : function(x) {
+					if(x == "success") {
+						window.location.reload();
+					} else {
+						alert("즐겨찾기 추가에 실패하였습니다.")
+					}
+				}
+			})
+		})
+		// 즐겨찾기 리스트
+		$.ajax({
+			type : "post",
+			url : "bookmarkInfo",
+			data : {
+				userid : userid
+			},
+			success : function(bookmarkList) {
+				mark_html = "<table class='list-table'>";
+				for(var i = 0; i < bookmarkList.length; i++) {
+					mark_html += "<tr><td class='td-bookmark' style='display:none;'>" + bookmarkList[i].bookmarkid + "</td>";
+					mark_html += "<td class='td-bookmark'>" + bookmarkList[i].catename + "</td>";
+					mark_html += "<td class='td-bookmark'>" + bookmarkList[i].content + "</td>";
+					mark_html += "<td class='td-bookmark text-right red'>" + bookmarkList[i].total + "원</td>";
+					mark_html += "<td class='td-delmark'><i class='fi fi-sr-minus-circle del-icon'></i></td></tr>";
+				}
+				
+				$("#bookmark-list-div").html(mark_html);
+			}
+		})
+		// tr 클릭 시
+		$(document).on("click", ".td-bookmark", function() {
+			var catename = $(this).parent().children().eq(1).text();
+			var content = $(this).parent().children().eq(2).text();
+			var total = $(this).parent().children().eq(3).text().split("원")[0];
+			
+			$("#bookmark-modal").hide();
+			$("#add-account-modal").show();
+			
+			$("#add-actcatename").attr("value", catename);
+			$("#add-actcontent").attr("value", content);
+			$("#add-acttotal").attr("value", total);
+		})
+		// 삭제 클릭 시
+		$(document).on("click", ".td-delmark", function() {
+			var bookmarkid = $(this).parent().children().eq(0).text();
+			var op = confirm("즐겨찾기를 삭제하시겠습니까?");
+			if(op) {
+				$.ajax({
+					type : "post",
+					url : "deleteBookmark",
+					data : {
+						bookmarkid : bookmarkid,
+						userid : userid
+					},
+					success : function(x) {
+						if(x == "success") {
+							window.location.reload();
+						} else {
+							alert("다시 시도해주세요.");
+						}
+					}
+				})
+			}
 		})
 	})
 </script>
@@ -817,6 +914,39 @@
 					</div>
 					<div class="modal-footer">
 						<button class="btn right outline-green" id="close-select-outcate">닫기</button>
+					</div>
+				</div>
+			</div>
+			<!-- 즐겨찾기 모달 -->
+			<div class="modal" id="bookmark-modal" hidden="true">
+				<div class="modal-content">
+					<div class="modal-title">
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 즐겨찾기</h3>
+					</div>
+					<button class="btn medium green" id="add-bookmark-page" style="margin-left: 10px;">추가</button>
+					<div class="modal-body">
+						<div id="bookmark-list-div">
+							
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn right outline-green" id="close-bookmark">닫기</button>
+					</div>
+				</div>
+			</div>
+			<!-- 즐겨찾기 추가 모달 -->
+			<div class="modal" id="add-bookmark-modal" hidden="true">
+				<div class="modal-content">
+					<div class="modal-title">
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 즐겨찾기 추가</h3>
+					</div>
+					<div class="modal-body">
+						<div id="add-bookmark-list-div">
+							
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn right outline-green" id="close-add-bookmark">닫기</button>
 					</div>
 				</div>
 			</div>

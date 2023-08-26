@@ -9,6 +9,7 @@
       <typeAlias type="com.modifyk.accountbook.asset.AssetVO" alias="assetVO"></typeAlias>
       <typeAlias type="com.modifyk.accountbook.account.CategoryVO" alias="categoryVO"></typeAlias>
       <typeAlias type="com.modifyk.accountbook.account.AccountVO" alias="accountVO"></typeAlias>
+      <typeAlias type="com.modifyk.accountbook.account.BookmarkVO" alias="bookmarkVO"></typeAlias>
    </typeAliases>
    <mappers>
    <!-- SQL문 정의하는 파일들의 목록 -->
@@ -17,5 +18,6 @@
       <mapper resource="mapper/assetgroupMapper.xml" />
       <mapper resource="mapper/categoryMapper.xml" />
       <mapper resource="mapper/accountMapper.xml" />
+      <mapper resource="mapper/bookmarkMapper.xml" />
    </mappers>
 </configuration>

@@ -69,4 +69,44 @@ public class AccountController {
 			return "fail";
 		}
 	}
+	
+	// 즐겨찾는 지출 내역 중복 없이 가져오기
+	@ResponseBody
+	@RequestMapping("account/addBookmarkInfo")
+	public List<AccountVO> addBookmarkInfo(String userid) {
+		List<AccountVO> addmarkList = aDao.addBookmarkInfo(userid);
+		return addmarkList;
+	}
+	
+	// 즐겨찾기에 추가
+	@ResponseBody
+	@RequestMapping("account/insertBookmark")
+	public String addBookmark(BookmarkVO bookmarkVO) {
+		int result = aDao.insertBookmark(bookmarkVO);
+		if(result == 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
+	// 즐겨찾기 목록
+	@ResponseBody
+	@RequestMapping("account/bookmarkInfo")
+	public List<BookmarkVO> bookmarkInfo(String userid) {
+		List<BookmarkVO> bookmarkList = aDao.bookmarkInfo(userid);
+		return bookmarkList;
+	}
+	
+	// 즐겨찾기 삭제
+	@ResponseBody
+	@RequestMapping("account/deleteBookmark")
+	public String deleteBookmark(BookmarkVO bookmarkVO) {
+		int result = aDao.deleteBookmark(bookmarkVO);
+		if(result == 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
 }
