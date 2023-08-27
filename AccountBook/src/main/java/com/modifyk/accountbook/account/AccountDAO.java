@@ -51,4 +51,8 @@ public class AccountDAO {
 	public int deleteBookmark(BookmarkVO bookmarkVO) {
 		return my.delete("bookmarkMapper.deleteBookmark", bookmarkVO);
 	}
+	
+	public List<AccountVO> monthAccount(AccountVO accountVO) {
+		return my.selectList("accountMapper.monthAccount", accountVO);
+	}
 }

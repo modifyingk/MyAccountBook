@@ -26,4 +26,9 @@
 	<select id="addBookmarkInfo" parameterType="String" resultType="accountVO">
 		select distinct catename, content, total from account where userid = #{userid} and moneytype = "지출";
 	</select>
+	
+	<!-- 월별 수입/지출 내역 -->
+	<select id="monthAccount" parameterType="accountVO" resultType="accountVO">
+		select * from account where userid = #{userid} and left(date, 7) = #{date};
+	</select>
 </mapper>
