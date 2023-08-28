@@ -38,6 +38,10 @@
 	width: 68%;
 	float: left;
 }
+.col-5 {
+	width: 49%;
+	float: left;
+}
 .is-border {
 	border: 1px solid lightgray;
 	border-radius: 10px;

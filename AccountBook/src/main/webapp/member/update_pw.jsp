@@ -65,6 +65,14 @@
 		<!-- 사이드바 -->
 		<div class="col-2 is-border is-shadow">
 			<jsp:include page="../main/sidebar.jsp"></jsp:include>
+			<img src="../resources/img/logo.png" style="width: 90%;" onclick="location.href='../main/main.jsp'">
+			<ul class="menu-group">
+				<li class="menu active"><i class="fi fi-rr-home"></i> 메인페이지</li>
+				<li class="menu"><i class="fi fi-rr-add"></i> 수입/지출 관리</li>		
+				<li class="menu"><i class="fi fi-rr-coins"></i> 자산관리</li>		
+				<li class="menu"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
+				<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표지출</li>
+			</ul>
 		</div>
 		
 		<!-- 컨텐츠 -->

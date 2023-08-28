@@ -20,6 +20,9 @@ public class AccountController {
 	@Autowired
 	AccountToMapService toMapSvc;
 	
+	@Autowired
+	StatsMapService stMapSvc;
+	
 	// 수입/지출 추가
 	@ResponseBody
 	@RequestMapping("account/insertAccount")
@@ -114,9 +117,17 @@ public class AccountController {
 	@ResponseBody
 	@RequestMapping("account/monthAccount")
 	public HashMap<String, Object> monthAccount(AccountVO accountVO) {
-		System.out.println(accountVO);
 		List<AccountVO> accountList = aDao.monthAccount(accountVO);
 		HashMap<String, Object> map = toMapSvc.toMap(accountList);
+		return map;
+	}
+	
+	// 카테고리별 합계
+	@ResponseBody
+	@RequestMapping("account/cateSpend")
+	public HashMap<String, Object> cateSpend(AccountVO accountVO) {
+		List<AccountVO> accountList = aDao.monthSpend(accountVO);
+		HashMap<String, Object> map = stMapSvc.toMap(accountList);
 		return map;
 	}
 }

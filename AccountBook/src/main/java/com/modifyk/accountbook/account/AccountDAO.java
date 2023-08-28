@@ -52,7 +52,13 @@ public class AccountDAO {
 		return my.delete("bookmarkMapper.deleteBookmark", bookmarkVO);
 	}
 	
+	// 월별 수입/지출 내역
 	public List<AccountVO> monthAccount(AccountVO accountVO) {
 		return my.selectList("accountMapper.monthAccount", accountVO);
+	}
+	
+	// 월별 지출 내역
+	public List<AccountVO> monthSpend(AccountVO accountVO) {
+		return my.selectList("accountMapper.monthSpend", accountVO);
 	}
 }

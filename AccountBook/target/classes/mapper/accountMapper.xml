@@ -31,4 +31,9 @@
 	<select id="monthAccount" parameterType="accountVO" resultType="accountVO">
 		select * from account where userid = #{userid} and left(date, 7) = #{date};
 	</select>
+	
+	<!-- 월별 지출 내역 -->
+	<select id="monthSpend" parameterType="accountVO" resultType="accountVO">
+		select * from account where userid = #{userid} and left(date, 7) = #{date} and moneytype = "지출";
+	</select>
 </mapper>

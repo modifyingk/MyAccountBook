@@ -27,7 +27,7 @@
 					html += "<tr><td>" + key + "</td></tr>"; // key 값인 자산 그룹 이름 출력
 					var value = map[key].split(","); // 자산 그룹에 해당하는 자산이 여러 개이면 ,로 구분되어 있으므로 ,를 기준으로 분리하여 value 변수에 저장
 					for(var i = 0; i < value.length; i++) {
-						var asset = value[i].split("/"); // 자산이름과 자산메모는 /로 구분되어 있으므로 /를 기준으로 분리하여 asset 변수에 저장
+						var asset = value[i].split("#"); // 자산이름과 자산메모는 /로 구분되어 있으므로 /를 기준으로 분리하여 asset 변수에 저장
 							html += "<tr class='asset-name'><td class='group-list is-border'>" + asset[0] + "</td>"; // asset[0]은 자산 이름
 							html += "<td style='display:none;'>" + key + "</td>"; // key는 자산 그룹 (클릭 시 값 넘기기 위한 것으로, 화면에는 보이지 않도록 생성)
 							html += "<td style='display:none;'>" + asset[1] + "</td></tr>"; // asset[1]은 자산 메모 (클릭 시 값 넘기기 위한 것으로, 화면에는 보이지 않도록 생성)
@@ -388,6 +388,14 @@
 		<!-- 사이드바 -->
 		<div class="col-2 is-border is-shadow">
 			<jsp:include page="../main/sidebar.jsp"></jsp:include>
+			<img src="../resources/img/logo.png" style="width: 90%;" onclick="location.href='../main/main.jsp'">
+			<ul class="menu-group">
+				<li class="menu"><i class="fi fi-rr-home"></i> 메인페이지</li>
+				<li class="menu"><i class="fi fi-rr-add"></i> 수입/지출 관리</li>		
+				<li class="menu active"><i class="fi fi-rr-coins"></i> 자산관리</li>		
+				<li class="menu"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
+				<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표지출</li>
+			</ul>
 		</div>
 
 		<!-- 컨텐츠 -->
@@ -401,6 +409,7 @@
 				<button class="btn long gray" id="astgroup-btn">자산그룹</button>
 				<button class="btn long outline-green" id="add-asset-page">자산 추가</button>
 				<div id="asset-list-div"></div>
+				
 				<!-- 자산 모달 -->
 				<div class="modal" id="up-asset-modal" hidden="true">
 					<div class="modal-content medium">

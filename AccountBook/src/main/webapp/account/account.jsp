@@ -10,6 +10,7 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
 	$(function() {
 		var userid = "<%= session.getAttribute("userid") %>";
@@ -43,7 +44,7 @@
 					account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
 					var value = map[key].split(",");
 					for(var i = 0; i < value.length; i++) {
-						var account = value[i].split("/");
+						var account = value[i].split("#");
 						account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
 						account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
 						account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
@@ -62,6 +63,46 @@
 				
 				account_html += "</table>";
 				$("#month-account-list-div").html(account_html);
+			}
+		})
+		$.ajax({
+			type : "post",
+			url : "cateSpend",
+			data : {
+				date : todayAll,
+				userid : userid
+			},
+			success : function(map) {
+				google.charts.load("current", {packages:["corechart"]});
+				google.charts.setOnLoadCallback(drawChart);
+				var category = Object.keys(map);
+				var catedata = new Array(category.length + 1);
+				for(var i = 0; i < catedata.length; i++) {
+					catedata[i] = Array(2);
+				}
+				
+				catedata[0][0] = "지출";
+				catedata[0][1] = "카테고리별 지출 내역";
+				
+				for(var i = 1; i <= category.length; i++) {
+					catedata[i][0] = category[i - 1];
+					catedata[i][1] = parseInt(map[category[i - 1]]);
+				}
+				
+				function drawChart() {
+			        var data = google.visualization.arrayToDataTable(catedata);
+
+			        var options = {
+			                legend: 'none',
+			                pieSliceText: 'label',
+			                pieStartAngle: 0,
+			                chartArea:{left:0,top:0,width:'50%',height:'75%'}
+			              };
+
+			        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+			        chart.draw(data, options);
+			      }
 			}
 		})
 		$(document).on("click", "#before", function() {
@@ -101,7 +142,7 @@
 						account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
 						var value = map[key].split(",");
 						for(var i = 0; i < value.length; i++) {
-							var account = value[i].split("/");
+							var account = value[i].split("#");
 							account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
 							account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
 							account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
@@ -122,6 +163,46 @@
 					$("#month-account-list-div").html(account_html);
 				}
 			})
+			$.ajax({
+			type : "post",
+			url : "cateSpend",
+			data : {
+				date : todayAll,
+				userid : userid
+			},
+			success : function(map) {
+				google.charts.load("current", {packages:["corechart"]});
+				google.charts.setOnLoadCallback(drawChart);
+				var category = Object.keys(map);
+				var catedata = new Array(category.length + 1);
+				for(var i = 0; i < catedata.length; i++) {
+					catedata[i] = Array(2);
+				}
+				
+				catedata[0][0] = "지출";
+				catedata[0][1] = "카테고리별 지출 내역";
+				
+				for(var i = 1; i <= category.length; i++) {
+					catedata[i][0] = category[i - 1];
+					catedata[i][1] = parseInt(map[category[i - 1]]);
+				}
+				
+				function drawChart() {
+			        var data = google.visualization.arrayToDataTable(catedata);
+
+			        var options = {
+			                legend: 'none',
+			                pieSliceText: 'label',
+			                pieStartAngle: 0,
+			                chartArea:{left:0,top:0,width:'50%',height:'75%'}
+			              };
+
+			        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+			        chart.draw(data, options);
+			      }
+			}
+		})
 		})
 		$(document).on("click", "#after", function() {
 			var current = todayAll.split("-");
@@ -161,7 +242,7 @@
 						account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
 						var value = map[key].split(",");
 						for(var i = 0; i < value.length; i++) {
-							var account = value[i].split("/");
+							var account = value[i].split("#");
 							account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
 							account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
 							account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
@@ -182,6 +263,46 @@
 					$("#month-account-list-div").html(account_html);
 				}
 			})
+			$.ajax({
+			type : "post",
+			url : "cateSpend",
+			data : {
+				date : todayAll,
+				userid : userid
+			},
+			success : function(map) {
+				google.charts.load("current", {packages:["corechart"]});
+				google.charts.setOnLoadCallback(drawChart);
+				var category = Object.keys(map);
+				var catedata = new Array(category.length + 1);
+				for(var i = 0; i < catedata.length; i++) {
+					catedata[i] = Array(2);
+				}
+				
+				catedata[0][0] = "지출";
+				catedata[0][1] = "카테고리별 지출 내역";
+				
+				for(var i = 1; i <= category.length; i++) {
+					catedata[i][0] = category[i - 1];
+					catedata[i][1] = parseInt(map[category[i - 1]]);
+				}
+				
+				function drawChart() {
+			        var data = google.visualization.arrayToDataTable(catedata);
+
+			        var options = {
+			                legend: 'none',
+			                pieSliceText: 'label',
+			                pieStartAngle: 0,
+			                chartArea:{left:0,top:0,width:'50%',height:'75%'}
+			              };
+
+			        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+			        chart.draw(data, options);
+			      }
+			}
+		})
 		})
 		/* ---------------------------- 수입/지출 목록 ---------------------------- */
 		// 수입/지출 목록 가져오기
@@ -639,6 +760,8 @@
 		// 수입/지출 추가 버튼
 		$("#add-account-btn").click(function() {
 			var mtype = $("input[name=select-mtype]:checked").val();
+			alert($("#add-actcatename").val())
+			alert($("#add-acttotal").val())
 			$.ajax({
 				type : "post",
 				url : "insertAccount",
@@ -782,6 +905,14 @@
 		<!-- 사이드바 -->
 		<div class="col-2 is-border is-shadow">
 			<jsp:include page="../main/sidebar.jsp"></jsp:include>
+			<img src="../resources/img/logo.png" style="width: 90%;" onclick="location.href='../main/main.jsp'">
+			<ul class="menu-group">
+				<li class="menu"><i class="fi fi-rr-home"></i> 메인페이지</li>
+				<li class="menu active"><i class="fi fi-rr-add"></i> 수입/지출 관리</li>		
+				<li class="menu"><i class="fi fi-rr-coins"></i> 자산관리</li>		
+				<li class="menu"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
+				<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표지출</li>
+			</ul>
 		</div>
 
 		<!-- 컨텐츠 -->
@@ -797,9 +928,15 @@
 				<button class="btn long gray" id="add-account-page">수입/지출 추가</button>
 				<button class="btn long gray" id="bookmark-page">즐겨찾기</button>
 				
-				<div id="account-list-div"></div>
-				<div id="month-account-list-div">
 				
+				<div id="account-list-div"></div>
+				
+				<div>
+					<div id="month-account-list-div" class="col-5"></div>
+					<div class="col-5">
+						<h4 class="h-normal fs-23">통계</h4>
+						<div id="piechart" style="width: 800px; height: 400px;"></div>
+					</div>			
 				</div>
 				
 				<!-- 수입 카테고리 모달 -->
