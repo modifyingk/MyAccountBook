@@ -110,7 +110,15 @@
 			        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 
 			        chart.draw(data, options);
-			      }
+				}
+				
+				var stats_html = "<table class='list-table'>";
+				for(var key in map) {
+					stats_html += "<tr><td>" + key + "</td>";
+					stats_html += "<td>" + map[key] + "</td></tr>";
+				}
+				stats_html += "</table>";
+				$("#category-stats-div").html(stats_html);
 			}
 		})
 		$(document).on("click", "#before", function() {
@@ -216,7 +224,15 @@
 			        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 
 			        chart.draw(data, options);
-			      }
+			    }
+				
+				var stats_html = "<table class='list-table'>";
+				for(var key in map) {
+					stats_html += "<tr><td>" + key + "</td>";
+					stats_html += "<td>" + map[key] + "</td></tr>";
+				}
+				stats_html += "</table>";
+				$("#category-stats-div").html(stats_html);
 			}
 		})
 		})
@@ -324,7 +340,15 @@
 			        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 
 			        chart.draw(data, options);
-			      }
+			    }
+				
+				var stats_html = "<table class='list-table'>";
+				for(var key in map) {
+					stats_html += "<tr><td>" + key + "</td>";
+					stats_html += "<td>" + map[key] + "</td></tr>";
+				}
+				stats_html += "</table>";
+				$("#category-stats-div").html(stats_html);
 			}
 		})
 		})
@@ -960,6 +984,7 @@
 					<div class="col-5">
 						<h4 class="h-normal fs-23">통계</h4>
 						<div id="piechart" style="width: 800px; height: 400px;"></div>
+						<div id="category-stats-div"></div>
 					</div>			
 				</div>
 				
