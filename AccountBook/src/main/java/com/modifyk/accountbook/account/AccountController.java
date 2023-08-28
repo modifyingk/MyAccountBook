@@ -118,7 +118,12 @@ public class AccountController {
 	@RequestMapping("account/monthAccount")
 	public HashMap<String, Object> monthAccount(AccountVO accountVO) {
 		List<AccountVO> accountList = aDao.monthAccount(accountVO);
-		HashMap<String, Object> map = toMapSvc.toMap(accountList);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(accountList.size() < 1) {
+			map.put("no", "no");
+		} else {
+			map = toMapSvc.toMap(accountList);
+		}
 		return map;
 	}
 	

@@ -33,35 +33,43 @@
 				userid : userid
 			},
 			success : function(map) {
-				var date = Object.keys(map)[0].substr(0, 7).split("-");
-				var account_html = "<button id='before'>이전</button>";
-				account_html += "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
-				account_html += "<button id='after'>다음</button>";
-				
-				account_html += "<table class='list-table'>";
-
-				for(var key in map) {
-					account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
-					var value = map[key].split(",");
-					for(var i = 0; i < value.length; i++) {
-						var account = value[i].split("#");
-						account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
-						account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
-						account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
-						account_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
-						account_html += "<td>" + account[3] + "</td>"; // 카테고리
-						account_html += "<td>" + account[4] + "</td>"; // 내용
-						if(account[1] == "수입") {
-							account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
-						} else {
-							account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+				if(Object.keys(map) != "no") {
+					var date = Object.keys(map)[0].substr(0, 7).split("-");
+					var account_html = "<button id='before'>이전</button>";
+					account_html += "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+					account_html += "<button id='after'>다음</button>";
+					
+					account_html += "<table class='list-table'>";
+	
+					for(var key in map) {
+						account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
+						var value = map[key].split(",");
+						for(var i = 0; i < value.length; i++) {
+							var account = value[i].split("#");
+							account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
+							account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
+							account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
+							account_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
+							account_html += "<td>" + account[3] + "</td>"; // 카테고리
+							account_html += "<td>" + account[4] + "</td>"; // 내용
+							if(account[1] == "수입") {
+								account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+							} else {
+								account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+							}
+							account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
 						}
-						account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
+						account_html += "<tr style='border : 0;'><td></td></tr>";
 					}
-					account_html += "<tr style='border : 0;'><td></td></tr>";
+					
+					account_html += "</table>";
+				} else {
+					var account_html = "<button id='before'>이전</button>";
+					var date = afterAll.split("-");
+					account_html += "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+					account_html += "<button id='after'>다음</button>";
+					account_html += "<br><i>데이터 없음</i>";
 				}
-				
-				account_html += "</table>";
 				$("#month-account-list-div").html(account_html);
 			}
 		})
@@ -131,35 +139,43 @@
 					userid : userid
 				},
 				success : function(map) {
-					var date = Object.keys(map)[0].substr(0, 7).split("-");
-					var account_html = "<button id='before'>이전</button>";
-					account_html += "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
-					account_html += "<button id='after'>다음</button>";
-					
-					account_html += "<table class='list-table'>";
-
-					for(var key in map) {
-						account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
-						var value = map[key].split(",");
-						for(var i = 0; i < value.length; i++) {
-							var account = value[i].split("#");
-							account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
-							account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
-							account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
-							account_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
-							account_html += "<td>" + account[3] + "</td>"; // 카테고리
-							account_html += "<td>" + account[4] + "</td>"; // 내용
-							if(account[1] == "수입") {
-								account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
-							} else {
-								account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+					if(Object.keys(map) != "no") {
+						var date = Object.keys(map)[0].substr(0, 7).split("-");
+						var account_html = "<button id='before'>이전</button>";
+						account_html += "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						account_html += "<button id='after'>다음</button>";
+						
+						account_html += "<table class='list-table'>";
+	
+						for(var key in map) {
+							account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
+							var value = map[key].split(",");
+							for(var i = 0; i < value.length; i++) {
+								var account = value[i].split("#");
+								account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
+								account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
+								account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
+								account_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
+								account_html += "<td>" + account[3] + "</td>"; // 카테고리
+								account_html += "<td>" + account[4] + "</td>"; // 내용
+								if(account[1] == "수입") {
+									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+								} else {
+									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+								}
+								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
 							}
-							account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
+							account_html += "<tr style='border : 0;'><td></td></tr>";
 						}
-						account_html += "<tr style='border : 0;'><td></td></tr>";
+						
+						account_html += "</table>";
+					} else {
+						var account_html = "<button id='before'>이전</button>";
+						var date = beforeAll.split("-");
+						account_html += "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						account_html += "<button id='after'>다음</button>";
+						account_html += "<br><i>데이터 없음</i>";
 					}
-					
-					account_html += "</table>";
 					$("#month-account-list-div").html(account_html);
 				}
 			})
@@ -231,35 +247,43 @@
 					userid : userid
 				},
 				success : function(map) {
-					var date = Object.keys(map)[0].substr(0, 7).split("-");
-					var account_html = "<button id='before'>이전</button>";
-					account_html += "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
-					account_html += "<button id='after'>다음</button>";
-					
-					account_html += "<table class='list-table'>";
-
-					for(var key in map) {
-						account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
-						var value = map[key].split(",");
-						for(var i = 0; i < value.length; i++) {
-							var account = value[i].split("#");
-							account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
-							account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
-							account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
-							account_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
-							account_html += "<td>" + account[3] + "</td>"; // 카테고리
-							account_html += "<td>" + account[4] + "</td>"; // 내용
-							if(account[1] == "수입") {
-								account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
-							} else {
-								account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+					if(Object.keys(map) != "no") {
+						var date = Object.keys(map)[0].substr(0, 7).split("-");
+						var account_html = "<button id='before'>이전</button>";
+						account_html += "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						account_html += "<button id='after'>다음</button>";
+						
+						account_html += "<table class='list-table'>";
+	
+						for(var key in map) {
+							account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
+							var value = map[key].split(",");
+							for(var i = 0; i < value.length; i++) {
+								var account = value[i].split("#");
+								account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
+								account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
+								account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
+								account_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
+								account_html += "<td>" + account[3] + "</td>"; // 카테고리
+								account_html += "<td>" + account[4] + "</td>"; // 내용
+								if(account[1] == "수입") {
+									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+								} else {
+									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+								}
+								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
 							}
-							account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
+							account_html += "<tr style='border : 0;'><td></td></tr>";
 						}
-						account_html += "<tr style='border : 0;'><td></td></tr>";
+						
+						account_html += "</table>";
+					} else {
+						var account_html = "<button id='before'>이전</button>";
+						var date = afterAll.split("-");
+						account_html += "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						account_html += "<button id='after'>다음</button>";
+						account_html += "<br><i>데이터 없음</i>";
 					}
-					
-					account_html += "</table>";
 					$("#month-account-list-div").html(account_html);
 				}
 			})
