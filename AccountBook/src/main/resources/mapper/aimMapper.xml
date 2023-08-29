@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="aimMapper">
+	<!-- 목표 추가 -->
+	<insert id="insertAim" parameterType="aimVO">
+		insert into aim values (#{aimid}, #{aimdate}, #{moneytype}, #{catename}, #{total}, #{memo}, #{userid});
+	</insert>
+	
+	<!-- 목표 가져오기 -->
+	<select id="aimInfo" parameterType="aimVO" resultType="aimjoinVO">
+		<!-- select * from aim where userid = #{userid}; -->
+		select a.moneytype, a.catename, a.total as aim_money, sum(c.total) as total
+		from aim as a, account as c
+		where a.userid = #{userid} and left(c.date, 7) = #{aimdate} and a.aimdate = #{aimdate} and a.moneytype = #{moneytype} and a.catename = c.catename group by c.catename;
+	</select>
+</mapper>

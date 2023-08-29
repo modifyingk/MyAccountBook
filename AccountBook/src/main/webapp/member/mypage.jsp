@@ -21,7 +21,7 @@
 				<li class="menu"><i class="fi fi-rr-add"></i> 수입/지출 관리</li>		
 				<li class="menu"><i class="fi fi-rr-coins"></i> 자산관리</li>		
 				<li class="menu"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
-				<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표지출</li>
+				<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표 관리</li>
 			</ul>
 		</div>
 		

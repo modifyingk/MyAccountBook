@@ -14,7 +14,7 @@ $(function() {
 		} else if(idx == 3) {
 			location.href = ""; // 캘린더 페이지로
 		} else {
-			location.href = ""; // 목표지출 페이지로
+			location.href = "/accountbook/aim/aim.jsp"; // 목표 관리 페이지로
 		}
 	});
 });
