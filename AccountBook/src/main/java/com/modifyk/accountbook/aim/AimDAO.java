@@ -21,4 +21,19 @@ public class AimDAO {
 	public List<AimJoinVO> aimInfo(AimVO aimVO) {
 		return my.selectList("aimMapper.aimInfo", aimVO);
 	}
+	
+	// 목표 수정
+	public int updateAim(AimVO aimVO) {
+		return my.update("aimMapper.updateAim", aimVO);
+	}
+	
+	// 목표 삭제
+	public int deleteAim(AimVO aimVO) {
+		return my.delete("aimMapper.deleteAim", aimVO);
+	}
+	
+	// 목표 카테고리 중복 확인
+	public String isOverlapAim(AimVO aimVO) {
+		return my.selectOne("aimMapper.isOverlapAim", aimVO);
+	}
 }

@@ -6,7 +6,6 @@ public class AimVO {
 	private String moneytype;
 	private String catename;
 	private String total;
-	private String memo;
 	private String userid;
 	
 	public int getAimid() {
@@ -39,12 +38,6 @@ public class AimVO {
 	public void setTotal(String total) {
 		this.total = total;
 	}
-	public String getMemo() {
-		return memo;
-	}
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
 	public String getUserid() {
 		return userid;
 	}
@@ -52,24 +45,4 @@ public class AimVO {
 		this.userid = userid;
 	}
 	
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("AimVO [aimid=");
-		builder.append(aimid);
-		builder.append(", aimdate=");
-		builder.append(aimdate);
-		builder.append(", moneytype=");
-		builder.append(moneytype);
-		builder.append(", catename=");
-		builder.append(catename);
-		builder.append(", total=");
-		builder.append(total);
-		builder.append(", memo=");
-		builder.append(memo);
-		builder.append(", userid=");
-		builder.append(userid);
-		builder.append("]");
-		return builder.toString();
-	}
 }

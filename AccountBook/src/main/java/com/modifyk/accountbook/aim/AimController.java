@@ -32,4 +32,40 @@ public class AimController {
 		List<AimJoinVO> aimList = aDao.aimInfo(aimVO);
 		return aimList;
 	}
+	
+	// 목표 수정
+	@ResponseBody
+	@RequestMapping("aim/updateAim")
+	public String updateAim(AimVO aimVO) {
+		int result = aDao.updateAim(aimVO);
+		if(result == 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
+	// 목표 삭제
+	@ResponseBody
+	@RequestMapping("aim/deleteAim")
+	public String deleteAim(AimVO aimVO) {
+		int result = aDao.deleteAim(aimVO);
+		if(result == 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
+	// 목표 카테고리 중복 확인
+	@ResponseBody
+	@RequestMapping("aim/isOverlapAim")
+	public String isOverlapAim(AimVO aimVO) {
+		String result = aDao.isOverlapAim(aimVO);
+		if(result != null) {
+			return "impossible";
+		} else {
+			return "possible";
+		}
+	}
 }

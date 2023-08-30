@@ -1,11 +1,18 @@
 package com.modifyk.accountbook.aim;
 
 public class AimJoinVO {
+	private int aimid;
 	private String moneytype;
 	private String catename;
 	private int aim_money;
 	private int total;
 	
+	public int getAimid() {
+		return aimid;
+	}
+	public void setAimid(int aimid) {
+		this.aimid = aimid;
+	}
 	public String getMoneytype() {
 		return moneytype;
 	}
@@ -34,7 +41,9 @@ public class AimJoinVO {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("AimJoinVO [moneytype=");
+		builder.append("AimJoinVO [aimid=");
+		builder.append(aimid);
+		builder.append(", moneytype=");
 		builder.append(moneytype);
 		builder.append(", catename=");
 		builder.append(catename);
@@ -45,4 +54,5 @@ public class AimJoinVO {
 		builder.append("]");
 		return builder.toString();
 	}
+	
 }

@@ -28,8 +28,6 @@
 		})
 		
 		$("#add-aim-btn").click(function() {
-			// 년월, 카테고리가 중복되는지 확인
-			
 			var mtype = $("input[name=select-mtype]:checked").val();
 			var year = $("#add-year").val();
 			var date = $("#add-month").val();
@@ -38,22 +36,37 @@
 			}
 			var aimdate = year + "-" + date;
 			
+			// 년월, 카테고리가 중복되는지 확인
 			$.ajax({
 				type : "post",
-				url : "insertAim",
+				url : "isOverlapAim",
 				data : {
-					moneytype : mtype,
 					aimdate : aimdate,
 					catename : $("#add-catename").val(),
-					total : $("#add-total").val(),
-					memo : $("#add-memo").val(),
 					userid : userid
 				},
 				success : function(x) {
-					if(x == "success") {
-						window.location.reload();
+					if(x == "possible") {
+						$.ajax({
+							type : "post",
+							url : "insertAim",
+							data : {
+								moneytype : mtype,
+								aimdate : aimdate,
+								catename : $("#add-catename").val(),
+								total : $("#add-total").val(),
+								userid : userid
+							},
+							success : function(x) {
+								if(x == "success") {
+									window.location.reload();
+								} else {
+									alert("다시 시도해주세요.");
+								}
+							}
+						})
 					} else {
-						alert("다시 시도해주세요.");
+						alert("이미 존재하는 카테고리 목표입니다.");
 					}
 				}
 			})
@@ -145,10 +158,11 @@
 				var aim_html = "<button id='before'>이전</button>";
 				aim_html += "<i class='fs-23'>" + date[0] + "년 " + date[1] + "월</i>";
 				aim_html += "<button id='after'>다음</button>";
-				aim_html += "<table class='list-table'>";
+				aim_html += "<table class='list-table' id='out-aim-table'>";
 				
 				for(var i = 0; i < aimList.length; i++) {
-					aim_html += "<tr><td>" + aimList[i].catename + "</td>";
+					aim_html += "<tr><td style='display:none;'>" + aimList[i].aimid + "</td>";
+					aim_html += "<td>" + aimList[i].catename + "</td>";
 					aim_html += "<td>" + aimList[i].total / aimList[i].aim_money * 100 + "%</td>";
 					aim_html += "<td>" + aimList[i].total + "/" + aimList[i].aim_money + "</td></tr>";
 				}
@@ -189,10 +203,11 @@
 					var aim_html = "<button id='before'>이전</button>";
 					aim_html += "<i class='fs-23'>" + date[0] + "년 " + date[1] + "월</i>";
 					aim_html += "<button id='after'>다음</button>";
-					aim_html += "<table class='list-table'>";
+					aim_html += "<table class='list-table' id='out-aim-table'>";
 					
 					for(var i = 0; i < aimList.length; i++) {
-						aim_html += "<tr><td>" + aimList[i].catename + "</td>";
+						aim_html += "<tr><td style='display:none;'>" + aimList[i].aimid + "</td>";
+						aim_html += "<td>" + aimList[i].catename + "</td>";
 						aim_html += "<td>" + aimList[i].total / aimList[i].aim_money * 100 + "%</td>";
 						aim_html += "<td>" + aimList[i].total + "/" + aimList[i].aim_money + "</td></tr>";
 					}
@@ -234,10 +249,10 @@
 					var aim_html = "<button id='before'>이전</button>";
 					aim_html += "<i class='fs-23'>" + date[0] + "년 " + date[1] + "월</i>";
 					aim_html += "<button id='after'>다음</button>";
-					aim_html += "<table class='list-table'>";
-					
+					aim_html += "<table class='list-table' id='out-aim-table'>";
 					for(var i = 0; i < aimList.length; i++) {
-						aim_html += "<tr><td>" + aimList[i].catename + "</td>";
+						aim_html += "<tr><td style='display:none;'>" + aimList[i].aimid + "</td>";
+						aim_html += "<td>" + aimList[i].catename + "</td>";
 						aim_html += "<td>" + aimList[i].total / aimList[i].aim_money * 100 + "%</td>";
 						aim_html += "<td>" + aimList[i].total + "/" + aimList[i].aim_money + "</td></tr>";
 					}
@@ -246,7 +261,51 @@
 				}
 			})
 		})
+		$(document).on("click", "#out-aim-table tr", function() {
+			$("#up-out-aimid").attr("value", $(this).children().eq(0).text());
+			$("#up-out-catename").attr("value", $(this).children().eq(1).text());
+			$("#up-out-total").attr("value", $(this).children().eq(3).text().split("/")[1]);
+			$("#up-out-aim-modal").show();
+		})
+		$("#close-up-out-aim").click(function() {
+			$("#up-out-aim-modal").hide();
+		})
 		
+		$("#up-out-aim-btn").click(function() {
+			$.ajax({
+				type : "post",
+				url : "updateAim",
+				data : {
+					aimid : $("#up-out-aimid").val(),
+					total : $("#up-out-total").val(),
+					userid : userid
+				},
+				success : function(x) {
+					if(x == "success") {
+						window.location.reload();
+					} else {
+						alert("다시 시도해주세요.");
+					}
+				}
+			})
+		})
+		$("#del-out-aim-btn").click(function() {
+			$.ajax({
+				type : "post",
+				url : "deleteAim",
+				data : {
+					aimid : $("#up-out-aimid").val(),
+					userid : userid
+				},
+				success : function(x) {
+					if(x == "success") {
+						window.location.reload();
+					} else {
+						alert("다시 시도해주세요.");
+					}
+				}
+			})
+		})
 	})
 </script>
 </head>
@@ -279,12 +338,12 @@
 				
 			<!-- 수입/지출 수정 모달 -->
 			<div class="modal" id="add-aim-modal" hidden="true">
-				<div class="modal-content">
+				<div class="modal-content medium">
 					<div class="modal-title">
 						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 목표 추가</h3>
 					</div>
 					<hr>
-					<div class="modal-body">
+					<div class="modal-body medium">
 						<div id="">
 							<table class="table">
 								<tr>
@@ -324,12 +383,6 @@
 									<td>금액</td>
 									<td><input type="text" class="input" id="add-total"></td>
 								</tr>
-								<tr>
-									<td>메모</td>
-									<td>
-										<textarea rows="3" class="input" id="add-memo"></textarea>
-									</td>
-								</tr>
 							</table>
 							<button class="btn medium green" id="add-aim-btn">추가</button>
 						</div>
@@ -341,6 +394,36 @@
 				</div>
 			</div>
 			
+			<!-- 목표 지출 수정 모달 -->
+			<div class="modal" id="up-out-aim-modal" hidden="true">
+				<div class="modal-content medium">
+					<div class="modal-title">
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 목표 지출 수정</h3>
+					</div>
+					<div class="modal-body medium">
+						<div id="">
+							<table class="table">
+								<tr style="display: none;">
+									<td colspan="2"><input type="text" class="input" id="up-out-aimid"></td>
+								</tr>
+								<tr>
+									<td>분류</td>
+									<td><input type="text" class="input" id="up-out-catename" disabled></td>
+								</tr>
+								<tr>
+									<td>금액</td>
+									<td><input type="text" class="input" id="up-out-total"></td>
+								</tr>
+							</table>
+							<button class="btn medium green" id="up-out-aim-btn">수정</button>
+							<button class="btn outline-green" id="del-out-aim-btn" style="height: 48px;">삭제</button>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn right outline-green" id="close-up-out-aim">닫기</button>
+					</div>
+				</div>
+			</div>
 			<!-- 수입 카테고리 선택 모달 -->
 			<div class="modal" id="select-incate-modal" hidden="true">
 				<div class="modal-content">
