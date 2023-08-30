@@ -158,15 +158,28 @@
 				var aim_html = "<button id='before'>이전</button>";
 				aim_html += "<i class='fs-23'>" + date[0] + "년 " + date[1] + "월</i>";
 				aim_html += "<button id='after'>다음</button>";
-				aim_html += "<table class='list-table' id='out-aim-table'>";
 				
+				aim_html += "<table class='list-table' style='width: 1000px;' id='out-aim-table'>";
 				for(var i = 0; i < aimList.length; i++) {
+					var percent = Math.round(aimList[i].total / aimList[i].aim_money * 100);
+					
 					aim_html += "<tr><td style='display:none;'>" + aimList[i].aimid + "</td>";
-					aim_html += "<td>" + aimList[i].catename + "</td>";
-					aim_html += "<td>" + aimList[i].total / aimList[i].aim_money * 100 + "%</td>";
-					aim_html += "<td>" + aimList[i].total + "/" + aimList[i].aim_money + "</td></tr>";
+					aim_html += "<td>" + aimList[i].catename + "</td><td><div class='gage-bar is-border'>";
+					
+					if(percent < 50) {
+						aim_html += "<div class='gage safe-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
+					} else if(percent < 70) {
+						aim_html += "<div class='gage warn-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
+					} else if(percent <= 100){
+						aim_html += "<div class='gage danger-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
+					} else {
+						aim_html += "<div class='gage danger-aim is-border' style='width: 100%;'>" + percent + "%</div>";
+					}
+					aim_html += "</div></td>";
+					aim_html += "<td>" + aimList[i].total + "원 / " + aimList[i].aim_money + "원</td></tr>";
 				}
 				aim_html += "</table>";
+				
 				$("#aim-list-div").html(aim_html);
 			}
 		})
@@ -203,15 +216,28 @@
 					var aim_html = "<button id='before'>이전</button>";
 					aim_html += "<i class='fs-23'>" + date[0] + "년 " + date[1] + "월</i>";
 					aim_html += "<button id='after'>다음</button>";
-					aim_html += "<table class='list-table' id='out-aim-table'>";
 					
+					aim_html += "<table class='list-table' style='width: 1000px;' id='out-aim-table'>";
 					for(var i = 0; i < aimList.length; i++) {
+						var percent = Math.round(aimList[i].total / aimList[i].aim_money * 100);
+						
 						aim_html += "<tr><td style='display:none;'>" + aimList[i].aimid + "</td>";
-						aim_html += "<td>" + aimList[i].catename + "</td>";
-						aim_html += "<td>" + aimList[i].total / aimList[i].aim_money * 100 + "%</td>";
-						aim_html += "<td>" + aimList[i].total + "/" + aimList[i].aim_money + "</td></tr>";
+						aim_html += "<td>" + aimList[i].catename + "</td><td><div class='gage-bar is-border'>";
+						
+						if(percent < 50) {
+							aim_html += "<div class='gage safe-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
+						} else if(percent < 70) {
+							aim_html += "<div class='gage warn-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
+						} else if(percent <= 100){
+							aim_html += "<div class='gage danger-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
+						} else {
+							aim_html += "<div class='gage danger-aim is-border' style='width: 100%;'>" + percent + "%</div>";
+						}
+						aim_html += "</div></td>";
+						aim_html += "<td>" + aimList[i].total + "원 / " + aimList[i].aim_money + "원</td></tr>";
 					}
 					aim_html += "</table>";
+
 					$("#aim-list-div").html(aim_html);
 				}
 			})
@@ -249,14 +275,28 @@
 					var aim_html = "<button id='before'>이전</button>";
 					aim_html += "<i class='fs-23'>" + date[0] + "년 " + date[1] + "월</i>";
 					aim_html += "<button id='after'>다음</button>";
-					aim_html += "<table class='list-table' id='out-aim-table'>";
+					
+					aim_html += "<table class='list-table' style='width: 1000px;' id='out-aim-table'>";
 					for(var i = 0; i < aimList.length; i++) {
+						var percent = Math.round(aimList[i].total / aimList[i].aim_money * 100);
+						
 						aim_html += "<tr><td style='display:none;'>" + aimList[i].aimid + "</td>";
-						aim_html += "<td>" + aimList[i].catename + "</td>";
-						aim_html += "<td>" + aimList[i].total / aimList[i].aim_money * 100 + "%</td>";
-						aim_html += "<td>" + aimList[i].total + "/" + aimList[i].aim_money + "</td></tr>";
+						aim_html += "<td>" + aimList[i].catename + "</td><td><div class='gage-bar is-border'>";
+						
+						if(percent < 50) {
+							aim_html += "<div class='gage safe-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
+						} else if(percent < 70) {
+							aim_html += "<div class='gage warn-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
+						} else if(percent <= 100){
+							aim_html += "<div class='gage danger-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
+						} else {
+							aim_html += "<div class='gage danger-aim is-border' style='width: 100%;'>" + percent + "%</div>";
+						}
+						aim_html += "</div></td>";
+						aim_html += "<td>" + aimList[i].total + "원 / " + aimList[i].aim_money + "원</td></tr>";
 					}
 					aim_html += "</table>";
+
 					$("#aim-list-div").html(aim_html);
 				}
 			})
@@ -264,7 +304,7 @@
 		$(document).on("click", "#out-aim-table tr", function() {
 			$("#up-out-aimid").attr("value", $(this).children().eq(0).text());
 			$("#up-out-catename").attr("value", $(this).children().eq(1).text());
-			$("#up-out-total").attr("value", $(this).children().eq(3).text().split("/")[1]);
+			$("#up-out-total").attr("value", $(this).children().eq(3).text().split("원 / ")[1].split("원")[0]);
 			$("#up-out-aim-modal").show();
 		})
 		$("#close-up-out-aim").click(function() {

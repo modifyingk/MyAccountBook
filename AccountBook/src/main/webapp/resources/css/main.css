@@ -335,3 +335,21 @@
 .red {
 	color : #E34234;
 }
+/* ---------------------------------------------------------------- */
+.gage-bar {
+	width : 500px;
+	height: 30px;
+}
+.gage {
+	height:28px;
+	background:#2C952C;
+}
+.safe-aim {
+	background: #2C952C;
+}
+.warn-aim {
+	background: #FFD400;
+}
+.danger-aim {
+	background: #E34234;
+}
