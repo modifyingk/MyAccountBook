@@ -207,9 +207,9 @@
 						aim_in_html += "<td>" + aimList[i].catename + "</td><td><div class='gage-bar is-border'>";
 						
 						if(percent < 100) {
-							aim_in_html += "<div class='gage safe-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
+							aim_in_html += "<div class='gage blue-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
 						} else {
-							aim_in_html += "<div class='gage safe-aim is-border' style='width: 100%;'>" + percent + "%</div>";
+							aim_in_html += "<div class='gage blue-aim is-border' style='width: 100%;'>" + percent + "%</div>";
 						}
 						aim_in_html += "</div></td>";
 						aim_in_html += "<td>" + aimList[i].total + "원 / " + aimList[i].aim_money + "원</td></tr>";
@@ -304,9 +304,9 @@
 							aim_in_html += "<td>" + aimList[i].catename + "</td><td><div class='gage-bar is-border'>";
 							
 							if(percent < 100) {
-								aim_in_html += "<div class='gage safe-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
+								aim_in_html += "<div class='gage blue-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
 							} else {
-								aim_in_html += "<div class='gage safe-aim is-border' style='width: 100%;'>" + percent + "%</div>";
+								aim_in_html += "<div class='gage blue-aim is-border' style='width: 100%;'>" + percent + "%</div>";
 							}
 							aim_in_html += "</div></td>";
 							aim_in_html += "<td>" + aimList[i].total + "원 / " + aimList[i].aim_money + "원</td></tr>";
@@ -402,9 +402,9 @@
 							aim_in_html += "<td>" + aimList[i].catename + "</td><td><div class='gage-bar is-border'>";
 							
 							if(percent < 100) {
-								aim_in_html += "<div class='gage safe-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
+								aim_in_html += "<div class='gage blue-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
 							} else {
-								aim_in_html += "<div class='gage safe-aim is-border' style='width: 100%;'>" + percent + "%</div>";
+								aim_in_html += "<div class='gage blue-aim is-border' style='width: 100%;'>" + percent + "%</div>";
 							}
 							aim_in_html += "</div></td>";
 							aim_in_html += "<td>" + aimList[i].total + "원 / " + aimList[i].aim_money + "원</td></tr>";
