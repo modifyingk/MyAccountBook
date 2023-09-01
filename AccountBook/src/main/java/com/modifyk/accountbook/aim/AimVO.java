@@ -44,5 +44,10 @@ public class AimVO {
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
+	@Override
+	public String toString() {
+		return String.format("AimVO [aimid=%s, aimdate=%s, moneytype=%s, catename=%s, total=%s, userid=%s]", aimid,
+				aimdate, moneytype, catename, total, userid);
+	}
 	
 }

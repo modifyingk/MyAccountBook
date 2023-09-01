@@ -9,12 +9,13 @@
 	
 	<!-- 목표 가져오기 -->
 	<select id="aimInfo" parameterType="aimVO" resultType="aimjoinVO">
-		<!-- select * from aim where userid = #{userid}; -->
 		select a.aimid, a.moneytype, a.catename, a.total as aim_money, sum(c.total) as total
-		from aim as a left outer join account as c
-		on a.catename = c.catename and left(c.date, 7) = aimdate
-		where a.userid = #{userid} and a.moneytype = #{moneytype} and aimdate = #{aimdate} and (left(c.date, 7) = #{aimdate} or c.date is null)
-		group by c.catename;
+		from aim as a join account as c
+		on left(c.date, 7) = aimdate and a.catename = c.catename
+		where a.userid = #{userid} and a.moneytype = #{moneytype} and aimdate = #{aimdate} and (left(c.date, 7) = #{aimdate})
+		group by c.catename
+		union
+		select aimid, moneytype, catename, total as aim_money, 0 as total from aim where userid = #{userid} and moneytype = #{moneytype} and aimdate = #{aimdate};
 	</select>
 	
 	<!-- 목표 수정 -->

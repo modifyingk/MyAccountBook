@@ -1,5 +1,6 @@
 package com.modifyk.accountbook.aim;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ public class AimController {
 	@Autowired
 	AimDAO aDao;
 	
+	@Autowired
+	AimToMapService toMapSvc;
 	// 목표 추가
 	@ResponseBody
 	@RequestMapping("aim/insertAim")
@@ -28,9 +31,15 @@ public class AimController {
 	// 목표 가져오기
 	@ResponseBody
 	@RequestMapping("aim/aimInfo")
-	public List<AimJoinVO> aimInfo(AimVO aimVO) {
+	public HashMap<String, Object> aimInfo(AimVO aimVO) {
 		List<AimJoinVO> aimList = aDao.aimInfo(aimVO);
-		return aimList;
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(aimList.size() < 1) {
+			map.put("no", "no");
+		} else {
+			map = toMapSvc.toMap(aimList);
+		}
+		return map;
 	}
 	
 	// 목표 수정

@@ -456,10 +456,10 @@
 	top: 10%;
 	right: 3%;
 }
-.fix-left-bl {
+.fix-left-br {
 	position: absolute;
 	top: 90%;
-	left: 21%;
+	right: 21%;
 }
 .no-data-div {
 	margin-top: 10%;
