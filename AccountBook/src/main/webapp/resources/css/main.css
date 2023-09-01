@@ -95,7 +95,10 @@
 	color: gray;
 }
 .safe {
-	color: green;
+	color: #2C952C;
+}
+.warn {
+	color: #FFA500;
 }
 /* ---------------------------------------------------------------- */
 .container {
@@ -192,6 +195,10 @@
 	background: white;
 	color: #2C952C;
 	border: 1px solid #2C952C;
+}
+.btn.outline-green.active {
+	background: #2C952C;
+	color: white;
 }
 .btn.outline-green:hover {
 	background: #2C952C;

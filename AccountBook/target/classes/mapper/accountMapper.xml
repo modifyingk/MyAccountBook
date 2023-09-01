@@ -7,11 +7,6 @@
 		insert into account values (#{accountid}, #{moneytype}, #{date}, #{astname}, #{catename}, #{content}, #{total}, #{memo}, #{userid});
 	</insert>
 	
-	<!-- 수입/지출 내역 -->
-	<select id="accountInfo" parameterType="String" resultType="accountVO">
-		select * from account where userid = #{userid};
-	</select>
-	
 	<!-- 수입/지출 내역 수정 -->
 	<update id="updateAccount" parameterType="accountVO">
 		update account set moneytype = #{moneytype}, date = #{date}, astname = #{astname}, catename = #{catename}, content = #{content}, total = #{total}, memo = #{memo} where userid = #{userid} and accountid = #{accountid};
@@ -30,6 +25,11 @@
 	<!-- 월별 수입/지출 내역 -->
 	<select id="monthAccount" parameterType="accountVO" resultType="accountVO">
 		select * from account where userid = #{userid} and left(date, 7) = #{date};
+	</select>
+	
+	<!-- 월별 수입/지출 내역 -->
+	<select id="monthIncome" parameterType="accountVO" resultType="accountVO">
+		select * from account where userid = #{userid} and left(date, 7) = #{date} and moneytype = "수입";
 	</select>
 	
 	<!-- 월별 지출 내역 -->

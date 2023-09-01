@@ -17,11 +17,6 @@ public class AccountDAO {
 		return my.insert("accountMapper.insertAccount", accountVO);
 	}
 	
-	// 수입/지출 목록
-	public List<AccountVO> accountInfo(String userid) {
-		return my.selectList("accountMapper.accountInfo", userid);
-	}
-	
 	// 수입/지출 수정
 	public int updateAccount(AccountVO accountVO) {
 		return my.update("accountMapper.updateAccount", accountVO);
@@ -55,6 +50,11 @@ public class AccountDAO {
 	// 월별 수입/지출 내역
 	public List<AccountVO> monthAccount(AccountVO accountVO) {
 		return my.selectList("accountMapper.monthAccount", accountVO);
+	}
+	
+	// 월별 수입/지출 내역
+	public List<AccountVO> monthIncome(AccountVO accountVO) {
+		return my.selectList("accountMapper.monthIncome", accountVO);
 	}
 	
 	// 월별 지출 내역

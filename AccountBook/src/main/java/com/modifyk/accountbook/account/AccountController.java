@@ -40,15 +40,6 @@ public class AccountController {
 		}
 	}
 	
-	// 수입/지출 목록
-	@ResponseBody
-	@RequestMapping("account/accountInfo")
-	public HashMap<String, Object> accountInfo(String userid) {
-		List<AccountVO> accountList = aDao.accountInfo(userid);
-		HashMap<String, Object> map = toMapSvc.toMap(accountList);
-		return map;
-	}
-	
 	// 수입/지출 수정
 	@ResponseBody
 	@RequestMapping("account/updateAccount")
@@ -127,6 +118,34 @@ public class AccountController {
 		return map;
 	}
 	
+	// 수입 목록
+	@ResponseBody
+	@RequestMapping("account/monthIncome")
+	public HashMap<String, Object> monthIncome(AccountVO accountVO) {
+		List<AccountVO> incomeList = aDao.monthIncome(accountVO);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(incomeList.size() < 1) {
+			map.put("no", "no");
+		} else {
+			map = toMapSvc.toMap(incomeList);
+		}
+		return map;
+	}
+	
+	// 지출 목록
+	@ResponseBody
+	@RequestMapping("account/monthSpend")
+	public HashMap<String, Object> monthSpend(AccountVO accountVO) {
+		List<AccountVO> spendList = aDao.monthSpend(accountVO);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(spendList.size() < 1) {
+			map.put("no", "no");
+		} else {
+			map = toMapSvc.toMap(spendList);
+		}
+		return map;
+	}
+		
 	// 카테고리별 합계
 	@ResponseBody
 	@RequestMapping("account/cateSpend")

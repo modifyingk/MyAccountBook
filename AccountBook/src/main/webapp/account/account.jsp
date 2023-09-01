@@ -25,6 +25,7 @@
 		}
 		var todayAll = todayYear + "-" + todayMonth;
 		
+		// 전체 지출 내역
 		$.ajax({
 			type : "post",
 			url : "monthAccount",
@@ -35,11 +36,9 @@
 			success : function(map) {
 				if(Object.keys(map) != "no") {
 					var date = Object.keys(map)[0].substr(0, 7).split("-");
-					var account_html = "<button id='before'>이전</button>";
-					account_html += "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
-					account_html += "<button id='after'>다음</button>";
+					var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
 					
-					account_html += "<table class='list-table'>";
+					var account_html = "<table class='list-table'>";
 	
 					for(var key in map) {
 						account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
@@ -64,15 +63,15 @@
 					
 					account_html += "</table>";
 				} else {
-					var account_html = "<button id='before'>이전</button>";
-					var date = afterAll.split("-");
-					account_html += "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
-					account_html += "<button id='after'>다음</button>";
-					account_html += "<br><i>데이터 없음</i>";
+					var date = todayAll.split("-");
+					var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+					var account_html = "<br><i>데이터 없음</i>";
 				}
+				$("#month-div").html(month_html);
 				$("#month-account-list-div").html(account_html);
 			}
 		})
+		// 통계
 		$.ajax({
 			type : "post",
 			url : "cateSpend",
@@ -121,7 +120,16 @@
 				$("#category-stats-div").html(stats_html);
 			}
 		})
-		$(document).on("click", "#before", function() {
+		// 이전 달
+		$("#before").click(function() {
+			if($("#in-account-btn").hasClass("active")) {
+				$("#in-account-btn").removeClass("active");
+				$("#total-account-btn").addClass("active");
+			} else if($("#out-account-btn").hasClass("active")) {
+				$("#out-account-btn").removeClass("active");
+				$("#total-account-btn").addClass("active");
+			}
+			
 			var current = todayAll.split("-");
 			var beforeYear;
 			var beforeMonth;
@@ -149,12 +157,10 @@
 				success : function(map) {
 					if(Object.keys(map) != "no") {
 						var date = Object.keys(map)[0].substr(0, 7).split("-");
-						var account_html = "<button id='before'>이전</button>";
-						account_html += "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
-						account_html += "<button id='after'>다음</button>";
+						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
 						
-						account_html += "<table class='list-table'>";
-	
+						var account_html = "<table class='list-table'>";
+		
 						for(var key in map) {
 							account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
 							var value = map[key].split(",");
@@ -178,65 +184,74 @@
 						
 						account_html += "</table>";
 					} else {
-						var account_html = "<button id='before'>이전</button>";
-						var date = beforeAll.split("-");
-						account_html += "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
-						account_html += "<button id='after'>다음</button>";
-						account_html += "<br><i>데이터 없음</i>";
+						var date = todayAll.split("-");
+						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						var account_html = "<br><i>데이터 없음</i>";
 					}
+					$("#month-div").html(month_html);
 					$("#month-account-list-div").html(account_html);
 				}
 			})
+			
 			$.ajax({
-			type : "post",
-			url : "cateSpend",
-			data : {
-				date : todayAll,
-				userid : userid
-			},
-			success : function(map) {
-				google.charts.load("current", {packages:["corechart"]});
-				google.charts.setOnLoadCallback(drawChart);
-				var category = Object.keys(map);
-				var catedata = new Array(category.length + 1);
-				for(var i = 0; i < catedata.length; i++) {
-					catedata[i] = Array(2);
+				type : "post",
+				url : "cateSpend",
+				data : {
+					date : todayAll,
+					userid : userid
+				},
+				success : function(map) {
+					google.charts.load("current", {packages:["corechart"]});
+					google.charts.setOnLoadCallback(drawChart);
+					var category = Object.keys(map);
+					var catedata = new Array(category.length + 1);
+					for(var i = 0; i < catedata.length; i++) {
+						catedata[i] = Array(2);
+					}
+					
+					catedata[0][0] = "지출";
+					catedata[0][1] = "카테고리별 지출 내역";
+					
+					for(var i = 1; i <= category.length; i++) {
+						catedata[i][0] = category[i - 1];
+						catedata[i][1] = parseInt(map[category[i - 1]]);
+					}
+					
+					function drawChart() {
+				        var data = google.visualization.arrayToDataTable(catedata);
+	
+				        var options = {
+				                legend: 'none',
+				                pieSliceText: 'label',
+				                pieStartAngle: 0,
+				                chartArea:{left:0,top:0,width:'50%',height:'75%'}
+				              };
+	
+				        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+	
+				        chart.draw(data, options);
+				    }
+					
+					var stats_html = "<table class='list-table'>";
+					for(var key in map) {
+						stats_html += "<tr><td>" + key + "</td>";
+						stats_html += "<td>" + map[key] + "</td></tr>";
+					}
+					stats_html += "</table>";
+					$("#category-stats-div").html(stats_html);
 				}
-				
-				catedata[0][0] = "지출";
-				catedata[0][1] = "카테고리별 지출 내역";
-				
-				for(var i = 1; i <= category.length; i++) {
-					catedata[i][0] = category[i - 1];
-					catedata[i][1] = parseInt(map[category[i - 1]]);
-				}
-				
-				function drawChart() {
-			        var data = google.visualization.arrayToDataTable(catedata);
-
-			        var options = {
-			                legend: 'none',
-			                pieSliceText: 'label',
-			                pieStartAngle: 0,
-			                chartArea:{left:0,top:0,width:'50%',height:'75%'}
-			              };
-
-			        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-			        chart.draw(data, options);
-			    }
-				
-				var stats_html = "<table class='list-table'>";
-				for(var key in map) {
-					stats_html += "<tr><td>" + key + "</td>";
-					stats_html += "<td>" + map[key] + "</td></tr>";
-				}
-				stats_html += "</table>";
-				$("#category-stats-div").html(stats_html);
+			})
+		})
+		// 다음 달
+		$("#after").click(function() {
+			if($("#in-account-btn").hasClass("active")) {
+				$("#in-account-btn").removeClass("active");
+				$("#total-account-btn").addClass("active");
+			} else if($("#out-account-btn").hasClass("active")) {
+				$("#out-account-btn").removeClass("active");
+				$("#total-account-btn").addClass("active");
 			}
-		})
-		})
-		$(document).on("click", "#after", function() {
+			
 			var current = todayAll.split("-");
 			var afterYear;
 			var afterMonth;
@@ -265,12 +280,10 @@
 				success : function(map) {
 					if(Object.keys(map) != "no") {
 						var date = Object.keys(map)[0].substr(0, 7).split("-");
-						var account_html = "<button id='before'>이전</button>";
-						account_html += "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
-						account_html += "<button id='after'>다음</button>";
+						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
 						
-						account_html += "<table class='list-table'>";
-	
+						var account_html = "<table class='list-table'>";
+		
 						for(var key in map) {
 							account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
 							var value = map[key].split(",");
@@ -294,64 +307,227 @@
 						
 						account_html += "</table>";
 					} else {
-						var account_html = "<button id='before'>이전</button>";
-						var date = afterAll.split("-");
-						account_html += "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
-						account_html += "<button id='after'>다음</button>";
-						account_html += "<br><i>데이터 없음</i>";
+						var date = todayAll.split("-");
+						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						var account_html = "<br><i>데이터 없음</i>";
 					}
+					$("#month-div").html(month_html);
 					$("#month-account-list-div").html(account_html);
 				}
 			})
 			$.ajax({
-			type : "post",
-			url : "cateSpend",
-			data : {
-				date : todayAll,
-				userid : userid
-			},
-			success : function(map) {
-				google.charts.load("current", {packages:["corechart"]});
-				google.charts.setOnLoadCallback(drawChart);
-				var category = Object.keys(map);
-				var catedata = new Array(category.length + 1);
-				for(var i = 0; i < catedata.length; i++) {
-					catedata[i] = Array(2);
+				type : "post",
+				url : "cateSpend",
+				data : {
+					date : todayAll,
+					userid : userid
+				},
+				success : function(map) {
+					google.charts.load("current", {packages:["corechart"]});
+					google.charts.setOnLoadCallback(drawChart);
+					var category = Object.keys(map);
+					var catedata = new Array(category.length + 1);
+					for(var i = 0; i < catedata.length; i++) {
+						catedata[i] = Array(2);
+					}
+					
+					catedata[0][0] = "지출";
+					catedata[0][1] = "카테고리별 지출 내역";
+					
+					for(var i = 1; i <= category.length; i++) {
+						catedata[i][0] = category[i - 1];
+						catedata[i][1] = parseInt(map[category[i - 1]]);
+					}
+					
+					function drawChart() {
+				        var data = google.visualization.arrayToDataTable(catedata);
+	
+				        var options = {
+				                legend: 'none',
+				                pieSliceText: 'label',
+				                pieStartAngle: 0,
+				                chartArea:{left:0,top:0,width:'50%',height:'75%'}
+				              };
+	
+				        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+	
+				        chart.draw(data, options);
+				    }
+					
+					var stats_html = "<table class='list-table'>";
+					for(var key in map) {
+						stats_html += "<tr><td>" + key + "</td>";
+						stats_html += "<td>" + map[key] + "</td></tr>";
+					}
+					stats_html += "</table>";
+					$("#category-stats-div").html(stats_html);
 				}
-				
-				catedata[0][0] = "지출";
-				catedata[0][1] = "카테고리별 지출 내역";
-				
-				for(var i = 1; i <= category.length; i++) {
-					catedata[i][0] = category[i - 1];
-					catedata[i][1] = parseInt(map[category[i - 1]]);
-				}
-				
-				function drawChart() {
-			        var data = google.visualization.arrayToDataTable(catedata);
-
-			        var options = {
-			                legend: 'none',
-			                pieSliceText: 'label',
-			                pieStartAngle: 0,
-			                chartArea:{left:0,top:0,width:'50%',height:'75%'}
-			              };
-
-			        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-			        chart.draw(data, options);
-			    }
-				
-				var stats_html = "<table class='list-table'>";
-				for(var key in map) {
-					stats_html += "<tr><td>" + key + "</td>";
-					stats_html += "<td>" + map[key] + "</td></tr>";
-				}
-				stats_html += "</table>";
-				$("#category-stats-div").html(stats_html);
+			})
+		})
+		// 전체 내역, 수입 내역, 지출 내역
+		$("#total-account-btn").click(function() {
+			if($("#in-account-btn").hasClass("active")) {
+				$("#in-account-btn").removeClass("active");
+				$("#total-account-btn").addClass("active");
+			} else if($("#out-account-btn").hasClass("active")) {
+				$("#out-account-btn").removeClass("active");
+				$("#total-account-btn").addClass("active");
 			}
+			$.ajax({
+				type : "post",
+				url : "monthAccount",
+				data : {
+					date : todayAll,
+					userid : userid
+				},
+				success : function(map) {
+					if(Object.keys(map) != "no") {
+						var date = Object.keys(map)[0].substr(0, 7).split("-");
+						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						
+						var account_html = "<table class='list-table'>";
+		
+						for(var key in map) {
+							account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
+							var value = map[key].split(",");
+							for(var i = 0; i < value.length; i++) {
+								var account = value[i].split("#");
+								account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
+								account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
+								account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
+								account_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
+								account_html += "<td>" + account[3] + "</td>"; // 카테고리
+								account_html += "<td>" + account[4] + "</td>"; // 내용
+								if(account[1] == "수입") {
+									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+								} else {
+									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+								}
+								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
+							}
+							account_html += "<tr style='border : 0;'><td></td></tr>";
+						}
+						
+						account_html += "</table>";
+					} else {
+						var date = todayAll.split("-");
+						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						var account_html = "<br><i>데이터 없음</i>";
+					}
+					$("#month-div").html(month_html);
+					$("#month-account-list-div").html(account_html);
+				}
+			})
 		})
+		$("#in-account-btn").click(function() {
+			if($("#total-account-btn").hasClass("active")) {
+				$("#total-account-btn").removeClass("active");
+				$("#in-account-btn").addClass("active");
+			} else if($("#out-account-btn").hasClass("active")) {
+				$("#out-account-btn").removeClass("active");
+				$("#in-account-btn").addClass("active");
+			}
+			$.ajax({
+				type : "post",
+				url : "monthIncome",
+				data : {
+					date : todayAll,
+					userid : userid
+				},
+				success : function(map) {
+					if(Object.keys(map) != "no") {
+						var date = Object.keys(map)[0].substr(0, 7).split("-");
+						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						
+						var account_html = "<table class='list-table'>";
+		
+						for(var key in map) {
+							account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
+							var value = map[key].split(",");
+							for(var i = 0; i < value.length; i++) {
+								var account = value[i].split("#");
+								account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
+								account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
+								account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
+								account_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
+								account_html += "<td>" + account[3] + "</td>"; // 카테고리
+								account_html += "<td>" + account[4] + "</td>"; // 내용
+								if(account[1] == "수입") {
+									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+								} else {
+									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+								}
+								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
+							}
+							account_html += "<tr style='border : 0;'><td></td></tr>";
+						}
+						
+						account_html += "</table>";
+					} else {
+						var date = todayAll.split("-");
+						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						var account_html = "<br><i>데이터 없음</i>";
+					}
+					$("#month-div").html(month_html);
+					$("#month-account-list-div").html(account_html);
+				}
+			})
 		})
+		$("#out-account-btn").click(function() {
+			if($("#total-account-btn").hasClass("active")) {
+				$("#total-account-btn").removeClass("active");
+				$("#out-account-btn").addClass("active");
+			} else if($("#in-account-btn").hasClass("active")) {
+				$("#in-account-btn").removeClass("active");
+				$("#out-account-btn").addClass("active");
+			}
+			$.ajax({
+				type : "post",
+				url : "monthSpend",
+				data : {
+					date : todayAll,
+					userid : userid
+				},
+				success : function(map) {
+					if(Object.keys(map) != "no") {
+						var date = Object.keys(map)[0].substr(0, 7).split("-");
+						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						
+						var account_html = "<table class='list-table'>";
+		
+						for(var key in map) {
+							account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
+							var value = map[key].split(",");
+							for(var i = 0; i < value.length; i++) {
+								var account = value[i].split("#");
+								account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
+								account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
+								account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
+								account_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
+								account_html += "<td>" + account[3] + "</td>"; // 카테고리
+								account_html += "<td>" + account[4] + "</td>"; // 내용
+								if(account[1] == "수입") {
+									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+								} else {
+									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+								}
+								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
+							}
+							account_html += "<tr style='border : 0;'><td></td></tr>";
+						}
+						
+						account_html += "</table>";
+					} else {
+						var date = todayAll.split("-");
+						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						var account_html = "<br><i>데이터 없음</i>";
+					}
+					$("#month-div").html(month_html);
+					$("#month-account-list-div").html(account_html);
+				}
+			})
+		})
+		
 		/* ---------------------------- 수입/지출 목록 ---------------------------- */
 		// 수입/지출 목록 가져오기
 		/* $.ajax({
@@ -785,7 +961,7 @@
 				for(var key in map ) {
 					var value = map[key].split(","); // 자산 그룹에 해당하는 자산이 여러 개이면 ,로 구분되어 있으므로 ,를 기준으로 분리하여 value 변수에 저장
 					for(var i = 0; i < value.length; i++) {
-						var asset = value[i].split("/"); // 자산이름과 자산메모는 /로 구분되어 있으므로 /를 기준으로 분리하여 asset 변수에 저장
+						var asset = value[i].split("#"); // 자산이름과 자산메모는 #로 구분되어 있으므로 #를 기준으로 분리하여 asset 변수에 저장
 							html += "<tr class='asset-name'><td class='group-list is-border'>" + asset[0] + "</td></tr>"; // asset[0]은 자산 이름
 					}
 				}
@@ -808,8 +984,6 @@
 		// 수입/지출 추가 버튼
 		$("#add-account-btn").click(function() {
 			var mtype = $("input[name=select-mtype]:checked").val();
-			alert($("#add-actcatename").val())
-			alert($("#add-acttotal").val())
 			$.ajax({
 				type : "post",
 				url : "insertAccount",
@@ -976,9 +1150,35 @@
 				<button class="btn long gray" id="add-account-page">수입/지출 추가</button>
 				<button class="btn long gray" id="bookmark-page">즐겨찾기</button>
 				
+				<!-- 날짜 보여주기 -->
+				<div>
+					<table>
+						<tr>
+							<td>
+								<i class="fi fi-rr-angle-circle-left fs-28" id="before"></i>
+							</td>
+							<td>
+								<div id="month-div" style="margin: 10px;"></div>
+							</td>
+							<td>
+								<i class="fi fi-rr-angle-circle-right fs-28" id="after"></i>
+							</td>
+						</tr>
+					</table>
+				</div>
 				
-				<div id="account-list-div"></div>
+				<!-- 전체, 수입, 지출 선택 -->
+				<div id="select-total-in-out">
+					<table>
+						<tr>
+							<td><button class="btn outline-green active" id="total-account-btn">전체</button></td>
+							<td><button class="btn outline-green" id="in-account-btn">수입</button></td>
+							<td><button class="btn outline-green" id="out-account-btn">지출</button></td>
+						</tr>
+					</table>
+				</div>
 				
+				<!-- 월별 수입/지출 내역 -->
 				<div>
 					<div id="month-account-list-div" class="col-5"></div>
 					<div class="col-5">
