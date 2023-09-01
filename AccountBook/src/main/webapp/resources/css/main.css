@@ -26,8 +26,9 @@
 	float: left;
 }
 .col-8 {
-	width: 80%;
+	width: 79%;
 	float: left;
+	padding-left: 2%;
 }
 .col-3 {
 	width: 30%;
@@ -56,6 +57,13 @@
 	display: flex;
 	justify-content: center;
 }
+.is-scroll {
+	height: 650px;
+	overflow-y: auto;
+}
+::-webkit-scrollbar { /* 스크롤바는 없애지만 기능은 유지 */
+  display: none;
+}
 .side-logo {
 	width: 80%;
 	margin-left: 4%;
@@ -65,6 +73,7 @@
 .h-normal {
 	font-weight: normal;
 	margin: 2%;
+	font-style: normal;
 }
 .fs-35 {
 	font-size: 35px;
@@ -77,6 +86,9 @@
 }
 .fs-20 {
 	font-size: 20px;
+}
+.fs-18 {
+	font-size: 18px;
 }
 .main-text {
 	color:#2C952C;
@@ -159,6 +171,7 @@
 .select input[type="radio"]:checked+label{
 	border-color: #2C952C;
 	color: #2C952C;
+	box-shadow: 2px 2px 5px lightgray;
 }
 /* ---------------------------------------------------------------- */
 .btn {
@@ -186,6 +199,10 @@
 .btn.long {
 	width: 500px;
 	height: 50px;
+}
+.btn.font-18 {
+	font-size: 18px;
+	height: 55px;
 }
 .btn.green {
 	background: #2C952C;
@@ -277,10 +294,6 @@
 	margin: 10px;
 	overflow-y: auto;
 }
-/* Modal 넓은 크기 */
-.modal-content.wide { 
-	width: 600px;
-}
 /* Modal 중간 크기 */
 .modal-content.medium { 
 	height: 600px;
@@ -319,19 +332,69 @@
 
 .list-table {
 	border-collapse: collapse;
+	width: 600px;
+	font-size: 18px;
 }
 .list-table td {
 	width: 30%;
 	padding: 10px;
+	height: 35px;
 }
 .list-table tr {
 	border: 1px solid lightgray;
 	border-radius: 10px;
+	border-left: 0;
+	border-right: 0;
 }
 .list-table tr:hover {
 	background: #F3F3F3;
 	border-color: lightgray;
 	cursor: pointer;
+}
+.select-table {
+	margin-left: 2%;
+	width: 600px;
+}
+.select-table td {
+	height: 50px;
+	font-size: 18px;
+	color: #2C952C;
+	text-align: center;
+	border: 1px solid #2C952C; 
+	border-radius: 10px;
+}
+.select-table td:hover{
+	cursor: pointer;
+	background: #2C952C;
+	color: white;
+}
+.select-table td.active{
+	background: #2C952C;
+	color: white;
+}
+.gage-table {
+	width: 600px;
+	font-size: 18px;
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	padding: 10px;
+}
+.gage-table td {
+	width: 30%;
+	padding: 10px;
+	height: 40px;
+}
+.gage-table tr {
+	border-left: 0;
+	border-right: 0;
+}
+.gage-table tr:hover {
+	background: #F3F3F3;
+	border-color: lightgray;
+	cursor: pointer;
+}
+.tr-date td {
+	height: 28px;
 }
 .text-right {
 	text-align: right;
@@ -345,10 +408,10 @@
 /* ---------------------------------------------------------------- */
 .gage-bar {
 	width : 500px;
-	height: 30px;
+	height: 35px;
 }
 .gage {
-	height:28px;
+	height: 34px;
 	background:#2C952C;
 }
 .safe-aim {
@@ -362,4 +425,50 @@
 }
 .blue-aim {
 	background: #4B89DC;
+}
+
+.modal-table {
+	width: 100%;
+}
+.modal-table td {
+	height : 30px;
+	font-size : 18px;
+}
+.click-icon {
+	cursor: pointer;
+	color: gray;
+}
+.click-icon:hover {
+	font-size: 29px;
+}
+.fix-col5-left-br {
+	position: absolute;
+	top: 90%;
+	left: 30%;
+}
+.fix-right-tr-1 {
+	position: absolute;
+	top: 3%;
+	right: 3%;
+}
+.fix-right-tr-2 {
+	position: absolute;
+	top: 10%;
+	right: 3%;
+}
+.fix-left-bl {
+	position: absolute;
+	top: 90%;
+	left: 21%;
+}
+.no-data-div {
+	margin-top: 10%;
+	text-align: center;
+	font-size: 20px;
+	color: #999999;
+}
+.no-aim-div {
+	text-align: center;
+	font-size: 20px;
+	color: #999999;
 }

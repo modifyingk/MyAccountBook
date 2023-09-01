@@ -36,10 +36,12 @@
 			success : function(map) {
 				if(Object.keys(map) != "no") {
 					var date = Object.keys(map)[0].substr(0, 7).split("-");
-					var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+					var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
 					
 					var account_html = "<table class='list-table'>";
-	
+					var income_total = 0;
+					var spend_total = 0;
+					
 					for(var key in map) {
 						account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
 						var value = map[key].split(",");
@@ -53,22 +55,34 @@
 							account_html += "<td>" + account[4] + "</td>"; // 내용
 							if(account[1] == "수입") {
 								account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+								income_total += parseInt(account[5]);
 							} else {
 								account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+								spend_total += parseInt(account[5]);
 							}
 							account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
 						}
-						account_html += "<tr style='border : 0;'><td></td></tr>";
+						account_html += "<tr style='border : 0;'></tr>";
 					}
 					
 					account_html += "</table>";
 				} else {
 					var date = todayAll.split("-");
-					var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
-					var account_html = "<br><i>데이터 없음</i>";
+					var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
+					var account_html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+					income_total = 0;
+					spend_total = 0;
 				}
+				
+				var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total) + "</i>";
+				var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total + "</i>";
+				var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total + "</i>";
+				
 				$("#month-div").html(month_html);
 				$("#month-account-list-div").html(account_html);
+				$("#total-div").html(total_html);
+				$("#total-income-div").html(income_html);
+				$("#total-spend-div").html(spend_html);
 			}
 		})
 		// 통계
@@ -114,7 +128,7 @@
 				var stats_html = "<table class='list-table'>";
 				for(var key in map) {
 					stats_html += "<tr><td>" + key + "</td>";
-					stats_html += "<td>" + map[key] + "</td></tr>";
+					stats_html += "<td>" + map[key] + "원</td></tr>";
 				}
 				stats_html += "</table>";
 				$("#category-stats-div").html(stats_html);
@@ -157,10 +171,12 @@
 				success : function(map) {
 					if(Object.keys(map) != "no") {
 						var date = Object.keys(map)[0].substr(0, 7).split("-");
-						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
 						
 						var account_html = "<table class='list-table'>";
-		
+						var income_total = 0;
+						var spend_total = 0;
+						
 						for(var key in map) {
 							account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
 							var value = map[key].split(",");
@@ -174,22 +190,33 @@
 								account_html += "<td>" + account[4] + "</td>"; // 내용
 								if(account[1] == "수입") {
 									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+									income_total += parseInt(account[5]);
 								} else {
 									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+									spend_total += parseInt(account[5]);
 								}
 								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
 							}
-							account_html += "<tr style='border : 0;'><td></td></tr>";
+							account_html += "<tr style='border : 0;'></tr>";
 						}
 						
 						account_html += "</table>";
 					} else {
 						var date = todayAll.split("-");
-						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
-						var account_html = "<br><i>데이터 없음</i>";
+						var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
+						var account_html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+						income_total = 0;
+						spend_total = 0;
 					}
+					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total) + "</i>";
+					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total + "</i>";
+					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total + "</i>";
+					
 					$("#month-div").html(month_html);
 					$("#month-account-list-div").html(account_html);
+					$("#total-div").html(total_html);
+					$("#total-income-div").html(income_html);
+					$("#total-spend-div").html(spend_html);
 				}
 			})
 			
@@ -235,7 +262,7 @@
 					var stats_html = "<table class='list-table'>";
 					for(var key in map) {
 						stats_html += "<tr><td>" + key + "</td>";
-						stats_html += "<td>" + map[key] + "</td></tr>";
+						stats_html += "<td>" + map[key] + "원</td></tr>";
 					}
 					stats_html += "</table>";
 					$("#category-stats-div").html(stats_html);
@@ -280,10 +307,12 @@
 				success : function(map) {
 					if(Object.keys(map) != "no") {
 						var date = Object.keys(map)[0].substr(0, 7).split("-");
-						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
 						
 						var account_html = "<table class='list-table'>";
-		
+						var income_total = 0;
+						var spend_total = 0;
+						
 						for(var key in map) {
 							account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
 							var value = map[key].split(",");
@@ -297,22 +326,33 @@
 								account_html += "<td>" + account[4] + "</td>"; // 내용
 								if(account[1] == "수입") {
 									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+									income_total += parseInt(account[5]);
 								} else {
 									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+									spend_total += parseInt(account[5]);
 								}
 								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
 							}
-							account_html += "<tr style='border : 0;'><td></td></tr>";
+							account_html += "<tr style='border : 0;'></tr>";
 						}
 						
 						account_html += "</table>";
 					} else {
 						var date = todayAll.split("-");
-						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
-						var account_html = "<br><i>데이터 없음</i>";
+						var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
+						var account_html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+						income_total = 0;
+						spend_total = 0;
 					}
+					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total) + "</i>";
+					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total + "</i>";
+					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total + "</i>";
+					
 					$("#month-div").html(month_html);
 					$("#month-account-list-div").html(account_html);
+					$("#total-div").html(total_html);
+					$("#total-income-div").html(income_html);
+					$("#total-spend-div").html(spend_html);
 				}
 			})
 			$.ajax({
@@ -357,7 +397,7 @@
 					var stats_html = "<table class='list-table'>";
 					for(var key in map) {
 						stats_html += "<tr><td>" + key + "</td>";
-						stats_html += "<td>" + map[key] + "</td></tr>";
+						stats_html += "<td>" + map[key] + "원</td></tr>";
 					}
 					stats_html += "</table>";
 					$("#category-stats-div").html(stats_html);
@@ -383,7 +423,7 @@
 				success : function(map) {
 					if(Object.keys(map) != "no") {
 						var date = Object.keys(map)[0].substr(0, 7).split("-");
-						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
 						
 						var account_html = "<table class='list-table'>";
 		
@@ -405,14 +445,14 @@
 								}
 								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
 							}
-							account_html += "<tr style='border : 0;'><td></td></tr>";
+							account_html += "<tr style='border : 0;'></tr>";
 						}
 						
 						account_html += "</table>";
 					} else {
 						var date = todayAll.split("-");
-						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
-						var account_html = "<br><i>데이터 없음</i>";
+						var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
+						var account_html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
 					}
 					$("#month-div").html(month_html);
 					$("#month-account-list-div").html(account_html);
@@ -437,7 +477,7 @@
 				success : function(map) {
 					if(Object.keys(map) != "no") {
 						var date = Object.keys(map)[0].substr(0, 7).split("-");
-						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
 						
 						var account_html = "<table class='list-table'>";
 		
@@ -459,14 +499,14 @@
 								}
 								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
 							}
-							account_html += "<tr style='border : 0;'><td></td></tr>";
+							account_html += "<tr style='border : 0;'></tr>";
 						}
 						
 						account_html += "</table>";
 					} else {
 						var date = todayAll.split("-");
-						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
-						var account_html = "<br><i>데이터 없음</i>";
+						var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
+						var account_html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
 					}
 					$("#month-div").html(month_html);
 					$("#month-account-list-div").html(account_html);
@@ -491,7 +531,7 @@
 				success : function(map) {
 					if(Object.keys(map) != "no") {
 						var date = Object.keys(map)[0].substr(0, 7).split("-");
-						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
+						var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
 						
 						var account_html = "<table class='list-table'>";
 		
@@ -513,14 +553,14 @@
 								}
 								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
 							}
-							account_html += "<tr style='border : 0;'><td></td></tr>";
+							account_html += "<tr style='border : 0;'></tr>";
 						}
 						
 						account_html += "</table>";
 					} else {
 						var date = todayAll.split("-");
-						var month_html = "<i class='fs-23'>" + date[0] + "년" + date[1] + "월</i>";
-						var account_html = "<br><i>데이터 없음</i>";
+						var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
+						var account_html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
 					}
 					$("#month-div").html(month_html);
 					$("#month-account-list-div").html(account_html);
@@ -702,7 +742,7 @@
 				userid : userid
 			},
 			success : function(cateList) {
-				var in_html = "<table class='table' id='in-category-table'>";
+				var in_html = "<table class='modal-table' id='in-category-table' style='width: 100%;'>";
 
 				for(let i = 0; i < cateList.length; i++) {
 					if(cateList[i].moneytype == "수입") {
@@ -712,7 +752,7 @@
 				}
 				in_html += "</table>";
 
-				var out_html = "<table class='table' id='out-category-table'>";
+				var out_html = "<table class='modal-table' id='out-category-table' style='width: 100%;'>";
 				for(let i = 0; i < cateList.length; i++) {
 					if(cateList[i].moneytype == "지출") {
 						out_html += "<tr><td style='display: none;'>" + cateList[i].moneytype + "</td>";
@@ -957,7 +997,7 @@
 				userid : userid
 			},
 			success : function(map) {
-				var html = "<table class='table' id='asset-table'>"; // 자산 목록 테이블 만들기
+				var html = "<table class='modal-table' id='asset-table'>"; // 자산 목록 테이블 만들기
 				for(var key in map ) {
 					var value = map[key].split(","); // 자산 그룹에 해당하는 자산이 여러 개이면 ,로 구분되어 있으므로 ,를 기준으로 분리하여 value 변수에 저장
 					for(var i = 0; i < value.length; i++) {
@@ -1119,6 +1159,15 @@
 				})
 			}
 		})
+		var clickNum = 0;
+		$("#open-cate-setting").click(function() {
+			clickNum++;
+			if(clickNum % 2 != 0) {
+				$("#cate-setting").show();
+			} else {
+				$("#cate-setting").hide();
+			}
+		})
 	})
 </script>
 </head>
@@ -1130,7 +1179,7 @@
 			<img src="../resources/img/logo.png" style="width: 90%;" onclick="location.href='../main/main.jsp'">
 			<ul class="menu-group">
 				<li class="menu"><i class="fi fi-rr-home"></i> 메인페이지</li>
-				<li class="menu active"><i class="fi fi-rr-add"></i> 수입/지출 관리</li>		
+				<li class="menu active"><i class="fi fi-rr-money-check-edit"></i> 수입/지출 관리</li>		
 				<li class="menu"><i class="fi fi-rr-coins"></i> 자산관리</li>		
 				<li class="menu"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
 				<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표 관리</li>
@@ -1142,47 +1191,66 @@
 			<%
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
-				<div>
-				
-				<h3 class="h-normal fs-28"><i class="fi fi-rr-add"></i> 수입/지출 관리</h3>
-				<button class="btn long gray" id="in-category-btn">수입 분류</button>
-				<button class="btn long gray" id="out-category-btn">지출 분류</button>
-				<button class="btn long gray" id="add-account-page">수입/지출 추가</button>
-				<button class="btn long gray" id="bookmark-page">즐겨찾기</button>
+			<div>
+				<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 수입/지출 관리</h3>
+				<div class="fix-col5-left-br">
+					<button class="btn medium green font-18 is-shadow" id="add-account-page"><i class="fi fi-rr-add"></i> 추가</button>
+					<button class="btn small outline-green font-18 is-shadow" id="bookmark-page"><i class="fi fi-rr-star"></i> 즐겨찾기</button>
+				</div>
+				<div class="fix-right-tr-1">
+					<button class="btn green font-18 is-shadow" id="open-cate-setting" style="width: 60px;"><i class="fi fi-rr-menu-burger"></i></button>
+				</div>
+				<div class="fix-right-tr-2" id="cate-setting" hidden>
+					<button class="btn small outline-green font-18 is-shadow" id="in-category-btn">수입 분류</button>
+					<br>
+					<button class="btn small outline-green font-18 is-shadow" id="out-category-btn">지출 분류</button>
+				</div>
 				
 				<!-- 날짜 보여주기 -->
-				<div>
+				<div style="margin-left: 37%; margin-bottom: 3%;">
 					<table>
 						<tr>
 							<td>
-								<i class="fi fi-rr-angle-circle-left fs-28" id="before"></i>
+								<i class="fi fi-rr-angle-circle-left fs-28 click-icon" id="before"></i>
 							</td>
 							<td>
-								<div id="month-div" style="margin: 10px;"></div>
+								<div id="month-div" style="width: 100%; margin: 10px;"></div>
 							</td>
 							<td>
-								<i class="fi fi-rr-angle-circle-right fs-28" id="after"></i>
+								<i class="fi fi-rr-angle-circle-right fs-28 click-icon" id="after"></i>
 							</td>
 						</tr>
 					</table>
 				</div>
-				
-				<!-- 전체, 수입, 지출 선택 -->
-				<div id="select-total-in-out">
-					<table>
-						<tr>
-							<td><button class="btn outline-green active" id="total-account-btn">전체</button></td>
-							<td><button class="btn outline-green" id="in-account-btn">수입</button></td>
-							<td><button class="btn outline-green" id="out-account-btn">지출</button></td>
-						</tr>
-					</table>
-				</div>
-				
 				<!-- 월별 수입/지출 내역 -->
 				<div>
-					<div id="month-account-list-div" class="col-5"></div>
 					<div class="col-5">
-						<h4 class="h-normal fs-23">통계</h4>
+						<!-- 전체, 수입, 지출 선택 -->
+						<div>
+							<table class="select-table">
+								<tr>
+									<td class="active" id="total-account-btn">전체</td>
+									<td class="" id="in-account-btn">수입</td>
+									<td class="" id="out-account-btn">지출</td>
+								</tr>
+							</table>
+						</div>
+						<br>
+						<!-- 총 금액 -->
+						<div>
+							<table style="width: 500px; margin-left: 6%; text-align: center;">
+								<tr>
+									<td><div id="total-div">합계</div></td>
+									<td><div id="total-income-div">총 수입</div></td>
+									<td><div id="total-spend-div">총 지출</div></td>
+								</tr>
+							</table>
+						</div>
+						<br>
+						<div class="is-scroll" id="month-account-list-div" style="margin-left: 2%;"></div>
+					</div>
+					<div class="col-5">
+						<h4 class="h-normal fs-23">지출 통계</h4> <br>
 						<div id="piechart" style="width: 800px; height: 400px;"></div>
 						<div id="category-stats-div"></div>
 					</div>			
@@ -1192,7 +1260,7 @@
 				<div class="modal" id="in-category-modal" hidden="true">
 					<div class="modal-content">
 						<div class="modal-title">
-							<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 수입 카테고리 관리</h3>
+							<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 수입 카테고리 관리</h3>
 						</div>
 						<button class="btn medium green" id="add-in-category-page" style="margin-left: 10px;">추가</button>
 						<div class="modal-body">
@@ -1207,7 +1275,7 @@
 				<div class="modal" id="out-category-modal" hidden="true">
 					<div class="modal-content">
 						<div class="modal-title">
-							<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 지출 카테고리 관리</h3>
+							<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 지출 카테고리 관리</h3>
 						</div>
 						<button class="btn medium green" id="add-out-category-page" style="margin-left: 10px;">추가</button>
 						<div class="modal-body">
@@ -1223,7 +1291,7 @@
 				<div class="modal" id="up-category-modal" hidden="true">
 					<div class="modal-content small">
 						<div class="modal-title">
-							<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 카테고리 수정</h3>
+							<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 카테고리 수정</h3>
 						</div>
 						<hr>
 						<div class="modal-body small">
@@ -1258,7 +1326,7 @@
 				<div class="modal" id="add-category-modal" hidden="true">
 					<div class="modal-content small">
 						<div class="modal-title">
-							<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 카테고리 추가</h3>
+							<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 카테고리 추가</h3>
 						</div>
 						<hr>
 						<div class="modal-body small">
@@ -1291,7 +1359,7 @@
 				<div class="modal" id="select-moneytype-modal" hidden="true">
 					<div class="modal-content small">
 						<div class="modal-title">
-							<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 분류</h3>
+							<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 분류</h3>
 						</div>
 						<hr>
 						<div class="modal-body small">
@@ -1316,9 +1384,9 @@
 			
 			<!-- 수입/지출 추가 모달 -->
 			<div class="modal" id="add-account-modal" hidden="true">
-				<div class="modal-content wide">
+				<div class="modal-content">
 					<div class="modal-title">
-						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 수입/지출 추가</h3>
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 수입/지출 추가</h3>
 					</div>
 					<hr>
 					<div class="modal-body">
@@ -1338,11 +1406,11 @@
 								</tr>
 								<tr>
 									<td>자산</td>
-									<td><input type="text" class="input" id="add-actasset" readonly></td>
+									<td><input type="text" class="input" id="add-actasset" placeholder="자산선택" readonly></td>
 								</tr>
 								<tr>
 									<td>분류</td>
-									<td><input type="text" class="input" id="add-actcatename" readonly></td>
+									<td><input type="text" class="input" id="add-actcatename" placeholder="분류선택" readonly></td>
 								</tr>
 								<tr>
 									<td>금액</td>
@@ -1372,7 +1440,7 @@
 			<div class="modal" id="up-account-modal" hidden="true">
 				<div class="modal-content">
 					<div class="modal-title">
-						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 수입/지출 수정</h3>
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 수입/지출 수정</h3>
 					</div>
 					<hr>
 					<div class="modal-body">
@@ -1448,7 +1516,7 @@
 			<div class="modal" id="select-incate-modal" hidden="true">
 				<div class="modal-content">
 					<div class="modal-title">
-						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 수입 카테고리</h3>
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 수입 카테고리</h3>
 					</div>
 					<div class="modal-body">
 						<div id="select-incate-list-div"></div>
@@ -1462,7 +1530,7 @@
 			<div class="modal" id="select-outcate-modal" hidden="true">
 				<div class="modal-content">
 					<div class="modal-title">
-						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 지출 카테고리</h3>
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 지출 카테고리</h3>
 					</div>
 					<div class="modal-body">
 						<div id="select-outcate-list-div"></div>
@@ -1476,7 +1544,7 @@
 			<div class="modal" id="bookmark-modal" hidden="true">
 				<div class="modal-content">
 					<div class="modal-title">
-						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 즐겨찾기</h3>
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-star"></i> 즐겨찾기</h3>
 					</div>
 					<button class="btn medium green" id="add-bookmark-page" style="margin-left: 10px;">추가</button>
 					<div class="modal-body">

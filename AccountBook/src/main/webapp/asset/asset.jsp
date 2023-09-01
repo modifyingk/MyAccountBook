@@ -223,14 +223,14 @@
 				userid : userid
 			},
 			success : function(groupList) {
-				var group_html = "<table class='table' id='astgroup-table'>";
-				var astgroup_html = "<table class'table' id='select-table'>";
+				var group_html = "<table class='modal-table' id='astgroup-table'>";
+				var astgroup_html = "<table class'modal-table' id='select-table'>";
 				
 				for(let i = 0; i < groupList.length; i++) {
 					group_html += "<tr><td class='group-list is-border del-group'>" + groupList[i] + "</td>";
 					group_html += "<td class='del-group-td'><i class='fi fi-sr-minus-circle del-icon'></i></td></tr>";
 
-					astgroup_html += "<tr><td class='group-list is-border'>" + groupList[i] + "</td></tr>";
+					astgroup_html += "<tr><td class='group-list is-border' style='width: 500px; height: 30px;'>" + groupList[i] + "</td></tr>";
 				}
 				group_html += "</table>";
 				astgroup_html += "</table>";
@@ -391,7 +391,7 @@
 			<img src="../resources/img/logo.png" style="width: 90%;" onclick="location.href='../main/main.jsp'">
 			<ul class="menu-group">
 				<li class="menu"><i class="fi fi-rr-home"></i> 메인페이지</li>
-				<li class="menu"><i class="fi fi-rr-add"></i> 수입/지출 관리</li>		
+				<li class="menu"><i class="fi fi-rr-money-check-edit"></i> 수입/지출 관리</li>		
 				<li class="menu active"><i class="fi fi-rr-coins"></i> 자산관리</li>		
 				<li class="menu"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
 				<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표 관리</li>
@@ -407,7 +407,7 @@
 				
 				<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산관리</h3>
 				<button class="btn long gray" id="astgroup-btn">자산그룹</button>
-				<button class="btn long outline-green" id="add-asset-page">자산 추가</button>
+				<button class="btn long outline-green" id="add-asset-page"><i class="fi fi-rr-add"></i> 자산 추가</button>
 				<div id="asset-list-div"></div>
 				
 				<!-- 자산 모달 -->

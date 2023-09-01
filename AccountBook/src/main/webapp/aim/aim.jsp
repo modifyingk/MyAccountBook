@@ -155,13 +155,11 @@
 			},
 			success : function(aimList) {
 				var date = todayAll.split("-");
-				var aim_html = "<button id='before'>이전</button>";
-				aim_html += "<i class='fs-23'>" + date[0] + "년 " + date[1] + "월</i>";
-				aim_html += "<button id='after'>다음</button>";
-				aim_html += "<h4 class='h-normal fs-23'>지출 목표</h4>";
-				
+				var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
+
+				var aim_html = "";
 				if(aimList != "") {
-					aim_html += "<table class='list-table' style='width: 1200px;' id='out-aim-table'>";
+					aim_html += "<table class='gage-table' style='width: 1200px;' id='out-aim-table'>";
 					for(var i = 0; i < aimList.length; i++) {
 						var percent = Math.round(aimList[i].total / aimList[i].aim_money * 100);
 						
@@ -187,9 +185,10 @@
 					}
 					aim_html += "</table>";
 				} else {
-					aim_html += "<p>데이터가 없습니다.</p>";
+					aim_html += "<div class='no-aim-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
 				}
 				
+				$("#aim-month-div").html(month_html);
 				$("#aim-list-div").html(aim_html);
 			}
 		})
@@ -202,9 +201,9 @@
 				userid : userid
 			},
 			success : function(aimList) {
-				var aim_in_html = "<h4 class='h-normal fs-23'>수입 목표</h4>";
+				var aim_in_html = "";
 				if(aimList != "") {
-					aim_in_html += "<table class='list-table' style='width: 1200px;' id='in-aim-table'>";
+					aim_in_html += "<table class='gage-table' style='width: 1200px;' id='in-aim-table'>";
 					for(var i = 0; i < aimList.length; i++) {
 						var percent = Math.round(aimList[i].total / aimList[i].aim_money * 100);
 						
@@ -221,7 +220,7 @@
 					}
 					aim_in_html += "</table>";
 				} else {
-					aim_in_html += "<p>데이터가 없습니다.</p>";
+					aim_in_html += "<div class='no-aim-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
 				}
 				
 				$("#aim-in-list-div").html(aim_in_html);
@@ -257,13 +256,12 @@
 				},
 				success : function(aimList) {
 					var date = todayAll.split("-");
-					var aim_html = "<button id='before'>이전</button>";
-					aim_html += "<i class='fs-23'>" + date[0] + "년 " + date[1] + "월</i>";
-					aim_html += "<button id='after'>다음</button>";
-					aim_html += "<h4 class='h-normal fs-23'>지출 목표</h4>";
+					var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
+					
+					var aim_html = "";
 					
 					if(aimList != "") {
-						aim_html += "<table class='list-table' style='width: 1200px;' id='out-aim-table'>";
+						aim_html += "<table class='gage-table' style='width: 1200px;' id='out-aim-table'>";
 						for(var i = 0; i < aimList.length; i++) {
 							var percent = Math.round(aimList[i].total / aimList[i].aim_money * 100);
 							
@@ -289,9 +287,10 @@
 						}
 						aim_html += "</table>";
 					} else {
-						aim_html += "<p>데이터가 없습니다.</p>";
+						aim_html += "<div class='no-aim-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
 					}
 					
+					$("#aim-month-div").html(month_html);
 					$("#aim-list-div").html(aim_html);
 				}
 			})
@@ -304,9 +303,9 @@
 					userid : userid
 				},
 				success : function(aimList) {
-					var aim_in_html = "<h4 class='h-normal fs-23'>수입 목표</h4>";
+					var aim_in_html = "";
 					if(aimList != "") {
-						aim_in_html += "<table class='list-table' style='width: 1200px;' id='in-aim-table'>";
+						aim_in_html += "<table class='gage-table' style='width: 1200px;' id='in-aim-table'>";
 						for(var i = 0; i < aimList.length; i++) {
 							var percent = Math.round(aimList[i].total / aimList[i].aim_money * 100);
 							
@@ -323,7 +322,7 @@
 						}
 						aim_in_html += "</table>";
 					} else {
-						aim_in_html += "<p>데이터가 없습니다.</p>";
+						aim_in_html += "<div class='no-aim-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
 					}
 					
 					$("#aim-in-list-div").html(aim_in_html);
@@ -360,13 +359,12 @@
 				},
 				success : function(aimList) {
 					var date = todayAll.split("-");
-					var aim_html = "<button id='before'>이전</button>";
-					aim_html += "<i class='fs-23'>" + date[0] + "년 " + date[1] + "월</i>";
-					aim_html += "<button id='after'>다음</button>";
-					aim_html += "<h4 class='h-normal fs-23'>지출 목표</h4>";
+					var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
+					
+					var aim_html = "";
 					
 					if(aimList != "") {
-						aim_html += "<table class='list-table' style='width: 1200px;' id='out-aim-table'>";
+						aim_html += "<table class='gage-table' style='width: 1200px;' id='out-aim-table'>";
 						for(var i = 0; i < aimList.length; i++) {
 							var percent = Math.round(aimList[i].total / aimList[i].aim_money * 100);
 							
@@ -392,10 +390,11 @@
 						}
 						aim_html += "</table>";
 					} else {
-						aim_html += "<p>데이터가 없습니다.</p>";
+						aim_html += "<div class='no-aim-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
 					}
 					
-					$("#aim-list-div").html(aim_html);ㄴ
+					$("#aim-month-div").html(month_html);
+					$("#aim-list-div").html(aim_html);
 				}
 			})
 			$.ajax({
@@ -407,9 +406,9 @@
 					userid : userid
 				},
 				success : function(aimList) {
-					var aim_in_html = "<h4 class='h-normal fs-23'>수입 목표</h4>";
+					var aim_in_html = "";
 					if(aimList != "") {
-						aim_in_html += "<table class='list-table' style='width: 1200px;' id='in-aim-table'>";
+						aim_in_html += "<table class='gage-table' style='width: 1200px;' id='in-aim-table'>";
 						for(var i = 0; i < aimList.length; i++) {
 							var percent = Math.round(aimList[i].total / aimList[i].aim_money * 100);
 							
@@ -426,7 +425,7 @@
 						}
 						aim_in_html += "</table>";
 					} else {
-						aim_in_html += "<p>데이터가 없습니다.</p>";
+						aim_in_html += "<div class='no-aim-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
 					}
 					
 					$("#aim-in-list-div").html(aim_in_html);
@@ -508,12 +507,29 @@
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
 				<h3 class="h-normal fs-28"><i class="fi fi-rs-chart-histogram"></i> 목표 관리</h3>
-				
-				<button class="btn long outline-green" id="add-aim-page">목표 추가</button>
-				<div id="aim-date-div"></div>
-				<div id="aim-list-div"></div>
-				<br>
-				<div id="aim-in-list-div"></div>
+				<div class="fix-left-bl">
+					<button class="btn medium green font-18 is-shadow" id="add-aim-page"><i class="fi fi-rr-add"></i> 목표 추가</button>
+				</div>
+				<!-- 날짜 보여주기 -->
+				<div>
+					<table>
+						<tr>
+							<td>
+								<i class="fi fi-rr-angle-circle-left fs-28 click-icon" id="before"></i>
+							</td>
+							<td>
+								<div id="aim-month-div" style="width: 100%; margin: 10px;"></div>
+							</td>
+							<td>
+								<i class="fi fi-rr-angle-circle-right fs-28 click-icon" id="after"></i>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<h4 class='h-normal fs-23'>지출 목표</h4>
+				<div class="is-scroll" id="aim-list-div" style="height: 350px;"></div>
+				<h4 class='h-normal fs-23'>수입 목표</h4>
+				<div class="is-scroll" id="aim-in-list-div" style="height: 350px;"></div>
 				
 				
 			<!-- 수입/지출 수정 모달 -->
