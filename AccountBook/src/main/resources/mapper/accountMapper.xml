@@ -36,4 +36,9 @@
 	<select id="monthSpend" parameterType="accountVO" resultType="accountVO">
 		select * from account where userid = #{userid} and left(date, 7) = #{date} and moneytype = "지출";
 	</select>
+	
+	<!-- 해당 월의 카테고리별 지출 내역 -->
+	<select id="monthCateSpend" parameterType="accountVO" resultType="accountVO">
+		select * from account where userid = #{userid} and left(date, 7) = #{date} and catename = #{catename} and moneytype = "지출";
+	</select>
 </mapper>

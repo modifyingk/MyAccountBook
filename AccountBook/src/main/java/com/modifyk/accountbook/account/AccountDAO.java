@@ -61,4 +61,9 @@ public class AccountDAO {
 	public List<AccountVO> monthSpend(AccountVO accountVO) {
 		return my.selectList("accountMapper.monthSpend", accountVO);
 	}
+	
+	// 해당 월의 카테고리별 지출 내역
+	public List<AccountVO> monthCateSpend(AccountVO accountVO) {
+		return my.selectList("accountMapper.monthCateSpend", accountVO);
+	}
 }

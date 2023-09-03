@@ -127,7 +127,7 @@
 				
 				var stats_html = "<table class='list-table'>";
 				for(var key in map) {
-					stats_html += "<tr><td>" + key + "</td>";
+					stats_html += "<tr class='tr-statscate'><td>" + key + "</td>";
 					stats_html += "<td>" + map[key] + "원</td></tr>";
 				}
 				stats_html += "</table>";
@@ -261,7 +261,7 @@
 					
 					var stats_html = "<table class='list-table'>";
 					for(var key in map) {
-						stats_html += "<tr><td>" + key + "</td>";
+						stats_html += "<tr class='tr-statscate'><td>" + key + "</td>";
 						stats_html += "<td>" + map[key] + "원</td></tr>";
 					}
 					stats_html += "</table>";
@@ -396,13 +396,60 @@
 					
 					var stats_html = "<table class='list-table'>";
 					for(var key in map) {
-						stats_html += "<tr><td>" + key + "</td>";
+						stats_html += "<tr class='tr-statscate'><td>" + key + "</td>";
 						stats_html += "<td>" + map[key] + "원</td></tr>";
 					}
 					stats_html += "</table>";
 					$("#category-stats-div").html(stats_html);
 				}
 			})
+		})
+		$(document).on("click", ".tr-statscate", function() {
+			var catename = $(this).children().eq(0).text();
+			$.ajax({
+				type : "post",
+				url : "monthCateSpend",
+				data : {
+					catename : catename,
+					date : todayAll,
+					userid : userid
+				},
+				success : function(map) {
+					if(Object.keys(map) != "no") {
+						var spend_total = 0;
+						var catepend_html = "<table class='list-table'>";
+						
+						for(var key in map) {
+							catepend_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
+							var value = map[key].split(",");
+							for(var i = 0; i < value.length; i++) {
+								var account = value[i].split("#");
+								catepend_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
+								catepend_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
+								catepend_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
+								catepend_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
+								catepend_html += "<td>" + account[3] + "</td>"; // 카테고리
+								catepend_html += "<td>" + account[4] + "</td>"; // 내용
+								catepend_html += "<td class='text-right red'>" + account[5] + "원</td>";
+								spend_total += parseInt(account[5]);
+								catepend_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
+							}
+							catepend_html += "<tr style='border : 0;'></tr>";
+						}
+						catepend_html += "</table>";
+						
+					} else {
+						var catepend_html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+					}
+					$("#catespend-total-div").html("<h4 class='h-normal fs-23'>총 지출 <i class='red h-normal fs-20'>" + spend_total + "원</i></h4><br>");
+					$("#catename-div").html("<h3 class='h-normal fs-28'><i class='fi fi-rr-money-check-edit'></i> " + catename + "</h3>");
+					$("#catespend-list-div").html(catepend_html);
+				}
+			})
+			$("#catespend-modal").show();
+		})
+		$("#close-catespend").click(function() {
+			$("#catespend-modal").hide();
 		})
 		// 전체 내역, 수입 내역, 지출 내역
 		$("#total-account-btn").click(function() {
@@ -1433,6 +1480,21 @@
 					<hr>
 					<div class="modal-footer">
 						<button class="btn right outline-green" id="close-add-account">닫기</button>
+					</div>
+				</div>
+			</div>
+			<!-- 카테고리별 지출 모달 -->
+			<div class="modal" id="catespend-modal" hidden="true">
+				<div class="modal-content wide">
+					<div class="modal-title">
+						<h3 class="h-normal fs-28" id="catename-div"><i class="fi fi-rr-money-check-edit"></i> 카테고리별 지출</h3>
+					</div>
+					<div class="modal-body wide">
+						<div id="catespend-total-div"></div>
+						<div id="catespend-list-div"></div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn right outline-green" id="close-catespend">닫기</button>
 					</div>
 				</div>
 			</div>

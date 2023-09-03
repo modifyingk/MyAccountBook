@@ -21,7 +21,7 @@ public class AccountToMapService {
 				String value = map.get(accountList.get(i).getDate()) + "," + accountList.get(i).getAccountid() + "#" + accountList.get(i).getMoneytype() + "#" + accountList.get(i).getAstname() + "#" + accountList.get(i).getCatename() + "#" + accountList.get(i).getContent() + "#" + accountList.get(i).getTotal() + "#" + accountList.get(i).getMemo();
 				map.put(accountList.get(i).getDate(), value);
 			} else { 
-				// 자산그룹을 key값으로 하고, 자산과 자산메모를 샵(#)으로 구분한 문자열을 value 값으로 하여 저장 
+				// 날짜를 key값으로 하고, 수입/지출, 카테고리, 내용, 돈을 샵(#)으로 구분한 문자열을 value 값으로 하여 저장 
 				map.put(accountList.get(i).getDate(), accountList.get(i).getAccountid() + "#" + accountList.get(i).getMoneytype() + "#" + accountList.get(i).getAstname() + "#" + accountList.get(i).getCatename() + "#" + accountList.get(i).getContent() + "#" + accountList.get(i).getTotal() + "#" + accountList.get(i).getMemo());
 			}
 		}

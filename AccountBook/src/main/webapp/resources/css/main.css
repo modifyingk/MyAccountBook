@@ -308,6 +308,13 @@
 .modal-body.small {
 	height: 300px;
 }
+/* Modal 넓은 크기 */
+.modal-content.wide { 
+	width: 650px;
+}
+.modal-body.wide {
+	width: 620px;
+}
 /* ---------------------------------------------------------------- */
 /* asset.jsp */
 .group-list {
