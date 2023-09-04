@@ -50,9 +50,8 @@
 							account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
 							account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
 							account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
-							account_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
 							account_html += "<td>" + account[3] + "</td>"; // 카테고리
-							account_html += "<td>" + account[4] + "</td>"; // 내용
+							account_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
 							if(account[1] == "수입") {
 								account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
 								income_total += parseInt(account[5]);
@@ -128,7 +127,7 @@
 				var stats_html = "<table class='list-table'>";
 				for(var key in map) {
 					stats_html += "<tr class='tr-statscate'><td>" + key + "</td>";
-					stats_html += "<td>" + map[key] + "원</td></tr>";
+					stats_html += "<td class='red h-normal'>" + map[key] + "원</td></tr>";
 				}
 				stats_html += "</table>";
 				$("#category-stats-div").html(stats_html);
@@ -185,9 +184,8 @@
 								account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
 								account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
 								account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
-								account_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
 								account_html += "<td>" + account[3] + "</td>"; // 카테고리
-								account_html += "<td>" + account[4] + "</td>"; // 내용
+								account_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
 								if(account[1] == "수입") {
 									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
 									income_total += parseInt(account[5]);
@@ -262,7 +260,7 @@
 					var stats_html = "<table class='list-table'>";
 					for(var key in map) {
 						stats_html += "<tr class='tr-statscate'><td>" + key + "</td>";
-						stats_html += "<td>" + map[key] + "원</td></tr>";
+						stats_html += "<td class='red h-normal'>" + map[key] + "원</td></tr>";
 					}
 					stats_html += "</table>";
 					$("#category-stats-div").html(stats_html);
@@ -321,9 +319,8 @@
 								account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
 								account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
 								account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
-								account_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
 								account_html += "<td>" + account[3] + "</td>"; // 카테고리
-								account_html += "<td>" + account[4] + "</td>"; // 내용
+								account_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
 								if(account[1] == "수입") {
 									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
 									income_total += parseInt(account[5]);
@@ -397,7 +394,7 @@
 					var stats_html = "<table class='list-table'>";
 					for(var key in map) {
 						stats_html += "<tr class='tr-statscate'><td>" + key + "</td>";
-						stats_html += "<td>" + map[key] + "원</td></tr>";
+						stats_html += "<td class='red h-normal'>" + map[key] + "원</td></tr>";
 					}
 					stats_html += "</table>";
 					$("#category-stats-div").html(stats_html);
@@ -427,9 +424,8 @@
 								catepend_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
 								catepend_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
 								catepend_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
-								catepend_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
 								catepend_html += "<td>" + account[3] + "</td>"; // 카테고리
-								catepend_html += "<td>" + account[4] + "</td>"; // 내용
+								catepend_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
 								catepend_html += "<td class='text-right red'>" + account[5] + "원</td>";
 								spend_total += parseInt(account[5]);
 								catepend_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
@@ -662,11 +658,11 @@
 			var actdate = $(this).children().eq(0).text();
 			var actid = $(this).children().eq(1).text();
 			var actmoneytype = $(this).children().eq(2).text();
-			var actasset = $(this).children().eq(3).text();
-			var actcatename = $(this).children().eq(4).text();
-			var actcontent = $(this).children().eq(5).text();
-			var acttotal = $(this).children().eq(6).text();
-			var actmemo = $(this).children().eq(7).text();
+			var actasset = $(this).children().eq(4).children().eq(1).text();
+			var actcatename = $(this).children().eq(3).text();
+			var actcontent = $(this).children().eq(4).children().eq(0).text();
+			var acttotal = $(this).children().eq(5).text();
+			var actmemo = $(this).children().eq(6).text();
 			
 			$("#up-account-modal").show();
 			$("#up-actdate").attr("value", actdate);
@@ -1116,7 +1112,7 @@
 				userid : userid
 			},
 			success : function(addmarkList) {
-				var addmark_html = "<table class='list-table'>";
+				var addmark_html = "<table class='list-table' style='width:450px;'>";
 				for(var i = 0; i < addmarkList.length; i++) {
 					addmark_html += "<tr class='tr-addmark'><td>" + addmarkList[i].catename + "</td>";
 					addmark_html += "<td>" + addmarkList[i].content + "</td>";
@@ -1159,7 +1155,7 @@
 				userid : userid
 			},
 			success : function(bookmarkList) {
-				mark_html = "<table class='list-table'>";
+				mark_html = "<table class='list-table' style='width:450px;'>";
 				for(var i = 0; i < bookmarkList.length; i++) {
 					mark_html += "<tr><td class='td-bookmark' style='display:none;'>" + bookmarkList[i].bookmarkid + "</td>";
 					mark_html += "<td class='td-bookmark'>" + bookmarkList[i].catename + "</td>";
