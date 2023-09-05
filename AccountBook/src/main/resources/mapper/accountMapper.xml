@@ -46,4 +46,9 @@
 	<select id="assetTotal" parameterType="String" resultType="accountVO">
 		select moneytype, astname, sum(total) as total from account where userid = #{userid} group by moneytype, astname;
 	</select>
+	
+	<!-- 자산별 내역 -->
+	<select id="assetAccount" parameterType="accountVO" resultType="accountVO">
+		select * from account where userid = #{userid} and astname = #{astname} and left(date, 7) = #{date};
+	</select>
 </mapper>

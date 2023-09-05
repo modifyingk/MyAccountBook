@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.modifyk.accountbook.account.AccountToMapService;
 import com.modifyk.accountbook.account.AccountVO;
 
 @Controller
@@ -18,6 +19,9 @@ public class AssetController {
 	
 	@Autowired
 	AssetToMapService toMapSvc;
+	
+	@Autowired
+	AccountToMapService actMapSvc;
 	
 	// 자산 리스트
 	@ResponseBody
@@ -90,5 +94,19 @@ public class AssetController {
 	public List<AccountVO> assetTotal(String userid) {
 		List<AccountVO> assetTotal = aDao.assetTotal(userid);
 		return assetTotal;
+	}
+	
+	// 자산별 내역
+	@ResponseBody
+	@RequestMapping("asset/assetAccount")
+	public HashMap<String, Object> assetAccount(AccountVO accountVO) {
+		List<AccountVO> accountList = aDao.assetAccount(accountVO);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(accountList.size() < 1) {
+			map.put("no", "no");
+		} else {
+			map = actMapSvc.toMap(accountList);
+		}
+		return map;
 	}
 }

@@ -43,4 +43,9 @@ public class AssetDAO {
 	public List<AccountVO> assetTotal(String userid) {
 		return my.selectList("accountMapper.assetTotal", userid);
 	}
+	
+	// 자산별 지출 합계
+	public List<AccountVO> assetAccount(AccountVO accountVO) {
+		return my.selectList("accountMapper.assetAccount", accountVO);
+	}
 }

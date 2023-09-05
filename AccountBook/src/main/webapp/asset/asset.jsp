@@ -69,8 +69,245 @@
 				})
 			}
 		})
+		// 월별로 수입/지출 목록 가져오기
+		var today = new Date();
+		var todayYear = today.getFullYear();
+		var todayMonth = today.getMonth() + 1 + "";
+		
+		if(todayMonth.length == 1) {
+			todayMonth = "0" + todayMonth;
+		}
+		var todayAll = todayYear + "-" + todayMonth;
+		
 		$(document).on("click", ".asset-name .td-detail", function() { // asset-name 행 클릭 시
+			var astname = $(this).eq(0).children().eq(0).text();
+			$.ajax({
+				type : "post",
+				url : "assetAccount",
+				data : {
+					date : todayAll,
+					astname : astname,
+					userid : userid
+				},
+				success : function(map) {
+					if(Object.keys(map) != "no") {
+						var date = Object.keys(map)[0].substr(0, 7).split("-");
+						var month_html = "<i class='h-normal fs-23'>" + date[0] + "년 " + date[1] + "월</i>";
+						
+						var account_html = "<table class='list-table'>";
+						var income_total = 0;
+						var spend_total = 0;
+						
+						for(var key in map) {
+							account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
+							var value = map[key].split(",");
+							for(var i = 0; i < value.length; i++) {
+								var account = value[i].split("#");
+								account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
+								account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
+								account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
+								account_html += "<td>" + account[3] + "</td>"; // 카테고리
+								account_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
+								if(account[1] == "수입") {
+									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+									income_total += parseInt(account[5]);
+								} else {
+									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+									spend_total += parseInt(account[5]);
+								}
+								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
+							}
+							account_html += "<tr style='border : 0;'></tr>";
+						}
+						
+						account_html += "</table>";
+					} else {
+						var date = todayAll.split("-");
+						var month_html = "<i class='h-normal fs-23'>" + date[0] + "년 " + date[1] + "월</i>";
+						var account_html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+						income_total = 0;
+						spend_total = 0;
+					}
+					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total) + "</i>";
+					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total + "</i>";
+					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total + "</i>";
+					
+					$("#month-div").html(month_html);
+					$("#total-div").html(total_html);
+					$("#total-income-div").html(income_html);
+					$("#total-spend-div").html(spend_html);
+					 
+					$("#asset-account-list-div").html(account_html);
+					$("#asset-account-modal").show();
+				}
+			})
+			// 이전 달
+		$("#before").click(function() {
+			var current = todayAll.split("-");
+			var beforeYear;
+			var beforeMonth;
+			var beforeAll;
 			
+			if(current[1] == "01") {
+				beforeYear = (parseInt(current[0]) - 1) + "";
+				beforeMonth = "12";
+			} else {
+				beforeYear = current[0];
+				beforeMonth = (parseInt(current[1]) - 1) + "";
+			}
+			if(beforeMonth.length == 1) {
+				beforeMonth = "0" + beforeMonth;
+			}
+			beforeAll = beforeYear + "-" + beforeMonth;
+			todayAll = beforeAll;			
+			
+			$.ajax({
+				type : "post",
+				url : "assetAccount",
+				data : {
+					date : todayAll,
+					astname : astname,
+					userid : userid
+				},
+				success : function(map) {
+					if(Object.keys(map) != "no") {
+						var date = Object.keys(map)[0].substr(0, 7).split("-");
+						var month_html = "<i class='h-normal fs-23'>" + date[0] + "년 " + date[1] + "월</i>";
+						
+						var account_html = "<table class='list-table'>";
+						var income_total = 0;
+						var spend_total = 0;
+						
+						for(var key in map) {
+							account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
+							var value = map[key].split(",");
+							for(var i = 0; i < value.length; i++) {
+								var account = value[i].split("#");
+								account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
+								account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
+								account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
+								account_html += "<td>" + account[3] + "</td>"; // 카테고리
+								account_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
+								if(account[1] == "수입") {
+									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+									income_total += parseInt(account[5]);
+								} else {
+									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+									spend_total += parseInt(account[5]);
+								}
+								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
+							}
+							account_html += "<tr style='border : 0;'></tr>";
+						}
+						
+						account_html += "</table>";
+					} else {
+						var date = todayAll.split("-");
+						var month_html = "<i class='h-normal fs-23'>" + date[0] + "년 " + date[1] + "월</i>";
+						var account_html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+						income_total = 0;
+						spend_total = 0;
+					}
+					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total) + "</i>";
+					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total + "</i>";
+					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total + "</i>";
+					
+					$("#month-div").html(month_html);
+					$("#total-div").html(total_html);
+					$("#total-income-div").html(income_html);
+					$("#total-spend-div").html(spend_html);
+					 
+					$("#asset-account-list-div").html(account_html);
+					$("#asset-account-modal").show();
+				}
+			})
+		})
+		// 이전 달
+		$("#after").click(function() {
+			var current = todayAll.split("-");
+			var afterYear;
+			var afterMonth;
+			var afterAll;
+			
+			if(current[1] == "12") {
+				afterYear = (parseInt(current[0]) + 1) + "";
+				afterMonth = "01";
+			} else {
+				afterYear = current[0];
+				afterMonth = (parseInt(current[1]) + 1) + "";
+			}
+			if(afterMonth.length == 1) {
+				afterMonth = "0" + afterMonth;
+			}
+			afterAll = afterYear + "-" + afterMonth;
+			todayAll = afterAll;
+			
+			$.ajax({
+				type : "post",
+				url : "assetAccount",
+				data : {
+					date : todayAll,
+					astname : astname,
+					userid : userid
+				},
+				success : function(map) {
+					if(Object.keys(map) != "no") {
+						var date = Object.keys(map)[0].substr(0, 7).split("-");
+						var month_html = "<i class='h-normal fs-23'>" + date[0] + "년 " + date[1] + "월</i>";
+						
+						var account_html = "<table class='list-table'>";
+						var income_total = 0;
+						var spend_total = 0;
+						
+						for(var key in map) {
+							account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
+							var value = map[key].split(",");
+							for(var i = 0; i < value.length; i++) {
+								var account = value[i].split("#");
+								account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
+								account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
+								account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
+								account_html += "<td>" + account[3] + "</td>"; // 카테고리
+								account_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
+								if(account[1] == "수입") {
+									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+									income_total += parseInt(account[5]);
+								} else {
+									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+									spend_total += parseInt(account[5]);
+								}
+								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
+							}
+							account_html += "<tr style='border : 0;'></tr>";
+						}
+						
+						account_html += "</table>";
+					} else {
+						var date = todayAll.split("-");
+						var month_html = "<i class='h-normal fs-23'>" + date[0] + "년 " + date[1] + "월</i>";
+						var account_html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+						income_total = 0;
+						spend_total = 0;
+					}
+					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total) + "</i>";
+					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total + "</i>";
+					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total + "</i>";
+					
+					$("#month-div").html(month_html);
+					$("#total-div").html(total_html);
+					$("#total-income-div").html(income_html);
+					$("#total-spend-div").html(spend_html);
+					 
+					$("#asset-account-list-div").html(account_html);
+					$("#asset-account-modal").show();
+				}
+			})
+		})
+		})
+		
+		// 자산별 내역 모달 닫기		
+		$("#close-asset-account").click(function() {
+			$("#asset-account-modal").hide();
 		})
 		// 자산 수정
 		var originAsset;
@@ -545,6 +782,45 @@
 						</div>
 						<div class="modal-footer">
 							<button class="btn right outline-green" id="close-add-asset">닫기</button>
+						</div>
+					</div>
+				</div>
+				<!-- 자산별 내역 모달 -->
+				<div class="modal" id="asset-account-modal" hidden="true">
+					<div class="modal-content wide">
+						<div class="modal-title">
+							<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 자산별 수입/지출 내역</h3>
+						</div>
+						<div class="modal-body wide">
+							<!-- 날짜 보여주기 -->
+							<div style="margin-left: 30%; margin-bottom: 1%;">
+								<table>
+									<tr>
+										<td>
+											<i class="fi fi-rr-angle-circle-left fs-28 click-icon" id="before"></i>
+										</td>
+										<td>
+											<div id="month-div" style="width: 100%; margin: 10px;"></div>
+										</td>
+										<td>
+											<i class="fi fi-rr-angle-circle-right fs-28 click-icon" id="after"></i>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div>
+								<table style="width: 500px; margin-bottom: 1%; margin-left: 6%; text-align: center;">
+									<tr>
+										<td><div id="total-div">합계</div></td>
+										<td><div id="total-income-div">총 수입</div></td>
+										<td><div id="total-spend-div">총 지출</div></td>
+									</tr>
+								</table>
+							</div>
+							<div id="asset-account-list-div"></div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn right outline-green" id="close-asset-account">닫기</button>
 						</div>
 					</div>
 				</div>
