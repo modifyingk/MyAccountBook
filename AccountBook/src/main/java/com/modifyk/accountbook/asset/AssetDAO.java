@@ -7,6 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.modifyk.accountbook.account.AccountVO;
+
 @Component
 public class AssetDAO {
 	@Autowired
@@ -35,5 +37,10 @@ public class AssetDAO {
 	// 자산 삭제
 	public int deleteAsset(AssetVO assetVO) {
 		return my.delete("assetMapper.deleteAsset", assetVO);
+	}
+	
+	// 자산별 지출 합계
+	public List<AccountVO> assetTotal(String userid) {
+		return my.selectList("accountMapper.assetTotal", userid);
 	}
 }

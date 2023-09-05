@@ -1305,7 +1305,8 @@
 						<div class="modal-title">
 							<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 수입 카테고리 관리</h3>
 						</div>
-						<button class="btn medium green" id="add-in-category-page" style="margin-left: 10px;">추가</button>
+						<button class="btn medium green" id="add-in-category-page" style="margin-left: 10px;"><i class="fi fi-rr-add"></i> 추가</button>
+						<button class="btn small outline-green" id="reset-incate-btn" style="margin-left: 10px; height: 48px;"><i class="fi fi-rr-rotate-right"></i> 초기화</button>
 						<div class="modal-body">
 							<div id="in-category-list-div"></div>
 						</div>
@@ -1320,7 +1321,8 @@
 						<div class="modal-title">
 							<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 지출 카테고리 관리</h3>
 						</div>
-						<button class="btn medium green" id="add-out-category-page" style="margin-left: 10px;">추가</button>
+						<button class="btn medium green" id="add-out-category-page" style="margin-left: 10px;"><i class="fi fi-rr-add"></i> 추가</button>
+						<button class="btn small outline-green" id="reset-outcate-btn" style="margin-left: 10px; height: 48px;"><i class="fi fi-rr-rotate-right"></i> 초기화</button>
 						<div class="modal-body">
 							<div id="out-category-list-div"></div>
 						</div>

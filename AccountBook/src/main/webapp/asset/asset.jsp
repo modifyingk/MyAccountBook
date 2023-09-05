@@ -12,8 +12,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
 	$(function() {
-		// 자산 목록 보기
 		var userid = "<%= session.getAttribute("userid") %>";
+		// 자산 목록 보기
 		$.ajax({
 			type : "post",
 			url : "assetInfo",
@@ -22,30 +22,65 @@
 				userid : userid
 			},
 			success : function(map) {
-				var html = "<table class='table'>"; // 자산 목록 테이블 만들기
-				for(var key in map ) {
-					html += "<tr><td>" + key + "</td></tr>"; // key 값인 자산 그룹 이름 출력
-					var value = map[key].split(","); // 자산 그룹에 해당하는 자산이 여러 개이면 ,로 구분되어 있으므로 ,를 기준으로 분리하여 value 변수에 저장
-					for(var i = 0; i < value.length; i++) {
-						var asset = value[i].split("#"); // 자산이름과 자산메모는 /로 구분되어 있으므로 /를 기준으로 분리하여 asset 변수에 저장
-							html += "<tr class='asset-name'><td class='group-list is-border'>" + asset[0] + "</td>"; // asset[0]은 자산 이름
-							html += "<td style='display:none;'>" + key + "</td>"; // key는 자산 그룹 (클릭 시 값 넘기기 위한 것으로, 화면에는 보이지 않도록 생성)
-							html += "<td style='display:none;'>" + asset[1] + "</td></tr>"; // asset[1]은 자산 메모 (클릭 시 값 넘기기 위한 것으로, 화면에는 보이지 않도록 생성)
+				$.ajax({
+					type : "post",
+					url : "assetTotal",
+					data : {
+						userid : userid
+					},
+					success : function(assetTotal) {
+						var total = 0;
+						
+						for(var i = 0; i < assetTotal.length; i++) {
+							if(assetTotal[i].moneytype == "지출") {
+								assetTotal[i].total = parseInt("-" + assetTotal[i].total);
+							}
+							total += assetTotal[i].total;
+						}
+						$("#asset-total-div").html("<i class='h-normal fs-23 info'>합계</i><i class='h-normal fs-23'>" + total + "원</i>");
+						
+						var html = "<table class='modal-table' style='width: 500px;'>"; // 자산 목록 테이블 만들기
+						for(var key in map ) {
+							html += "<tr><td>" + key + "</td></tr>"; // key 값인 자산 그룹 이름 출력
+							var value = map[key].split(","); // 자산 그룹에 해당하는 자산이 여러 개이면 ,로 구분되어 있으므로 ,를 기준으로 분리하여 value 변수에 저장
+							for(var i = 0; i < value.length; i++) {
+								var asset = value[i].split("#"); // 자산이름과 자산메모는 /로 구분되어 있으므로 /를 기준으로 분리하여 asset 변수에 저장
+									html += "<tr class='asset-name'><td class='group-list is-border td-detail'><div class='col-5'>" + asset[0] + "</div>"; // asset[0]은 자산 이름
+									var catetotal = 0;
+									for(var j = 0; j < assetTotal.length; j++) {
+										if(asset[0] == assetTotal[j].astname) {
+											catetotal += assetTotal[j].total;
+										}
+									}
+									if(catetotal < 0) {
+										html += "<div class='col-5 text-right red'>" + catetotal + "원</div></td>"
+									} else {
+										html += "<div class='col-5 text-right blue'>" + catetotal + "원</div></td>"
+									}
+									html += "<td style='display:none;'>" + key + "</td>"; // key는 자산 그룹 (클릭 시 값 넘기기 위한 것으로, 화면에는 보이지 않도록 생성)
+									html += "<td style='display:none;'>" + asset[1] + "</td>"; // asset[1]은 자산 메모 (클릭 시 값 넘기기 위한 것으로, 화면에는 보이지 않도록 생성)
+									html += "<td class='update-btn' id='up-asset-page'><button class='update-icon'><i class='fi fi-rr-pencil fs-23'></i></button></td></tr>";
+							}
+							html += "<tr><td></td></tr>";
+						}
+						html += "</table>";
+						$("#asset-list-div").html(html);
 					}
-				}
-				html += "</table>";
-				$("#asset-list-div").html(html);
+				})
 			}
+		})
+		$(document).on("click", ".asset-name .td-detail", function() { // asset-name 행 클릭 시
+			
 		})
 		// 자산 수정
 		var originAsset;
 		var originActgroup;
 		var originMemo;
-		$(document).on("click", ".asset-name", function() { // asset-name 행 클릭 시
+		$(document).on("click", "#up-asset-page", function() { // 수정 아이콘(#up-asset-page) 클릭 시
 			// tr의 td들(자산, 자산그룹, 자산메모)을 공백 한 칸으로 분리해놓았으므로 분리하여 value 변수에 저장
-			originAsset = $(this).children().eq(0).text();
-			originActgroup = $(this).children().eq(1).text();
-			originMemo = $(this).children().eq(2).text();
+			originAsset = $(this).parent().children().eq(0).children().eq(0).text();
+			originActgroup = $(this).parent().children().eq(1).text();
+			originMemo = $(this).parent().children().eq(2).text();
 			$("#up-asset-modal").show(); // 자산 수정 모달 열기
 			
 			$("#up-astgroup-name").attr("value",originActgroup);
@@ -380,6 +415,15 @@
 				})
 			}
 		})
+		var clickNum = 0;
+		$("#open-group-setting").click(function() {
+			clickNum++;
+			if(clickNum % 2 != 0) {
+				$("#group-setting").show();
+			} else {
+				$("#group-setting").hide();
+			}
+		})
 	})
 </script>
 </head>
@@ -406,10 +450,17 @@
 				<div>
 				
 				<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산관리</h3>
-				<button class="btn long gray" id="astgroup-btn">자산그룹</button>
-				<button class="btn long outline-green" id="add-asset-page"><i class="fi fi-rr-add"></i> 자산 추가</button>
+				<div class="fix-right-tr-1">
+					<button class="btn green font-18 is-shadow" id="open-group-setting" style="width: 60px;"><i class="fi fi-rr-menu-burger"></i></button>
+				</div>
+				<div class="fix-right-tr-2" id="group-setting" hidden>
+					<button class="btn small outline-green font-18 is-shadow" id="astgroup-btn">자산 그룹</button>
+				</div>
+				<div class="fix-left-bl">
+					<button class="btn medium green font-18 is-shadow" id="add-asset-page"><i class="fi fi-rr-add"></i> 자산 추가</button>
+				</div>
+				<div id="asset-total-div" style="margin: 5px;"></div><br>
 				<div id="asset-list-div"></div>
-				
 				<!-- 자산 모달 -->
 				<div class="modal" id="up-asset-modal" hidden="true">
 					<div class="modal-content medium">
@@ -521,6 +572,7 @@
 							<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산그룹 관리</h3>
 						</div>
 						<button class="btn medium green" id="add-group-page" style="margin-left: 10px;">추가</button>
+						<button class="btn small outline-green" id="reset-group-btn" style="margin-left: 10px; height: 48px;"><i class="fi fi-rr-rotate-right"></i> 초기화</button>
 						<div class="modal-body">
 							<div id="group-list-div"></div>
 						</div>

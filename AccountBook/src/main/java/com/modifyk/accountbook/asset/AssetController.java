@@ -5,9 +5,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.modifyk.accountbook.account.AccountVO;
 
 @Controller
 public class AssetController {
@@ -21,7 +22,7 @@ public class AssetController {
 	// 자산 리스트
 	@ResponseBody
 	@RequestMapping("asset/assetInfo")
-	public HashMap<String, Object> assetInfo(String userid, Model model) {
+	public HashMap<String, Object> assetInfo(String userid) {
 		List<AssetVO> assetList = aDao.assetInfo(userid);
 		HashMap<String, Object> map = toMapSvc.toMap(assetList); // List 타입의 자산 리스트 결과를 HashMap으로 변환
 		return map;
@@ -81,5 +82,13 @@ public class AssetController {
 		} else {
 			return "fail";
 		}
+	}
+	
+	// 자산별 합계
+	@ResponseBody
+	@RequestMapping("asset/assetTotal")
+	public List<AccountVO> assetTotal(String userid) {
+		List<AccountVO> assetTotal = aDao.assetTotal(userid);
+		return assetTotal;
 	}
 }

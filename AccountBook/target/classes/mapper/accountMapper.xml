@@ -41,4 +41,9 @@
 	<select id="monthCateSpend" parameterType="accountVO" resultType="accountVO">
 		select * from account where userid = #{userid} and left(date, 7) = #{date} and catename = #{catename} and moneytype = "지출";
 	</select>
+	
+	<!-- 자산별 지출 합계 -->
+	<select id="assetTotal" parameterType="String" resultType="accountVO">
+		select moneytype, astname, sum(total) as total from account where userid = #{userid} group by moneytype, astname;
+	</select>
 </mapper>

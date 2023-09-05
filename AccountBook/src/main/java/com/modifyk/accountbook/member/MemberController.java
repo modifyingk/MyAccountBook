@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.modifyk.accountbook.account.CategoryVO;
 import com.modifyk.accountbook.asset.AssetGroupVO;
+import com.modifyk.accountbook.asset.AssetVO;
 
 @Controller
 public class MemberController {
@@ -31,7 +32,13 @@ public class MemberController {
 	InsertAstGroupService astGroupSvc;
 	
 	@Autowired
-	InsertCategoryService categorySvc;
+	InsertAssetService assetSvc;
+	
+	@Autowired
+	InsertInCategoryService incateSvc;
+	
+	@Autowired
+	InsertOutCategoryService outcateSvc;
 	
 	// 아이디 중복 확인
 	@ResponseBody
@@ -76,10 +83,16 @@ public class MemberController {
 		astgroupVO.setUserid(memberVO.getUserid());
 		astGroupSvc.insertGroup(astgroupVO);
 		
+		// asset 기본값 삽입
+		AssetVO assetVO = new AssetVO();
+		assetVO.setUserid(memberVO.getUserid());
+		assetSvc.insertAsset(assetVO);
+		
 		// category 기본값 삽입
 		CategoryVO categoryVO = new CategoryVO();
 		categoryVO.setUserid(memberVO.getUserid());
-		categorySvc.insertCategory(categoryVO);
+		incateSvc.insertCategory(categoryVO);
+		outcateSvc.insertCategory(categoryVO);
 		
 		if(result == 1) {
 			return "success";
