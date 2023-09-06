@@ -848,7 +848,7 @@
 					url : "isOverlapCate",
 					data : {
 						moneytype : $("#moneytype").val(),
-						catename : $("catename").val(),
+						catename : $("#catename").val(),
 						userid : userid
 					},
 					success : function(x) {
@@ -1209,6 +1209,40 @@
 				$("#cate-setting").show();
 			} else {
 				$("#cate-setting").hide();
+			}
+		})
+		// 수입 카테고리 초기화
+		$("#reset-incate-btn").click(function() {
+			var op = confirm("초기화 시 생성한 카테고리가 모두 삭제되고 기본값으로 설정됩니다. 정말로 초기화하시겠습니까?");
+			if(op) {
+				$.ajax({
+					type : "post",
+					url : "resetCate",
+					data : {
+						moneytype: "수입",
+						userid: userid
+					},
+					success : function(x) {
+						window.location.reload();
+					}
+				})
+			}
+		})
+		// 지출 카테고리 초기화
+		$("#reset-outcate-btn").click(function() {
+			var op = confirm("초기화 시 생성한 카테고리가 모두 삭제되고 기본값으로 설정됩니다. 정말로 초기화하시겠습니까?");
+			if(op) {
+				$.ajax({
+					type : "post",
+					url : "resetCate",
+					data : {
+						moneytype: "지출",
+						userid: userid
+					},
+					success : function(x) {
+						window.location.reload();
+					}
+				})
 			}
 		})
 	})

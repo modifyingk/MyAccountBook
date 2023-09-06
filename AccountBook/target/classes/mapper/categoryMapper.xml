@@ -4,7 +4,7 @@
 <mapper namespace="categoryMapper">
 	<!-- 카테고리 추가 -->
 	<insert id="insertCategory" parameterType="categoryVO">
-		insert into category values (#{moneytype}, #{catename}, #{userid});
+		insert into category values (#{moneytype}, #{catename}, #{userid}, "o");
 	</insert>
 	
 	<!-- 카테고리 수정 -->
@@ -17,13 +17,38 @@
 		delete from category where moneytype = #{moneytype} and catename = #{catename} and userid = #{userid};
 	</delete>
 	
+	<!-- 카테고리 삭제가 불가능한 경우 숨기기 -->
+	<update id="hideCategory" parameterType="categoryVO">
+		update category set showcate = "x" where moneytype = #{moneytype} and catename = #{catename} and userid = #{userid};
+	</update>
+	
+	<!-- 전체 카테고리 삭제 -->
+	<delete id="deleteAllCategory" parameterType="categoryVO">
+		delete from category where moneytype = #{moneytype} and userid = #{userid};
+	</delete>
+	
+	<!-- 전체 카테고리 삭제가 불가능한 경우 전체 숨기기 -->
+	<update id="hideAllCategory" parameterType="categoryVO">
+		update category set showcate = "x" where moneytype = #{moneytype} and userid = #{userid};
+	</update>
+	
 	<!-- 카테고리 list -->
 	<select id="categoryInfo" parameterType="String" resultType="categoryVO">
-		select * from category where userid = #{userid};
+		select * from category where userid = #{userid} and showcate = "o";
 	</select>
 	
 	<!-- 카테고리 중복 검사 -->
 	<select id="isOverlapCate" parameterType="categoryVO" resultType="String">
-		select catename from category where moneytype = #{moneytype} and catename = #{catename} and userid = #{userid};
+		select catename from category where moneytype = #{moneytype} and catename = #{catename} and userid = #{userid} and showcate = "o";
 	</select>
+	
+	<!-- 숨겨진 카테고리 중복 검사 -->
+	<select id="isOverlapHideCate" parameterType="categoryVO" resultType="String">
+		select catename from category where moneytype = #{moneytype} and catename = #{catename} and userid = #{userid} and showcate = "x";
+	</select>
+	
+	<!-- 카테고리 숨김 취소  -->
+	<update id="showCategory">
+		update category set showcate = "o" where moneytype = #{moneytype} and catename = #{catename} and userid = #{userid};
+	</update>
 </mapper>

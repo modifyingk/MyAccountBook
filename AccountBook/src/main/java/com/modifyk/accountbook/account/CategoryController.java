@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,15 +15,33 @@ public class CategoryController {
 	@Autowired
 	CategoryDAO cDao;
 	
+	@Autowired
+	InsOrShowInCateService insIncateSvc;
+	
+	@Autowired
+	InsOrShowOutCateService insOutcateSvc;
+	
 	// 카테고리 추가
 	@ResponseBody
 	@RequestMapping("account/insertCategory")
 	public String insertCategory(CategoryVO categoryVO) {
-		int result = cDao.insertCategory(categoryVO);
-		if(result == 1) {
-			return "success";
+		// 카테고리명이 중복되면서 show가 x인 경우
+		String overlapResult = cDao.isOverlapHideCate(categoryVO);
+		if(overlapResult != null) {
+			// 해당 카테고리의 show를 o로 변경
+			int showResult = cDao.showCategory(categoryVO);
+			if(showResult == 1) {
+				return "success";
+			} else {
+				return "fail";
+			}
 		} else {
-			return "fail";
+			int inResult = cDao.insertCategory(categoryVO);
+			if(inResult == 1) {
+				return "success";
+			} else {
+				return "fail";
+			}
 		}
 	}
 		
@@ -49,11 +68,20 @@ public class CategoryController {
 	@ResponseBody
 	@RequestMapping("account/deleteCategory")
 	public String deleteCategory(CategoryVO categoryVO) {
-		int result = cDao.deleteCategory(categoryVO);
-		if(result == 1) {
-			return "success";
-		} else {
-			return "fail";
+		try {
+			int result = cDao.deleteCategory(categoryVO);
+			if(result == 1) {
+				return "success";
+			} else {
+				return "fail";
+			}
+		} catch (DataIntegrityViolationException e) { // 외래키 연관되어 있는 경우, 숨김으로 처리
+			int result = cDao.hideCategory(categoryVO);
+			if(result == 1) {
+				return "success";
+			} else {
+				return "fail";
+			}
 		}
 	}
 
@@ -74,6 +102,31 @@ public class CategoryController {
 			return "impossible";
 		} else {
 			return "possible";
+		}
+	}
+	
+	// 카테고리 초기화
+	@ResponseBody
+	@RequestMapping("account/resetCate")
+	public void resetCategory(CategoryVO categoryVO) {
+		try {
+			int result = cDao.deleteAllCategory(categoryVO);
+			if(result > 0) {
+				if(categoryVO.getMoneytype().equals("수입")) {
+					insIncateSvc.insertCategory(categoryVO);
+				} else {
+					insOutcateSvc.insertCategory(categoryVO);
+				}
+			}
+		} catch (DataIntegrityViolationException e) { // 외래키 연관되어 있는 경우, 숨김으로 처리
+			int result = cDao.hideAllCategory(categoryVO);
+			if(result > 0) {
+				if(categoryVO.getMoneytype().equals("수입")) {
+					insIncateSvc.insertCategory(categoryVO);
+				} else {
+					insOutcateSvc.insertCategory(categoryVO);
+				}
+			}
 		}
 	}
 }

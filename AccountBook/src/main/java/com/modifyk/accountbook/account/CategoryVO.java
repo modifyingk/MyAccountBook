@@ -4,6 +4,7 @@ public class CategoryVO {
 	private String moneytype;
 	private String catename;
 	private String userid;
+	private String showcate;
 	
 	public String getMoneytype() {
 		return moneytype;
@@ -23,10 +24,16 @@ public class CategoryVO {
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
+	public String getShowcate() {
+		return showcate;
+	}
+	public void setShowcate(String showcate) {
+		this.showcate = showcate;
+	}
 	
 	@Override
 	public String toString() {
-		return "CategoryVO [moneytype=" + moneytype + ", catename=" + catename + ", userid=" + userid + "]";
+		return "CategoryVO [moneytype=" + moneytype + ", catename=" + catename + ", userid=" + userid + ", showcate=" + showcate + "]";
 	}
 	
 }
