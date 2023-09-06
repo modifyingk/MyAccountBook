@@ -48,7 +48,7 @@
 	</select>
 	
 	<!-- 카테고리 숨김 취소  -->
-	<update id="showCategory">
+	<update id="showCategory" parameterType="categoryVO">
 		update category set showcate = "o" where moneytype = #{moneytype} and catename = #{catename} and userid = #{userid};
 	</update>
 </mapper>

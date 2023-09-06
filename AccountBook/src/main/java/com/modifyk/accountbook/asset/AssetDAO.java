@@ -39,6 +39,21 @@ public class AssetDAO {
 		return my.delete("assetMapper.deleteAsset", assetVO);
 	}
 	
+	// 자산 숨김
+	public int hideAsset(AssetVO assetVO) {
+		return my.delete("assetMapper.hideAsset", assetVO);
+	}
+	
+	// 카테고리 전체 삭제
+	public int deleteAllAsset(AssetVO assetVO) {
+		return my.delete("assetMapper.deleteAllAsset", assetVO);
+	}
+		
+	// 카테고리 전체 숨김
+	public int hideAllAsset(AssetVO assetVO) {
+		return my.update("assetMapper.hideAllAsset", assetVO);
+	}
+	
 	// 자산별 지출 합계
 	public List<AccountVO> assetTotal(String userid) {
 		return my.selectList("accountMapper.assetTotal", userid);
@@ -47,5 +62,15 @@ public class AssetDAO {
 	// 자산별 지출 합계
 	public List<AccountVO> assetAccount(AccountVO accountVO) {
 		return my.selectList("accountMapper.assetAccount", accountVO);
+	}
+	
+	// 숨겨진 자산 중복 검사
+	public String isOverlapHideAsset(AssetVO assetVO) {
+		return my.selectOne("assetMapper.isOverlapHideAsset", assetVO);
+	}
+		
+	// 자산 숨김 취소
+	public int showAsset(AssetVO assetVO) {
+		return my.update("assetMapper.showAsset", assetVO);
 	}
 }

@@ -4,7 +4,7 @@
 <mapper namespace="assetMapper">
 	<!-- 자산 목록 -->
 	<select id="assetInfo" parameterType="String" resultType="assetVO">
-		select * from asset where userid = #{userid};
+		select * from asset where userid = #{userid} and showasset = "o";
 	</select>
 	
 	<!-- 자산 업데이트 -->
@@ -15,16 +15,41 @@
 	
 	<!-- 자산 중복 확인 -->
 	<select id="isOverlapAsset" parameterType="assetVO" resultType="String">
-		select astname from asset where astname = #{astname} and userid = #{userid};
+		select astname from asset where astname = #{astname} and userid = #{userid} and showasset = "o";
 	</select>
 	
 	<!-- 자산 추가 -->
 	<insert id="insertAsset" parameterType="assetVO">
-		insert into asset values (#{astname}, #{astgroup}, #{astmemo}, #{userid});
+		insert into asset values (#{astname}, #{astgroup}, #{astmemo}, #{userid}, "o");
 	</insert>
 	
 	<!-- 자산 삭제 -->
 	<delete id="deleteAsset" parameterType="assetVO">
 		delete from asset where astname = #{astname} and userid = #{userid};
 	</delete>
+	
+	<!-- 자산 삭제가 불가능한 경우 숨기기 -->
+	<update id="hideAsset" parameterType="assetVO">
+		update asset set showasset = "x" where astname = #{astname} and userid = #{userid};
+	</update>
+	
+	<!-- 전체 자산 삭제 -->
+	<delete id="deleteAllAsset" parameterType="assetVO">
+		delete from asset where userid = #{userid};
+	</delete>
+	
+	<!-- 전체 자산 삭제가 불가능한 경우 전체 숨기기 -->
+	<update id="hideAllAsset" parameterType="assetVO">
+		update asset set showasset = "x" where userid = #{userid};
+	</update>
+	
+	<!-- 숨겨진 자산 중복 검사 -->
+	<select id="isOverlapHideAsset" parameterType="assetVO" resultType="String">
+		select astname from asset where astname = #{astname} and userid = #{userid} and showasset = "x";
+	</select>
+	
+	<!-- 자산 숨김 취소  -->
+	<update id="showAsset" parameterType="assetVO">
+		update asset set showasset = "o" where astname = #{astname} and userid = #{userid};
+	</update>
 </mapper>

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +23,9 @@ public class AssetController {
 	
 	@Autowired
 	AccountToMapService actMapSvc;
+	
+	@Autowired
+	InsOrShowAssetService insAssetSvc;
 	
 	// 자산 리스트
 	@ResponseBody
@@ -68,11 +72,23 @@ public class AssetController {
 	@ResponseBody
 	@RequestMapping("asset/insertAsset")
 	public String insertAsset(AssetVO assetVO) {
-		int result = aDao.insertAsset(assetVO);
-		if(result == 1) {
-			return "success";
+		// 카테고리명이 중복되면서 show가 x인 경우
+		String overlapResult = aDao.isOverlapHideAsset(assetVO);
+		if(overlapResult != null) {
+			// 해당 카테고리의 show를 o로 변경
+			int showResult = aDao.showAsset(assetVO);
+			if(showResult == 1) {
+				return "success";
+			} else {
+				return "fail";
+			}
 		} else {
-			return "fail";
+			int inResult = aDao.insertAsset(assetVO);
+			if(inResult == 1) {
+				return "success";
+			} else {
+				return "fail";
+			}
 		}
 	}
 	
@@ -80,11 +96,20 @@ public class AssetController {
 	@ResponseBody
 	@RequestMapping("asset/deleteAsset")
 	public String deleteAsset(AssetVO assetVO) {
-		int result = aDao.deleteAsset(assetVO);
-		if(result == 1) {
-			return "success";
-		} else {
-			return "fail";
+		try {
+			int result = aDao.deleteAsset(assetVO);
+			if(result == 1) {
+				return "success";
+			} else {
+				return "fail";
+			}
+		} catch (DataIntegrityViolationException e) { // 외래키 연관되어 있는 경우, 숨김으로 처리
+			int result = aDao.hideAsset(assetVO);
+			if(result == 1) {
+				return "success";
+			} else {
+				return "fail";
+			}
 		}
 	}
 	
@@ -108,5 +133,22 @@ public class AssetController {
 			map = actMapSvc.toMap(accountList);
 		}
 		return map;
+	}
+	
+	// 자산 초기화
+	@ResponseBody
+	@RequestMapping("asset/resetAsset")
+	public void resetCategory(AssetVO assetVO) {
+		try {
+			int result = aDao.deleteAllAsset(assetVO);
+			if(result > 0) {
+				insAssetSvc.insertAsset(assetVO);
+			}
+		} catch (DataIntegrityViolationException e) { // 외래키 연관되어 있는 경우, 숨김으로 처리
+			int result = aDao.hideAllAsset(assetVO);
+			if(result > 0) {
+				insAssetSvc.insertAsset(assetVO);
+			}
+		}
 	}
 }

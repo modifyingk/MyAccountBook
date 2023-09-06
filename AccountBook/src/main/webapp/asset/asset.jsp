@@ -35,9 +35,7 @@
 							if(assetTotal[i].moneytype == "지출") {
 								assetTotal[i].total = parseInt("-" + assetTotal[i].total);
 							}
-							total += assetTotal[i].total;
 						}
-						$("#asset-total-div").html("<i class='h-normal fs-23 info'>합계</i><i class='h-normal fs-23'>" + total + "원</i>");
 						
 						var html = "<table class='modal-table' style='width: 500px;'>"; // 자산 목록 테이블 만들기
 						for(var key in map ) {
@@ -54,8 +52,10 @@
 									}
 									if(catetotal < 0) {
 										html += "<div class='col-5 text-right red'>" + catetotal + "원</div></td>"
+										total += catetotal;
 									} else {
 										html += "<div class='col-5 text-right blue'>" + catetotal + "원</div></td>"
+										total += catetotal;
 									}
 									html += "<td style='display:none;'>" + key + "</td>"; // key는 자산 그룹 (클릭 시 값 넘기기 위한 것으로, 화면에는 보이지 않도록 생성)
 									html += "<td style='display:none;'>" + asset[1] + "</td>"; // asset[1]은 자산 메모 (클릭 시 값 넘기기 위한 것으로, 화면에는 보이지 않도록 생성)
@@ -64,6 +64,7 @@
 							html += "<tr><td></td></tr>";
 						}
 						html += "</table>";
+						$("#asset-total-div").html("<i class='h-normal fs-23 info'>합계</i><i class='h-normal fs-23'>" + total + "원</i>");
 						$("#asset-list-div").html(html);
 					}
 				})
@@ -661,6 +662,22 @@
 				$("#group-setting").hide();
 			}
 		})
+		// 자산 초기화
+		$("#reset-asset-btn").click(function() {
+			var op = confirm("초기화 시 생성한 자산이 모두 삭제되고 기본값으로 설정됩니다. 정말로 초기화하시겠습니까?");
+			if(op) {
+				$.ajax({
+					type : "post",
+					url : "resetAsset",
+					data : {
+						userid: userid
+					},
+					success : function(x) {
+						window.location.reload();
+					}
+				})
+			}
+		})
 	})
 </script>
 </head>
@@ -695,6 +712,7 @@
 				</div>
 				<div class="fix-left-bl">
 					<button class="btn medium green font-18 is-shadow" id="add-asset-page"><i class="fi fi-rr-add"></i> 자산 추가</button>
+					<button class="btn small outline-green" id="reset-asset-btn" style="margin-left: 10px; height: 48px;"><i class="fi fi-rr-rotate-right"></i> 초기화</button>
 				</div>
 				<div id="asset-total-div" style="margin: 5px;"></div><br>
 				<div id="asset-list-div"></div>

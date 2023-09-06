@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import com.modifyk.accountbook.asset.AssetDAO;
 import com.modifyk.accountbook.asset.AssetGroupDAO;
-import com.modifyk.accountbook.asset.AssetGroupVO;
 import com.modifyk.accountbook.asset.AssetVO;
 
 @Service
