@@ -1116,7 +1116,7 @@
 				for(var i = 0; i < addmarkList.length; i++) {
 					addmark_html += "<tr class='tr-addmark'><td>" + addmarkList[i].catename + "</td>";
 					addmark_html += "<td>" + addmarkList[i].content + "</td>";
-					addmark_html += "<td class='text-right red'>" + addmarkList[i].total + "원</td></tr>";
+					addmark_html += "<td class='text-right red'>" + parseInt(addmarkList[i].total).toLocaleString() + "원</td></tr>";
 				}
 				addmark_html += "</table>";
 				$("#add-bookmark-list-div").html(addmark_html);
@@ -1126,7 +1126,7 @@
 		$(document).on("click", ".tr-addmark", function() {
 			var catename = $(this).children().eq(0).text();
 			var content = $(this).children().eq(1).text();
-			var total = $(this).children().eq(2).text().split("원")[0];
+			var total = ($(this).children().eq(2).text().split("원")[0]).replaceAll(",", "");
 			
 			// 즐겨찾기 추가
 			$.ajax({
@@ -1176,9 +1176,24 @@
 			$("#bookmark-modal").hide();
 			$("#add-account-modal").show();
 			
-			$("#add-actcatename").attr("value", catename);
 			$("#add-actcontent").attr("value", content);
 			$("#add-acttotal").attr("value", total);
+			
+			// 즐겨찾기 리스트 중 카테고리가 없거나 숨겨져있는 경우에는 분류에 빈 값이 입력되도록
+			$.ajax({
+				type : "post",
+				url : "isPossibleCate",
+				data : {
+					moneytype : "지출",
+					catename : catename,
+					userid : userid
+				},
+				success : function(x) {
+					if(x == "possible") {
+						$("#add-actcatename").attr("value", catename);
+					}
+				}
+			})
 		})
 		// 삭제 클릭 시
 		$(document).on("click", ".td-delmark", function() {

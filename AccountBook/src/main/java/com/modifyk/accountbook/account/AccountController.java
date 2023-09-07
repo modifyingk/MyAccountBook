@@ -15,6 +15,9 @@ public class AccountController {
 	AccountDAO aDao;
 	
 	@Autowired
+	CategoryDAO cDao;
+	
+	@Autowired
 	MakeAccountIDService actIDSvc;
 	
 	@Autowired
@@ -102,6 +105,22 @@ public class AccountController {
 		} else {
 			return "fail";
 		}
+	}
+	
+	// 즐겨찾기의 카테고리가 존재하는지 확인
+	@ResponseBody
+	@RequestMapping("account/isPossibleCate")
+	public String isPossibleCate(CategoryVO categoryVO) {
+		// 카테고리 목록 가져오기 (숨김 아닌 것들만)
+		List<CategoryVO> cateList = cDao.CategoryInfo(categoryVO);
+		String result = "impossible";
+		for(int i = 0; i < cateList.size(); i++) {
+			// 북마크의 카테고리명이 카테고리에 존재하는지 확인
+			if(cateList.get(i).getCatename().equals(categoryVO.getCatename())) {
+				result = "possible";
+			}
+		}
+		return result;
 	}
 	
 	// 수입/지출 목록
