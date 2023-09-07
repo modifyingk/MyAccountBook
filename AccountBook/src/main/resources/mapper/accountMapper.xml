@@ -24,22 +24,22 @@
 	
 	<!-- 월별 수입/지출 내역 -->
 	<select id="monthAccount" parameterType="accountVO" resultType="accountVO">
-		select * from account where userid = #{userid} and left(date, 7) = #{date};
+		select * from account where userid = #{userid} and left(date, 7) = #{date} order by date desc;
 	</select>
 	
-	<!-- 월별 수입/지출 내역 -->
+	<!-- 월별 수입 내역 -->
 	<select id="monthIncome" parameterType="accountVO" resultType="accountVO">
-		select * from account where userid = #{userid} and left(date, 7) = #{date} and moneytype = "수입";
+		select * from account where userid = #{userid} and left(date, 7) = #{date} and moneytype = "수입" order by date desc;
 	</select>
 	
 	<!-- 월별 지출 내역 -->
 	<select id="monthSpend" parameterType="accountVO" resultType="accountVO">
-		select * from account where userid = #{userid} and left(date, 7) = #{date} and moneytype = "지출";
+		select * from account where userid = #{userid} and left(date, 7) = #{date} and moneytype = "지출" order by date desc;
 	</select>
 	
 	<!-- 해당 월의 카테고리별 지출 내역 -->
 	<select id="monthCateSpend" parameterType="accountVO" resultType="accountVO">
-		select * from account where userid = #{userid} and left(date, 7) = #{date} and catename = #{catename} and moneytype = "지출";
+		select * from account where userid = #{userid} and left(date, 7) = #{date} and catename = #{catename} and moneytype = "지출" order by date desc;
 	</select>
 	
 	<!-- 자산별 지출 합계 -->
@@ -49,6 +49,6 @@
 	
 	<!-- 자산별 내역 -->
 	<select id="assetAccount" parameterType="accountVO" resultType="accountVO">
-		select * from account where userid = #{userid} and astname = #{astname} and left(date, 7) = #{date};
+		select * from account where userid = #{userid} and astname = #{astname} and left(date, 7) = #{date} order by date desc;
 	</select>
 </mapper>
