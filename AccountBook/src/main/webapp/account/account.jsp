@@ -53,10 +53,10 @@
 							account_html += "<td>" + account[3] + "</td>"; // 카테고리
 							account_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
 							if(account[1] == "수입") {
-								account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+								account_html += "<td class='text-right blue'>" + parseInt(account[5]).toLocaleString() + "원</td>"; // 돈
 								income_total += parseInt(account[5]);
 							} else {
-								account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+								account_html += "<td class='text-right red'>" + parseInt(account[5]).toLocaleString() + "원</td>";
 								spend_total += parseInt(account[5]);
 							}
 							account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
@@ -73,9 +73,9 @@
 					spend_total = 0;
 				}
 				
-				var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total) + "</i>";
-				var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total + "</i>";
-				var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total + "</i>";
+				var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total).toLocaleString() + "</i>";
+				var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total.toLocaleString() + "</i>";
+				var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total.toLocaleString() + "</i>";
 				
 				$("#month-div").html(month_html);
 				$("#month-account-list-div").html(account_html);
@@ -127,7 +127,7 @@
 				var stats_html = "<table class='list-table'>";
 				for(var key in map) {
 					stats_html += "<tr class='tr-statscate'><td>" + key + "</td>";
-					stats_html += "<td class='red h-normal'>" + map[key] + "원</td></tr>";
+					stats_html += "<td class='red h-normal'>" + map[key].toLocaleString() + "원</td></tr>";
 				}
 				stats_html += "</table>";
 				$("#category-stats-div").html(stats_html);
@@ -187,10 +187,10 @@
 								account_html += "<td>" + account[3] + "</td>"; // 카테고리
 								account_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
 								if(account[1] == "수입") {
-									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+									account_html += "<td class='text-right blue'>" + parseInt(account[5]).toLocaleString() + "원</td>"; // 돈
 									income_total += parseInt(account[5]);
 								} else {
-									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+									account_html += "<td class='text-right red'>" + parseInt(account[5]).toLocaleString() + "원</td>";
 									spend_total += parseInt(account[5]);
 								}
 								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
@@ -206,9 +206,9 @@
 						income_total = 0;
 						spend_total = 0;
 					}
-					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total) + "</i>";
-					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total + "</i>";
-					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total + "</i>";
+					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total).toLocaleString() + "</i>";
+					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total.toLocaleString() + "</i>";
+					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total.toLocaleString() + "</i>";
 					
 					$("#month-div").html(month_html);
 					$("#month-account-list-div").html(account_html);
@@ -260,7 +260,7 @@
 					var stats_html = "<table class='list-table'>";
 					for(var key in map) {
 						stats_html += "<tr class='tr-statscate'><td>" + key + "</td>";
-						stats_html += "<td class='red h-normal'>" + map[key] + "원</td></tr>";
+						stats_html += "<td class='red h-normal'>" + map[key].toLocaleString() + "원</td></tr>";
 					}
 					stats_html += "</table>";
 					$("#category-stats-div").html(stats_html);
@@ -322,10 +322,10 @@
 								account_html += "<td>" + account[3] + "</td>"; // 카테고리
 								account_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
 								if(account[1] == "수입") {
-									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+									account_html += "<td class='text-right blue'>" + parseInt(account[5]).toLocaleString() + "원</td>"; // 돈
 									income_total += parseInt(account[5]);
 								} else {
-									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+									account_html += "<td class='text-right red'>" + parseInt(account[5]).toLocaleString() + "원</td>";
 									spend_total += parseInt(account[5]);
 								}
 								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
@@ -341,9 +341,9 @@
 						income_total = 0;
 						spend_total = 0;
 					}
-					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total) + "</i>";
-					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total + "</i>";
-					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total + "</i>";
+					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total).toLocaleString() + "</i>";
+					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total.toLocaleString() + "</i>";
+					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total.toLocaleString() + "</i>";
 					
 					$("#month-div").html(month_html);
 					$("#month-account-list-div").html(account_html);
@@ -394,7 +394,7 @@
 					var stats_html = "<table class='list-table'>";
 					for(var key in map) {
 						stats_html += "<tr class='tr-statscate'><td>" + key + "</td>";
-						stats_html += "<td class='red h-normal'>" + map[key] + "원</td></tr>";
+						stats_html += "<td class='red h-normal'>" + map[key].toLocaleString() + "원</td></tr>";
 					}
 					stats_html += "</table>";
 					$("#category-stats-div").html(stats_html);
@@ -426,9 +426,9 @@
 								catepend_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
 								catepend_html += "<td>" + account[3] + "</td>"; // 카테고리
 								catepend_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
-								catepend_html += "<td class='text-right red'>" + account[5] + "원</td>";
+								catepend_html += "<td class='text-right red'>" + parseInt(account[5]).toLocaleString() + "원</td>";
 								spend_total += parseInt(account[5]);
-								catepend_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
+								catepend_html += "<td style='display:none;'>" + account[6].toLocaleString() + "</td></tr>"; // 메모
 							}
 							catepend_html += "<tr style='border : 0;'></tr>";
 						}
@@ -437,7 +437,7 @@
 					} else {
 						var catepend_html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
 					}
-					$("#catespend-total-div").html("<h4 class='h-normal fs-23'>총 지출 <i class='red h-normal fs-20'>" + spend_total + "원</i></h4><br>");
+					$("#catespend-total-div").html("<h4 class='h-normal fs-23'>총 지출 <i class='red h-normal fs-20'>" + spend_total.toLocaleString() + "원</i></h4><br>");
 					$("#catename-div").html("<h3 class='h-normal fs-28'><i class='fi fi-rr-money-check-edit'></i> " + catename + "</h3>");
 					$("#catespend-list-div").html(catepend_html);
 				}
@@ -478,13 +478,12 @@
 								account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
 								account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
 								account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
-								account_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
 								account_html += "<td>" + account[3] + "</td>"; // 카테고리
-								account_html += "<td>" + account[4] + "</td>"; // 내용
+								account_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
 								if(account[1] == "수입") {
-									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+									account_html += "<td class='text-right blue'>" + parseInt(account[5]).toLocaleString() + "원</td>"; // 돈
 								} else {
-									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+									account_html += "<td class='text-right red'>" + parseInt(account[5]).toLocaleString() + "원</td>";
 								}
 								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
 							}
@@ -532,13 +531,12 @@
 								account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
 								account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
 								account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
-								account_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
 								account_html += "<td>" + account[3] + "</td>"; // 카테고리
-								account_html += "<td>" + account[4] + "</td>"; // 내용
+								account_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
 								if(account[1] == "수입") {
-									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+									account_html += "<td class='text-right blue'>" + parseInt(account[5]).toLocaleString() + "원</td>"; // 돈
 								} else {
-									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+									account_html += "<td class='text-right red'>" + parseInt(account[5]).toLocaleString() + "원</td>";
 								}
 								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
 							}
@@ -586,13 +584,12 @@
 								account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
 								account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
 								account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
-								account_html += "<td style='display:none;'>" + account[2] + "</td>"; // 자산
 								account_html += "<td>" + account[3] + "</td>"; // 카테고리
-								account_html += "<td>" + account[4] + "</td>"; // 내용
+								account_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
 								if(account[1] == "수입") {
-									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+									account_html += "<td class='text-right blue'>" + parseInt(account[5]).toLocaleString() + "원</td>"; // 돈
 								} else {
-									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+									account_html += "<td class='text-right red'>" + parseInt(account[5]).toLocaleString() + "원</td>";
 								}
 								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
 							}
@@ -736,7 +733,7 @@
 					astname : $("#up-actasset").val(),
 					catename : $("#up-actcatename").val(),
 					content : $("#up-actcontent").val(),
-					total : $("#up-acttotal").val(),
+					total : ($("#up-acttotal").val()).replaceAll(",", ""),
 					memo : $("#up-actmemo").val(),
 					accountid : $("#up-actid").val(),
 					userid : userid
@@ -771,10 +768,13 @@
 				})
 			}
 		})
-		// 금액에 숫자만 입력되도록
+		// 금액에 숫자만 입력되도록, 세 자리마다 콤마
 		$("#up-acttotal, #add-acttotal").keyup(function() {
 			var numReg = /[^0-9]/g;	// 숫자가 아닌 값 정규식
 			$(this).val($(this).val().replace(numReg, ""));
+			if($(this).val().length > 0) {
+				$(this).val(parseInt($(this).val()).toLocaleString());
+			}
 		})
 		/* ---------------------------- 카테고리 ---------------------------- */
 		// 전체 카테고리 목록 가져오기
@@ -1075,7 +1075,7 @@
 					moneytype : mtype,
 					astname : $("#add-actasset").val(),
 					catename : $("#add-actcatename").val(),
-					total : $("#add-acttotal").val(),
+					total : ($("#add-acttotal").val()).replaceAll(",", ""),
 					content : $("#add-actcontent").val(),
 					memo : $("#add-actmemo").val(),
 					userid : userid
@@ -1160,7 +1160,7 @@
 					mark_html += "<tr><td class='td-bookmark' style='display:none;'>" + bookmarkList[i].bookmarkid + "</td>";
 					mark_html += "<td class='td-bookmark'>" + bookmarkList[i].catename + "</td>";
 					mark_html += "<td class='td-bookmark'>" + bookmarkList[i].content + "</td>";
-					mark_html += "<td class='td-bookmark text-right red'>" + bookmarkList[i].total + "원</td>";
+					mark_html += "<td class='td-bookmark text-right red'>" + bookmarkList[i].total.toLocaleString() + "원</td>";
 					mark_html += "<td class='td-delmark'><i class='fi fi-sr-minus-circle del-icon'></i></td></tr>";
 				}
 				

@@ -20,13 +20,20 @@
 		$("#close-add-aim").click(function() {
 			$("#add-aim-modal").hide();
 		})
-		
 		// 숫자만 입력되도록
-		$("#add-year, #add-total").keyup(function() {
+		$("#add-year").keyup(function() {
 			var numReg = /[^0-9]/g;	// 숫자가 아닌 값 정규식
 			$(this).val($(this).val().replace(numReg, ""));
 		})
-		
+		// 금액에 숫자만 입력되도록, 세 자리마다 콤마
+		$("#up-out-total, #add-total").keyup(function() {
+			var numReg = /[^0-9]/g;	// 숫자가 아닌 값 정규식
+			$(this).val($(this).val().replace(numReg, ""));
+			if($(this).val().length > 0) {
+				$(this).val(parseInt($(this).val()).toLocaleString());
+			}
+		})
+		// 목표 추가
 		$("#add-aim-btn").click(function() {
 			var mtype = $("input[name=select-mtype]:checked").val();
 			var year = $("#add-year").val();
@@ -54,7 +61,7 @@
 								moneytype : mtype,
 								aimdate : aimdate,
 								catename : $("#add-catename").val(),
-								total : $("#add-total").val(),
+								total : ($("#add-total").val()).replaceAll(",", ""),
 								userid : userid
 							},
 							success : function(x) {
@@ -172,18 +179,18 @@
 							
 							if(percent < 50) {
 								aim_html += "<div class='gage safe-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
-								aim_html += "</div></td><td colspan='2'>" + aim[2] + "원 / " + aim[1] + "원</td></tr>";
+								aim_html += "</div></td><td colspan='2'>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td></tr>";
 							} else if(percent < 70) {
 								aim_html += "<div class='gage warn-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
-								aim_html += "</div></td><td>" + aim[2] + "원 / " + aim[1] + "원</td>";
+								aim_html += "</div></td><td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
 								aim_html += "<td class='warn'><i class='fi fi-rr-triangle-warning fs-28'></i> 주의</td></tr>";
 							} else if(percent <= 100){
 								aim_html += "<div class='gage danger-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
-								aim_html += "</div></td><td>" + aim[2] + "원 / " + aim[1] + "원</td>";
+								aim_html += "</div></td><td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
 								aim_html += "<td class='warning'><i class='fi fi-rr-light-emergency-on fs-28'></i> 위험</td></tr>";
 							} else {
 								aim_html += "<div class='gage danger-aim is-border' style='width: 100%;'>" + percent + "%</div>";
-								aim_html += "</div></td><td>" + aim[2] + "원 / " + aim[1] + "원</td>";
+								aim_html += "</div></td><td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
 								aim_html += "<td class='warning'><i class='fi fi-rr-light-emergency-on fs-28'></i> 초과</td></tr>";
 							}
 						}
@@ -224,7 +231,7 @@
 								aim_in_html += "<div class='gage blue-aim is-border' style='width: 100%;'>" + percent + "%</div>";
 							}
 							aim_in_html += "</div></td>";
-							aim_in_html += "<td>" + aim[2] + "원 / " + aim[1] + "원</td></tr>";
+							aim_in_html += "<td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td></tr>";
 						}
 					}
 					aim_in_html += "</table>";
@@ -282,18 +289,18 @@
 								
 								if(percent < 50) {
 									aim_html += "<div class='gage safe-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
-									aim_html += "</div></td><td colspan='2'>" + aim[2] + "원 / " + aim[1] + "원</td></tr>";
+									aim_html += "</div></td><td colspan='2'>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td></tr>";
 								} else if(percent < 70) {
 									aim_html += "<div class='gage warn-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
-									aim_html += "</div></td><td>" + aim[2] + "원 / " + aim[1] + "원</td>";
+									aim_html += "</div></td><td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
 									aim_html += "<td class='warn'><i class='fi fi-rr-triangle-warning fs-28'></i> 주의</td></tr>";
 								} else if(percent <= 100){
 									aim_html += "<div class='gage danger-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
-									aim_html += "</div></td><td>" + aim[2] + "원 / " + aim[1] + "원</td>";
+									aim_html += "</div></td><td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
 									aim_html += "<td class='warning'><i class='fi fi-rr-light-emergency-on fs-28'></i> 위험</td></tr>";
 								} else {
 									aim_html += "<div class='gage danger-aim is-border' style='width: 100%;'>" + percent + "%</div>";
-									aim_html += "</div></td><td>" + aim[2] + "원 / " + aim[1] + "원</td>";
+									aim_html += "</div></td><td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
 									aim_html += "<td class='warning'><i class='fi fi-rr-light-emergency-on fs-28'></i> 초과</td></tr>";
 								}
 							}
@@ -335,7 +342,7 @@
 									aim_in_html += "<div class='gage blue-aim is-border' style='width: 100%;'>" + percent + "%</div>";
 								}
 								aim_in_html += "</div></td>";
-								aim_in_html += "<td>" + aim[2] + "원 / " + aim[1] + "원</td></tr>";
+								aim_in_html += "<td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td></tr>";
 							}
 						}
 						aim_in_html += "</table>";
@@ -394,18 +401,18 @@
 								
 								if(percent < 50) {
 									aim_html += "<div class='gage safe-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
-									aim_html += "</div></td><td colspan='2'>" + aim[2] + "원 / " + aim[1] + "원</td></tr>";
+									aim_html += "</div></td><td colspan='2'>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td></tr>";
 								} else if(percent < 70) {
 									aim_html += "<div class='gage warn-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
-									aim_html += "</div></td><td>" + aim[2] + "원 / " + aim[1] + "원</td>";
+									aim_html += "</div></td><td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
 									aim_html += "<td class='warn'><i class='fi fi-rr-triangle-warning fs-28'></i> 주의</td></tr>";
 								} else if(percent <= 100){
 									aim_html += "<div class='gage danger-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
-									aim_html += "</div></td><td>" + aim[2] + "원 / " + aim[1] + "원</td>";
+									aim_html += "</div></td><td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
 									aim_html += "<td class='warning'><i class='fi fi-rr-light-emergency-on fs-28'></i> 위험</td></tr>";
 								} else {
 									aim_html += "<div class='gage danger-aim is-border' style='width: 100%;'>" + percent + "%</div>";
-									aim_html += "</div></td><td>" + aim[2] + "원 / " + aim[1] + "원</td>";
+									aim_html += "</div></td><td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
 									aim_html += "<td class='warning'><i class='fi fi-rr-light-emergency-on fs-28'></i> 초과</td></tr>";
 								}
 							}
@@ -447,7 +454,7 @@
 									aim_in_html += "<div class='gage blue-aim is-border' style='width: 100%;'>" + percent + "%</div>";
 								}
 								aim_in_html += "</div></td>";
-								aim_in_html += "<td>" + aim[2] + "원 / " + aim[1] + "원</td></tr>";
+								aim_in_html += "<td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td></tr>";
 							}
 						}
 						aim_in_html += "</table>";
@@ -481,7 +488,7 @@
 				url : "updateAim",
 				data : {
 					aimid : $("#up-out-aimid").val(),
-					total : $("#up-out-total").val(),
+					total : ($("#up-out-total").val()).replaceAll(",", ""),
 					userid : userid
 				},
 				success : function(x) {
@@ -510,6 +517,7 @@
 				}
 			})
 		})
+		
 	})
 </script>
 </head>
@@ -559,7 +567,7 @@
 				<div class="is-scroll" id="aim-in-list-div" style="height: 350px;"></div>
 				
 				
-			<!-- 수입/지출 수정 모달 -->
+			<!-- 목표 추가 모달 -->
 			<div class="modal" id="add-aim-modal" hidden="true">
 				<div class="modal-content medium">
 					<div class="modal-title">

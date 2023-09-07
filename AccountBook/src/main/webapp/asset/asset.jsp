@@ -51,10 +51,10 @@
 										}
 									}
 									if(catetotal < 0) {
-										html += "<div class='col-5 text-right red'>" + catetotal + "원</div></td>"
+										html += "<div class='col-5 text-right red'>" + catetotal.toLocaleString() + "원</div></td>"
 										total += catetotal;
 									} else {
-										html += "<div class='col-5 text-right blue'>" + catetotal + "원</div></td>"
+										html += "<div class='col-5 text-right blue'>" + catetotal.toLocaleString() + "원</div></td>"
 										total += catetotal;
 									}
 									html += "<td style='display:none;'>" + key + "</td>"; // key는 자산 그룹 (클릭 시 값 넘기기 위한 것으로, 화면에는 보이지 않도록 생성)
@@ -64,7 +64,7 @@
 							html += "<tr><td></td></tr>";
 						}
 						html += "</table>";
-						$("#asset-total-div").html("<i class='h-normal fs-23 info'>합계</i><i class='h-normal fs-23'>" + total + "원</i>");
+						$("#asset-total-div").html("<i class='h-normal fs-23 info'>합계</i><i class='h-normal fs-23'>" + total.toLocaleString() + "원</i>");
 						$("#asset-list-div").html(html);
 					}
 				})
@@ -80,8 +80,9 @@
 		}
 		var todayAll = todayYear + "-" + todayMonth;
 		
+		var astname;
 		$(document).on("click", ".asset-name .td-detail", function() { // asset-name 행 클릭 시
-			var astname = $(this).eq(0).children().eq(0).text();
+			astname = $(this).eq(0).children().eq(0).text();
 			$.ajax({
 				type : "post",
 				url : "assetAccount",
@@ -110,10 +111,10 @@
 								account_html += "<td>" + account[3] + "</td>"; // 카테고리
 								account_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
 								if(account[1] == "수입") {
-									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+									account_html += "<td class='text-right blue'>" + parseInt(account[5]).toLocaleString() + "원</td>"; // 돈
 									income_total += parseInt(account[5]);
 								} else {
-									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+									account_html += "<td class='text-right red'>" + parseInt(account[5]).toLocaleString() + "원</td>";
 									spend_total += parseInt(account[5]);
 								}
 								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
@@ -129,9 +130,9 @@
 						income_total = 0;
 						spend_total = 0;
 					}
-					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total) + "</i>";
-					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total + "</i>";
-					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total + "</i>";
+					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total).toLocaleString() + "</i>";
+					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total.toLocaleString() + "</i>";
+					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total.toLocaleString() + "</i>";
 					
 					$("#month-div").html(month_html);
 					$("#total-div").html(total_html);
@@ -142,7 +143,8 @@
 					$("#asset-account-modal").show();
 				}
 			})
-			// 이전 달
+		})
+		// 이전 달
 		$("#before").click(function() {
 			var current = todayAll.split("-");
 			var beforeYear;
@@ -161,7 +163,7 @@
 			}
 			beforeAll = beforeYear + "-" + beforeMonth;
 			todayAll = beforeAll;			
-			
+				
 			$.ajax({
 				type : "post",
 				url : "assetAccount",
@@ -190,10 +192,10 @@
 								account_html += "<td>" + account[3] + "</td>"; // 카테고리
 								account_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
 								if(account[1] == "수입") {
-									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+									account_html += "<td class='text-right blue'>" + parseInt(account[5]).toLocaleString() + "원</td>"; // 돈
 									income_total += parseInt(account[5]);
 								} else {
-									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+									account_html += "<td class='text-right red'>" + parseInt(account[5]).toLocaleString() + "원</td>";
 									spend_total += parseInt(account[5]);
 								}
 								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
@@ -209,9 +211,9 @@
 						income_total = 0;
 						spend_total = 0;
 					}
-					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total) + "</i>";
-					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total + "</i>";
-					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total + "</i>";
+					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total).toLocaleString() + "</i>";
+					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total.toLocaleString() + "</i>";
+					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total.toLocaleString() + "</i>";
 					
 					$("#month-div").html(month_html);
 					$("#total-div").html(total_html);
@@ -223,7 +225,7 @@
 				}
 			})
 		})
-		// 이전 달
+		// 다음 달
 		$("#after").click(function() {
 			var current = todayAll.split("-");
 			var afterYear;
@@ -231,7 +233,7 @@
 			var afterAll;
 			
 			if(current[1] == "12") {
-				afterYear = (parseInt(current[0]) + 1) + "";
+			afterYear = (parseInt(current[0]) + 1) + "";
 				afterMonth = "01";
 			} else {
 				afterYear = current[0];
@@ -271,10 +273,10 @@
 								account_html += "<td>" + account[3] + "</td>"; // 카테고리
 								account_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
 								if(account[1] == "수입") {
-									account_html += "<td class='text-right blue'>" + account[5] + "원</td>"; // 돈
+									account_html += "<td class='text-right blue'>" + parseInt(account[5]).toLocaleString() + "원</td>"; // 돈
 									income_total += parseInt(account[5]);
 								} else {
-									account_html += "<td class='text-right red'>" + account[5] + "원</td>";
+									account_html += "<td class='text-right red'>" + parseInt(account[5]).toLocaleString() + "원</td>";
 									spend_total += parseInt(account[5]);
 								}
 								account_html += "<td style='display:none;'>" + account[6] + "</td></tr>"; // 메모
@@ -290,9 +292,9 @@
 						income_total = 0;
 						spend_total = 0;
 					}
-					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total) + "</i>";
-					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total + "</i>";
-					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total + "</i>";
+					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total).toLocaleString() + "</i>";
+					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total.toLocaleString() + "</i>";
+					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total.toLocaleString() + "</i>";
 					
 					$("#month-div").html(month_html);
 					$("#total-div").html(total_html);
@@ -304,8 +306,6 @@
 				}
 			})
 		})
-		})
-		
 		// 자산별 내역 모달 닫기		
 		$("#close-asset-account").click(function() {
 			$("#asset-account-modal").hide();
