@@ -836,7 +836,7 @@
 			$("#moneytype").attr("value", "지출");
 		})
 		
-		var cateReg = RegExp(/^[a-zA-Z가-힣0-9\s]{1,10}$/); // 카테고리 이름 정규식
+		var cateReg = RegExp(/^[a-zA-Z가-힣0-9/\s]{1,10}$/); // 카테고리 이름 정규식
 		
 		$("#add-category-btn").click(function() { // 카테고리 추가 버튼 클릭 시
 			if(!cateReg.test($("#catename").val())){ // 정규식에 맞지 않을 때
@@ -1402,7 +1402,7 @@
 									</tr>
 								</table>
 								<div id="up-catename-check-div">
-									<p class="msg info">이름은 특수문자 제외, 한 글자 이상 입력</p>
+									<p class="msg info">이름은 특수문자 제외, 한 글자 이상 입력 ( /는 사용 가능)</p>
 								</div>
 								<br>
 								<button class="btn medium green" id="up-category-btn">수정</button>
@@ -1437,7 +1437,7 @@
 									</tr>
 								</table>
 								<div id="add-catename-check-div">
-									<p class="msg info">이름은 특수문자 제외, 한 글자 이상 입력</p>
+									<p class="msg info">이름은 특수문자 제외, 한 글자 이상 입력 ( /는 사용 가능)</p>
 								</div>
 								<br>
 								<button class="btn medium green" id="add-category-btn">추가</button>

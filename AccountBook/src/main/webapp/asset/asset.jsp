@@ -326,7 +326,7 @@
 			$("#up-astmemo-name").val(originMemo);
 		})
 		$("#up-asset-btn").click(function() { // 자산 수정 버튼 클릭 시
-			var assetReg = RegExp(/^[a-zA-Z가-힣0-9\s]{1,10}$/); // 자산 이름 정규식
+			var assetReg = RegExp(/^[a-zA-Z가-힣0-9/\s]{1,10}$/); // 자산 이름 정규식
 			if(!assetReg.test($("#up-asset-name").val())){ // 정규식에 맞지 않을 때
 				$("#up-asset-check p").attr("class", "msg warning");
 			} else {
@@ -442,7 +442,7 @@
 			
 			$("#add-asset-btn").click(function() {
 				// 자산 이름 정규식
-				var assetReg = RegExp(/^[a-zA-Z가-힣0-9\s]{1,10}$/);
+				var assetReg = RegExp(/^[a-zA-Z가-힣0-9/\s]{1,10}$/);
 				if(!assetReg.test($("#add-asset-name").val())){ // 정규식에 맞지 않을 때
 					$("#add-asset-check p").attr("class", "msg warning");
 				} else {
@@ -557,7 +557,7 @@
 			$("#up-group-name").focus();
 		})
 		$("#up-group-btn").click(function() { // 수정 버튼 클릭 시
-			var groupReg = RegExp(/^[a-zA-Z가-힣0-9\s]{1,10}$/); // 자산 그룹 정규식
+			var groupReg = RegExp(/^[a-zA-Z가-힣0-9/\s]{1,10}$/); // 자산 그룹 정규식
 			if(!groupReg.test($("#up-group-name").val())){ // 정규식에 맞지 않을 때
 				$("#up-group-check p").attr("class", "msg warning");
 			} else { // 정규식에 맞으면
@@ -615,7 +615,7 @@
 			var astgroup = $("#astgroup").val();
 			
 			// 자산 그룹 정규식
-			var groupReg = RegExp(/^[a-zA-Z가-힣0-9\s]{1,10}$/);
+			var groupReg = RegExp(/^[a-zA-Z가-힣0-9/\s]{1,10}$/);
 			
 			if(!groupReg.test($("#astgroup").val())){ // 정규식에 맞지 않을 때
 				$("#add-group-check p").attr("class", "msg warning"); // 글자 빨간색으로 하는 warning-msg
@@ -752,7 +752,7 @@
 							</div>
 							<br>
 							<div id='up-asset-check'>
-								<p class='msg info'>자산명은 특수문자 제외, 1~10 글자 입력</p>
+								<p class='msg info'>자산명은 특수문자 제외, 1~10 글자 입력 ( /는 사용 가능)</p>
 							</div>
 						</div>
 						<hr>
@@ -795,7 +795,7 @@
 							</div>
 							<br>
 							<div id='add-asset-check'>
-								<p class='msg info'>자산명은 특수문자 제외, 1~10 글자 입력</p>
+								<p class='msg info'>자산명은 특수문자 제외, 1~10 글자 입력 ( /는 사용 가능)</p>
 							</div>
 						</div>
 						<div class="modal-footer">
@@ -884,7 +884,7 @@
 						<div class="modal-body small">
 							<h5 class='h-normal fs-20'><i class="fi fi-rr-pencil"></i> 자산 그룹명</h5>
 							<div id='up-group-check'>
-								<p class='msg info'>그룹명은 특수문자 제외, 1~10 글자 입력</p>
+								<p class='msg info'>그룹명은 특수문자 제외, 1~10 글자 입력 ( /는 사용 가능)</p>
 							</div>
 							<br>
 							<div id="up-group-div">
@@ -911,7 +911,7 @@
 							<div id="add-group-div">
 								<h5 class='h-normal fs-20'><i class="fi fi-rr-pencil"></i> 자산 그룹명</h5>
 								<div id="add-group-check">
-									<p class='msg info'>그룹명은 특수문자 제외, 1~10 글자 입력</p>
+									<p class='msg info'>그룹명은 특수문자 제외, 1~10 글자 입력 ( /는 사용 가능)</p>
 								</div>
 								<br>
 								<input type="text" class="input" id="astgroup" maxlength="10">

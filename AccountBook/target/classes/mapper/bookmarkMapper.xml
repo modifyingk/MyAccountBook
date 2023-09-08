@@ -4,7 +4,7 @@
 <mapper namespace="bookmarkMapper">
 	<!-- 즐겨찾기 추가 -->
 	<insert id="insertBookmark" parameterType="bookmarkVO">
-		insert into bookmark values (#{bookmarkid}, #{catename}, #{content}, #{total}, #{userid});
+		insert into bookmark values (#{bookmarkid}, #{catename}, #{content}, #{total}, #{userid}, "지출");
 	</insert>
 	
 	<!-- 즐겨찾기 목록 -->

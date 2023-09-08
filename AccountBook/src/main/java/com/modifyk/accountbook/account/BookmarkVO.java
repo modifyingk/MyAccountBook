@@ -6,6 +6,8 @@ public class BookmarkVO {
 	private String content;
 	private int total;
 	private String userid;
+	private String moneytype;
+
 	public int getBookmarkid() {
 		return bookmarkid;
 	}
@@ -36,11 +38,16 @@ public class BookmarkVO {
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
-	
+	public String getMoneytype() {
+		return moneytype;
+	}
+	public void setMoneytype(String moneytype) {
+		this.moneytype = moneytype;
+	}
 	@Override
 	public String toString() {
 		return "BookmarkVO [bookmarkid=" + bookmarkid + ", catename=" + catename + ", content=" + content + ", total="
-				+ total + ", userid=" + userid + "]";
+				+ total + ", userid=" + userid + "moneytype=" + moneytype + "]";
 	}
 	
 }
