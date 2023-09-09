@@ -66,4 +66,9 @@ public class AccountDAO {
 	public List<AccountVO> monthCateSpend(AccountVO accountVO) {
 		return my.selectList("accountMapper.monthCateSpend", accountVO);
 	}
+	
+	// 달력에 표시할 날짜별 합계 
+	public List<AccountVO> calendarTotal(AccountVO accountVO) {
+		return my.selectList("accountMapper.calendarTotal", accountVO);
+	}
 }

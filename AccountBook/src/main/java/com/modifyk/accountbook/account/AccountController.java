@@ -187,4 +187,12 @@ public class AccountController {
 		}
 		return map;
 	}
+	
+	// 달력에 표시할 날짜별 합계
+	@ResponseBody
+	@RequestMapping("account/calendarTotal")
+	public List<AccountVO> calendarTotal(AccountVO accountVO) {
+		List<AccountVO> list = aDao.calendarTotal(accountVO);
+		return list;
+	}
 }

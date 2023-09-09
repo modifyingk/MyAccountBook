@@ -12,7 +12,7 @@ $(function() {
 		} else if(idx == 2) {
 			location.href = "/accountbook/asset/asset.jsp"; // 자산관리 페이지로
 		} else if(idx == 3) {
-			location.href = ""; // 캘린더 페이지로
+			location.href = "/accountbook/calendar/calendar.jsp"; // 캘린더 페이지로
 		} else {
 			location.href = "/accountbook/aim/aim.jsp"; // 목표 관리 페이지로
 		}

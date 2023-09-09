@@ -499,3 +499,29 @@
 	border: 1px solid #2C952C;
 	border-radius: 10px;
 }
+.cal-date-div {
+	text-align: center;
+	height: 35px;
+	padding: 2px;
+}
+.cal-date-div.active {
+	background: #2C952C;
+	border-radius: 10px;
+	color: white;
+}
+.cal-income-div {
+	text-align: right;
+	height: 35px;
+	padding: 2px;
+}
+.cal-spend-div {
+	text-align: right;
+	height: 35px;
+	padding: 2px;
+}
+.calendar-table td {
+	width: 200px;
+	border: 1px solid lightgray;
+	text-align: center;
+	font-size: 17px;
+}
