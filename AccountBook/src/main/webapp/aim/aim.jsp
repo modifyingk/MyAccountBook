@@ -16,6 +16,12 @@
 		
 		$("#add-aim-page").click(function() {
 			$("#add-aim-modal").show();
+
+			var year_val = todayAll.split("-")[0];
+			var month_val = todayAll.split("-")[1];
+
+			$("#add-year").attr("value", year_val);
+			$("#add-month").val(month_val).prop("selected");
 		})
 		$("#close-add-aim").click(function() {
 			$("#add-aim-modal").hide();
@@ -590,7 +596,6 @@
 									<td>
 										<input class="input small" type="text" id="add-year" placeholder="년(4자)" maxlength="4">
 										<select class="input small" id="add-month">
-											<option>월</option>
 											<option value="01">1</option>
 											<option value="02">2</option>
 											<option value="03">3</option>

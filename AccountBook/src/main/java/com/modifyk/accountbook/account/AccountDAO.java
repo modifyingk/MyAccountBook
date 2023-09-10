@@ -71,4 +71,9 @@ public class AccountDAO {
 	public List<AccountVO> calendarTotal(AccountVO accountVO) {
 		return my.selectList("accountMapper.calendarTotal", accountVO);
 	}
+	
+	// 해당 날짜의 내역
+	public List<AccountVO> dateAccount(AccountVO accountVO) {
+		return my.selectList("accountMapper.dateAccount", accountVO);
+	}
 }

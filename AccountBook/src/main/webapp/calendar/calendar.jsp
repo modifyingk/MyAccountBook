@@ -304,6 +304,67 @@
 				}
 			})
 		})
+		
+		$(".calendar-table .tr-content td").click(function() {
+			if($(this).children().eq(0).text() != "") {
+				var selectDate = $(this).children().eq(0).text(); // 요일
+				var selectIn = $(this).children().eq(1).text(); // 수입
+				var selectOut = $(this).children().eq(2).text(); // 지출
+				
+				if(selectDate.length == 1) {
+					selectDate = "0" + selectDate;
+				}
+				var selectAll = todayAll + "-" + selectDate;
+				
+				$.ajax({
+					type : "post",
+					url : "../account/dateAccount",
+					data : {
+						date : selectAll,
+						userid : userid
+					},
+					success : function(list) {
+						var total_income = 0;
+						var total_spend = 0;
+						
+						var html = "";
+						
+						if(list != "") {
+							html = "<table class='list-table'>";
+							for(var i = 0; i < list.length; i++) {
+								html += "<tr><td style='display:none;'>" + list[i].accountid + "</td>";
+								html += "<td>" + list[i].catename + "</td>";
+								html += "<td><div>" + list[i].content + "</div><div><span class='fs-16 info'>" + list[i].astname + "</span></div></td>";
+								if(list[i].moneytype == "수입") {
+									html += "<td class='text-right blue'>" + list[i].total.toLocaleString() + "</td></tr>";
+									total_income += list[i].total;
+								} else {
+									html += "<td class='text-right red'>" + list[i].total.toLocaleString() + "</td></tr>";
+									total_spend += list[i].total;
+								}
+							}
+							html += "</table>";
+						} else {
+							html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+						}
+						
+						var date_html = "<h3 class='h-normal fs-28'><i class='fi fi-rs-calendar-check'></i> " + selectAll + "</h3>";
+						var in_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + total_income.toLocaleString() + "원</i>";
+						var out_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + total_spend.toLocaleString() + "원</i>";
+						
+						$("#select-date-div").html(date_html);
+						$("#total-income-div").html(in_html);
+						$("#total-spend-div").html(out_html);
+						$("#date-account-list-div").html(html);
+						
+						$("#date-account-modal").show();
+					}
+				})
+			}
+		})
+		$("#close-date-account").click(function() {
+			$("#date-account-modal").hide();
+		})
 	})
 </script>
 </head>
@@ -358,7 +419,7 @@
 							<td><div>금</div></td>
 							<td><div class="blue">토</div></td>
 						</tr>
-						<tr>
+						<tr class="tr-content">
 							<td><div class="cal-date-div red"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
@@ -367,7 +428,7 @@
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div blue"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 						</tr>
-						<tr>
+						<tr class="tr-content">
 							<td><div class="cal-date-div red"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
@@ -376,7 +437,7 @@
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div blue"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 						</tr>
-						<tr>
+						<tr class="tr-content">
 							<td><div class="cal-date-div red"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
@@ -385,7 +446,7 @@
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div blue"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 						</tr>
-						<tr>
+						<tr class="tr-content">
 							<td><div class="cal-date-div red"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
@@ -394,7 +455,7 @@
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div blue"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 						</tr>
-						<tr>
+						<tr class="tr-content">
 							<td><div class="cal-date-div red"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
@@ -403,7 +464,7 @@
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div blue"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 						</tr>
-						<tr>
+						<tr class="tr-content">
 							<td><div class="cal-date-div red"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
 							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
@@ -415,6 +476,31 @@
 					</table>
 				</div>
 				
+				<!-- 해당 날짜의 내역 모달 -->
+				<div class="modal" id="date-account-modal" hidden="true">
+					<div class="modal-content wide">
+						<div class="modal-title">
+							<div id="select-date-div">
+						</div>
+						<hr>
+						<div class="modal-body wide">
+							<!-- 총 금액 -->
+							<div style="margin-bottom: 15px;">
+								<table style="text-align: center;">
+									<tr>
+										<td style="width: 300px;"><div id="total-income-div"></div></td>
+										<td style="width: 300px;"><div id="total-spend-div"></div></td>
+									</tr>
+								</table>
+							</div>
+							<div id="date-account-list-div"></div>
+						</div>
+						<hr>
+						<div class="modal-footer">
+							<button class="btn right outline-green" id="close-date-account">닫기</button>
+						</div>
+					</div>
+				</div>
 			<% }
 			/* 로그인이 되어 있지 않을 때 */
 			else { %>

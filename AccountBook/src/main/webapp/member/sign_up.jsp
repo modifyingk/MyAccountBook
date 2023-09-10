@@ -172,6 +172,15 @@
 			} else {
 				genderChk = false;
 			}
+			
+			// 생년월일 입력값 재확인
+			if($("#month").val() == "월") {
+				birthChk = false;
+			}
+			if($("#date").val() == "") {
+				birthChk = false;
+			}
+			
 			// 회원가입
 			if(idChk && pwChk && pwChk2 && nameChk && genderChk && birthChk && emailChk) {	// 모든 입력값에 문제가 없다면
 				if($("#date").val().length == 1) {

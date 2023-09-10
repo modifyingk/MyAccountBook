@@ -525,3 +525,8 @@
 	text-align: center;
 	font-size: 17px;
 }
+.calendar-table td:hover {
+	background: #F3F3F3;
+	border-color: lightgray;
+	cursor: pointer;
+}

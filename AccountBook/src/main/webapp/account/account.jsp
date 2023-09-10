@@ -992,6 +992,17 @@
 		// 수입/지출 추가 모달 열기
 		$("#add-account-page").click(function() {
 			// 자산, 카테고리 값 다 비우고 추가 (수입/지출내역 수정할 때 자산, 카테고리 선택하면 같이 변경되므로)
+			// 월별로 수입/지출 목록 가져오기
+			var add_today = new Date();
+			var add_year = add_today.getFullYear();
+			var add_month = add_today.getMonth() + 1 + "";
+			if(add_month.length == 1) {
+				add_month = "0" + add_month;
+			}
+			var add_date = add_today.getDate();
+			var date_val = add_year + "-" + add_month + "-" + add_date;
+			
+			$("#add-actdate").attr("value", date_val);
 			$("#add-actasset").attr("value", "");
 			$("#add-actcatename").attr("value", "");
 			$("#add-actcontent").attr("value", "");

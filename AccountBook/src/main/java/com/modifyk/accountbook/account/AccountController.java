@@ -195,4 +195,12 @@ public class AccountController {
 		List<AccountVO> list = aDao.calendarTotal(accountVO);
 		return list;
 	}
+	
+	// 해당 날짜의 내역
+	@ResponseBody
+	@RequestMapping("account/dateAccount")
+	public List<AccountVO> dateAccount(AccountVO accountVO) {
+		List<AccountVO> list = aDao.dateAccount(accountVO);
+		return list;
+	}
 }
