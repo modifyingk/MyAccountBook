@@ -113,14 +113,6 @@ public class AssetController {
 		}
 	}
 	
-	// 자산별 합계
-	@ResponseBody
-	@RequestMapping("asset/assetTotal")
-	public List<AccountVO> assetTotal(String userid) {
-		List<AccountVO> assetTotal = aDao.assetTotal(userid);
-		return assetTotal;
-	}
-	
 	// 자산별 내역
 	@ResponseBody
 	@RequestMapping("asset/assetAccount")

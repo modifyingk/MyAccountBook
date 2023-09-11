@@ -55,11 +55,6 @@ public class AssetDAO {
 	}
 	
 	// 자산별 지출 합계
-	public List<AccountVO> assetTotal(String userid) {
-		return my.selectList("accountMapper.assetTotal", userid);
-	}
-	
-	// 자산별 지출 합계
 	public List<AccountVO> assetAccount(AccountVO accountVO) {
 		return my.selectList("accountMapper.assetAccount", accountVO);
 	}
@@ -72,5 +67,15 @@ public class AssetDAO {
 	// 자산 숨김 취소
 	public int showAsset(AssetVO assetVO) {
 		return my.update("assetMapper.showAsset", assetVO);
+	}
+	
+	// 자산 금액 업데이트(지출)
+	public int minusTotal(AssetVO assetVO) {
+		return my.update("assetMapper.minusTotal", assetVO);
+	}
+	
+	// 자산 금액 업데이트(수입)
+	public int plusTotal(AssetVO assetVO) {
+		return my.update("assetMapper.plusTotal", assetVO);
 	}
 }

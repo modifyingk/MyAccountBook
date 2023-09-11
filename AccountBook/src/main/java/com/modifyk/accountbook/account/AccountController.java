@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.modifyk.accountbook.asset.AssetDAO;
+import com.modifyk.accountbook.asset.AssetVO;
+
 @Controller
 public class AccountController {
 	
@@ -16,6 +19,9 @@ public class AccountController {
 	
 	@Autowired
 	CategoryDAO cDao;
+	
+	@Autowired
+	AssetDAO astDao;
 	
 	@Autowired
 	MakeAccountIDService actIDSvc;
@@ -37,6 +43,21 @@ public class AccountController {
 		
 		int result = aDao.insertAccount(accountVO);
 		if(result == 1) {
+			// 수입/지출이 추가되었을 경우, 자산 금액 업데이트
+			AssetVO assetVO = new AssetVO();
+			assetVO.setAstname(accountVO.getAstname());
+			assetVO.setTotal(accountVO.getTotal());
+			assetVO.setUserid(accountVO.getUserid());
+			
+			if(accountVO.getMoneytype().equals("지출")) {
+				astDao.minusTotal(assetVO);
+			} else if(accountVO.getMoneytype().equals("수입")) {
+				astDao.plusTotal(assetVO);
+			}
+
+			// 삭제의 경우에는 해당 금액의 값을 가져와서 자산에다가 다시 더해줌
+			// 수입 삭제는 빼줌
+			// 업데이트의 경우에는 해당 금액의 원래 값을 더해주고 업데이트 값을 빼줌 수입은 반대로
 			return "success";
 		} else {
 			return "fail";
@@ -47,8 +68,28 @@ public class AccountController {
 	@ResponseBody
 	@RequestMapping("account/updateAccount")
 	public String updateAccount(AccountVO accountVO) {
+		// 해당 accountid의 값들 조회하기
+		AccountVO idResult = aDao.accountidInfo(accountVO);
+		
+		// 수정
 		int result = aDao.updateAccount(accountVO);
 		if(result == 1) {
+			// 수입/지출이 수정되었을 경우, 자산 금액 업데이트
+			int beforeMoney = idResult.getTotal(); // 수정하기 전 금액
+			int afterMoney = accountVO.getTotal(); // 수정한 후 금액
+			
+			int updateValue = afterMoney - beforeMoney;
+			
+			AssetVO assetVO = new AssetVO();
+			assetVO.setAstname(idResult.getAstname());
+			assetVO.setTotal(updateValue);
+			assetVO.setUserid(idResult.getUserid());
+					
+			if(idResult.getMoneytype().equals("지출")) {
+				astDao.minusTotal(assetVO);
+			} else if(idResult.getMoneytype().equals("수입")) {
+				astDao.plusTotal(assetVO);
+			}
 			return "success";
 		} else {
 			return "fail";
@@ -59,8 +100,23 @@ public class AccountController {
 	@ResponseBody
 	@RequestMapping("account/deleteAccount")
 	public String deleteAccount(AccountVO accountVO) {
+		// 해당 accountid의 값들 조회하기
+		AccountVO idResult = aDao.accountidInfo(accountVO);
+
+		// 삭제
 		int result = aDao.deleteAccount(accountVO);
 		if(result == 1) {
+			// 수입/지출이 삭제되었을 경우, 자산 금액 업데이트
+			AssetVO assetVO = new AssetVO();
+			assetVO.setAstname(idResult.getAstname());
+			assetVO.setTotal(idResult.getTotal());
+			assetVO.setUserid(idResult.getUserid());
+			
+			if(idResult.getMoneytype().equals("지출")) {
+				astDao.plusTotal(assetVO);
+			} else if(idResult.getMoneytype().equals("수입")) {
+				astDao.minusTotal(assetVO);
+			}
 			return "success";
 		} else {
 			return "fail";

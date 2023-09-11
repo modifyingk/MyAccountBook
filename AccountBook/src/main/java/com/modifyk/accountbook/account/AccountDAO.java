@@ -76,4 +76,9 @@ public class AccountDAO {
 	public List<AccountVO> dateAccount(AccountVO accountVO) {
 		return my.selectList("accountMapper.dateAccount", accountVO);
 	}
+	
+	// accountid 값으로 검색
+	public AccountVO accountidInfo(AccountVO accountVO) {
+		return my.selectOne("accountMapper.accountidInfo", accountVO);
+	}
 }

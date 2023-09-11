@@ -25,11 +25,11 @@ public class AssetToMapService {
 			if(map.get(assetList.get(i).getAstgroup()) != null) { // 해당 자산그룹이 이미 있다면
 				// 해당 자산그룹의 value값(자산과 자산메모 문자열)에다가
 				// 콤마(,)로 구분하여 자산과 자산메모 문자열 추가
-				String value = map.get(assetList.get(i).getAstgroup()) + "," + assetList.get(i).getAstname() + "#" + assetList.get(i).getAstmemo();
+				String value = map.get(assetList.get(i).getAstgroup()) + "," + assetList.get(i).getAstname() + "#" + assetList.get(i).getAstmemo() + "#" + assetList.get(i).getTotal();
 				map.put(assetList.get(i).getAstgroup(), value);
 			} else { 
 				// 자산그룹을 key값으로 하고, 자산과 자산메모를 샵(#)으로 구분한 문자열을 value 값으로 하여 저장 
-				map.put(assetList.get(i).getAstgroup(), assetList.get(i).getAstname() + "#" + assetList.get(i).getAstmemo());
+				map.put(assetList.get(i).getAstgroup(), assetList.get(i).getAstname() + "#" + assetList.get(i).getAstmemo() + "#" + assetList.get(i).getTotal());
 			}
 		}
 		return map;

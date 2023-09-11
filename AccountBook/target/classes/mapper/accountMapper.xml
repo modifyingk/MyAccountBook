@@ -42,11 +42,6 @@
 		select * from account where userid = #{userid} and left(date, 7) = #{date} and catename = #{catename} and moneytype = "지출" order by date desc;
 	</select>
 	
-	<!-- 자산별 지출 합계 -->
-	<select id="assetTotal" parameterType="String" resultType="accountVO">
-		select moneytype, astname, sum(total) as total from account where userid = #{userid} group by moneytype, astname;
-	</select>
-	
 	<!-- 자산별 내역 -->
 	<select id="assetAccount" parameterType="accountVO" resultType="accountVO">
 		select * from account where userid = #{userid} and astname = #{astname} and left(date, 7) = #{date} order by date desc;
@@ -60,5 +55,10 @@
 	<!-- 해당 날짜의 내역 -->
 	<select id="dateAccount" parameterType="accountVO" resultType="accountVO">
 		select * from account where date = #{date} and userid = #{userid};
+	</select>
+	
+	<!-- accountid 값으로 검색 -->
+	<select id="accountidInfo" parameterType="accountVO" resultType="accountVO">
+		select * from account where accountid = #{accountid} and userid = #{userid};
 	</select>
 </mapper>

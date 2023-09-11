@@ -20,7 +20,7 @@
 	
 	<!-- 자산 추가 -->
 	<insert id="insertAsset" parameterType="assetVO">
-		insert into asset values (#{astname}, #{astgroup}, #{astmemo}, #{userid}, "o");
+		insert into asset values (#{astname}, #{astgroup}, #{astmemo}, #{userid}, "o", 0);
 	</insert>
 	
 	<!-- 자산 삭제 -->
@@ -51,5 +51,15 @@
 	<!-- 자산 숨김 취소  -->
 	<update id="showAsset" parameterType="assetVO">
 		update asset set showasset = "o" where astname = #{astname} and userid = #{userid};
+	</update>
+	
+	<!-- 자산 금액 업데이트 (지출) -->
+	<update id="minusTotal" parameterType="assetVO">
+		update asset set total = total - #{total} where astname = #{astname} and userid = #{userid};
+	</update>
+	
+	<!-- 자산 금액 업데이트 (수입) -->
+	<update id="plusTotal" parameterType="assetVO">
+		update asset set total = total + #{total} where astname = #{astname} and userid = #{userid};
 	</update>
 </mapper>

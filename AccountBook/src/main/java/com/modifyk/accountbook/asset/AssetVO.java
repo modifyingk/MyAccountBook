@@ -6,6 +6,7 @@ public class AssetVO {
 	private String astmemo;
 	private String userid;
 	private String showasset;
+	private int total;
 	
 	public String getAstname() {
 		return astname;
@@ -37,11 +38,17 @@ public class AssetVO {
 	public void setShowasset(String showasset) {
 		this.showasset = showasset;
 	}
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
+	}
 	
 	@Override
 	public String toString() {
 		return "AssetVO [astname=" + astname + ", astgroup=" + astgroup + ", astmemo=" + astmemo + ", userid=" + userid
-				+ "showassett=" + showasset + "]";
+				+ "showassett=" + showasset + "total=" + total + "]";
 	}
 	
 }
