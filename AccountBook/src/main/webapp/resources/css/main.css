@@ -461,6 +461,11 @@
 	top: 90%;
 	left: 21%;
 }
+.fix-right-bl {
+	position: absolute;
+	top: 90%;
+	left: 59%;
+}
 .fix-right-tr-1 {
 	position: absolute;
 	top: 3%;

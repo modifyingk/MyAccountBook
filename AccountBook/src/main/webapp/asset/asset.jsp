@@ -115,7 +115,7 @@
 					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total.toLocaleString() + "</i>";
 					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total.toLocaleString() + "</i>";
 					
-					$("#month-div").html(month_html);
+					$("#modal-month-div").html(month_html);
 					$("#total-div").html(total_html);
 					$("#total-income-div").html(income_html);
 					$("#total-spend-div").html(spend_html);
@@ -126,7 +126,7 @@
 			})
 		})
 		// 이전 달
-		$("#before").click(function() {
+		$("#modal-before").click(function() {
 			var current = todayAll.split("-");
 			var beforeYear;
 			var beforeMonth;
@@ -196,7 +196,7 @@
 					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total.toLocaleString() + "</i>";
 					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total.toLocaleString() + "</i>";
 					
-					$("#month-div").html(month_html);
+					$("#modal-month-div").html(month_html);
 					$("#total-div").html(total_html);
 					$("#total-income-div").html(income_html);
 					$("#total-spend-div").html(spend_html);
@@ -207,7 +207,7 @@
 			})
 		})
 		// 다음 달
-		$("#after").click(function() {
+		$("#modal-after").click(function() {
 			var current = todayAll.split("-");
 			var afterYear;
 			var afterMonth;
@@ -277,7 +277,7 @@
 					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total.toLocaleString() + "</i>";
 					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total.toLocaleString() + "</i>";
 					
-					$("#month-div").html(month_html);
+					$("#modal-month-div").html(month_html);
 					$("#total-div").html(total_html);
 					$("#total-income-div").html(income_html);
 					$("#total-spend-div").html(spend_html);
@@ -659,6 +659,297 @@
 				})
 			}
 		})
+		// 자산 선택 모달(자산 목록가져오기)
+		$.ajax({
+			type : "post",
+			url : "../asset/assetInfo",
+			dataType : "json",
+			data : {
+				userid : userid
+			},
+			success : function(map) {
+				var html = "<table class='modal-table' id='asset-table'>"; // 자산 목록 테이블 만들기
+				for(var key in map ) {
+					var value = map[key].split(","); // 자산 그룹에 해당하는 자산이 여러 개이면 ,로 구분되어 있으므로 ,를 기준으로 분리하여 value 변수에 저장
+					for(var i = 0; i < value.length; i++) {
+						var asset = value[i].split("#"); // 자산이름과 자산메모는 #로 구분되어 있으므로 #를 기준으로 분리하여 asset 변수에 저장
+							html += "<tr class='asset-name'><td class='group-list is-border'>" + asset[0] + "</td></tr>"; // asset[0]은 자산 이름
+					}
+				}
+				html += "</table>";
+				$("#select-asset-div").html(html);
+			}
+		})
+		$(document).on("click", ".asset-name", function() {
+			if(selectOp == "addwithdraw") {
+				$("#add-withdraw-asset").attr("value", $(this).text());
+			} else if(selectOp == "adddeposit"){
+				$("#add-deposit-asset").attr("value", $(this).text());
+			}
+			$("#select-asset-modal").hide();
+		})
+		
+		var selectOp;
+		// 이체 추가 모달 열기
+		$("#add-transfer-page").click(function() {
+			// 오늘 날짜
+			var add_today = new Date();
+			var add_year = add_today.getFullYear();
+			var add_month = add_today.getMonth() + 1 + "";
+			if(add_month.length == 1) {
+				add_month = "0" + add_month;
+			}
+			var add_date = add_today.getDate();
+			var date_val = add_year + "-" + add_month + "-" + add_date;
+			
+			$("#add-transfer-date").attr("value", date_val);
+			$("#add-withdraw-asset").attr("value", "");
+			$("#add-deposit-asset").attr("value", "");
+			$("#add-transfer-modal").show();
+		})
+		// 이체 추가 모달 닫기
+		$("#close-add-transfer").click(function() {
+			$("#add-transfer-modal").hide();
+		})
+		// 이체 시 자산 선택
+		$("#add-withdraw-asset").click(function() { // 출금 자산
+			selectOp = "addwithdraw";
+			$("#select-asset-modal").show();
+		})
+		$("#add-deposit-asset").click(function() { // 입금 자산
+			selectOp = "adddeposit";
+			$("#select-asset-modal").show();
+		})
+		// 자산 선택 모달 닫기
+		$("#close-select-asset").click(function() {
+			$("#select-asset-modal").hide();
+		})
+		$("#add-transfer-btn").click(function() {
+			$.ajax({
+				type : "post",
+				url : "../transfer/insertTransfer",
+				data : {
+					date : $("#add-transfer-date").val(),
+					withdraw : $("#add-withdraw-asset").val(),
+					deposit : $("#add-deposit-asset").val(),
+					total : $("#add-transfer-total").val(),
+					memo : $("#add-transfer-memo").val(),
+					userid : userid
+				},
+				success : function(x) {
+					if(x == "success") {
+						window.location.reload();
+					} else {
+						alert("다시 시도해주세요.");
+					}
+				}
+			})
+		})
+
+		// 월별 이체 내역
+		$.ajax({
+			type : "post",
+			url : "../transfer/transferInfo",
+			data : {
+				date : todayAll,
+				userid : userid
+			},
+			success : function(map) {
+				var date = todayAll.split("-");
+				var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
+				var transfer_html = "";
+				
+				if(Object.keys(map) != "no") {
+					transfer_html = "<table class='list-table'>";
+					for(var key in map) {
+						transfer_html += "<tr class='tr-transfer-date'><td colspan='2' style='font-weight: bold;'>" + key + "</td></tr>";
+						var value = map[key].split(",");
+						for(var i = 0; i < value.length; i++) {
+							var transfer = value[i].split("#");
+							transfer_html += "<tr class='tr-transfer-content'><td style='display:none;'>" + transfer[0] + "</td>"; // 이체 아이디
+							transfer_html += "<td class='info'><span>" + transfer[1] + "</span> → <span>" + transfer[2] + "</span></td>"; // 출금 입금
+							transfer_html += "<td>" + parseInt(transfer[3]).toLocaleString() + "</td>"; // 금액
+							transfer_html += "<td style='display:none;'>" + transfer[4] + "</td></tr>"; // 메모
+						}
+					}
+					
+				} else {
+					transfer_html = "<div class='no-data-div' style='margin-right:15%;'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+				}
+				$("#month-div").html(month_html);
+				$("#transfer-list-div").html(transfer_html);
+			}
+		})
+		$("#before").click(function() {
+			var current = todayAll.split("-");
+			var beforeYear;
+			var beforeMonth;
+			var beforeAll;
+			
+			if(current[1] == "01") {
+				beforeYear = (parseInt(current[0]) - 1) + "";
+				beforeMonth = "12";
+			} else {
+				beforeYear = current[0];
+				beforeMonth = (parseInt(current[1]) - 1) + "";
+			}
+			if(beforeMonth.length == 1) {
+				beforeMonth = "0" + beforeMonth;
+			}
+			beforeAll = beforeYear + "-" + beforeMonth;
+			todayAll = beforeAll;			
+			
+			$.ajax({
+				type : "post",
+				url : "../transfer/transferInfo",
+				data : {
+					date : todayAll,
+					userid : userid
+				},
+				success : function(map) {
+					var date = todayAll.split("-");
+					var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
+					var transfer_html = "";
+					
+					if(Object.keys(map) != "no") {
+						transfer_html = "<table class='list-table'>";
+						for(var key in map) {
+							transfer_html += "<tr class='tr-transfer-date'><td colspan='2' style='font-weight: bold;'>" + key + "</td></tr>";
+							var value = map[key].split(",");
+							for(var i = 0; i < value.length; i++) {
+								var transfer = value[i].split("#");
+								transfer_html += "<tr class='tr-transfer-content'><td style='display:none;'>" + transfer[0] + "</td>"; // 이체 아이디
+								transfer_html += "<td class='info'><span>" + transfer[1] + "</span> → <span>" + transfer[2] + "</span></td>"; // 출금 입금
+								transfer_html += "<td>" + parseInt(transfer[3]).toLocaleString() + "</td>"; // 금액
+								transfer_html += "<td style='display:none;'>" + transfer[4] + "</td></tr>"; // 메모
+							}
+						}
+						
+					} else {
+						transfer_html = "<div class='no-data-div' style='margin-right:15%;'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+					}
+					$("#month-div").html(month_html);
+					$("#transfer-list-div").html(transfer_html);
+				}
+			})
+		})
+		$("#after").click(function() {
+			var current = todayAll.split("-");
+			var afterYear;
+			var afterMonth;
+			var afterAll;
+			
+			if(current[1] == "12") {
+			afterYear = (parseInt(current[0]) + 1) + "";
+				afterMonth = "01";
+			} else {
+				afterYear = current[0];
+				afterMonth = (parseInt(current[1]) + 1) + "";
+			}
+			if(afterMonth.length == 1) {
+				afterMonth = "0" + afterMonth;
+			}
+			afterAll = afterYear + "-" + afterMonth;
+			todayAll = afterAll;
+			
+			$.ajax({
+				type : "post",
+				url : "../transfer/transferInfo",
+				data : {
+					date : todayAll,
+					userid : userid
+				},
+				success : function(map) {
+					var date = todayAll.split("-");
+					var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
+					var transfer_html = "";
+					
+					if(Object.keys(map) != "no") {
+						transfer_html = "<table class='list-table'>";
+						for(var key in map) {
+							transfer_html += "<tr class='tr-transfer-date'><td colspan='2' style='font-weight: bold;'>" + key + "</td></tr>";
+							var value = map[key].split(",");
+							for(var i = 0; i < value.length; i++) {
+								var transfer = value[i].split("#");
+								transfer_html += "<tr class='tr-transfer-content'><td style='display:none;'>" + transfer[0] + "</td>"; // 이체 아이디
+								transfer_html += "<td class='info'><span>" + transfer[1] + "</span> → <span>" + transfer[2] + "</span></td>"; // 출금 입금
+								transfer_html += "<td>" + parseInt(transfer[3]).toLocaleString() + "</td>"; // 금액
+								transfer_html += "<td style='display:none;'>" + transfer[4] + "</td></tr>"; // 메모
+							}
+						}
+						
+					} else {
+						transfer_html = "<div class='no-data-div' style='margin-right:15%;'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+					}
+					$("#month-div").html(month_html);
+					$("#transfer-list-div").html(transfer_html);
+				}
+			})
+		})
+		$(document).on("click", ".tr-transfer-date", function() {
+			$("#add-transfer-modal").show();
+			$("#add-transfer-date").attr("value", $(this).text());
+		})
+		$(document).on("click", ".tr-transfer-content", function() {
+			var date = $(this).parent().children().eq(0).text();
+			var transferid = $(this).children().eq(0).text();
+			var withdraw = $(this).children().eq(1).children().eq(0).text();
+			var deposit = $(this).children().eq(1).children().eq(1).text();
+			var total = $(this).children().eq(2).text();
+			var memo = $(this).children().eq(3).text();
+
+			$("#up-transfer-id").attr("value", transferid);
+			$("#up-transfer-date").attr("value", date);
+			$("#up-withdraw-asset").attr("value", withdraw);
+			$("#up-deposit-asset").attr("value", deposit);
+			$("#up-transfer-total").attr("value", total);
+			$("#up-total-memo").attr("value", memo);
+			$("#up-transfer-modal").show();
+		})
+		$("#close-up-transfer").click(function() {
+			$("#up-transfer-modal").hide();
+		})
+		// 이체 수정
+		$("#up-transfer-btn").click(function() {
+			$.ajax({
+				type : "post",
+				url : "../transfer/updateTransfer",
+				data : {
+					transferid : $("#up-transfer-id").val(),
+					date : $("#up-transfer-date").val(),
+					withdraw : $("#up-withdraw-asset").val(),
+					deposit : $("#up-deposit-asset").val(),
+					total : $("#up-transfer-total").val().replaceAll(",", ""),
+					memo : $("#up-transfer-memo").val(),
+					userid : userid
+				},
+				success : function(x) {
+					if(x == "success") {
+						window.location.reload();
+					} else {
+						alert("다시 시도해주세요.");
+					}
+				}
+			})
+		})
+		// 이체 삭제
+		$("#del-transfer-btn").click(function() {
+			$.ajax({
+				type : "post",
+				url : "../transfer/deleteTransfer",
+				data : {
+					transferid : $("#up-transfer-id").val(),
+					userid : userid
+				},
+				success : function(x) {
+					if(x == "success") {
+						window.location.reload();
+					} else {
+						alert("다시 시도해주세요.");
+					}
+				}
+			})
+		})
 	})
 </script>
 </head>
@@ -683,232 +974,356 @@
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
 				<div>
-				
-				<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산관리</h3>
-				<div class="fix-right-tr-1">
-					<button class="btn green font-18 is-shadow" id="open-group-setting" style="width: 60px;"><i class="fi fi-rr-menu-burger"></i></button>
-				</div>
-				<div class="fix-right-tr-2" id="group-setting" hidden>
-					<button class="btn small outline-green font-18 is-shadow" id="astgroup-btn">자산 그룹</button>
-				</div>
-				<div class="fix-left-bl">
-					<button class="btn medium green font-18 is-shadow" id="add-asset-page"><i class="fi fi-rr-add"></i> 자산 추가</button>
-					<button class="btn small outline-green font-18 is-shadow" id="reset-asset-btn" style="margin-left: 10px;"><i class="fi fi-rr-rotate-right"></i> 초기화</button>
-				</div>
-				<div id="asset-total-div" style="margin: 5px;"></div><br>
-				<div id="asset-list-div"></div>
-				<!-- 자산 모달 -->
-				<div class="modal" id="up-asset-modal" hidden="true">
-					<div class="modal-content medium">
-						<div class="modal-title">
-							<div>
-								<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산 수정</h3>
-							</div>
+					<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산관리</h3>
+					<div class="col-5">
+						<div class="fix-right-tr-1">
+							<button class="btn green font-18 is-shadow" id="open-group-setting" style="width: 60px;"><i class="fi fi-rr-menu-burger"></i></button>
 						</div>
-						<hr>
-						<div class="modal-body medium">
-							<div id="up-asset-div">
-								<table class='table'>
-									<tr>
-										<th>그룹</th>
-										<td>
-											<input class="input" id="up-astgroup-name" readonly>
-										</td>
-									<tr>
-									<tr>
-										<th>이름</th>
-										<td>
-											<input class="input" id="up-asset-name" maxlength="10">
-										</td>
-									</tr>
-									<tr>
-										<th>메모</th>
-										<td>
-											<textarea rows="5" class="input" id="up-astmemo-name"></textarea>
-										</td>
-									</tr>
-								</table>
-								<button class="btn medium green" id="up-asset-btn">수정</button>
-								<button class="btn outline-green" style="height: 48px;" id="del-asset-btn">삭제</button>
-							</div>
-							<br>
-							<div id='up-asset-check'>
-								<p class='msg info'>자산명은 특수문자 제외, 1~10 글자 입력 ( /는 사용 가능)</p>
-							</div>
+						<div class="fix-right-tr-2" id="group-setting" hidden>
+							<button class="btn small outline-green font-18 is-shadow" id="astgroup-btn">자산 그룹</button>
 						</div>
-						<hr>
-						<div class="modal-footer">
-							<button class="btn right outline-green" id="close-up-asset">닫기</button>
+						<div class="fix-left-bl">
+							<button class="btn medium green font-18 is-shadow" id="add-asset-page"><i class="fi fi-rr-add"></i> 자산 추가</button>
+							<button class="btn small outline-green font-18 is-shadow" id="reset-asset-btn" style="margin-left: 10px;"><i class="fi fi-rr-rotate-right"></i> 초기화</button>
+						</div>
+						<div id="asset-total-div" style="margin: 5px;"></div><br>
+						<div id="asset-list-div"></div>
+					</div>
+					<div class="col-5">
+						<h3 class="h-normal fs-23"><i class="fi fi-rr-exchange"></i> 이체내역</h3>
+						<!-- 날짜 보여주기 -->
+						<div style="margin-left: 20%; margin-bottom: 3%;">
+							<table>
+								<tr>
+									<td>
+										<i class="fi fi-rr-angle-circle-left fs-28 click-icon" id="before"></i>
+									</td>
+									<td>
+										<div id="month-div" style="width: 100%; margin: 10px;"></div>
+									</td>
+									<td>
+										<i class="fi fi-rr-angle-circle-right fs-28 click-icon" id="after"></i>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="is-scroll" id="transfer-list-div"></div>
+						<div class="fix-right-bl">
+							<button class="btn medium green font-18 is-shadow" id="add-transfer-page"><i class="fi fi-rr-add"></i> 이체</button>
 						</div>
 					</div>
-				</div>
-				<!-- 자산 추가 모달 -->
-				<div class="modal" id="add-asset-modal" hidden="true">
-					<div class="modal-content medium">
-						<div class="modal-title">
-							<div>
-								<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산 추가</h3>
+
+					<!-- 자산 모달 -->
+					<div class="modal" id="up-asset-modal" hidden="true">
+						<div class="modal-content medium">
+							<div class="modal-title">
+								<div>
+									<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산 수정</h3>
+								</div>
 							</div>
-						</div>
-						<div class="modal-body medium">
-							<div id="add-asset-div">
-								<table class='table'>
-									<tr>
-										<th>그룹</th>
-										<td>
-											<input class='input' id='add-astgroup-name' readonly>
-										</td>
-									<tr>
-									<tr>
-										<th>이름</th>
-										<td>
-											<input class='input' id='add-asset-name' maxlength="10">
-										</td>
-									</tr>
-									<tr>
-										<th>메모</th>
-										<td>
-											<textarea rows='5' class='input' id='add-astmemo-name'></textarea>
-										</td>
-									</tr>
-								</table>
-								<button class='btn medium green' id='add-asset-btn'>추가</button>
+							<hr>
+							<div class="modal-body medium">
+								<div id="up-asset-div">
+									<table class='table'>
+										<tr>
+											<th>그룹</th>
+											<td>
+												<input class="input" id="up-astgroup-name" readonly>
+											</td>
+										<tr>
+										<tr>
+											<th>이름</th>
+											<td>
+												<input class="input" id="up-asset-name" maxlength="10">
+											</td>
+										</tr>
+										<tr>
+											<th>메모</th>
+											<td>
+												<textarea rows="5" class="input" id="up-astmemo-name"></textarea>
+											</td>
+										</tr>
+									</table>
+									<button class="btn medium green" id="up-asset-btn">수정</button>
+									<button class="btn outline-green" style="height: 48px;" id="del-asset-btn">삭제</button>
+								</div>
+								<br>
+								<div id='up-asset-check'>
+									<p class='msg info'>자산명은 특수문자 제외, 1~10 글자 입력 ( /는 사용 가능)</p>
+								</div>
 							</div>
-							<br>
-							<div id='add-asset-check'>
-								<p class='msg info'>자산명은 특수문자 제외, 1~10 글자 입력 ( /는 사용 가능)</p>
+							<hr>
+							<div class="modal-footer">
+								<button class="btn right outline-green" id="close-up-asset">닫기</button>
 							</div>
-						</div>
-						<div class="modal-footer">
-							<button class="btn right outline-green" id="close-add-asset">닫기</button>
 						</div>
 					</div>
-				</div>
-				<!-- 자산별 내역 모달 -->
-				<div class="modal" id="asset-account-modal" hidden="true">
-					<div class="modal-content wide">
-						<div class="modal-title">
-							<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 자산별 수입/지출 내역</h3>
-						</div>
-						<div class="modal-body wide">
-							<!-- 날짜 보여주기 -->
-							<div style="margin-left: 30%; margin-bottom: 1%;">
-								<table>
-									<tr>
-										<td>
-											<i class="fi fi-rr-angle-circle-left fs-28 click-icon" id="before"></i>
-										</td>
-										<td>
-											<div id="month-div" style="width: 100%; margin: 10px;"></div>
-										</td>
-										<td>
-											<i class="fi fi-rr-angle-circle-right fs-28 click-icon" id="after"></i>
-										</td>
-									</tr>
-								</table>
+					<!-- 자산 추가 모달 -->
+					<div class="modal" id="add-asset-modal" hidden="true">
+						<div class="modal-content medium">
+							<div class="modal-title">
+								<div>
+									<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산 추가</h3>
+								</div>
 							</div>
-							<div>
-								<table style="width: 620px; margin-bottom: 1%; text-align: center;">
-									<tr>
-										<td style="width: 30%;"><div id="total-div">합계</div></td>
-										<td style="width: 30%;"><div id="total-income-div">총 수입</div></td>
-										<td style="width: 30%;"><div id="total-spend-div">총 지출</div></td>
-									</tr>
-								</table>
+							<div class="modal-body medium">
+								<div id="add-asset-div">
+									<table class='table'>
+										<tr>
+											<th>그룹</th>
+											<td>
+												<input class='input' id='add-astgroup-name' readonly>
+											</td>
+										<tr>
+										<tr>
+											<th>이름</th>
+											<td>
+												<input class='input' id='add-asset-name' maxlength="10">
+											</td>
+										</tr>
+										<tr>
+											<th>메모</th>
+											<td>
+												<textarea rows='5' class='input' id='add-astmemo-name'></textarea>
+											</td>
+										</tr>
+									</table>
+									<button class='btn medium green' id='add-asset-btn'>추가</button>
+								</div>
+								<br>
+								<div id='add-asset-check'>
+									<p class='msg info'>자산명은 특수문자 제외, 1~10 글자 입력 ( /는 사용 가능)</p>
+								</div>
 							</div>
-							<div id="asset-account-list-div"></div>
-						</div>
-						<div class="modal-footer">
-							<button class="btn right outline-green" id="close-asset-account">닫기</button>
+							<div class="modal-footer">
+								<button class="btn right outline-green" id="close-add-asset">닫기</button>
+							</div>
 						</div>
 					</div>
-				</div>
-				<!-- 그룹 선택 모달 -->
-				<div class="modal" id="select-group-modal" hidden="true">
-					<div class="modal-content">
-						<div class="modal-title">
-							<div>
-								<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산그룹</h3>
+					<!-- 자산별 내역 모달 -->
+					<div class="modal" id="asset-account-modal" hidden="true">
+						<div class="modal-content wide">
+							<div class="modal-title">
+								<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 자산별 수입/지출 내역</h3>
+							</div>
+							<div class="modal-body wide">
+								<!-- 날짜 보여주기 -->
+								<div style="margin-left: 30%; margin-bottom: 1%;">
+									<table>
+										<tr>
+											<td>
+												<i class="fi fi-rr-angle-circle-left fs-28 click-icon" id="modal-before"></i>
+											</td>
+											<td>
+												<div id="modal-month-div" style="width: 100%; margin: 10px;"></div>
+											</td>
+											<td>
+												<i class="fi fi-rr-angle-circle-right fs-28 click-icon" id="modal-after"></i>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div>
+									<table style="width: 620px; margin-bottom: 1%; text-align: center;">
+										<tr>
+											<td style="width: 30%;"><div id="total-div">합계</div></td>
+											<td style="width: 30%;"><div id="total-income-div">총 수입</div></td>
+											<td style="width: 30%;"><div id="total-spend-div">총 지출</div></td>
+										</tr>
+									</table>
+								</div>
+								<div id="asset-account-list-div"></div>
+							</div>
+							<div class="modal-footer">
+								<button class="btn right outline-green" id="close-asset-account">닫기</button>
 							</div>
 						</div>
-						<div class="modal-body">
-							<div id="select-group-div"></div>
-						</div>
-						<div class="modal-footer">
-							<button class="btn right outline-green" id="close-select-group">닫기</button>
-						</div>
 					</div>
-				</div>
-				<!-- -------------------------------------------------------------------------------------------------- -->
-				<!-- 자산 그룹 모달 -->
-				<div class="modal" id="group-modal" hidden="true">
-					<div class="modal-content">
-						<div class="modal-title">
-							<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산그룹 관리</h3>
-						</div>
-						<button class="btn medium green" id="add-group-page" style="margin-left: 10px;">추가</button>
-						<button class="btn small outline-green" id="reset-group-btn" style="margin-left: 10px; height: 48px;"><i class="fi fi-rr-rotate-right"></i> 초기화</button>
-						<div class="modal-body">
-							<div id="group-list-div"></div>
-						</div>
-						<div class="modal-footer">
-							<button class="btn right outline-green" id="close-group">닫기</button>
-						</div>
-					</div>
-				</div>
-				<div class="modal" id="up-group-modal" hidden="true">
-					<div class="modal-content small">
-						<div class="modal-title">
-							<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산그룹 수정</h3>
-						</div>
-						<hr>
-						<div class="modal-body small">
-							<h5 class='h-normal fs-20'><i class="fi fi-rr-pencil"></i> 자산 그룹명</h5>
-							<div id='up-group-check'>
-								<p class='msg info'>그룹명은 특수문자 제외, 1~10 글자 입력 ( /는 사용 가능)</p>
+					<!-- 그룹 선택 모달 -->
+					<div class="modal" id="select-group-modal" hidden="true">
+						<div class="modal-content">
+							<div class="modal-title">
+								<div>
+									<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산그룹</h3>
+								</div>
 							</div>
-							<br>
-							<div id="up-group-div">
-								<input class="input" id="up-group-name">
-								<br><br>
-								<button class="btn medium green" id="up-group-btn">수정</button>
+							<div class="modal-body">
+								<div id="select-group-div"></div>
 							</div>
-							<br>
-							<div><p class="msg warning">* 변경 시 관련된 자산의 자산 그룹 이름도 함께 변경됩니다 *</p></div>
-						</div>
-						<hr>
-						<div class="modal-footer">
-							<button class="btn right outline-green" id="close-up-group">닫기</button>
+							<div class="modal-footer">
+								<button class="btn right outline-green" id="close-select-group">닫기</button>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="modal" id="add-group-modal" hidden="true">
-					<div class="modal-content small">
-						<div class="modal-title">
-							<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산그룹 추가</h3>
+					<!-- -------------------------------------------------------------------------------------------------- -->
+					<!-- 자산 그룹 모달 -->
+					<div class="modal" id="group-modal" hidden="true">
+						<div class="modal-content">
+							<div class="modal-title">
+								<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산그룹 관리</h3>
+							</div>
+							<button class="btn medium green" id="add-group-page" style="margin-left: 10px;">추가</button>
+							<button class="btn small outline-green" id="reset-group-btn" style="margin-left: 10px; height: 48px;"><i class="fi fi-rr-rotate-right"></i> 초기화</button>
+							<div class="modal-body">
+								<div id="group-list-div"></div>
+							</div>
+							<div class="modal-footer">
+								<button class="btn right outline-green" id="close-group">닫기</button>
+							</div>
 						</div>
-						<hr>
-						<div class="modal-body small">
-							<div id="add-group-div">
+					</div>
+					<!-- 자산 그룹 수정 모달 -->
+					<div class="modal" id="up-group-modal" hidden="true">
+						<div class="modal-content small">
+							<div class="modal-title">
+								<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산그룹 수정</h3>
+							</div>
+							<hr>
+							<div class="modal-body small">
 								<h5 class='h-normal fs-20'><i class="fi fi-rr-pencil"></i> 자산 그룹명</h5>
-								<div id="add-group-check">
+								<div id='up-group-check'>
 									<p class='msg info'>그룹명은 특수문자 제외, 1~10 글자 입력 ( /는 사용 가능)</p>
 								</div>
 								<br>
-								<input type="text" class="input" id="astgroup" maxlength="10">
-								<br><br>
-								<button class="btn medium green" id="add-group-btn">추가</button>
-								<br><br>
-								<div><p class="msg warning">* 중복되는 그룹명은 추가하실 수 없습니다 *</p></div>
+								<div id="up-group-div">
+									<input class="input" id="up-group-name">
+									<br><br>
+									<button class="btn medium green" id="up-group-btn">수정</button>
+								</div>
+								<br>
+								<div><p class="msg warning">* 변경 시 관련된 자산의 자산 그룹 이름도 함께 변경됩니다 *</p></div>
+							</div>
+							<hr>
+							<div class="modal-footer">
+								<button class="btn right outline-green" id="close-up-group">닫기</button>
 							</div>
 						</div>
-						<hr>
-						<div class="modal-footer">
-							<button class="btn right outline-green" id="close-add-group">닫기</button>
+					</div>
+					<!-- 자산 그룹 추가 모달 -->
+					<div class="modal" id="add-group-modal" hidden="true">
+						<div class="modal-content small">
+							<div class="modal-title">
+								<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산그룹 추가</h3>
+							</div>
+							<hr>
+							<div class="modal-body small">
+								<div id="add-group-div">
+									<h5 class='h-normal fs-20'><i class="fi fi-rr-pencil"></i> 자산 그룹명</h5>
+									<div id="add-group-check">
+										<p class='msg info'>그룹명은 특수문자 제외, 1~10 글자 입력 ( /는 사용 가능)</p>
+									</div>
+									<br>
+									<input type="text" class="input" id="astgroup" maxlength="10">
+									<br><br>
+									<button class="btn medium green" id="add-group-btn">추가</button>
+									<br><br>
+									<div><p class="msg warning">* 중복되는 그룹명은 추가하실 수 없습니다 *</p></div>
+								</div>
+							</div>
+							<hr>
+							<div class="modal-footer">
+								<button class="btn right outline-green" id="close-add-group">닫기</button>
+							</div>
 						</div>
 					</div>
-				</div>
-				
+					<!-- 이체 모달 -->
+					<div class="modal" id="add-transfer-modal" hidden="true">
+						<div class="modal-content">
+							<div class="modal-title">
+								<h3 class="h-normal fs-28"><i class="fi fi-rr-exchange"></i> 이체</h3>
+							</div>
+							<hr>
+							<div class="modal-body">
+								<table class="table">
+									<tr>
+										<td>날짜</td>
+										<td><input class="input" type="date" id="add-transfer-date"></td>
+									</tr>
+									<tr>
+										<td>출금</td>
+										<td><input class="input" type="text" id="add-withdraw-asset" placeholder="자산선택" readonly></td>
+									</tr>
+									<tr>
+										<td>입금</td>
+										<td><input class="input" type="text" id="add-deposit-asset" placeholder="자산선택" readonly></td>
+									</tr>
+									<tr>
+										<td>금액</td>
+										<td><input class="input" type="text" id="add-transfer-total"></td>
+									</tr>
+									<tr>
+										<td>메모</td>
+										<td><textarea rows="5" class="input" id="add-transfer-memo"></textarea></td>
+									</tr>
+								</table>
+								<button class="btn medium green" id="add-transfer-btn">추가</button>
+							</div>
+							<hr>
+							<div class="modal-footer">
+								<button class="btn right outline-green" id="close-add-transfer">닫기</button>
+							</div>
+						</div>
+					</div>
+					<!-- 이체 수정 모달 -->
+					<div class="modal" id="up-transfer-modal" hidden="true">
+						<div class="modal-content">
+							<div class="modal-title">
+								<h3 class="h-normal fs-28"><i class="fi fi-rr-exchange"></i> 이체</h3>
+							</div>
+							<hr>
+							<div class="modal-body">
+								<table class="table">
+									<tr>
+										<td colspan="2" hidden><input class="input" type="text" id="up-transfer-id"></td>
+									</tr>
+									<tr>
+										<td>날짜</td>
+										<td><input class="input" type="date" id="up-transfer-date"></td>
+									</tr>
+									<tr>
+										<td>출금</td>
+										<td><input class="input" type="text" id="up-withdraw-asset" placeholder="자산선택" disabled="disabled"></td>
+									</tr>
+									<tr>
+										<td>입금</td>
+										<td><input class="input" type="text" id="up-deposit-asset" placeholder="자산선택" disabled="disabled"></td>
+									</tr>
+									<tr>
+										<td>금액</td>
+										<td><input class="input" type="text" id="up-transfer-total"></td>
+									</tr>
+									<tr>
+										<td>메모</td>
+										<td><textarea rows="5" class="input" id="up-transfer-memo"></textarea></td>
+									</tr>
+								</table>
+								<button class="btn medium green" id="up-transfer-btn">수정</button>
+								<button class="btn small outline-green" id="del-transfer-btn" style="height: 48px;">삭제</button>
+							</div>
+							<hr>
+							<div class="modal-footer">
+								<button class="btn right outline-green" id="close-up-transfer">닫기</button>
+							</div>
+						</div>
+					</div>
+					
+					<!-- 자산 선택 모달 -->
+					<div class="modal" id="select-asset-modal" hidden="true">
+						<div class="modal-content">
+							<div class="modal-title">
+								<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산</h3>
+							</div>
+							<hr>
+							<div class="modal-body">
+								<div id="select-asset-div">
+								</div>
+							</div>
+							<hr>
+							<div class="modal-footer">
+								<button class="btn right outline-green" id="close-select-asset">닫기</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			<% }
 			/* 로그인이 되어 있지 않을 때 */
