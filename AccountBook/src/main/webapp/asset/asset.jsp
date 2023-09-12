@@ -296,15 +296,16 @@
 		var originActgroup;
 		var originMemo;
 		$(document).on("click", "#up-asset-page", function() { // 수정 아이콘(#up-asset-page) 클릭 시
-			// tr의 td들(자산, 자산그룹, 자산메모)을 공백 한 칸으로 분리해놓았으므로 분리하여 value 변수에 저장
 			originAsset = $(this).parent().children().eq(0).children().eq(0).text();
 			originActgroup = $(this).parent().children().eq(1).text();
 			originMemo = $(this).parent().children().eq(2).text();
+			originTotal = $(this).parent().children().eq(0).children().eq(1).text().split("원")[0];
 			$("#up-asset-modal").show(); // 자산 수정 모달 열기
 			
 			$("#up-astgroup-name").attr("value",originActgroup);
 			$("#up-asset-name").attr("value", originAsset);
 			$("#up-astmemo-name").val(originMemo);
+			$("#up-asset-total").attr("value", originTotal);
 		})
 		$("#up-asset-btn").click(function() { // 자산 수정 버튼 클릭 시
 			var assetReg = RegExp(/^[a-zA-Z가-힣0-9/\s]{1,10}$/); // 자산 이름 정규식
@@ -331,6 +332,7 @@
 										originAsset : originAsset,
 										updateAsset : $("#up-asset-name").val(),
 										updateGroup : $("#up-astgroup-name").val(),
+										updateTotal : $("#up-asset-total").val().replaceAll(",", ""),
 										updateMemo : $("#up-astmemo-name").val()
 									},
 									success : function(x) {
@@ -355,6 +357,7 @@
 							originAsset : originAsset,
 							updateAsset : $("#up-asset-name").val(),
 							updateGroup : $("#up-astgroup-name").val(),
+							updateTotal : $("#up-asset-total").val().replaceAll(",", ""),
 							updateMemo : $("#up-astmemo-name").val()
 						},
 						success : function(x) {
@@ -445,6 +448,7 @@
 										userid : userid,
 										astname : $("#add-asset-name").val(),
 										astgroup : $("#add-astgroup-name").val(),
+										total : $("#add-asset-total").val().replaceAll(",", ""),
 										astmemo : $("#add-astmemo-name").val(),
 									},
 									success : function(x) {
@@ -950,6 +954,14 @@
 				}
 			})
 		})
+		// 금액에 숫자만 입력되도록, 세 자리마다 콤마
+		$("#up-asset-total, #add-asset-total").keyup(function() {
+			var numReg = /[^0-9-]/g;	// 숫자가 아닌 값 정규식
+			$(this).val($(this).val().replace(numReg, ""));
+			if($(this).val().length > 1) {
+				$(this).val(parseInt($(this).val()).toLocaleString());
+			}
+		})
 	})
 </script>
 </head>
@@ -1038,6 +1050,12 @@
 											</td>
 										</tr>
 										<tr>
+											<th>금액</th>
+											<td>
+												<input class="input" id="up-asset-total">
+											</td>
+										</tr>
+										<tr>
 											<th>메모</th>
 											<td>
 												<textarea rows="5" class="input" id="up-astmemo-name"></textarea>
@@ -1079,6 +1097,12 @@
 											<th>이름</th>
 											<td>
 												<input class='input' id='add-asset-name' maxlength="10">
+											</td>
+										</tr>
+										<tr>
+											<th>금액</th>
+											<td>
+												<input class='input' id='add-asset-total'>
 											</td>
 										</tr>
 										<tr>

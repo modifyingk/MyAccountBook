@@ -9,7 +9,7 @@
 	
 	<!-- 자산 업데이트 -->
 	<update id="updateAsset" parameterType="map">
-		update asset set astname = #{updateAsset}, astgroup = #{updateGroup}, astmemo = #{updateMemo}
+		update asset set astname = #{updateAsset}, astgroup = #{updateGroup}, total = #{updateTotal}, astmemo = #{updateMemo}
 		where astname = #{originAsset} and userid = #{userid};
 	</update>
 	
@@ -20,7 +20,7 @@
 	
 	<!-- 자산 추가 -->
 	<insert id="insertAsset" parameterType="assetVO">
-		insert into asset values (#{astname}, #{astgroup}, #{astmemo}, #{userid}, "o", 0);
+		insert into asset values (#{astname}, #{astgroup}, #{astmemo}, #{userid}, "o", #{total});
 	</insert>
 	
 	<!-- 자산 삭제 -->

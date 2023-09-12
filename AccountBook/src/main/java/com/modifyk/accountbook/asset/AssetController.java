@@ -39,14 +39,17 @@ public class AssetController {
 	// 자산 수정
 	@ResponseBody
 	@RequestMapping("asset/updateAsset")
-	public String updateAsset(String originAsset, String updateAsset, String updateGroup, String updateMemo, String userid) {
+	public String updateAsset(String originAsset, String updateAsset, String updateGroup, String updateTotal, String updateMemo, String userid) {
+		System.out.println(originAsset + " " + updateAsset + " " + updateGroup + " " + updateTotal);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("originAsset", originAsset);
 		map.put("updateAsset", updateAsset);
 		map.put("updateGroup", updateGroup);
+		map.put("updateTotal", updateTotal);
 		map.put("updateMemo", updateMemo);
 		map.put("userid", userid);
-			
+		
+		System.out.println(map);
 		int result = aDao.updateAsset(map);
 		
 		if(result == 1) {

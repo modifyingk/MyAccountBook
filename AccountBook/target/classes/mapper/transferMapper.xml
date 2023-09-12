@@ -14,7 +14,7 @@
 	
 	<!-- 이체 수정 -->
 	<update id="updateTransfer" parameterType="transferVO">
-		update transfer set date = #{date}, withdraw = #{withdraw}, deposit = #{deposit}, total = #{total}, memo = #{memo}
+		update transfer set date = #{date}, total = #{total}, memo = #{memo}
 		where transferid = #{transferid} and userid = #{userid};
 	</update>
 	

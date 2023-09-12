@@ -20,6 +20,7 @@ public class InsertAssetService {
 	public void insertAsset(AssetVO assetVO) {
 		assetVO.setAstname("현금");
 		assetVO.setAstgroup("현금");
+		assetVO.setTotal(0);
 		aDao.insertAsset(assetVO);
 	}
 }
