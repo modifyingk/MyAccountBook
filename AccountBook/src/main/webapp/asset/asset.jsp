@@ -308,12 +308,9 @@
 			$("#up-asset-total").attr("value", originTotal);
 		})
 		$("#up-asset-btn").click(function() { // 자산 수정 버튼 클릭 시
-			var assetReg = RegExp(/^[a-zA-Z가-힣0-9/\s]{1,10}$/); // 자산 이름 정규식
-			if(!assetReg.test($("#up-asset-name").val())){ // 정규식에 맞지 않을 때
-				$("#up-asset-check p").attr("class", "msg warning");
+			if(!reg.test($("#up-asset-name").val()) || !reg.test($("#up-astgroup-name").val()) || !reg.test($("#up-asset-total").val())){ // 정규식에 맞지 않을 때
+				alert("입력 값을 확인해주세요.")
 			} else {
-				$("#up-asset-check p").attr("class", "msg info");
-				
 				if($("#up-asset-name").val() != originAsset) {
 					$.ajax({ // 자산 중복 확인
 						type : "post",
@@ -419,18 +416,16 @@
 			$("#select-group-modal").hide(); // 자산 그룹 선택 모달 닫기
 			$("#add-astgroup-name").attr("value", option);
 		})
-		
+		var reg = RegExp(/^.{1,}$/);
 		// 자산 추가 페이지 버튼
 		$("#add-asset-page").click(function() {
 			$("#add-asset-modal").show();
+			$("#add-asset-total").attr("value", "0");
 			
 			$("#add-asset-btn").click(function() {
-				// 자산 이름 정규식
-				var assetReg = RegExp(/^[a-zA-Z가-힣0-9/\s]{1,10}$/);
-				if(!assetReg.test($("#add-asset-name").val())){ // 정규식에 맞지 않을 때
-					$("#add-asset-check p").attr("class", "msg warning");
+				if(!reg.test($("#add-asset-name").val()) || !reg.test($("#add-astgroup-name").val()) || !reg.test($("#add-asset-total").val())){ // 정규식에 맞지 않을 때
+					alert("입력 값을 확인해주세요.")
 				} else {
-					$("#add-asset-check p").attr("class", "msg info");
 					// 자산 중복 확인
 					$.ajax({
 						type : "post",
@@ -542,7 +537,7 @@
 			$("#up-group-name").focus();
 		})
 		$("#up-group-btn").click(function() { // 수정 버튼 클릭 시
-			var groupReg = RegExp(/^[a-zA-Z가-힣0-9/\s]{1,10}$/); // 자산 그룹 정규식
+			var groupReg = RegExp(/^.{1,20}$/); // 자산 그룹 정규식
 			if(!groupReg.test($("#up-group-name").val())){ // 정규식에 맞지 않을 때
 				$("#up-group-check p").attr("class", "msg warning");
 			} else { // 정규식에 맞으면
@@ -600,7 +595,7 @@
 			var astgroup = $("#astgroup").val();
 			
 			// 자산 그룹 정규식
-			var groupReg = RegExp(/^[a-zA-Z가-힣0-9/\s]{1,10}$/);
+			var groupReg = RegExp(/^.{1,20}$/);
 			
 			if(!groupReg.test($("#astgroup").val())){ // 정규식에 맞지 않을 때
 				$("#add-group-check p").attr("class", "msg warning"); // 글자 빨간색으로 하는 warning-msg
@@ -962,6 +957,11 @@
 				$(this).val(parseInt($(this).val()).toLocaleString());
 			}
 		})
+		// 자산, 자산그룹의 내용, 메모에 #이 들어가지 않도록
+		$("#up-asset-name, #up-astmemo-name, #add-asset-name, #add-astmemo-name, #up-group-name, #astgroup").keyup(function() {
+			var noHashReg = /[#]/g;	// #이 아닌 값
+			$(this).val($(this).val().replace(noHashReg, ""));
+		})
 	})
 </script>
 </head>
@@ -1046,7 +1046,7 @@
 										<tr>
 											<th>이름</th>
 											<td>
-												<input class="input" id="up-asset-name" maxlength="10">
+												<input class="input" id="up-asset-name" maxlength="20">
 											</td>
 										</tr>
 										<tr>
@@ -1058,16 +1058,12 @@
 										<tr>
 											<th>메모</th>
 											<td>
-												<textarea rows="5" class="input" id="up-astmemo-name"></textarea>
+												<textarea rows="5" class="input" id="up-astmemo-name" maxlength="100"></textarea>
 											</td>
 										</tr>
 									</table>
 									<button class="btn medium green" id="up-asset-btn">수정</button>
 									<button class="btn outline-green" style="height: 48px;" id="del-asset-btn">삭제</button>
-								</div>
-								<br>
-								<div id='up-asset-check'>
-									<p class='msg info'>자산명은 특수문자 제외, 1~10 글자 입력 ( /는 사용 가능)</p>
 								</div>
 							</div>
 							<hr>
@@ -1090,13 +1086,13 @@
 										<tr>
 											<th>그룹</th>
 											<td>
-												<input class='input' id='add-astgroup-name' readonly>
+												<input class='input' id='add-astgroup-name' placeholder="그룹선택" readonly>
 											</td>
 										<tr>
 										<tr>
 											<th>이름</th>
 											<td>
-												<input class='input' id='add-asset-name' maxlength="10">
+												<input class='input' id='add-asset-name' maxlength="20">
 											</td>
 										</tr>
 										<tr>
@@ -1108,15 +1104,11 @@
 										<tr>
 											<th>메모</th>
 											<td>
-												<textarea rows='5' class='input' id='add-astmemo-name'></textarea>
+												<textarea rows='5' class='input' id='add-astmemo-name' maxlength="100"></textarea>
 											</td>
 										</tr>
 									</table>
 									<button class='btn medium green' id='add-asset-btn'>추가</button>
-								</div>
-								<br>
-								<div id='add-asset-check'>
-									<p class='msg info'>자산명은 특수문자 제외, 1~10 글자 입력 ( /는 사용 가능)</p>
 								</div>
 							</div>
 							<div class="modal-footer">
@@ -1206,11 +1198,11 @@
 							<div class="modal-body small">
 								<h5 class='h-normal fs-20'><i class="fi fi-rr-pencil"></i> 자산 그룹명</h5>
 								<div id='up-group-check'>
-									<p class='msg info'>그룹명은 특수문자 제외, 1~10 글자 입력 ( /는 사용 가능)</p>
+									<p class='msg info'>그룹명은 1~20 글자 입력</p>
 								</div>
 								<br>
 								<div id="up-group-div">
-									<input class="input" id="up-group-name">
+									<input class="input" id="up-group-name" maxlength="20">
 									<br><br>
 									<button class="btn medium green" id="up-group-btn">수정</button>
 								</div>
@@ -1234,10 +1226,10 @@
 								<div id="add-group-div">
 									<h5 class='h-normal fs-20'><i class="fi fi-rr-pencil"></i> 자산 그룹명</h5>
 									<div id="add-group-check">
-										<p class='msg info'>그룹명은 특수문자 제외, 1~10 글자 입력 ( /는 사용 가능)</p>
+										<p class='msg info'>그룹명은 1~20 글자 입력</p>
 									</div>
 									<br>
-									<input type="text" class="input" id="astgroup" maxlength="10">
+									<input type="text" class="input" id="astgroup" maxlength="20">
 									<br><br>
 									<button class="btn medium green" id="add-group-btn">추가</button>
 									<br><br>
@@ -1277,7 +1269,7 @@
 									</tr>
 									<tr>
 										<td>메모</td>
-										<td><textarea rows="5" class="input" id="add-transfer-memo"></textarea></td>
+										<td><textarea rows="5" class="input" id="add-transfer-memo" maxlength="100"></textarea></td>
 									</tr>
 								</table>
 								<button class="btn medium green" id="add-transfer-btn">추가</button>
@@ -1318,7 +1310,7 @@
 									</tr>
 									<tr>
 										<td>메모</td>
-										<td><textarea rows="5" class="input" id="up-transfer-memo"></textarea></td>
+										<td><textarea rows="5" class="input" id="up-transfer-memo" maxlength="100"></textarea></td>
 									</tr>
 								</table>
 								<button class="btn medium green" id="up-transfer-btn">수정</button>

@@ -723,29 +723,35 @@
 			$("#up-account-modal").hide();
 		})
 		// 수정 버튼 클릭
+		var reg = RegExp(/^.{1,}$/);
+		
 		$("#up-account-btn").click(function() {
-			$.ajax({
-				type : "post",
-				url : "updateAccount",
-				data : {
-					moneytype :  $("input[name=up-mtype]:checked").val(),
-					date : $("#up-actdate").val(),
-					astname : $("#up-actasset").val(),
-					catename : $("#up-actcatename").val(),
-					content : $("#up-actcontent").val(),
-					total : ($("#up-acttotal").val()).replaceAll(",", ""),
-					memo : $("#up-actmemo").val(),
-					accountid : $("#up-actid").val(),
-					userid : userid
-				},
-				success : function(x) {
-					if(x == "success") {
-						window.location.reload();
-					} else {
-						alert("다시 시도해주세요.");
+			if(!reg.test($("#up-actdate").val()) || !reg.test($("#up-actasset").val()) || !reg.test($("#up-actcatename").val()) || !reg.test($("#up-acttotal").val())){ // 정규식에 맞지 않을 때
+				alert("입력 값을 확인해주세요.")
+			} else {
+				$.ajax({
+					type : "post",
+					url : "updateAccount",
+					data : {
+						moneytype :  $("input[name=up-mtype]:checked").val(),
+						date : $("#up-actdate").val(),
+						astname : $("#up-actasset").val(),
+						catename : $("#up-actcatename").val(),
+						content : $("#up-actcontent").val(),
+						total : ($("#up-acttotal").val()).replaceAll(",", ""),
+						memo : $("#up-actmemo").val(),
+						accountid : $("#up-actid").val(),
+						userid : userid
+					},
+					success : function(x) {
+						if(x == "success") {
+							window.location.reload();
+						} else {
+							alert("다시 시도해주세요.");
+						}
 					}
-				}
-			})
+				})
+			}
 		})
 		// 수입/지출 삭제
 		$("#del-account-btn").click(function() {
@@ -775,6 +781,11 @@
 			if($(this).val().length > 0) {
 				$(this).val(parseInt($(this).val()).toLocaleString());
 			}
+		})
+		// 수입/지출 추가의 내용, 메모에 #이 들어가지 않도록
+		$("#add-actcontent, #add-actmemo, #up-actcontent, #up-actmemo").keyup(function() {
+			var noHashReg = /[#]/g;	// #이 아닌 값
+			$(this).val($(this).val().replace(noHashReg, ""));
 		})
 		/* ---------------------------- 카테고리 ---------------------------- */
 		// 전체 카테고리 목록 가져오기
@@ -836,7 +847,7 @@
 			$("#moneytype").attr("value", "지출");
 		})
 		
-		var cateReg = RegExp(/^[a-zA-Z가-힣0-9/\s]{1,10}$/); // 카테고리 이름 정규식
+		var cateReg = RegExp(/^.{1,20}$/); // 카테고리 이름 정규식
 		
 		$("#add-category-btn").click(function() { // 카테고리 추가 버튼 클릭 시
 			if(!cateReg.test($("#catename").val())){ // 정규식에 맞지 않을 때
@@ -1078,27 +1089,31 @@
 		// 수입/지출 추가 버튼
 		$("#add-account-btn").click(function() {
 			var mtype = $("input[name=select-mtype]:checked").val();
-			$.ajax({
-				type : "post",
-				url : "insertAccount",
-				data : {
-					date : $("#add-actdate").val(),
-					moneytype : mtype,
-					astname : $("#add-actasset").val(),
-					catename : $("#add-actcatename").val(),
-					total : ($("#add-acttotal").val()).replaceAll(",", ""),
-					content : $("#add-actcontent").val(),
-					memo : $("#add-actmemo").val(),
-					userid : userid
-				},
-				success : function(x) {
-					if(x == "success") {
-						window.location.reload();
-					} else {
-						alert("다시 시도해주세요.")
+			if(!reg.test($("#add-actdate").val()) || !reg.test($("#add-actasset").val()) || !reg.test($("#add-actcatename").val()) || !reg.test($("#add-acttotal").val())){ // 정규식에 맞지 않을 때
+				alert("입력 값을 확인해주세요.")
+			} else {
+				$.ajax({
+					type : "post",
+					url : "insertAccount",
+					data : {
+						date : $("#add-actdate").val(),
+						moneytype : mtype,
+						astname : $("#add-actasset").val(),
+						catename : $("#add-actcatename").val(),
+						total : $("#add-acttotal").val().replaceAll(",", ""),
+						content : $("#add-actcontent").val(),
+						memo : $("#add-actmemo").val(),
+						userid : userid
+					},
+					success : function(x) {
+						if(x == "success") {
+							window.location.reload();
+						} else {
+							alert("다시 시도해주세요.")
+						}
 					}
-				}
-			})
+				})
+			}
 		})
 		/* ---------------------------- 즐겨찾기 ---------------------------- */
 		// 즐겨찾기 모달 열기
@@ -1523,12 +1538,12 @@
 								</tr>
 								<tr>
 									<td>내용</td>
-									<td><input type="text" class="input" id="add-actcontent"></td>
+									<td><input type="text" class="input" id="add-actcontent" maxlength="20"></td>
 								</tr>
 								<tr>
 									<td>메모</td>
 									<td>
-										<textarea rows="3" class="input" id="add-actmemo"></textarea>
+										<textarea rows="3" class="input" id="add-actmemo" maxlength="100"></textarea>
 									</td>
 								</tr>
 							</table>
@@ -1596,12 +1611,12 @@
 								</tr>
 								<tr>
 									<td>내용</td>
-									<td><input type="text" class="input" id="up-actcontent"></td>
+									<td><input type="text" class="input" id="up-actcontent" maxlength="20"></td>
 								</tr>
 								<tr>
 									<td>메모</td>
 									<td>
-										<textarea rows="3" class="input" id="up-actmemo"></textarea>
+										<textarea rows="3" class="input" id="up-actmemo" maxlength="100"></textarea>
 									</td>
 								</tr>
 							</table>

@@ -39,6 +39,9 @@
 				$(this).val(parseInt($(this).val()).toLocaleString());
 			}
 		})
+		
+		var reg = RegExp(/^.{1,}$/);
+
 		// 목표 추가
 		$("#add-aim-btn").click(function() {
 			var mtype = $("input[name=select-mtype]:checked").val();
@@ -49,40 +52,44 @@
 			}
 			var aimdate = year + "-" + date;
 			
-			// 년월, 카테고리가 중복되는지 확인
-			$.ajax({
-				type : "post",
-				url : "isOverlapAim",
-				data : {
-					aimdate : aimdate,
-					catename : $("#add-catename").val(),
-					userid : userid
-				},
-				success : function(x) {
-					if(x == "possible") {
-						$.ajax({
-							type : "post",
-							url : "insertAim",
-							data : {
-								moneytype : mtype,
-								aimdate : aimdate,
-								catename : $("#add-catename").val(),
-								total : ($("#add-total").val()).replaceAll(",", ""),
-								userid : userid
-							},
-							success : function(x) {
-								if(x == "success") {
-									window.location.reload();
-								} else {
-									alert("다시 시도해주세요.");
+			if(!reg.test($("#add-catename").val()) || !reg.test($("#add-year").val()) || !reg.test($("#add-month").val()) || !reg.test($("#add-total").val())) {
+				alert("입력 값을 확인해주세요.");
+			} else {
+				// 년월, 카테고리가 중복되는지 확인
+				$.ajax({
+					type : "post",
+					url : "isOverlapAim",
+					data : {
+						aimdate : aimdate,
+						catename : $("#add-catename").val(),
+						userid : userid
+					},
+					success : function(x) {
+						if(x == "possible") {
+							$.ajax({
+								type : "post",
+								url : "insertAim",
+								data : {
+									moneytype : mtype,
+									aimdate : aimdate,
+									catename : $("#add-catename").val(),
+									total : $("#add-total").val().replaceAll(",", ""),
+									userid : userid
+								},
+								success : function(x) {
+									if(x == "success") {
+										window.location.reload();
+									} else {
+										alert("다시 시도해주세요.");
+									}
 								}
-							}
-						})
-					} else {
-						alert("이미 존재하는 카테고리 목표입니다.");
+							})
+						} else {
+							alert("이미 존재하는 카테고리 목표입니다.");
+						}
 					}
-				}
-			})
+				})
+			}
 		})
 		
 		// 전체 카테고리 목록 가져오기
@@ -93,7 +100,7 @@
 				userid : userid
 			},
 			success : function(cateList) {
-				var in_html = "<table class='table' id='in-category-table'>";
+				var in_html = "<table class='modal-table' id='in-category-table'>";
 
 				for(let i = 0; i < cateList.length; i++) {
 					if(cateList[i].moneytype == "수입") {
@@ -103,7 +110,7 @@
 				}
 				in_html += "</table>";
 
-				var out_html = "<table class='table' id='out-category-table'>";
+				var out_html = "<table class='modal-table' id='out-category-table'>";
 				for(let i = 0; i < cateList.length; i++) {
 					if(cateList[i].moneytype == "지출") {
 						out_html += "<tr><td style='display: none;'>" + cateList[i].moneytype + "</td>";
@@ -489,6 +496,9 @@
 		})
 		
 		$("#up-out-aim-btn").click(function() {
+			if(!reg.test($("#up-out-total").val())){ // 정규식에 맞지 않을 때
+				alert("입력 값을 확인해주세요.")
+			}
 			$.ajax({
 				type : "post",
 				url : "updateAim",
@@ -613,7 +623,7 @@
 								</tr>
 								<tr>
 									<td>분류</td>
-									<td><input type="text" class="input" id="add-catename" readonly></td>
+									<td><input type="text" class="input" id="add-catename" placeholder="분류선택" readonly></td>
 								</tr>
 								<tr>
 									<td>금액</td>
