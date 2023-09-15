@@ -78,4 +78,9 @@ public class AssetDAO {
 	public int plusTotal(AssetVO assetVO) {
 		return my.update("assetMapper.plusTotal", assetVO);
 	}
+	
+	// 자산 금액만 수정
+	public int updateTotal(AssetVO assetVO) {
+		return my.update("assetMapper.updateTotal", assetVO);
+	}
 }

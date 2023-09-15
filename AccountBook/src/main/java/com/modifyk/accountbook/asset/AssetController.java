@@ -27,6 +27,9 @@ public class AssetController {
 	@Autowired
 	InsOrShowAssetService insAssetSvc;
 	
+	@Autowired
+	AutoInsertAccountService insAccountSvc;
+	
 	// 자산 리스트
 	@ResponseBody
 	@RequestMapping("asset/assetInfo")
@@ -39,8 +42,7 @@ public class AssetController {
 	// 자산 수정
 	@ResponseBody
 	@RequestMapping("asset/updateAsset")
-	public String updateAsset(String originAsset, String updateAsset, String updateGroup, String updateTotal, String updateMemo, String userid) {
-		System.out.println(originAsset + " " + updateAsset + " " + updateGroup + " " + updateTotal);
+	public String updateAsset(String originAsset, String updateAsset, String updateGroup, String updateTotal, String updateMemo, String userid, String originTotal) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("originAsset", originAsset);
 		map.put("updateAsset", updateAsset);
@@ -49,8 +51,17 @@ public class AssetController {
 		map.put("updateMemo", updateMemo);
 		map.put("userid", userid);
 		
-		System.out.println(map);
 		int result = aDao.updateAsset(map);
+		
+		if(Integer.parseInt(updateTotal) - Integer.parseInt(originTotal) != 0) {
+			AssetVO assetVO = new AssetVO();
+			assetVO.setUserid(userid);
+			assetVO.setAstgroup(updateGroup);
+			assetVO.setAstname(updateAsset);
+			assetVO.setAstmemo(updateMemo);
+			assetVO.setTotal(Integer.parseInt(updateTotal) - Integer.parseInt(originTotal));
+			insAccountSvc.insertAccount(assetVO);
+		}
 		
 		if(result == 1) {
 			return "success";
@@ -77,16 +88,23 @@ public class AssetController {
 	public String insertAsset(AssetVO assetVO) {
 		// 카테고리명이 중복되면서 show가 x인 경우
 		String overlapResult = aDao.isOverlapHideAsset(assetVO);
+		// 자산 금액 가계부에 기록 
+		if(assetVO.getTotal() != 0) {
+			insAccountSvc.insertAccount(assetVO);
+		}
+					
 		if(overlapResult != null) {
 			// 해당 카테고리의 show를 o로 변경
 			int showResult = aDao.showAsset(assetVO);
 			if(showResult == 1) {
+				aDao.updateTotal(assetVO);
 				return "success";
 			} else {
 				return "fail";
 			}
 		} else {
 			int inResult = aDao.insertAsset(assetVO);
+			
 			if(inResult == 1) {
 				return "success";
 			} else {

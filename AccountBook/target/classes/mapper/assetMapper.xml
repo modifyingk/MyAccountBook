@@ -62,4 +62,9 @@
 	<update id="plusTotal" parameterType="assetVO">
 		update asset set total = total + #{total} where astname = #{astname} and userid = #{userid};
 	</update>
+	
+	<!-- 자산 금액만 수정 -->
+	<update id="updateTotal" parameterType="assetVO">
+		update asset set total = #{total} where astname = #{astname} and userid = #{userid};
+	</update>
 </mapper>

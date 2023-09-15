@@ -295,6 +295,8 @@
 		var originAsset;
 		var originActgroup;
 		var originMemo;
+		var originTotal;
+		
 		$(document).on("click", "#up-asset-page", function() { // 수정 아이콘(#up-asset-page) 클릭 시
 			originAsset = $(this).parent().children().eq(0).children().eq(0).text();
 			originActgroup = $(this).parent().children().eq(1).text();
@@ -327,6 +329,7 @@
 									data : {
 										userid : userid,
 										originAsset : originAsset,
+										originTotal : originTotal.replaceAll(",", ""),
 										updateAsset : $("#up-asset-name").val(),
 										updateGroup : $("#up-astgroup-name").val(),
 										updateTotal : $("#up-asset-total").val().replaceAll(",", ""),
@@ -352,6 +355,7 @@
 						data : {
 							userid : userid,
 							originAsset : originAsset,
+							originTotal : originTotal.replaceAll(",", ""),
 							updateAsset : $("#up-asset-name").val(),
 							updateGroup : $("#up-astgroup-name").val(),
 							updateTotal : $("#up-asset-total").val().replaceAll(",", ""),
@@ -1062,6 +1066,7 @@
 											</td>
 										</tr>
 									</table>
+									<p class="fs-16 red">* 금액 수정 시 차액은 수입/지출 내역에 기록됩니다</p>
 									<button class="btn medium green" id="up-asset-btn">수정</button>
 									<button class="btn outline-green" style="height: 48px;" id="del-asset-btn">삭제</button>
 								</div>
@@ -1108,6 +1113,7 @@
 											</td>
 										</tr>
 									</table>
+									<p class="fs-16 red">* 금액 추가 시 차액은 수입/지출 내역에 기록됩니다</p>
 									<button class='btn medium green' id='add-asset-btn'>추가</button>
 								</div>
 							</div>
