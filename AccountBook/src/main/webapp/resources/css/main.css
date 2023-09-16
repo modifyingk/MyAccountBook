@@ -75,6 +75,11 @@
 	margin: 2%;
 	font-style: normal;
 }
+.h-bold {
+	font-weight: bold;
+	margin: 2%;
+	font-style: normal;
+}
 .fs-35 {
 	font-size: 35px;
 }
@@ -534,4 +539,10 @@
 	background: #F3F3F3;
 	border-color: lightgray;
 	cursor: pointer;
+}
+#myinfo-btn {
+	cursor: pointer;
+}
+#myinfo-btn:hover {
+	color: #2C952C;
 }

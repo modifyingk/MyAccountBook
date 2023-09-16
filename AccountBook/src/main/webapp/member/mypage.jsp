@@ -9,6 +9,26 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+	$(function() {
+		var userid = "<%= session.getAttribute("userid") %>";
+		// 현재 세션의 포인트 정보 가져오기
+		$.ajax({
+			type : "post",
+			url : "userInfo",
+			data : {
+				userid : userid
+			},
+			success : function(info) {
+				$("#point-div").html(info.point);
+			}
+		})
+		
+		$("#myinfo-btn").click(function() {
+			location.href = "../member/myInfo.jsp";
+		})
+	})
+</script>
 </head>
 <body>
 	<div>
@@ -24,7 +44,6 @@
 				<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표 관리</li>
 			</ul>
 		</div>
-		
 		<!-- 컨텐츠 -->
 		<div class="col-8">
 			<%
@@ -32,19 +51,21 @@
 			if(session.getAttribute("userid") != null) { %>
 				<div>
 					<div class="col-8">
-						<div>
-							<div class="col-7">
-								<h2 class="h-normal fs-35"><i class="fi fi-rs-user"></i> <%= session.getAttribute("userid") %></h2>
-								<a href="../member/myInfo.jsp"><button class="btn long outline-green">내 정보 관리</button></a>
+						<div class="col-7">
+							<h2 class="h-normal fs-35" id="myinfo-btn"><i class="fi fi-rs-user"></i> <%= session.getAttribute("userid") %></h2>
+						</div>
+						<div class="col-3">
+							<br>
+							<div class="col-5" style="width:50px;">
+								<img src='../resources/img/point.gif' width='50px'>
 							</div>
-							<div class="col-3">
-								<br>
-								<a href="../member/logout"><button class="btn outline-gray" id="logoutBtn">로그아웃</button></a>
+							<div class="col-5" style="margin-top: 5px;">
+								<i class="h-normal fs-28" id='point-div'></i><i class='h-normal fs-28'>P</i>
 							</div>
 						</div>
 					</div>
-					<div class="col-2">
-						
+					<div class="col-2" style="margin-top: 1%;">
+						<a href="../member/logout"><button class="btn outline-gray" id="logoutBtn">로그아웃</button></a>
 					</div>
 				</div>
 			<% }

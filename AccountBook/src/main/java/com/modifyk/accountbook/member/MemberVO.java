@@ -8,6 +8,7 @@ public class MemberVO {
 	private String birth;
 	private String email;
 	private String joindate;
+	private int point;
 	
 	public String getUserid() {
 		return userid;
@@ -51,10 +52,15 @@ public class MemberVO {
 	public void setJoindate(String joindate) {
 		this.joindate = joindate;
 	}
-	
+	public int getPoint() {
+		return point;
+	}
+	public void setPoint(int point) {
+		this.point = point;
+	}
 	@Override
 	public String toString() {
 		return "MemberVO [userid=" + userid + ", pw=" + pw + ", username=" + username + ", gender=" + gender
-				+ ", birth=" + birth + ", email=" + email + ", joindate=" + joindate + "]";
+				+ ", birth=" + birth + ", email=" + email + ", joindate=" + joindate + ", point=" + point + "]";
 	}
 }
