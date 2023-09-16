@@ -24,9 +24,6 @@ public class AccountController {
 	AssetDAO astDao;
 	
 	@Autowired
-	MakeAccountIDService actIDSvc;
-	
-	@Autowired
 	AccountToMapService toMapSvc;
 	
 	@Autowired
@@ -37,10 +34,6 @@ public class AccountController {
 	@RequestMapping("account/insertAccount")
 	public String insertAccount(AccountVO accountVO) {
         
-		// 수입/지출 아이디(분류코드) 생성
-		String accountid = actIDSvc.makeAccountID(accountVO.getMoneytype());
-		accountVO.setAccountid(accountid);
-		
 		int result = aDao.insertAccount(accountVO);
 		if(result == 1) {
 			// 수입/지출이 추가되었을 경우, 자산 금액 업데이트

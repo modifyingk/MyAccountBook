@@ -1,7 +1,7 @@
 package com.modifyk.accountbook.account;
 
 public class AccountVO {
-	private String accountid;
+	private int accountid;
 	private String moneytype;
 	private String date;
 	private String astname;
@@ -11,10 +11,10 @@ public class AccountVO {
 	private String memo;
 	private String userid;
 	
-	public String getAccountid() {
+	public int getAccountid() {
 		return accountid;
 	}
-	public void setAccountid(String accountid) {
+	public void setAccountid(int accountid) {
 		this.accountid = accountid;
 	}
 	public String getMoneytype() {

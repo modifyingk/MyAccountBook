@@ -8,14 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.modifyk.accountbook.account.AccountDAO;
 import com.modifyk.accountbook.account.AccountVO;
-import com.modifyk.accountbook.account.MakeAccountIDService;
 
 @Service
 public class AutoInsertAccountService {
 	
-	@Autowired
-	MakeAccountIDService makeIdSvc;
-
 	@Autowired
 	AccountDAO actDao;
 	
@@ -33,9 +29,6 @@ public class AutoInsertAccountService {
 			account.setMoneytype("지출");
 		}
 		
-		String accountid = makeIdSvc.makeAccountID(account.getMoneytype());
-		
-		account.setAccountid(accountid);
 		account.setAstname(assetVO.getAstname());
 		account.setCatename("기타");
 		account.setDate(now);
