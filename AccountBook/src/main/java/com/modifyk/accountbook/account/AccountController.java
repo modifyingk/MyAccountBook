@@ -48,9 +48,6 @@ public class AccountController {
 				astDao.plusTotal(assetVO);
 			}
 
-			// 삭제의 경우에는 해당 금액의 값을 가져와서 자산에다가 다시 더해줌
-			// 수입 삭제는 빼줌
-			// 업데이트의 경우에는 해당 금액의 원래 값을 더해주고 업데이트 값을 빼줌 수입은 반대로
 			return "success";
 		} else {
 			return "fail";

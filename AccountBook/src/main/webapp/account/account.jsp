@@ -1107,7 +1107,20 @@
 					},
 					success : function(x) {
 						if(x == "success") {
-							window.location.reload();
+							$.ajax({
+								type : "post",
+								url : "../member/updatePoint",
+								data : {
+									point : 10,
+									userid : userid
+								},
+								success : function(y) {
+									if(y == "success") {
+										alert("가계부를 기록하여 10P가 적립되었습니다.");
+										window.location.reload();
+									}
+								}
+							})
 						} else {
 							alert("다시 시도해주세요.")
 						}

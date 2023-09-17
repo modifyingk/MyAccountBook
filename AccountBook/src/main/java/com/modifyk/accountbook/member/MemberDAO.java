@@ -67,4 +67,9 @@ public class MemberDAO {
 	public int deleteMember(String userid) {
 		return my.delete("memberMapper.deleteMember", userid);
 	}
+	
+	// 포인트 적립
+	public int updatePoint(MemberVO memberVO) {
+		return my.update("memberMapper.updatePoint", memberVO);
+	}
 }

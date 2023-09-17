@@ -233,4 +233,16 @@ public class MemberController {
 			return "fail";
 		}
 	}
+	
+	// 포인트 적립
+	@ResponseBody
+	@RequestMapping("member/updatePoint")
+	public String updatePoint(MemberVO memberVO) {
+		int result = mDao.updatePoint(memberVO);
+		if(result == 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
 }

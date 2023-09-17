@@ -56,4 +56,9 @@
 	<delete id="deleteMember" parameterType="String">
 		delete from member where userid = #{userid}
 	</delete>
+	
+	<!-- 포인트 적립 -->
+	<update id="updatePoint">
+		update member set point = point + #{point} where userid = #{userid};
+	</update>
 </mapper>
