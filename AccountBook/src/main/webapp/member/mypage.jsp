@@ -27,6 +27,19 @@
 		$("#myinfo-btn").click(function() {
 			location.href = "../member/myInfo.jsp";
 		})
+		
+		/* $.ajax({
+			type : "post",
+			url : "../aim/isAchieve",
+			data : {
+				userid : userid
+			},
+			success : function(x) {
+				if(x > 0) {
+					alert("목표를 달성하여 " + x + "포인트가 적립되었습니다!");
+				}
+			}
+		}) */
 	})
 </script>
 </head>
