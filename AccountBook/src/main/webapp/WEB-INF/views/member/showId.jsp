@@ -13,10 +13,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 <body>
-	<div class="content">
+	<div>
 		<div>
 			<!-- 사이드바 -->
-			<div class="left-30">
+			<div class="col-3 is-border is-shadow">
 				<jsp:include page="../../../main/mainbar.jsp"></jsp:include>
 				<img src="../resources/img/logo.png" class="side-logo" onclick="location.href='../main/main.jsp'">
 				<ul class="menu-group">
@@ -29,12 +29,12 @@
 			</div>
 
 			<!-- 컨텐츠 -->
-			<div class="right-70">
-				<div class="find-container">
-					<h2 class="h2"><i class="fi fi-rr-search"></i> 아이디 찾기</h2>
-					<p class="infoMsg">고객님의 아이디 목록입니다.</p><br>
+			<div class="col-7 is-center">
+				<div class="container margin-small">
+					<h2 class="h-normal fs-35"><i class="fi fi-rr-search"></i> 아이디 찾기</h2>
+					<p class="msg info">고객님의 아이디 목록입니다.</p><br>
 					<% List<MemberVO> idList = (List<MemberVO>) request.getAttribute("idList"); %>
-					<table class="find-table">
+					<table class="list-table">
 						<tr>
 							<td class="field th">아이디</td>
 							<td class="field th">가입일</td>
@@ -46,8 +46,9 @@
 						</tr>
 					<% } %>
 					</table>
-					<a href="/accountbook/member/login.jsp"><button type="button" class="btn green" id="goLogin">로그인 하기</button></a>
-					<a href="/accountbook/member/find_pw.jsp"><button type="button" class="btn outline-green" id="goFindpw">비밀번호 찾기</button></a>
+					<br>
+					<a href="/accountbook/member/login.jsp"><button type="button" class="btn medium green" id="goLogin">로그인 하기</button></a>
+					<a href="/accountbook/member/find_pw.jsp"><button type="button" class="btn medium outline-green" id="goFindpw">비밀번호 찾기</button></a>
 				</div>
 			</div>
 		</div>

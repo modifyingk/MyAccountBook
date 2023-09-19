@@ -9,63 +9,7 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script>
-	$(function() {
-		// 이메일 주소 select
-		$("#selectEmail").change(function() {
-			// 직접입력을 선택한 경우
-			if($(this).val() == "self") {
-				$("#email2").attr("value", "");
-			} else { // 직접입력이 아닌 주소를 선택한 경우
-				$("#email2").attr("value", $(this).val());
-			}
-		})
-		
-		// DB에 저장된 이름과 이메일 정보가 일치하는지 확인 후 메일 전송
-		$("#makeCodeBtn").click(function() {
-			var email = $("#email1").val() + "@" + $("#email2").val();
-			$.ajax({
-				type : "post",
-				url : "findId",
-				data : {
-					username : $("#username").val(),
-					email : email
-				},
-				success : function(x) {
-					if(x != "fail") {
-						$("#email").attr("value", x);
-						$.ajax({
-							type : "post",
-							url : "sendCode",
-							data : {
-								email : email
-							},
-							success : function(x) {
-								alert("인증메일이 발송되었습니다.")
-								// 인증번호 확인 버튼
-								$("#verifCodeBtn").click(function() {
-									var code = $("#inputCode").val();
-									if(x == code) {
-										alert("인증되었습니다.");
-										$("#findidBtn").attr("disabled", false);
-									}
-									else {
-										alert("인증에 실패하였습니다.");
-										$("#findidBtn").attr("disabled", true);
-									}
-								})
-							}
-						})
-					} else {
-						alert("이름과 이메일을 다시 확인해주세요");
-					}
-				}
-			})
-			
-		})
-		
-	})
-</script>
+<script type="text/javascript" src="../resources/js/member/find_id.js"></script>
 </head>
 <body>
 	<div>

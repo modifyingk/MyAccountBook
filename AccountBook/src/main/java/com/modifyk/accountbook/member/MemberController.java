@@ -64,6 +64,7 @@ public class MemberController {
 		
 		String result = sendMailSvc.sendMail(email, from, subject, text);
 		
+		System.out.println(code);
 		if(result.equals("success")) {
 			return code;
 		} else {
@@ -125,14 +126,11 @@ public class MemberController {
 	// 아이디 찾기
 	@ResponseBody
 	@RequestMapping("member/findId")
-	public String findId(MemberVO memberVO) {
-		String result = mDao.findId(memberVO);
-		if(result != null) { // 이름과 이메일이 일치하는 아이디가 존재
-			return result;
-		} else {
-			return "fail";
-		}
+	public List<MemberVO> findId(MemberVO memberVO) {
+		List<MemberVO> findList = mDao.findId(memberVO);
+		return findList;
 	}
+	
 	// 찾은 아이디 보여주기
 	@RequestMapping("member/showId")
 	public void showId(MemberVO memberVO, Model model) {

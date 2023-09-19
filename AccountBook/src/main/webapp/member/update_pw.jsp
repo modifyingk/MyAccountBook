@@ -9,55 +9,9 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="../resources/js/member/update_pw.js"></script>
 <script>
-	var pwChk = false;
-	var pwChk2 = false;
-	
-	$(function() {
-		// 비밀번호  확인
-		$("#pw, #pw2").blur(function() {
-			var pwReg = RegExp(/^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,20}/);
-			if(!pwReg.test($("#pw").val())){
-				$("#pwRegCheck").html("<p class='msg warning'>10 ~ 20자 영문, 숫자, 특수문자 조합</p>");
-				pwChk = false;
-			} else {
-				$("#pwRegCheck").html("<p class='msg info'>10 ~ 20자 영문, 숫자, 특수문자 조합</p>");
-				pwChk = true;
-			}
-			if($("#pw2").val() != $("#pw").val()) { // 비밀번호가 일치하지 않는 경우
-				$("#pwCheck").html("<p class='msg warning'>비밀번호가 일치하지 않습니다</p>");
-				pwChk2 = false;
-			} else { // 비밀번호가 일치하는 경우
-				$("#pwCheck").html("");
-				pwChk2 = true;
-			}
-		})
-		
-		var userid = "<%= session.getAttribute("userid") %>";
-		
-		$("#updatePwBtn").click(function() {
-			if(pwChk && pwChk2) {
-				$.ajax({
-					type : "post",
-					url : "updatePw",
-					data : {
-						userid : userid,
-						pw : $("#pw").val()
-					},
-					success : function(x) {
-						if(x == "success") {
-							alert("비밀번호가 성공적으로 변경되었습니다.");
-							location.href = "myInfo.jsp";
-						} else {
-							alert("다시 시도해주세요");
-						}
-					}
-				})
-			} else {
-				alert("입력 값을 다시 확인해주세요.");		
-			}
-		})
-	})
+	var userid = "<%= session.getAttribute("userid") %>";
 </script>
 </head>
 <body>

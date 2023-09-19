@@ -27,8 +27,8 @@ public class MemberDAO {
 	}
 	
 	// 아이디 찾기
-	public String findId(MemberVO memberVO) {
-		return my.selectOne("memberMapper.findId", memberVO);
+	public List<MemberVO> findId(MemberVO memberVO) {
+		return my.selectList("memberMapper.findId", memberVO);
 	}
 	
 	// 아이디 보여주기

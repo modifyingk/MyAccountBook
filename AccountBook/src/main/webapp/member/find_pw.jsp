@@ -9,54 +9,7 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script>
-	$(function() {
-		// 이메일 주소 select
-		$("#selectEmail").change(function() {
-			// 직접입력을 선택한 경우
-			if($(this).val() == "self") {
-				$("#email2").attr("value", "");
-			} else { // 직접입력이 아닌 주소를 선택한 경우
-				$("#email2").attr("value", $(this).val());
-			}
-		})
-		// DB에 저장된 아이디와 이름, 이메일 정보가 일치하는지 확인
-		$("#findpwBtn").click(function() {
-			var email = $("#email1").val() + "@" + $("#email2").val();
-			$.ajax({
-				type : "post",
-				url : "findPw",
-				data : {
-					userid : $("#userid").val(),
-					username : $("#username").val(),
-					email : email
-				},
-				success : function(x) {
-					if(x != "fail") {
-						$.ajax({
-							type : "post",
-							url : "tempPw",
-							data : {
-								userid : x,
-								email : email
-							},
-							success : function(x) {
-								if(x == "success") {
-									alert("입력하신 이메일로 임시 비밀번호가 전송되었습니다.")
-									location.href = "../member/login.jsp";
-								} else {
-									alert("다시 시도해주세요.");
-								}
-							}
-						})
-					} else {
-						alert("입력한 정보를 다시 확인해주세요");
-					}
-				}
-			})
-		})
-	})
-</script>
+<script type="text/javascript" src="../resources/js/member/find_pw.js"></script>
 </head>
 <body>
 	<div>
