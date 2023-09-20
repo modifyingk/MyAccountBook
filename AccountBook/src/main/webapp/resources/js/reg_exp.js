@@ -7,6 +7,15 @@ $(function () {
 		})
 	}
 	
+	// 숫자 세자리마다 콤마
+	$.moneyFmt = function(docID) {
+		$(document).on("keyup", docID, function() {
+			if($(this).val().length > 0) {
+				$(this).val(parseInt($(this).val()).toLocaleString());
+			}
+		})
+	}
+	
 	// 영어, 한글만 입력 가능
 	$.onlyLetter = function(docID) {
 		$(document).on("keyup", docID, function() {
@@ -122,5 +131,11 @@ $(function () {
 			$(chkDiv).html("");
 			return true;
 		}
+	}
+	
+	// 카테고리 형식 확인
+	$.checkCategory = function(docID) {
+		var cateReg = RegExp(/^.{1,20}$/); // 모든 문자 1글자에서 20글자 사이
+		return cateReg.test($(docID).val());
 	}
 })

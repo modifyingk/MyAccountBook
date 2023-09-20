@@ -1,7 +1,6 @@
 document.write('<script src="../resources/js/reg_exp.js"></script>'); // 유효성 검사 함수가 저장된 js 파일 가져오기
 
 $(function () {
-	
 	var nameChk = true;
 	var birthChk = true;
 	

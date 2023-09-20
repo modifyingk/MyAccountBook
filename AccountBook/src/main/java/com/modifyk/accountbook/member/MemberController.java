@@ -64,7 +64,6 @@ public class MemberController {
 		
 		String result = sendMailSvc.sendMail(email, from, subject, text);
 		
-		System.out.println(code);
 		if(result.equals("success")) {
 			return code;
 		} else {
