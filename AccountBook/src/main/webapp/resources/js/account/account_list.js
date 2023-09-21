@@ -114,15 +114,4 @@ $(function() {
 			}
 		})
 	}
-	
-	// 전체, 수입만, 지출만 버튼 활성화
-	$.activeBtn = function(removeDoc1, removeDoc2, addDoc) {
-		if($(removeDoc1).hasClass("active")) {
-			$(removeDoc1).removeClass("active");
-			$(addDoc).addClass("active");
-		} else if($(removeDoc2).hasClass("active")) {
-			$(removeDoc2).removeClass("active");
-			$(addDoc).addClass("active");
-		}
-	}
 })

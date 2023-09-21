@@ -41,6 +41,26 @@ $(function () {
 		var nameReg = RegExp(/^[a-zA-Z가-힣]{2,10}$/); // 한글, 영어 2~10글자
 		return nameReg.test($(docID).val());
 	}
+
+	// 카테고리 형식 확인
+	$.checkCategoryReg = function(docID) {
+		var cateReg = RegExp(/^.{1,20}$/); // 모든 문자 1글자에서 20글자 사이
+		return cateReg.test($(docID).val());
+	}
+
+	// # 입력 불가
+	$.noHash = function(docID) {
+		$(document).on("keyup", docID, function() {
+			var noHashReg = /[#]/g;	// #이 아닌 값
+			$(this).val($(this).val().replace(noHashReg, ""));
+		})
+	}
+	
+	// 한 글자 이상 입력 확인
+	$.noEmpty = function(docID) {
+		var noEmptyReg = RegExp(/^.{1,}$/);
+		return noEmptyReg.test($(docID).val());
+	}
 	
 	// 아이디 확인
 	$.checkID = function(userid, chkDiv) {
@@ -133,9 +153,15 @@ $(function () {
 		}
 	}
 	
-	// 카테고리 형식 확인
-	$.checkCategory = function(docID) {
-		var cateReg = RegExp(/^.{1,20}$/); // 모든 문자 1글자에서 20글자 사이
-		return cateReg.test($(docID).val());
+	// 카테고리명 확인
+	$.checkCategory = function(cateID, chkDiv) {
+		if(!$.checkCategoryReg(cateID)) {
+			$(chkDiv).attr("class", "msg warning");
+			return false;
+		} else {
+			$(chkDiv).attr("class", "msg info");
+			return true;
+		}
 	}
+	
 })

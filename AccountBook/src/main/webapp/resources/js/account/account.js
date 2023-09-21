@@ -1,11 +1,86 @@
-document.write('<script src="../resources/js/account_list.js"></script>'); // 수입/지출 내역, 통계 함수 js 가져오기
-document.write('<script src="../resources/js/category_list.js"></script>'); // 카테고리 함수 js 가져오기
-document.write('<script src="../resources/js/asset_list.js"></script>'); // 자산 함수 js 가져오기
-document.write('<script src="../resources/js/cal_date.js"></script>'); // 이전 달, 다음 달 구하는 함수 js 가져오기
-document.write('<script src="../resources/js/reg_exp.js"></script>'); // 유효성 검사 js 가져오기
+document.write('<script src="../resources/js/account/account_list.js"></script>'); // 수입/지출 내역, 통계 js
+document.write('<script src="../resources/js/account/category.js"></script>'); // 카테고리 js
+document.write('<script src="../resources/js/account/asset_list.js"></script>'); // 자산 목록 js
+document.write('<script src="../resources/js/cal_date.js"></script>'); // 이전 달, 다음 달 구하기 js
+document.write('<script src="../resources/js/reg_exp.js"></script>'); // 정규식 js
+document.write('<script src="../resources/js/main.js"></script>'); // 모달 및 카테고리 설정 js
 
 $(function() {
 	var todayAll; // 현재 날짜 저장할 변수
+	
+	/* 카테고리 수정 모달 열기  변수 */
+	var originCate; // 원래 카테고리명
+	var originName; // 원래 이름
+	
+	var clickNum = 0; // 설정 클릭 횟수 (횟수에 따라 설정 열고 닫음)
+	
+	// 자산 선택 및 값 자동 입력
+	// parameter : 자산 선택 input ID
+	$.pickAsset = function(assetID) {
+		// 수입/지출 추가 - 자산 선택
+		$(document).on("click", assetID, function() { // 자산선택 클릭 시
+			$("#select-asset-modal").show(); // 자산 선택 모달 열기
+		})
+		// 자산 선택 시 input에 값 삽입
+		$(document).on("click", "#asset-table tr", function() {
+			var assetName = $(this).text();
+			$(assetID).attr("value", assetName);
+			$("#select-asset-modal").hide();
+		})
+	}
+	
+	// 카테고리 선택 모달 열기
+	// parameter : 카테고리 선택 input ID, moneytype input name
+	$.openSelectCate = function(cateID, mtypeName) {
+		$(document).on("click", cateID, function() {
+			var mtype = $("input[name=" + mtypeName + "]:checked").val(); // 선택된 값 변수에 저장
+			if(mtype == "수입") {
+				// 수입 카테고리 리스트 모달
+				$("#select-incate-modal").show();
+			} else {
+				// 지출 카테고리 리스트 모달
+				$("#select-outcate-modal").show();
+			}
+		})
+	}
+	
+	// 카테고리 선택 시 수정 모달 input에 값 삽입
+	// parameter : 선택한 행 ID, 값 넣을 input ID, 닫을 모달 ID
+	$.pickCategory = function(selectID, inputID, modalID) {
+		$(document).on("click", selectID, function() {
+			originName = $(this).children().eq(1).text();
+			$(inputID).attr("value", originName); // 수정 모달 input에 현재 이름 값 삽입
+			$(modalID).hide();
+		})
+	}
+	
+	// moneytype radio 값 변경 시 카테고리 재선택
+	// parameter : 카테고리 선택 input ID, moneytype input name
+	$.chgMtype = function(cateID, mtypeName) {
+		$(document).on("click", "input:radio[name=" + mtypeName + "]", function() {
+			$(cateID).attr("value", "");
+			var mtype = $("input[name=" + mtypeName + "]:checked").val(); // 선택된 값 변수에 저장
+			if(mtype == "수입") {
+				// 수입 카테고리 리스트 모달
+				$("#select-incate-modal").show();
+			} else {
+				// 지출 카테고리 리스트 모달
+				$("#select-outcate-modal").show();
+			}
+		})
+	}
+	
+	// 전체, 수입만, 지출만 버튼 활성화
+	// parameter : active 지울 요소 ID 1, active 지울 요소 ID 2, 활성화할 요소 ID
+	$.activeBtn = function(removeDoc1, removeDoc2, addDoc) {
+		if($(removeDoc1).hasClass("active")) {
+			$(removeDoc1).removeClass("active");
+			$(addDoc).addClass("active");
+		} else if($(removeDoc2).hasClass("active")) {
+			$(removeDoc2).removeClass("active");
+			$(addDoc).addClass("active");
+		}
+	}
 	
 	$(document).ready(function() {
 		// 현재 날짜 가져오기
@@ -23,11 +98,14 @@ $(function() {
 		$.moneyFmt("#up-acttotal");
 		$.moneyFmt("#add-acttotal");
 		
-		// 수입/지출 추가의 내용, 메모에 #이 들어가지 않도록
-		$("#add-actcontent, #add-actmemo, #up-actcontent, #up-actmemo").keyup(function() {
-			var noHashReg = /[#]/g;	// #이 아닌 값
-			$(this).val($(this).val().replace(noHashReg, ""));
-		})
+		// 수입/지출 추가 및 수정의 내용, 메모에 #이 들어가지 않도록
+		$.noHash("#add-actcontent");
+		$.noHash("#add-actmemo");
+		$.noHash("#up-actcontent");
+		$.noHash("#up-actmemo");
+		
+		// 카테고리 설정 열고 닫기 (우측 상단 설정 버튼)
+		$.settingDiv(clickNum, "#open-cate-setting", "#cate-setting");
 		
 		// 카테고리 목록 가져오기
 		$.categoryList(userid, "#in-category-list-div", "#out-category-list-div"); // 카테고리 목록
@@ -35,6 +113,53 @@ $(function() {
 		
 		// 자산 목록 가져오기
 		$.assetList(userid, "#asset-list-div");
+		
+		// 카테고리 수정 모달 열기 및 자동 입력
+		$.openUpdateCate("#in-category-list-div #in-category-table tr");
+		$.openUpdateCate("#out-category-list-div #out-category-table tr");
+		
+		// 모달 열기
+		$.openModal("#in-category-btn", "#in-category-modal"); // 수입 카테고리 모달 열기
+		$.openModal("#out-category-btn", "#out-category-modal"); // 지출 카테고리 모달 열기
+		$.openModal("#bookmark-page", "#bookmark-modal"); // 즐겨찾기 모달 열기
+		$.openModal("#add-bookmark-page", "#add-bookmark-modal"); // 즐겨찾기 추가 모달 열기
+
+		// 모달 닫기
+		$.closeModal("#close-in-category", "#in-category-modal"); // 수입 카테고리 모달 닫기
+		$.closeModal("#close-out-category", "#out-category-modal"); // 지출 카테고리 모달 닫기
+		$.closeModal("#close-add-category", "#add-category-modal"); // 카테고리 추가 모달 닫기
+		$.closeModal("#close-up-category", "#up-category-modal"); // 카테고리 수정 모달 닫기
+		$.closeModal("#close-select-moneytype", "#select-moneytype-modal"); // 카테고리 추가/수정 시 moneytype 선택 모달 닫기
+		$.closeModal("#close-select-incate", "#select-incate-modal"); // 수입 카테고리 선택 모달 닫기
+		$.closeModal("#close-select-outcate", "#select-outcate-modal"); // 지출 카테고리 선택 모달 닫기
+		$.closeModal("#close-select-asset", "#select-asset-modal"); // 자산 선택 모달 닫기
+		$.closeModal("#close-add-account", "#add-account-modal"); // 수입/지출 추가 모달 닫기
+		$.closeModal("#close-up-account", "#up-account-modal"); // 수입/지출 수정 모달 닫기
+		$.closeModal("#close-catespend", "#catespend-modal"); // 카테고리별 지출 내역 모달 닫기
+		$.closeModal("#close-bookmark", "#bookmark-modal"); // 즐겨찾기 모달 닫기
+		$.closeModal("#close-add-bookmark", "#add-bookmark-modal"); // 즐겨찾기 추가 모달 닫기
+		
+		// 카테고리 초기화
+		$.resetCategory("#reset-incate-btn", "수입"); // 수입 카테고리 초기화
+		$.resetCategory("#reset-outcate-btn", "지출"); // 지출 카테고리 초기화
+		
+		// 자산 선택 및 값 자동 입력
+		$.pickAsset("#add-actasset");
+		$.pickAsset("#up-actasset");
+		
+		// 카테고리 선택 및 값 자동 입력 (수입/지출 추가)
+		$.openSelectCate("#add-actcatename", "select-mtype"); // 카테고리 선택 모달 열기
+		$.pickCategory("#select-incate-list-div #in-category-table tr", "#add-actcatename", "#select-outcate-modal"); // 수입 카테고리 선택
+		$.pickCategory("#select-outcate-list-div #out-category-table tr", "#add-actcatename", "#select-outcate-modal"); // 지출 카테고리 선택
+
+		// 카테고리 선택 및 값 자동 입력 (수입/지출 수정)
+		$.openSelectCate("#up-actcatename", "up-mtype"); // 카테고리 선택 모달 열기
+		$.pickCategory("#select-incate-list-div #in-category-table tr", "#up-actcatename", "#select-incate-modal"); // 수입 카테고리 선택
+		$.pickCategory("#select-outcate-list-div #out-category-table tr", "#up-actcatename", "#select-outcate-modal"); // 지출 카테고리 선택
+		
+		// moneytype radio 값 변경 시 카테고리 재선택
+		$.chgMtype("#add-actcatename", "select-mtype");
+		$.chgMtype("#up-actcatename", "up-mtype");
 	})
 	
 	// 이전 달 클릭
@@ -71,198 +196,6 @@ $(function() {
 		$.accountList("monthSpend", todayAll, userid, "", "#month-account-list-div", "", "", "");
 	})
 	
-	/* 카테고리 */
-	
-	// 수입 카테고리 모달 열기
-	$(document).on("click", "#in-category-btn", function() {
-		$("#in-category-modal").show();
-	})
-	
-	// 수입 카테고리 모달 닫기
-	$(document).on("click", "#close-in-category", function() {
-		$("#in-category-modal").hide();
-	})
-	
-	// 지출 카테고리 모달 열기
-	$(document).on("click", "#out-category-btn", function() {
-		$("#out-category-modal").show();
-	})	
-	
-	// 지출 카테고리 모달 닫기
-	$(document).on("click", "#close-out-category", function() {
-		$("#out-category-modal").hide();
-	})	
-	
-	// 카테고리 추가 모달 열기
-	$(document).on("click", "#add-in-category-page", function() {
-		$("#add-category-modal").show();
-		$("#moneytype").attr("value", "수입");
-	})	
-	$(document).on("click", "#add-out-category-page", function() {
-		$("#add-category-modal").show();
-		$("#moneytype").attr("value", "지출");
-	})	
-	
-	// 카테고리 추가 모달 닫기
-	$(document).on("click", "#close-add-category", function() {
-		$("#add-category-modal").hide();
-	})
-	
-	// 카테고리 추가
-	$(document).on("click", "#add-category-btn", function() {
-		chkCate = $.checkCategory("#catename");
-		if(!chkCate) {
-			$("#add-catename-check-div p").attr("class", "msg warning");
-		} else {
-			$("#add-catename-check-div p").attr("class", "msg info");
-			$.ajax({ // 카테고리가 중복되는지 확인
-				type : "post",
-				url : "isOverlapCate",
-				data : {
-					moneytype : $("#moneytype").val(),
-					catename : $("#catename").val(),
-					userid : userid
-				},
-				success : function(x) {
-					if(x == "possible") { // 카테고리가 중복되지 않는 경우
-						$.ajax({
-							type : "post",
-							url : "insertCategory",
-							data : {
-								moneytype : $("#moneytype").val(),
-								catename : $("#catename").val(),
-								userid : userid
-							},
-							success : function(x) {
-								if(x == "success") { // 카테고리 추가 성공
-									window.location.reload();
-								} else { // 카테고리 추가 실패
-									alert("다시 시도해주세요");
-								}
-							}
-						})
-					} else { // 카테고리가 중복되는 경우
-						alert("중복되는 카테고리입니다.");
-					}
-				}
-			})
-		}
-	})
-	
-	// 카테고리 수정 모달 열기
-	var originCate;
-	var originName;
-		
-	$(document).on("click", "#in-category-list-div #in-category-table tr", function() {
-		originCate = $(this).children().eq(0).text();
-		originName = $(this).children().eq(1).text();
-		$("#up-moneytype").attr("value", originCate); // 수정 모달 input에 현재 분류 값 삽입
-		$("#up-catename").attr("value", originName); // 수정 모달 input에 현재 이름 값 삽입
-		
-		$("#up-category-modal").show(); // 모달 열기
-	})
-	$(document).on("click", "#out-category-list-div #out-category-table tr", function() {
-		originCate = $(this).children().eq(0).text();
-		originName = $(this).children().eq(1).text();
-		$("#up-moneytype").attr("value", originCate); // 수정 모달 input에 현재 분류 값 삽입
-		$("#up-catename").attr("value", originName); // 수정 모달 input에 현재 이름 값 삽입
-		
-		$("#up-category-modal").show(); // 모달 열기
-	})
-	
-	// 카테고리 수정
-	$(document).on("click", "#up-category-btn", function() { // 수정 버튼 클릭
-		chkCate = $.checkCategory("#up-catename");
-		if(!chkCate){ // 정규식에 맞지 않을 때
-			$("#up-catename-check-div p").attr("class", "msg warning");
-		} else {
-			$("#up-catename-check-div p").attr("class", "msg info");
-			$.ajax({	// 카테고리가 중복되는지 확인
-				type : "post",
-				url : "isOverlapCate",
-				data : {
-					moneytype : $("#up-moneytype").val(),
-					catename : $("#up-catename").val(),
-					userid : userid
-				},
-				success : function(x) {
-					if(x == "possible") { // 카테고리가 중복되지 않는 경우
-						$.ajax({
-							type : "post",
-							url : "updateCategory",
-							data : {
-								originType : originCate,
-								originName : originName,
-								updateType : $("#up-moneytype").val(),
-								updateName : $("#up-catename").val(),
-								userid : userid
-							},
-							success : function(x) {
-								if(x == "success") {
-									window.location.reload();
-								} else {
-									alert("다시 시도해주세요");
-								}
-							}
-						})
-					} else { // 카테고리가 중복되는 경우
-						alert("중복되는 카테고리입니다.");
-					}
-				}
-			})
-		}
-	})
-	
-	// 카테고리 수정 모달 닫기
-	$(document).on("click", "#close-up-category", function() { 
-		$("#up-category-modal").hide();
-	})
-	
-	// 카테고리 삭제
-	$(document).on("click", "#del-category-btn", function() { // 삭제 버튼 클릭
-		var op = confirm($("#up-catename").val() + " 카테고리를 삭제하시겠습니까?");
-		if(op) {
-			$.ajax({
-				type : "post",
-				url : "deleteCategory",
-				data : {
-					moneytype : $("#up-moneytype").val(),
-					catename : $("#up-catename").val(),
-					userid : userid
-				},
-				success : function(x) {
-					if(x == "success") {
-						window.location.reload();
-					} else {
-						alert("다시 시도해주세요");
-					}
-				}
-			})
-		}
-	})
-	
-	// 카테고리 추가/수정 시 moneytype 선택 모달
-	$(document).on("click", "#moneytype, #up-moneytype", function() {
-		$("#select-moneytype-modal").show();
-		$("#in").click(function() {
-			$("#moneytype").attr("value", "수입");
-			$("#up-moneytype").attr("value", "수입");
-			$("#select-moneytype-modal").hide();
-		})
-		$("#out").click(function() {
-			$("#moneytype").attr("value", "지출");
-			$("#up-moneytype").attr("value", "지출");
-			$("#select-moneytype-modal").hide();
-		})
-	})
-	
-	// 카테고리 추가/수정 시 moneytype 선택 모달 닫기
-	$(document).on("click", "#close-select-moneytype", function() { 
-		$("#select-moneytype-modal").hide();
-	})
-	
-	/* 수입/지출 */
-	
 	// 수입/지출 추가 모달 열기
 	$(document).on("click", "#add-account-page", function() {
 		// 현재 날짜 가져오기
@@ -279,57 +212,10 @@ $(function() {
 		$("#add-account-modal").show();
 	})
 	
-	// 수입/지출 추가 - 카테고리 선택
-	$(document).on("click", "#add-actcatename", function() { 
-		var mtype = $("input[name=select-mtype]:checked").val(); // 선택된 값 변수에 저장
-		if(mtype == "수입") {
-			// 수입 카테고리 리스트 모달
-			$("#select-incate-modal").show();
-		} else {
-			// 지출 카테고리 리스트 모달
-			$("#select-outcate-modal").show();
-		}
-	})
-	$(document).on("click", "#select-incate-list-div #in-category-table tr", function() {
-		originName = $(this).children().eq(1).text();
-		$("#add-actcatename").attr("value", originName); // 추가 모달 input에 현재 이름 값 삽입
-		$("#select-incate-modal").hide();
-	})
-	$(document).on("click", "#select-outcate-list-div #out-category-table tr", function() {
-		originName = $(this).children().eq(1).text();
-		$("#add-actcatename").attr("value", originName); // 추가 모달 input에 현재 이름 값 삽입
-		$("#select-outcate-modal").hide();
-	})
-	
-	// 카테고리 선택 모달 닫기
-	$(document).on("click", "#close-select-incate", function() { 
-		$("#select-incate-modal").hide();
-	})
-	$(document).on("click", "#close-select-outcate", function() { 
-		$("#select-outcate-modal").hide();
-	})
-		
-	// 수입/지출 추가 - 자산 선택
-	$(document).on("click", "#add-actasset", function() { // 자산선택 클릭 시
-		$("#select-asset-modal").show(); // 자산 선택 모달 열기
-	})
-
-	// 자산 선택 시 input에 값 삽입
-	$(document).on("click", "#asset-table tr", function() {
-		var assetName = $(this).text();
-		$("#add-actasset").attr("value", assetName);
-		$("#select-asset-modal").hide();
-	})
-	
-	// 자산 선택 모달 닫기
-	$(document).on("click", "#close-select-asset", function() {
-		$("#select-asset-modal").hide();
-	})
-	
 	// 수입/지출 추가
 	$(document).on("click", "#add-account-btn", function() {
 		var mtype = $("input[name=select-mtype]:checked").val();
-		if(!reg.test($("#add-actdate").val()) || !reg.test($("#add-actasset").val()) || !reg.test($("#add-actcatename").val()) || !reg.test($("#add-acttotal").val())){ // 정규식에 맞지 않을 때
+		if(!$.noEmpty("#add-actdate") || !$.noEmpty("#add-actasset") || !$.noEmpty("#add-actcatename") || !$.noEmpty("#add-acttotal")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
 			alert("입력 값을 확인해주세요.")
 		} else {
 			$.ajax({
@@ -345,7 +231,7 @@ $(function() {
 					memo : $("#add-actmemo").val(),
 					userid : userid
 				},
-				success : function(x) {
+				success : function(x) { // 수입/지출 추가 시 포인트 적립
 					if(x == "success") {
 						$.ajax({
 							type : "post",
@@ -368,12 +254,7 @@ $(function() {
 			})
 		}
 	})
-		
-	// 수입/지출 추가 모달 닫기
-	$(document).on("click", "#close-add-account", function() {
-		$("#add-account-modal").hide();
-	})
-		
+	
 	// 수입/지출 내역 테이블에서 날짜 tr 클릭 시
 	$(document).on("click", ".tr-date", function() {
 		var date = $(this).text();
@@ -410,57 +291,9 @@ $(function() {
 		}
 	})
 	
-	// 수입/지출 수정 - 자산 선택
-	$(document).on("click", "#up-actasset", function() {
-		$("#select-asset-modal").show();
-	})
-	$(document).on("click", "#asset-table tr", function() {
-		var assetName = $(this).text();
-		$("#up-actasset").attr("value", assetName);
-		$("#select-asset-modal").hide();
-	})
-	
-	// 수입/지출 수정 - 카테고리 선택
-	$(document).on("click", "#up-actcatename", function() {
-		var mtype = $("input[name=up-mtype]:checked").val(); // 선택된 값 변수에 저장
-		if(mtype == "수입") {
-			// 수입 카테고리 리스트 모달
-			$("#select-incate-modal").show();
-		} else {
-			// 지출 카테고리 리스트 모달
-			$("#select-outcate-modal").show();
-		}
-	})
-
-	// 카테고리 선택 시 수정 모달 input에 값 삽입
-	$(document).on("click", "#select-incate-list-div #in-category-table tr", function() {
-		originName = $(this).children().eq(1).text();
-		$("#up-actcatename").attr("value", originName); // 수정 모달 input에 현재 이름 값 삽입
-		$("#select-incate-modal").hide();
-	})
-	$(document).on("click", "#select-outcate-list-div #out-category-table tr", function() {
-		originName = $(this).children().eq(1).text();
-		$("#up-actcatename").attr("value", originName); // 수정 모달 input에 현재 이름 값 삽입
-		$("#select-outcate-modal").hide();
-	})
-	
-	// 수입/지출 수정에서 수입/지출 radio 클릭 시 카테고리 선택 모달 띄우기
-	$(document).on("click", "input:radio[name='up-mtype']", function() {
-		$("#up-actcatename").attr("value", "");
-		var mtype = $("input[name=up-mtype]:checked").val(); // 선택된 값 변수에 저장
-		if(mtype == "수입") {
-			// 수입 카테고리 리스트 모달
-			$("#select-incate-modal").show();
-		} else {
-			// 지출 카테고리 리스트 모달
-			$("#select-outcate-modal").show();
-		}
-	})
-	
-	// 수정 버튼 클릭
-	var reg = RegExp(/^.{1,}$/);
+	// 수입/지출 수정
 	$(document).on("click", "#up-account-btn", function() {
-		if(!reg.test($("#up-actdate").val()) || !reg.test($("#up-actasset").val()) || !reg.test($("#up-actcatename").val()) || !reg.test($("#up-acttotal").val())){ // 정규식에 맞지 않을 때
+		if(!$.noEmpty("#up-actdate") || !$.noEmpty("#up-actasset") || !$.noEmpty("#up-actcatename") || !$.noEmpty("#up-acttotal")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
 			alert("입력 값을 확인해주세요.")
 		} else {
 			$.ajax({
@@ -510,11 +343,6 @@ $(function() {
 		}
 	})
 	
-	// 수입/지출 수정 모달 닫기
-	$(document).on("click", "#close-up-account", function() {
-		$("#up-account-modal").hide();
-	})
-	
 	// 통계 카테고리 클릭 시 해당 카테고리 지출 내역
 	$(document).on("click", ".tr-statscate", function() {
 		var catename = $(this).children().eq(0).text();
@@ -560,30 +388,8 @@ $(function() {
 		$("#catespend-modal").show();
 	})
 	
-	// 카테고리별 지출 내역 모달 닫기
-	$(document).on("click", "#close-catespend", function() {
-		$("#catespend-modal").hide();
-	})
-	
 	/* 즐겨찾기 */
-	
-	// 즐겨찾기 모달 열기
-	$(document).on("click", "#bookmark-page", function() {
-		$("#bookmark-modal").show();
-	})
-	// 즐겨찾기 모달 닫기
-	$(document).on("click", "#close-bookmark", function() {
-		$("#bookmark-modal").hide();
-	})
-	// 즐겨찾기 추가 모달 열기
-	$(document).on("click", "#add-bookmark-page", function() {
-		$("#add-bookmark-modal").show();
-	})
-	// 즐겨찾기 추가 모달 닫기
-	$(document).on("click", "#close-add-bookmark", function() {
-		$("#add-bookmark-modal").hide();
-	})
-	
+	// 즐겨찾기에 추가 가능한 내역 가져오기
 	$.ajax({
 		type : "post",
 		url : "addBookmarkInfo",
@@ -602,7 +408,7 @@ $(function() {
 		}
 	})
 	
-	// 즐겨찾기 내역 tr 클릭 시 즐겨찾기에 추가되도록
+	// 즐겨찾기 내역 tr 클릭 시 즐겨찾기에 추가
 	$(document).on("click", ".tr-addmark", function() {
 		var catename = $(this).children().eq(0).text();
 		var content = $(this).children().eq(1).text();
@@ -648,19 +454,20 @@ $(function() {
 			$("#bookmark-list-div").html(mark_html);
 		}
 	})
-	// tr 클릭 시
-	$(document).on("click", ".td-bookmark", function() {
+	
+	// 즐겨찾기를 이용한 수입/지출 추가
+	$(document).on("click", ".td-bookmark", function() { // 즐겨찾기 행 클릭 시
 		var catename = $(this).parent().children().eq(1).text();
 		var content = $(this).parent().children().eq(2).text();
 		var total = $(this).parent().children().eq(3).text().split("원")[0];
 		
 		$("#bookmark-modal").hide();
-		$("#add-account-modal").show();
+		$("#add-account-modal").show(); // 수입/지출 추가 모달 열기
 		
-		$("#add-actcontent").attr("value", content);
+		$("#add-actcontent").attr("value", content); // 즐겨찾기 값 수입/지출에 자동 입력
 		$("#add-acttotal").attr("value", total);
 		
-		// 즐겨찾기 리스트 중 카테고리가 없거나 숨겨져있는 경우에는 분류에 빈 값이 입력되도록
+		// 즐겨찾기 리스트 중 카테고리가 없거나 숨겨져있는 경우에는 카테고리에 빈 값이 입력되도록
 		$.ajax({
 			type : "post",
 			url : "isPossibleCate",
@@ -676,7 +483,8 @@ $(function() {
 			}
 		})
 	})
-	// 삭제 클릭 시
+	
+	// 즐겨찾기 삭제
 	$(document).on("click", ".td-delmark", function() {
 		var bookmarkid = $(this).parent().children().eq(0).text();
 		var op = confirm("즐겨찾기를 삭제하시겠습니까?");
@@ -698,54 +506,4 @@ $(function() {
 			})
 		}
 	})
-	
-	// 오른쪽 옆 설정 버튼 클릭
-	var clickNum = 0;
-	$(document).on("click", "#open-cate-setting", function() {
-		clickNum++;
-		if(clickNum % 2 != 0) {
-			$("#cate-setting").show(); // 누르면 카테고리 버튼 보여주기
-		} else {
-			$("#cate-setting").hide(); // 한 번 더 누르면 카테고리 버트 숨기기
-		}
-	})
-	
-	/* 초기화 */
-	
-	// 수입 카테고리 초기화
-	$(document).on("click", "#reset-incate-btn", function() {
-		var op = confirm("초기화 시 생성한 카테고리가 모두 삭제되고 기본값으로 설정됩니다. 정말로 초기화하시겠습니까?");
-		if(op) {
-			$.ajax({
-				type : "post",
-				url : "resetCate",
-				data : {
-					moneytype: "수입",
-					userid: userid
-				},
-				success : function(x) {
-					window.location.reload();
-				}
-			})
-		}
-	})
-	
-	// 지출 카테고리 초기화
-	$(document).on("click", "#reset-outcate-btn", function() {
-		var op = confirm("초기화 시 생성한 카테고리가 모두 삭제되고 기본값으로 설정됩니다. 정말로 초기화하시겠습니까?");
-		if(op) {
-			$.ajax({
-				type : "post",
-				url : "resetCate",
-				data : {
-					moneytype: "지출",
-					userid: userid
-				},
-				success : function(x) {
-					window.location.reload();
-				}
-			})
-		}
-	})
-
 })
