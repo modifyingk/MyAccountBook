@@ -67,6 +67,7 @@
 						</tr>
 					</table>
 				</div>
+				
 				<!-- 월별 수입/지출 내역 -->
 				<div>
 					<div class="col-5">
@@ -117,6 +118,7 @@
 						</div>
 					</div>
 				</div>
+				
 				<!-- 지출 카테고리 모달 -->
 				<div class="modal" id="out-category-modal" hidden="true">
 					<div class="modal-content">
@@ -202,6 +204,7 @@
 						</div>
 					</div>
 				</div>
+				
 				<!-- 수입/지출 선택 모달 -->
 				<div class="modal" id="select-moneytype-modal" hidden="true">
 					<div class="modal-content small">
@@ -283,6 +286,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<!-- 카테고리별 지출 모달 -->
 			<div class="modal" id="catespend-modal" hidden="true">
 				<div class="modal-content wide">
@@ -298,6 +302,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<!-- 수입/지출 수정 모달 -->
 			<div class="modal" id="up-account-modal" hidden="true">
 				<div class="modal-content">
@@ -357,6 +362,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<!-- 자산 선택 모달 -->
 			<div class="modal" id="select-asset-modal" hidden="true">
 				<div class="modal-content">
@@ -374,6 +380,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<!-- 수입 카테고리 선택 모달 -->
 			<div class="modal" id="select-incate-modal" hidden="true">
 				<div class="modal-content">
@@ -388,6 +395,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<!-- 지출 카테고리 선택 모달 -->
 			<div class="modal" id="select-outcate-modal" hidden="true">
 				<div class="modal-content">
@@ -402,6 +410,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<!-- 즐겨찾기 목록 모달 -->
 			<div class="modal" id="bookmark-modal" hidden="true">
 				<div class="modal-content">
@@ -419,6 +428,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<!-- 즐겨찾기 추가 모달 -->
 			<div class="modal" id="add-bookmark-modal" hidden="true">
 				<div class="modal-content">

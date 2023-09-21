@@ -78,6 +78,27 @@ $(function() {
 		})
 	}
 	
+	// 카테고리 초기화
+	// parameter : 초기화 버튼 ID, moneytype(수입/지출)
+	$.resetCategory = function(btnID, mtype) {
+		$(document).on("click", btnID, function() {
+			var op = confirm("초기화 시 생성한 카테고리가 모두 삭제되고 기본값으로 설정됩니다. 정말로 초기화하시겠습니까?");
+			if(op) {
+				$.ajax({
+					type : "post",
+					url : "resetCate",
+					data : {
+						moneytype: mtype,
+						userid: userid
+					},
+					success : function(x) {
+						window.location.reload();
+					}
+				})
+			}
+		})
+	}
+	
 	// 카테고리 추가
 	$(document).on("click", "#add-category-btn", function() {
 		chkCate = $.checkCategory("#catename", "#add-catename-check-div p"); // 카테고리명 형식 확인
@@ -136,29 +157,6 @@ $(function() {
 		}
 	})
 	
-	// 카테고리 삭제
-	$(document).on("click", "#del-category-btn", function() { // 삭제 버튼 클릭
-		var op = confirm($("#up-catename").val() + " 카테고리를 삭제하시겠습니까?");
-		if(op) {
-			$.ajax({
-				type : "post",
-				url : "deleteCategory",
-				data : {
-					moneytype : $("#up-moneytype").val(),
-					catename : $("#up-catename").val(),
-					userid : userid
-				},
-				success : function(x) {
-					if(x == "success") {
-						window.location.reload();
-					} else {
-						alert("다시 시도해주세요");
-					}
-				}
-			})
-		}
-	})
-	
 	// 카테고리 추가/수정 시 moneytype 선택 모달
 	$(document).on("click", "#moneytype, #up-moneytype", function() {
 		$("#select-moneytype-modal").show();
@@ -173,4 +171,5 @@ $(function() {
 			$("#select-moneytype-modal").hide();
 		})
 	})
+        
 })
