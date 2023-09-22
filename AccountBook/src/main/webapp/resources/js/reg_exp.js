@@ -42,8 +42,8 @@ $(function () {
 		return nameReg.test($(docID).val());
 	}
 
-	// 카테고리 형식 확인
-	$.checkCategoryReg = function(docID) {
+	// 작명 형식 확인
+	$.namingReg = function(docID) {
 		var cateReg = RegExp(/^.{1,20}$/); // 모든 문자 1글자에서 20글자 사이
 		return cateReg.test($(docID).val());
 	}
@@ -153,9 +153,9 @@ $(function () {
 		}
 	}
 	
-	// 카테고리명 확인
-	$.checkCategory = function(cateID, chkDiv) {
-		if(!$.checkCategoryReg(cateID)) {
+	// 작명 형식 확인 후 메시지
+	$.checkNaming = function(chkID, chkDiv) {
+		if(!$.namingReg(chkID)) {
 			$(chkDiv).attr("class", "msg warning");
 			return false;
 		} else {
@@ -163,5 +163,4 @@ $(function () {
 			return true;
 		}
 	}
-	
 })

@@ -37,6 +37,7 @@ $(function() {
 	// 카테고리 중복 확인
 	// parameter : #moneytype, #catename, 아이디
 	$.overlapCategory = function(moneytype, catename, userid) {
+		var result;
 		$.ajax({ // 카테고리가 중복되는지 확인
 			type : "post",
 			url : "isOverlapCate",
@@ -48,12 +49,13 @@ $(function() {
 			},
 			success : function(x) {
 				if(x == "possible") { // 카테고리가 중복되지 않는 경우
-					return true;
+					result = true;
 				} else {
-					return false;
+					result = false;
 				}
 			}
 		})
+		return result;
 	}
 	
 	// 카테고리 추가 모달 열기
@@ -101,7 +103,7 @@ $(function() {
 	
 	// 카테고리 추가
 	$(document).on("click", "#add-category-btn", function() {
-		chkCate = $.checkCategory("#catename", "#add-catename-check-div p"); // 카테고리명 형식 확인
+		chkCate = $.checkNaming("#catename", "#add-catename-check-div p"); // 카테고리명 형식 확인
 		if(chkCate) {
 			var chkName = $.overlapCategory("#moneytype", "#catename", userid); // 카테고리 중복 확인
 			if(chkName) {
@@ -129,7 +131,7 @@ $(function() {
 	
 	// 카테고리 수정
 	$(document).on("click", "#up-category-btn", function() { // 수정 버튼 클릭
-		chkCate = $.checkCategory("#up-catename", "#up-catename-check-div p"); // 카테고리명 형식 확인
+		chkCate = $.checkNaming("#up-catename", "#up-catename-check-div p"); // 카테고리명 형식 확인
 		if(chkCate) {
 			var chkName = $.overlapCategory("#up-moneytype", "#up-catename", userid); // 카테고리 중복 확인
 			if(chkName) {
@@ -171,5 +173,5 @@ $(function() {
 			$("#select-moneytype-modal").hide();
 		})
 	})
-        
+	
 })

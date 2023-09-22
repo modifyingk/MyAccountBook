@@ -1,6 +1,6 @@
 document.write('<script src="../resources/js/account/account_list.js"></script>'); // 수입/지출 내역, 통계 js
 document.write('<script src="../resources/js/account/category.js"></script>'); // 카테고리 js
-document.write('<script src="../resources/js/account/asset_list.js"></script>'); // 자산 목록 js
+document.write('<script src="../resources/js/asset/asset_list.js"></script>'); // 자산 목록 js
 document.write('<script src="../resources/js/cal_date.js"></script>'); // 이전 달, 다음 달 구하기 js
 document.write('<script src="../resources/js/reg_exp.js"></script>'); // 정규식 js
 document.write('<script src="../resources/js/main.js"></script>'); // 모달 및 카테고리 설정 js
@@ -160,6 +160,7 @@ $(function() {
 		// moneytype radio 값 변경 시 카테고리 재선택
 		$.chgMtype("#add-actcatename", "select-mtype");
 		$.chgMtype("#up-actcatename", "up-mtype");
+		
 	})
 	
 	// 이전 달 클릭
