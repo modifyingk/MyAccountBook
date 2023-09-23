@@ -1,5 +1,5 @@
 document.write('<script src="../resources/js/account/account_list.js"></script>'); // 수입/지출 내역 js
-document.write('<script src="../resources/js/asset_list.js"></script>'); // 자산 목록 js
+document.write('<script src="../resources/js/asset/asset_list.js"></script>'); // 자산 목록 js
 document.write('<script src="../resources/js/asset/asset_group.js"></script>'); // 자산 그룹 js
 document.write('<script src="../resources/js/asset/transfer.js"></script>'); // 이체 js
 document.write('<script src="../resources/js/cal_date.js"></script>'); // 이전 달, 다음 달 구하기 js

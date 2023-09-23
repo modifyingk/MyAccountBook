@@ -1,6 +1,7 @@
 document.write('<script src="../resources/js/account/account_list.js"></script>'); // 수입/지출 내역, 통계 js
 document.write('<script src="../resources/js/account/category.js"></script>'); // 카테고리 js
 document.write('<script src="../resources/js/asset/asset_list.js"></script>'); // 자산 목록 js
+document.write('<script src="../resources/js/account/category_list.js"></script>'); // 카테고리 목록 js
 document.write('<script src="../resources/js/cal_date.js"></script>'); // 이전 달, 다음 달 구하기 js
 document.write('<script src="../resources/js/reg_exp.js"></script>'); // 정규식 js
 document.write('<script src="../resources/js/main.js"></script>'); // 모달 및 카테고리 설정 js
@@ -26,31 +27,6 @@ $(function() {
 			var assetName = $(this).text();
 			$(assetID).attr("value", assetName);
 			$("#select-asset-modal").hide();
-		})
-	}
-	
-	// 카테고리 선택 모달 열기
-	// parameter : 카테고리 선택 input ID, moneytype input name
-	$.openSelectCate = function(cateID, mtypeName) {
-		$(document).on("click", cateID, function() {
-			var mtype = $("input[name=" + mtypeName + "]:checked").val(); // 선택된 값 변수에 저장
-			if(mtype == "수입") {
-				// 수입 카테고리 리스트 모달
-				$("#select-incate-modal").show();
-			} else {
-				// 지출 카테고리 리스트 모달
-				$("#select-outcate-modal").show();
-			}
-		})
-	}
-	
-	// 카테고리 선택 시 수정 모달 input에 값 삽입
-	// parameter : 선택한 행 ID, 값 넣을 input ID, 닫을 모달 ID
-	$.pickCategory = function(selectID, inputID, modalID) {
-		$(document).on("click", selectID, function() {
-			originName = $(this).children().eq(1).text();
-			$(inputID).attr("value", originName); // 수정 모달 input에 현재 이름 값 삽입
-			$(modalID).hide();
 		})
 	}
 	
