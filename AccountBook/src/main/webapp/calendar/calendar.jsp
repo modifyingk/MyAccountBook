@@ -10,14 +10,15 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="../resources/js/calendar/calendar.js"></script>
 <script>
+	var userid = "<%= session.getAttribute("userid") %>";
 	$(function() {
-		var userid = "<%= session.getAttribute("userid") %>";
 		
-		var date = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-		var day = ["일", "월", "화", "수", "목", "금", "토"];
+		/* var date = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+		var day = ["일", "월", "화", "수", "목", "금", "토"]; */
 
-		// 현재 날짜
+		/* // 현재 날짜
 		var today = new Date();
 		var todayYear = today.getFullYear();
 		var todayMonth = today.getMonth() + 1 + "";
@@ -25,9 +26,9 @@
 		if(todayMonth.length == 1) {
 			todayMonth = "0" + todayMonth;
 		}
-		var todayAll = todayYear + "-" + todayMonth;
+		var todayAll = todayYear + "-" + todayMonth; */
 		
-		// 연도와 월 보여주기
+		/* // 연도와 월 보여주기
 		var month_html = "<i class='h-normal fs-28'>" + todayYear + "년 " + todayMonth + "월" + "</i>";
 		$("#month-div").html(month_html);
 		
@@ -42,8 +43,8 @@
 		var totalDate = lastYear * 365 + lastYear / 4 - lastYear / 100 + lastYear / 400;
 		for(var i = 0; i < parseInt(todayMonth) - 1; i++) {
 			totalDate += date[i];
-		}
-		// 달력에 날짜 넣기
+		} */
+		/* // 달력에 날짜 넣기
 		var idx = parseInt(totalDate % 7); // 요일 index
 		var j = 1;
 		for(var i = 1; i <= date[parseInt(todayMonth) - 1]; i++) {
@@ -59,9 +60,9 @@
 				$(".calendar-table").children().children().eq(j).children().eq(idx + 1).children().eq(0).removeClass("active");
 			}
 			idx++;
-		}
+		} */
 		
-		// 날짜별 수입/지출 내역
+		/* // 날짜별 수입/지출 내역
 		$.ajax({
 			type : "post",
 			url : "../account/calendarTotal",
@@ -133,7 +134,7 @@
 			} else {
 				date[1] = 28;
 			}
-			
+		/*	
 			// 현재까지의 전체 날 수
 			var lastYear = todayYear - 1;
 			var totalDate = lastYear * 365 + lastYear / 4 - lastYear / 100 + lastYear / 400;
@@ -303,9 +304,9 @@
 					}
 				}
 			})
-		})
+		}) */
 		
-		$(".calendar-table .tr-content td").click(function() {
+		/* $(".calendar-table .tr-content td").click(function() {
 			if($(this).children().eq(0).text() != "") {
 				var selectDate = $(this).children().eq(0).text(); // 요일
 				var selectIn = $(this).children().eq(1).text(); // 수입
@@ -364,7 +365,7 @@
 		})
 		$("#close-date-account").click(function() {
 			$("#date-account-modal").hide();
-		})
+		}) */
 	})
 </script>
 </head>

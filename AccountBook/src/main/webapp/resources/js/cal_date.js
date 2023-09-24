@@ -13,6 +13,29 @@ $(function() {
 		return todayAll;
 	}
 	
+	// 현재 연도 가져오기
+	$.currentYear = function() {
+		var today = new Date();
+		var todayYear = today.getFullYear();
+		
+		return todayYear;
+	}
+	
+	// 현재 월 가져오기
+	$.currentMonth = function() {
+		var today = new Date();
+		var todayMonth = today.getMonth() + 1 + "";
+		
+		return todayMonth;
+	}
+	// 현재 일 가져오기
+	$.currentD = function() {
+		var today = new Date();
+		var todayDate = today.getDate();
+		
+		return todayDate;
+	}
+	
 	// 현재 날짜 가져오기
 	$.currentDate = function() {
 		var today = new Date();
@@ -73,5 +96,23 @@ $(function() {
 		afterAll = afterYear + "-" + afterMonth;
 		
 		return afterAll;
+	}
+	
+	// 평년 윤년 계산
+	$.calYear = function(todayYear) {
+		if(((todayYear % 4 == 0) && (todayYear % 100 != 0)) || todayYear % 400 == 0) {
+			return 29;
+		} else {
+			return 28;
+		}
+	}
+	// 현재까지의 전체 날 수
+	$.calDay = function(todayYear, todayMonth, date) {
+		var lastYear = todayYear - 1;
+		var totalDate = lastYear * 365 + lastYear / 4 - lastYear / 100 + lastYear / 400;
+		for(var i = 0; i < parseInt(todayMonth) - 1; i++) {
+			totalDate += date[i];
+		}
+		return totalDate;
 	}
 })
