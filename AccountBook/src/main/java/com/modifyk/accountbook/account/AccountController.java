@@ -220,11 +220,20 @@ public class AccountController {
 		return map;
 	}
 	
-	// 해당 월의 카테고리별 지출 내역
+	// 카테고리별 합계
 	@ResponseBody
-	@RequestMapping("account/monthCateSpend")
-	public HashMap<String, Object> monthCateSpend(AccountVO accountVO) {
-		List<AccountVO> catespendList = aDao.monthCateSpend(accountVO);
+	@RequestMapping("account/cateIncome")
+	public HashMap<String, Object> cateIncome(AccountVO accountVO) {
+		List<AccountVO> accountList = aDao.monthIncome(accountVO);
+		HashMap<String, Object> map = stMapSvc.toMap(accountList);
+		return map;
+	}
+	
+	// 해당 월의 카테고리별 수입/지출 내역
+	@ResponseBody
+	@RequestMapping("account/monthCateList")
+	public HashMap<String, Object> monthCateList(AccountVO accountVO) {
+		List<AccountVO> catespendList = aDao.monthCateList(accountVO);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		if(catespendList.size() < 1) {
 			map.put("no", "no");

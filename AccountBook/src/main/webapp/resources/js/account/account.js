@@ -139,9 +139,22 @@ $(function() {
 		
 	})
 	
+	// 수입 통계 보여주기
+	$(document).on("click", "#in-stats-btn", function() {
+		$.activeBtn("#out-stats-btn", "", "#in-stats-btn"); // 수입 버튼 활성화
+		$.incomeStats(todayAll, userid, "#category-stats-div");
+	})
+	
+	// 지출 통계 보여주기
+	$(document).on("click", "#out-stats-btn", function() {
+		$.activeBtn("#in-stats-btn", "", "#out-stats-btn"); // 지출 버튼 활성화
+		$.accountStats(todayAll, userid, "#category-stats-div");
+	})
+	
 	// 이전 달 클릭
 	$(document).on("click", "#before", function() {
 		$.activeBtn("#in-account-btn", "#out-account-btn", "#total-account-btn"); // 전체 보기 버튼 활성화
+		$.activeBtn("#in-stats-btn", "", "#out-stats-btn"); // 지출 버튼 활성화
 		todayAll = $.beforeDate(todayAll); // 날짜 이전 달로 setting
 		$.accountList("monthAccount", todayAll, userid, "#month-div", "#month-account-list-div", "#total-div", "#total-income-div", "#total-spend-div");
 		$.accountStats(todayAll, userid, "#category-stats-div");
@@ -150,6 +163,7 @@ $(function() {
 	// 다음 달 클릭
 	$(document).on("click", "#after", function() {
 		$.activeBtn("#in-account-btn", "#out-account-btn", "#total-account-btn"); // 전체 보기 버튼 활성화
+		$.activeBtn("#in-stats-btn", "", "#out-stats-btn"); // 지출 버튼 활성화
 		todayAll = $.afterDate(todayAll); // 날짜 다음 달로 setting
 		$.accountList("monthAccount", todayAll, userid, "#month-div", "#month-account-list-div", "#total-div", "#total-income-div", "#total-spend-div");
 		$.accountStats(todayAll, userid, "#category-stats-div");
@@ -323,46 +337,13 @@ $(function() {
 	// 통계 카테고리 클릭 시 해당 카테고리 지출 내역
 	$(document).on("click", ".tr-statscate", function() {
 		var catename = $(this).children().eq(0).text();
-		$.ajax({
-			type : "post",
-			url : "monthCateSpend",
-			data : {
-				catename : catename,
-				date : todayAll,
-				userid : userid
-			},
-			success : function(map) {
-				if(Object.keys(map) != "no") {
-					var spend_total = 0;
-					var catepend_html = "<table class='list-table'>";
-						
-					for(var key in map) {
-						catepend_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
-						var value = map[key].split(",");
-						for(var i = 0; i < value.length; i++) {
-							var account = value[i].split("#");
-							catepend_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
-							catepend_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
-							catepend_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
-							catepend_html += "<td>" + account[3] + "</td>"; // 카테고리
-							catepend_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
-							catepend_html += "<td class='text-right red'>" + parseInt(account[5]).toLocaleString() + "원</td>";
-							spend_total += parseInt(account[5]);
-							catepend_html += "<td style='display:none;'>" + account[6].toLocaleString() + "</td></tr>"; // 메모
-						}
-						catepend_html += "<tr style='border : 0;'></tr>";
-					}
-					catepend_html += "</table>";
-						
-				} else {
-					var catepend_html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
-				}
-				$("#catespend-total-div").html("<h4 class='h-normal fs-23'>총 지출 <i class='red h-normal fs-20'>" + spend_total.toLocaleString() + "원</i></h4><br>");
-				$("#catename-div").html("<h3 class='h-normal fs-28'><i class='fi fi-rr-money-check-edit'></i> " + catename + "</h3>");
-				$("#catespend-list-div").html(catepend_html);
-			}
-		})
-		$("#catespend-modal").show();
+		var moneytype;
+		if($(this).children().eq(1).hasClass("blue")) {
+			moneytype = "수입";
+		} else {
+			moneytype = "지출";
+		}
+		$.cateAccountList(catename, moneytype, todayAll, userid);
 	})
 	
 	/* 즐겨찾기 */

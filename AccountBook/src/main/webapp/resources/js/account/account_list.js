@@ -115,6 +115,59 @@ $(function() {
 		})
 	}
 	
+	// 월별 수입 통계
+	// parameter : 날짜, 아이디, 통계 Div
+	$.incomeStats = function(todayAll, userid, statsDiv) {
+		$.ajax({
+			type : "post",
+			url : "cateIncome",
+			data : {
+				date : todayAll,
+				userid : userid
+			},
+			success : function(map) {
+				google.charts.load("current", {packages:["corechart"]});
+				google.charts.setOnLoadCallback(drawChart);
+				var category = Object.keys(map);
+				var catedata = new Array(category.length + 1);
+				for(var i = 0; i < catedata.length; i++) {
+					catedata[i] = Array(2);
+				}
+				
+				catedata[0][0] = "수입";
+				catedata[0][1] = "카테고리별 수입 내역";
+				
+				for(var i = 1; i <= category.length; i++) {
+					catedata[i][0] = category[i - 1];
+					catedata[i][1] = parseInt(map[category[i - 1]]);
+				}
+				
+				function drawChart() {
+					var data = google.visualization.arrayToDataTable(catedata);
+					
+					var options = {
+							legend: 'none',
+							pieSliceText: 'label',
+							pieStartAngle: 0,
+							chartArea:{left:0,top:0,width:'50%',height:'75%'}
+					};
+					
+					var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+					
+					chart.draw(data, options);
+				}
+				
+				var stats_html = "<table class='list-table'>";
+				for(var key in map) {
+					stats_html += "<tr class='tr-statscate'><td>" + key + "</td>";
+					stats_html += "<td class='blue h-normal'>" + map[key].toLocaleString() + "원</td></tr>";
+				}
+				stats_html += "</table>";
+				$(statsDiv).html(stats_html);
+			}
+		})
+	}
+	
 	// 월별, 자산별 수입/지출 목록 가져오기
 	$.astAccountList = function(todayAll, astname, userid, monthDiv, accountListDiv, totalDiv, inTotalDiv, outTotalDiv) {
 		$.ajax({
@@ -173,15 +226,65 @@ $(function() {
 				$(totalDiv).html(total_html);
 				$(inTotalDiv).html(income_html);
 				$(outTotalDiv).html(spend_html);
-				/*$("#modal-month-div").html(month_html);
-				$("#total-div").html(total_html);
-				$("#total-income-div").html(income_html);
-				$("#total-spend-div").html(spend_html);
-				$("#asset-account-list-div").html(account_html);*/
 				
 				$("#asset-account-modal").show();
 			}
 		})
+	}
+	
+	// 카테고리별 수입/지출 내역
+	$.cateAccountList = function(catename, moneytype, todayAll, userid) {
+		$.ajax({
+			type : "post",
+			url : "monthCateList",
+			data : {
+				catename : catename,
+				moneytype : moneytype,
+				date : todayAll,
+				userid : userid
+			},
+			success : function(map) {
+				if(Object.keys(map) != "no") {
+					var spend_total = 0;
+					var account_html = "<table class='list-table'>";
+					var total_html;
+						
+					for(var key in map) {
+						account_html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + key + "</td></tr>";
+						var value = map[key].split(",");
+						for(var i = 0; i < value.length; i++) {
+							var account = value[i].split("#");
+							account_html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>"; // 날짜
+							account_html += "<td style='display:none;'>" + account[0] + "</td>"; // 수입/지출 ID
+							account_html += "<td style='display:none;'>" + account[1] + "</td>"; // 수입 또는 지출(moneytype)
+							account_html += "<td>" + account[3] + "</td>"; // 카테고리
+							account_html += "<td><div>" + account[4] + "</div><div><span class='fs-16 info'>" + account[2] + "</span></div></td>"; // 내용, 자산
+							if(account[1] == "수입") {
+								account_html += "<td class='text-right blue'>" + parseInt(account[5]).toLocaleString() + "원</td>";
+							} else {
+								account_html += "<td class='text-right red'>" + parseInt(account[5]).toLocaleString() + "원</td>";
+							}
+							spend_total += parseInt(account[5]);
+							account_html += "<td style='display:none;'>" + account[6].toLocaleString() + "</td></tr>"; // 메모
+						}
+						account_html += "<tr style='border : 0;'></tr>";
+					}
+					account_html += "</table>";
+					if(moneytype == "수입") {
+						total_html = "<h4 class='h-normal fs-23'>총 수입 <i class='blue h-normal fs-20'>" + spend_total.toLocaleString() + "원</i></h4><br>";
+					} else {
+						total_html = "<h4 class='h-normal fs-23'>총 지출 <i class='red h-normal fs-20'>" + spend_total.toLocaleString() + "원</i></h4><br>";
+					}
+						
+				} else {
+					var account_html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+				}
+				$("#cateaccount-total-div").html(total_html);
+				$("#catename-div").html("<h3 class='h-normal fs-28'><i class='fi fi-rr-money-check-edit'></i> " + catename + "</h3>");
+				$("#cateaccount-list-div").html(account_html);
+			}
+		})
+		$("#catespend-modal").show();
 	}
 	
 })

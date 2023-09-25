@@ -96,9 +96,16 @@
 						<div class="is-scroll" id="month-account-list-div" style="margin-left: 2%;"></div>
 					</div>
 					<div class="col-5">
-						<h4 class="h-normal fs-23">지출 통계</h4> <br>
-						<div id="piechart" style="width: 800px; height: 400px;"></div>
-						<div id="category-stats-div"></div>
+						<table class="select-table">
+							<tr>
+								<td class="" id="in-stats-btn">수입</td>
+								<td class="active" id="out-stats-btn">지출</td>
+							</tr>
+						</table>
+						<div id="in-stats-div">
+							<div id="piechart" style="width: 800px; height: 400px; margin-left: 100px; margin-top: 50px;"></div>
+							<div id="category-stats-div"></div>
+						</div>
 					</div>			
 				</div>
 				
@@ -287,15 +294,15 @@
 				</div>
 			</div>
 			
-			<!-- 카테고리별 지출 모달 -->
+			<!-- 카테고리별 수입/지출 모달 -->
 			<div class="modal" id="catespend-modal" hidden="true">
 				<div class="modal-content wide">
 					<div class="modal-title">
-						<h3 class="h-normal fs-28" id="catename-div"><i class="fi fi-rr-money-check-edit"></i> 카테고리별 지출</h3>
+						<h3 class="h-normal fs-28" id="catename-div"><i class="fi fi-rr-money-check-edit"></i> 카테고리별 내역</h3>
 					</div>
 					<div class="modal-body wide">
-						<div id="catespend-total-div"></div>
-						<div id="catespend-list-div"></div>
+						<div id="cateaccount-total-div"></div>
+						<div id="cateaccount-list-div"></div>
 					</div>
 					<div class="modal-footer">
 						<button class="btn right outline-green" id="close-catespend">닫기</button>

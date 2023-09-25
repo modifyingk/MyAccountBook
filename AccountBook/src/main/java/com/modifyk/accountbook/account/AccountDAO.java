@@ -52,7 +52,7 @@ public class AccountDAO {
 		return my.selectList("accountMapper.monthAccount", accountVO);
 	}
 	
-	// 월별 수입/지출 내역
+	// 월별 수입 내역
 	public List<AccountVO> monthIncome(AccountVO accountVO) {
 		return my.selectList("accountMapper.monthIncome", accountVO);
 	}
@@ -62,9 +62,9 @@ public class AccountDAO {
 		return my.selectList("accountMapper.monthSpend", accountVO);
 	}
 	
-	// 해당 월의 카테고리별 지출 내역
-	public List<AccountVO> monthCateSpend(AccountVO accountVO) {
-		return my.selectList("accountMapper.monthCateSpend", accountVO);
+	// 해당 월의 카테고리별 수입/지출 내역
+	public List<AccountVO> monthCateList(AccountVO accountVO) {
+		return my.selectList("accountMapper.monthCateList", accountVO);
 	}
 	
 	// 달력에 표시할 날짜별 합계 
