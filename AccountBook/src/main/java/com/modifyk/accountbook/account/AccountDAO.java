@@ -81,4 +81,14 @@ public class AccountDAO {
 	public AccountVO accountidInfo(AccountVO accountVO) {
 		return my.selectOne("accountMapper.accountidInfo", accountVO);
 	}
+	
+	// 월별 수입/지출 합계
+	public List<AccountVO> monthTotal(AccountVO accountVO) {
+		return my.selectList("accountMapper.monthTotal", accountVO);
+	}
+	
+	/* // 월별 카테고리별 수입/지출 내역
+	public List<AccountVO> cateAccount(AccountVO accountVO) {
+		return my.selectList("accountMapper.cateAccount", accountVO);
+	} */
 }

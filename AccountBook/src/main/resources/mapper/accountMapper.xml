@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="accountMapper">
-	<!-- 카테고리 추가 -->
+	<!-- 수입/지출 내역 추가 -->
 	<insert id="insertAccount" parameterType="accountVO">
 		insert into account values (#{accountid}, #{moneytype}, #{date}, #{astname}, #{catename}, #{content}, #{total}, #{memo}, #{userid});
 	</insert>
@@ -61,4 +61,16 @@
 	<select id="accountidInfo" parameterType="accountVO" resultType="accountVO">
 		select * from account where accountid = #{accountid} and userid = #{userid};
 	</select>
+	
+	<!-- 월별 수입/지출 합계 -->
+	<select id="monthTotal" parameterType="accountVO" resultType="accountVO">
+		select left(date, 7) as date, sum(total) as total from account where userid = #{userid} and moneytype = #{moneytype} and left(date, 4) = #{date} group by left(date, 7) order by date;
+	</select>
+	
+	<!-- 월별 카테고리별 수입/지출 내역 -->
+	<!--<select id="cateAccount" parameterType="accountVO" resultType="accountVO">
+		select accountid, moneytype, left(date, 7) as date, astname, catename, content, sum(total) as total, memo from account
+		where userid = #{userid} and moneytype = #{moneytype} and catename = #{catename} group by left(date, 7) order by date;
+	</select>
+	-->
 </mapper>

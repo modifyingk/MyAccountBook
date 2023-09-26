@@ -42,6 +42,10 @@
 					<button class="btn medium green font-18 is-shadow" id="add-account-page"><i class="fi fi-rr-add"></i> 추가</button>
 					<button class="btn small outline-green font-18 is-shadow" id="bookmark-page"><i class="fi fi-rr-star"></i> 즐겨찾기</button>
 				</div>
+				
+				<div class="fix-right-tr-3">
+					<button class="btn outline-green font-18 is-shadow" id="open-graph" style="width: 60px;"><i class="fi fi-rr-stats"></i></button>
+				</div>
 				<div class="fix-right-tr-1">
 					<button class="btn green font-18 is-shadow" id="open-cate-setting" style="width: 60px;"><i class="fi fi-rr-menu-burger"></i></button>
 				</div>
@@ -107,6 +111,33 @@
 							<div id="category-stats-div"></div>
 						</div>
 					</div>			
+				</div>
+				
+				<!-- 월별 지출 그래프 모달 -->
+				<div class="modal" id="graph-modal" hidden="true">
+					<div class="modal-content medium">
+						<div class="modal-title">
+							<table class="is-center">
+								<tr>
+									<td>
+										<i class="fi fi-rr-angle-circle-left fs-28 click-icon" id="before-year"></i>
+									</td>
+									<td>
+										<i class="h-normal fs-28" id="graph-year"></i>
+									</td>
+									<td>
+										<i class="fi fi-rr-angle-circle-right fs-28 click-icon" id="after-year"></i>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="modal-body medium is-scroll-x">
+							<div id="total-graph-div"></div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn right outline-green" id="close-graph">닫기</button>
+						</div>
+					</div>
 				</div>
 				
 				<!-- 수입 카테고리 모달 -->

@@ -258,4 +258,21 @@ public class AccountController {
 		List<AccountVO> list = aDao.dateAccount(accountVO);
 		return list;
 	}
+	
+	// 월별 수입/지출 합계
+	@ResponseBody
+	@RequestMapping("account/monthTotal")
+	public List<AccountVO> monthTotal(AccountVO accountVO) {
+		List<AccountVO> list = aDao.monthTotal(accountVO);
+		return list;
+	}
+		
+	/*// 월별 카테고리별 수입/지출 내역
+	@ResponseBody
+	@RequestMapping("account/cateAccount")
+	public List<AccountVO> cateAccount(AccountVO accountVO) {
+		List<AccountVO> list = aDao.cateAccount(accountVO);
+		System.out.println(list);
+		return list;
+	}*/
 }

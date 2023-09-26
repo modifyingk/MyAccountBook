@@ -61,7 +61,11 @@
 	height: 650px;
 	overflow-y: auto;
 }
-::-webkit-scrollbar { /* 스크롤바는 없애지만 기능은 유지 */
+.is-scroll-x {
+	width: 470px;
+	overflow-x: auto;
+}
+.is-scroll::-webkit-scrollbar { /* 스크롤바는 없애지만 기능은 유지 */
   display: none;
 }
 .side-logo {
@@ -414,6 +418,9 @@
 .text-right {
 	text-align: right;
 }
+.text-center {
+	text-align: center;
+}
 .blue {
 	color : #0C70F2;
 }
@@ -422,7 +429,7 @@
 }
 /* ---------------------------------------------------------------- */
 .gage-bar {
-	width : 500px;
+	width: 500px;
 	height: 35px;
 }
 .gage {
@@ -441,7 +448,15 @@
 .blue-aim {
 	background: #4B89DC;
 }
-
+.graph-bar {
+	width: 50px;
+	height: 300px;
+	background: #2C952C;
+	margin: 10px;
+}
+.graph {
+	background: white;
+}
 .modal-table {
 	width: 100%;
 }
@@ -480,6 +495,11 @@
 	position: absolute;
 	top: 10%;
 	right: 3%;
+}
+.fix-right-tr-3 {
+	position: absolute;
+	top: 3%;
+	right: 7%;
 }
 .fix-left-br {
 	position: absolute;

@@ -287,4 +287,88 @@ $(function() {
 		$("#catespend-modal").show();
 	}
 	
+	// 월별 합계 그래프
+	$.monthAccountTotal = function(moneytype, date, userid) {
+		$.ajax({
+			type : "post",
+			url : "monthTotal",
+			data : {
+				moneytype : moneytype,
+				date : date,
+				userid : userid
+			},
+			success : function(list) {
+				var html;
+				if(list != "") {
+					html = "<table><tr>";
+					var maxTotal = list[0].total;
+					for(var i = 0; i < list.length; i++) {
+						if(list[i].total > maxTotal) {
+							maxTotal = list[i].total;
+						}
+					}
+					for(var i = 0; i < list.length; i++) {
+						html += "<td><div class='graph-bar is-border'>";
+						html += "<div class='graph' style='height: " + (100 - (list[i].total / maxTotal * 100)) + "%;'>" + list[i].total.toLocaleString() + "</div></div></td>";
+					}
+					html += "</tr><tr>";
+					for(var i = 0; i < list.length; i++) {
+						html += "<td class='text-center'>" + list[i].date.split("-")[1] + "월</td>";
+					}
+					
+				} else {
+					html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+				}
+				
+				$("#graph-year").html(date + "");
+				$("#total-graph-div").html(html);
+			}
+		})
+	}
+	
+	
+/*	// 월별 카테고리별 통계
+	// parameter : 날짜, 아이디, 통계 Div
+	$.cateAccountStats = function(moneytype, catename, userid) {
+		$.ajax({
+			type : "post",
+			url : "cateAccount",
+			data : {
+				moneytype : moneytype,
+				catename : catename,
+				userid : userid
+			},
+			success : function(list) {
+				google.charts.load('current', {'packages':['corechart']});
+			    google.charts.setOnLoadCallback(drawChart);
+
+			    var catedata = new Array(list.length + 1);
+			    for(var i = 0; i < list.length; i++) {
+			   		catedata[i] = Array(2);
+				}
+				catedata[0][0] = "카테고리";
+				catedata[0][1] = "카테고리별 내역";
+				
+				for(var i = 1; i <= list.length; i++) {
+					catedata[i][0] = parseInt(list[i - 1].date.split("-")[1]);
+					catedata[i][1] = list[i - 1].total;
+				}
+				alert(catedate);
+			    function drawChart() {
+			    	var data = google.visualization.arrayToDataTable(catedata);
+
+			        var options = {
+			          title: 'Company Performance',
+			          curveType: 'function',
+			          legend: { position: 'bottom' }
+			        };
+
+			        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+			        chart.draw(data, options);
+			    }
+			}
+		})
+	}
+*/	
 })

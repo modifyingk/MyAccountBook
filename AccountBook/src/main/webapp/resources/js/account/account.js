@@ -8,6 +8,7 @@ document.write('<script src="../resources/js/main.js"></script>'); // 모달 및
 
 $(function() {
 	var todayAll; // 현재 날짜 저장할 변수
+	var todayYear; // 현재 연도 저장할 변수
 	
 	/* 카테고리 수정 모달 열기  변수 */
 	var originCate; // 원래 카테고리명
@@ -61,10 +62,14 @@ $(function() {
 	$(document).ready(function() {
 		// 현재 날짜 가져오기
 		todayAll = $.currentYM();
-
+		todayYear = todayAll.split("-")[0];
+		
 		// 월별로 수입/지출 목록 가져오기
 		$.accountList("monthAccount", todayAll, userid, "#month-div", "#month-account-list-div", "#total-div", "#total-income-div", "#total-spend-div");
 		$.accountStats(todayAll, userid, "#category-stats-div");
+		
+		// 월별 그래프 보여주기
+		$.monthAccountTotal("지출", todayAll.split("-")[0], userid);
 		
 		// 금액에 숫자만 입력되도록
 		$.onlyNum("#up-acttotal");
@@ -99,6 +104,7 @@ $(function() {
 		$.openModal("#out-category-btn", "#out-category-modal"); // 지출 카테고리 모달 열기
 		$.openModal("#bookmark-page", "#bookmark-modal"); // 즐겨찾기 모달 열기
 		$.openModal("#add-bookmark-page", "#add-bookmark-modal"); // 즐겨찾기 추가 모달 열기
+		$.openModal("#open-graph", "#graph-modal"); // 그래프 모달 열기
 
 		// 모달 닫기
 		$.closeModal("#close-in-category", "#in-category-modal"); // 수입 카테고리 모달 닫기
@@ -114,6 +120,7 @@ $(function() {
 		$.closeModal("#close-catespend", "#catespend-modal"); // 카테고리별 지출 내역 모달 닫기
 		$.closeModal("#close-bookmark", "#bookmark-modal"); // 즐겨찾기 모달 닫기
 		$.closeModal("#close-add-bookmark", "#add-bookmark-modal"); // 즐겨찾기 추가 모달 닫기
+		$.closeModal("#close-graph", "#graph-modal"); // 그래프 모달 닫기
 		
 		// 카테고리 초기화
 		$.resetCategory("#reset-incate-btn", "수입"); // 수입 카테고리 초기화
@@ -138,7 +145,7 @@ $(function() {
 		$.chgMtype("#up-actcatename", "up-mtype");
 		
 	})
-	
+
 	// 수입 통계 보여주기
 	$(document).on("click", "#in-stats-btn", function() {
 		$.activeBtn("#out-stats-btn", "", "#in-stats-btn"); // 수입 버튼 활성화
@@ -156,8 +163,10 @@ $(function() {
 		$.activeBtn("#in-account-btn", "#out-account-btn", "#total-account-btn"); // 전체 보기 버튼 활성화
 		$.activeBtn("#in-stats-btn", "", "#out-stats-btn"); // 지출 버튼 활성화
 		todayAll = $.beforeDate(todayAll); // 날짜 이전 달로 setting
+		todayYear = todayAll.split("-")[0];
 		$.accountList("monthAccount", todayAll, userid, "#month-div", "#month-account-list-div", "#total-div", "#total-income-div", "#total-spend-div");
 		$.accountStats(todayAll, userid, "#category-stats-div");
+		$.monthAccountTotal("지출", todayAll.split("-")[0], userid); // 월별 그래프 보여주기
 	})
 	
 	// 다음 달 클릭
@@ -165,8 +174,22 @@ $(function() {
 		$.activeBtn("#in-account-btn", "#out-account-btn", "#total-account-btn"); // 전체 보기 버튼 활성화
 		$.activeBtn("#in-stats-btn", "", "#out-stats-btn"); // 지출 버튼 활성화
 		todayAll = $.afterDate(todayAll); // 날짜 다음 달로 setting
+		todayYear = todayAll.split("-")[0];
 		$.accountList("monthAccount", todayAll, userid, "#month-div", "#month-account-list-div", "#total-div", "#total-income-div", "#total-spend-div");
 		$.accountStats(todayAll, userid, "#category-stats-div");
+		$.monthAccountTotal("지출", todayAll.split("-")[0], userid); // 월별 그래프 보여주기
+	})
+	
+	// 그래프 이전 연도 클릭
+	$(document).on("click", "#before-year", function() {
+		todayYear = parseInt(todayYear) - 1;
+		$.monthAccountTotal("지출", todayYear, userid); // 월별 그래프 보여주기
+	})
+	
+	// 그래프 다음 연도 클릭
+	$(document).on("click", "#after-year", function() {
+		todayYear = parseInt(todayYear) + 1;
+		$.monthAccountTotal("지출", todayYear, userid); // 월별 그래프 보여주기
 	})
 	
 	// 전체 내역 보기 클릭
