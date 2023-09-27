@@ -115,14 +115,14 @@
 				
 				<!-- 월별 지출 그래프 모달 -->
 				<div class="modal" id="graph-modal" hidden="true">
-					<div class="modal-content medium">
+					<div class="modal-content medium wide-graph">
 						<div class="modal-title">
 							<table class="is-center">
 								<tr>
 									<td>
 										<i class="fi fi-rr-angle-circle-left fs-28 click-icon" id="before-year"></i>
 									</td>
-									<td>
+									<td class="text-center" style="width: 150px;">
 										<i class="h-normal fs-28" id="graph-year"></i>
 									</td>
 									<td>
@@ -131,8 +131,8 @@
 								</tr>
 							</table>
 						</div>
-						<div class="modal-body medium is-scroll-x">
-							<div id="total-graph-div"></div>
+						<div class="modal-body medium wide-graph">
+							<div id="total-graph-div" style="margin-top: 20px;"></div>
 						</div>
 						<div class="modal-footer">
 							<button class="btn right outline-green" id="close-graph">닫기</button>

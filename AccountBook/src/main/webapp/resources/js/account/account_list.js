@@ -299,6 +299,7 @@ $(function() {
 			},
 			success : function(list) {
 				var html;
+				var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 				if(list != "") {
 					html = "<table><tr>";
 					var maxTotal = list[0].total;
@@ -307,20 +308,24 @@ $(function() {
 							maxTotal = list[i].total;
 						}
 					}
-					for(var i = 0; i < list.length; i++) {
+					for(var i = 1; i <= 12; i++) {
 						html += "<td><div class='graph-bar is-border'>";
-						html += "<div class='graph' style='height: " + (100 - (list[i].total / maxTotal * 100)) + "%;'>" + list[i].total.toLocaleString() + "</div></div></td>";
+						for(var j = 0; j < list.length; j++) {
+							if(parseInt(list[j].date.split("-")[1]) == i) {
+								html += "<div class='graph' style='height: " + (list[j].total / maxTotal * 100) + "%;'>" + list[j].total.toLocaleString() + "</div></div></td>";
+							}
+						}
 					}
 					html += "</tr><tr>";
-					for(var i = 0; i < list.length; i++) {
-						html += "<td class='text-center'>" + list[i].date.split("-")[1] + "월</td>";
+					for(var i = 0; i < 12; i++) {
+						html += "<td class='h-bold fs-18 safe text-center' style='height:60px;'>" + month[i] + "</td>";
 					}
 					
 				} else {
 					html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
 				}
 				
-				$("#graph-year").html(date + "");
+				$("#graph-year").html(date + "년");
 				$("#total-graph-div").html(html);
 			}
 		})

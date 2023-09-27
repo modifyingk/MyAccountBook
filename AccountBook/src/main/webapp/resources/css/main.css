@@ -29,6 +29,7 @@
 	width: 79%;
 	float: left;
 	padding-left: 2%;
+	overflow: hidden;
 }
 .col-3 {
 	width: 30%;
@@ -61,11 +62,7 @@
 	height: 650px;
 	overflow-y: auto;
 }
-.is-scroll-x {
-	width: 470px;
-	overflow-x: auto;
-}
-.is-scroll::-webkit-scrollbar { /* 스크롤바는 없애지만 기능은 유지 */
+::-webkit-scrollbar { /* 스크롤바는 없애지만 기능은 유지 */
   display: none;
 }
 .side-logo {
@@ -327,6 +324,13 @@
 .modal-body.wide {
 	width: 620px;
 }
+/* Modal 넓은 크기 */
+.modal-content.wide-graph { 
+	width: 980px;
+}
+.modal-body.wide-graph {
+	width: 930px;
+}
 /* ---------------------------------------------------------------- */
 /* asset.jsp */
 .group-list {
@@ -451,11 +455,16 @@
 .graph-bar {
 	width: 50px;
 	height: 300px;
-	background: #2C952C;
+	background: white;
 	margin: 10px;
+	position : relative;
 }
 .graph {
-	background: white;
+	width: 50px;
+	background: #2C952C;
+	position: absolute;
+	bottom: 0;
+	border-radius: 10px;
 }
 .modal-table {
 	width: 100%;
