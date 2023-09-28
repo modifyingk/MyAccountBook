@@ -164,6 +164,9 @@
 .input.small {
 	width: 150px;
 }
+.input.medium {
+	width: 250px;
+}
 .select input[type="radio"] {
 	display: none;
 }

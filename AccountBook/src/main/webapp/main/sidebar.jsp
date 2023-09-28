@@ -13,8 +13,13 @@ $(function() {
 			location.href = "/accountbook/asset/asset.jsp"; // 자산관리 페이지로
 		} else if(idx == 3) {
 			location.href = "/accountbook/calendar/calendar.jsp"; // 캘린더 페이지로
-		} else {
+		} else if(idx == 4){
 			location.href = "/accountbook/aim/aim.jsp"; // 목표 관리 페이지로
+		} else {
+			var op = confirm("로그아웃 하시겠습니까?")
+			if(op) {
+				location.href = "/accountbook/member/logout";
+			}
 		}
 	});
 });

@@ -55,6 +55,7 @@
 				<li class="menu"><i class="fi fi-rr-coins"></i> 자산관리</li>		
 				<li class="menu"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
 				<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표 관리</li>
+				<li class="menu"><i class="fi fi-rr-sign-out-alt"></i> 로그아웃</li>
 			</ul>
 		</div>
 		<!-- 컨텐츠 -->
@@ -64,21 +65,16 @@
 			if(session.getAttribute("userid") != null) { %>
 				<div>
 					<div class="col-8">
-						<div class="col-7">
-							<h2 class="h-normal fs-35" id="myinfo-btn"><i class="fi fi-rs-user"></i> <%= session.getAttribute("userid") %></h2>
-						</div>
-						<div class="col-3">
-							<br>
-							<div class="col-5" style="width:50px;">
-								<img src='../resources/img/point.gif' width='50px'>
-							</div>
-							<div class="col-5" style="margin-top: 5px;">
-								<i class="h-normal fs-28" id='point-div'></i><i class='h-normal fs-28'>P</i>
-							</div>
-						</div>
+						<h2 class="h-normal fs-35" id="myinfo-btn"><i class="fi fi-rs-user"></i> <%= session.getAttribute("userid") %></h2>
 					</div>
-					<div class="col-2" style="margin-top: 1%;">
-						<a href="../member/logout"><button class="btn outline-gray" id="logoutBtn">로그아웃</button></a>
+					<div class="col-2">
+						<br>
+						<div class="col-5" style="width:50px;">
+							<img src='../resources/img/point.gif' width='50px'>
+						</div>
+						<div class="col-5" style="margin-top: 5px;">
+							<i class="h-normal fs-28" id='point-div'></i><i class='h-normal fs-28'>P</i>
+						</div>
 					</div>
 				</div>
 			<% }
