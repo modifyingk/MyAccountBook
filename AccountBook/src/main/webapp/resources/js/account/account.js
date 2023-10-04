@@ -105,6 +105,7 @@ $(function() {
 		$.openModal("#bookmark-page", "#bookmark-modal"); // 즐겨찾기 모달 열기
 		$.openModal("#add-bookmark-page", "#add-bookmark-modal"); // 즐겨찾기 추가 모달 열기
 		$.openModal("#open-graph", "#graph-modal"); // 그래프 모달 열기
+		$.openModal("#open-search", "#search-modal"); // 검색 모달 열기
 
 		// 모달 닫기
 		$.closeModal("#close-in-category", "#in-category-modal"); // 수입 카테고리 모달 닫기
@@ -121,6 +122,7 @@ $(function() {
 		$.closeModal("#close-bookmark", "#bookmark-modal"); // 즐겨찾기 모달 닫기
 		$.closeModal("#close-add-bookmark", "#add-bookmark-modal"); // 즐겨찾기 추가 모달 닫기
 		$.closeModal("#close-graph", "#graph-modal"); // 그래프 모달 닫기
+		$.closeModal("#close-search", "#search-modal"); // 검색 모달 닫기
 		
 		// 카테고리 초기화
 		$.resetCategory("#reset-incate-btn", "수입"); // 수입 카테고리 초기화
@@ -208,6 +210,11 @@ $(function() {
 	$(document).on("click", "#out-account-btn", function() {
 		$.activeBtn("#total-account-btn", "#in-account-btn", "#out-account-btn"); // 지출만 보기 버튼 활성화
 		$.accountList("monthSpend", todayAll, userid, "", "#month-account-list-div", "", "", "");
+	})
+	
+	// 수입/지출 검색
+	$(document).on("click", "#search-btn", function() {
+		$.searchAccountList($("#search-input").val(), userid);
 	})
 	
 	// 수입/지출 추가 모달 열기

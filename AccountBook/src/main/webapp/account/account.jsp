@@ -43,7 +43,9 @@
 					<button class="btn medium green font-18 is-shadow" id="add-account-page"><i class="fi fi-rr-add"></i> 추가</button>
 					<button class="btn small outline-green font-18 is-shadow" id="bookmark-page"><i class="fi fi-rr-star"></i> 즐겨찾기</button>
 				</div>
-				
+				<div class="fix-right-tr-4">
+					<button class="btn outline-green font-18 is-shadow" id="open-search" style="width: 60px;"><i class="fi fi-rr-search"></i></button>
+				</div>
 				<div class="fix-right-tr-3">
 					<button class="btn outline-green font-18 is-shadow" id="open-graph" style="width: 60px;"><i class="fi fi-rr-stats"></i></button>
 				</div>
@@ -137,6 +139,34 @@
 						</div>
 						<div class="modal-footer">
 							<button class="btn right outline-green" id="close-graph">닫기</button>
+						</div>
+					</div>
+				</div>
+				
+				<!-- 검색 모달 -->
+				<div class="modal" id="search-modal" hidden="true">
+					<div class="modal-content wide">
+						<div class="modal-title">
+							<h3 class="h-normal fs-28"><i class="fi fi-rr-search"></i> 검색</h3>
+							<input class="input" style="margin-left: 10px;" id="search-input">
+							<button class="btn green font-18" style="width: 100px; height: 45px;" id="search-btn"><i class="fi fi-rr-search"></i></button>
+						</div>
+						<div class="modal-body wide">
+							<!-- 총 금액 -->
+							<div>
+								<table style="width: 500px; margin-left: 6%; text-align: center;">
+									<tr>
+										<td><div id="search-total-div"></div></td>
+										<td><div id="search-income-div"></div></td>
+										<td><div id="search-spend-div"></div></td>
+									</tr>
+								</table>
+							</div>
+							<br>
+							<div id="search-list-div"></div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn right outline-green" id="close-search">닫기</button>
 						</div>
 					</div>
 				</div>

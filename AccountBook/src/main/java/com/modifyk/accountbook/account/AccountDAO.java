@@ -87,6 +87,11 @@ public class AccountDAO {
 		return my.selectList("accountMapper.monthTotal", accountVO);
 	}
 	
+	// 수입/지출 검색
+	public List<AccountVO> searchAccount(AccountVO accountVO) {
+		return my.selectList("accountMapper.searchAccount", accountVO);
+	}
+	
 	/* // 월별 카테고리별 수입/지출 내역
 	public List<AccountVO> cateAccount(AccountVO accountVO) {
 		return my.selectList("accountMapper.cateAccount", accountVO);

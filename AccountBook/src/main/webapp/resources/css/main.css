@@ -511,7 +511,12 @@
 .fix-right-tr-3 {
 	position: absolute;
 	top: 3%;
-	right: 7%;
+	right: 6.5%;
+}
+.fix-right-tr-4 {
+	position: absolute;
+	top: 3%;
+	right: 10%;
 }
 .fix-left-br {
 	position: absolute;

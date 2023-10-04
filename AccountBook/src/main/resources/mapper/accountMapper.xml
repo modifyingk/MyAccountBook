@@ -67,6 +67,11 @@
 		select left(date, 7) as date, sum(total) as total from account where userid = #{userid} and moneytype = #{moneytype} and left(date, 4) = #{date} group by left(date, 7) order by date;
 	</select>
 	
+	<!-- 수입/지출 검색 -->
+	<select id="searchAccount" parameterType="accountVO" resultType="accountVO">
+		select * from account where content like concat('%', #{content}, '%') and userid = #{userid} order by date desc;
+	</select>
+	
 	<!-- 월별 카테고리별 수입/지출 내역 -->
 	<!--<select id="cateAccount" parameterType="accountVO" resultType="accountVO">
 		select accountid, moneytype, left(date, 7) as date, astname, catename, content, sum(total) as total, memo from account

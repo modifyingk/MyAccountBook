@@ -266,7 +266,21 @@ public class AccountController {
 		List<AccountVO> list = aDao.monthTotal(accountVO);
 		return list;
 	}
-		
+	
+	// 수입/지출 검색
+	@ResponseBody
+	@RequestMapping("account/searchAccount")
+	public HashMap<String, Object> searchAccount(AccountVO accountVO) {
+		List<AccountVO> list = aDao.searchAccount(accountVO);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(list.size() < 1) {
+			map.put("no", "no");
+		} else {
+			map = toMapSvc.toMap(list);
+		}
+		return map;
+	}
+	
 	/*// 월별 카테고리별 수입/지출 내역
 	@ResponseBody
 	@RequestMapping("account/cateAccount")
