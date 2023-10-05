@@ -19,7 +19,7 @@ $(function () {
 	// 영어, 한글만 입력 가능
 	$.onlyLetter = function(docID) {
 		$(document).on("keyup", docID, function() {
-			var letterReg = /[^a-zA-z가-힣]/g; // 영어, 한글이 아닌 값 정규식
+			var letterReg = /[^a-zA-z가-힣\s]/g; // 영어, 한글이 아닌 값 정규식 (공백 입력 가능)
 			$(this).val($(this).val().replace(letterReg, "")); // 영어, 한글이 아닌 값 지우기
 		})
 	}
@@ -38,7 +38,7 @@ $(function () {
 	
 	// 이름 형식 확인
 	$.checkNameReg = function(docID) {
-		var nameReg = RegExp(/^[a-zA-Z가-힣]{2,10}$/); // 한글, 영어 2~10글자
+		var nameReg = RegExp(/^[가-힣]{2,20}|[a-zA-Z]{2,10}\s?[a-zA-Z]{0,10}$/); // 한글, 영어 2~20 글자
 		return nameReg.test($(docID).val());
 	}
 

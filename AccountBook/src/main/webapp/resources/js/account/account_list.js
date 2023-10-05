@@ -331,7 +331,7 @@ $(function() {
 		})
 	}
 	
-	// 카테고리별 수입/지출 내역
+	// 검색 내역
 	$.searchAccountList = function(content, userid) {
 		$.ajax({
 			type : "post",
@@ -368,14 +368,18 @@ $(function() {
 						account_html += "<tr style='border : 0;'></tr>";
 					}
 					account_html += "</table>";
+					
+					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total).toLocaleString() + "</i>";
+					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total.toLocaleString() + "</i>";
+					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total.toLocaleString() + "</i>";
+					
 				} else {
 					var account_html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+					var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>0</i>";
+					var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>0</i>";
+					var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>0</i>";
 				}
-				
-				var total_html = "<h4 class='h-normal fs-18 info'>합계</h4><i class='h-normal fs-20'>" + (income_total - spend_total).toLocaleString() + "</i>";
-				var income_html = "<h4 class='h-normal fs-18 info'>총 수입</h4><i class='blue h-normal fs-20'>" + income_total.toLocaleString() + "</i>";
-				var spend_html = "<h4 class='h-normal fs-18 info'>총 지출</h4><i class='red h-normal fs-20'>" + spend_total.toLocaleString() + "</i>";
-				
+
 				$("#search-total-div").html(total_html);
 				$("#search-income-div").html(income_html);
 				$("#search-spend-div").html(spend_html);
@@ -384,7 +388,6 @@ $(function() {
 			}
 		})
 	}
-	
 /*	// 월별 카테고리별 통계
 	// parameter : 날짜, 아이디, 통계 Div
 	$.cateAccountStats = function(moneytype, catename, userid) {

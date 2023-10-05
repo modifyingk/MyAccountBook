@@ -93,9 +93,9 @@
 						<div>
 							<table style="width: 500px; margin-left: 6%; text-align: center;">
 								<tr>
-									<td><div id="total-div">합계</div></td>
-									<td><div id="total-income-div">총 수입</div></td>
-									<td><div id="total-spend-div">총 지출</div></td>
+									<td><div id="total-div"></div></td>
+									<td><div id="total-income-div"></div></td>
+									<td><div id="total-spend-div"></div></td>
 								</tr>
 							</table>
 						</div>

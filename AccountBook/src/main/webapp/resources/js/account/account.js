@@ -217,6 +217,11 @@ $(function() {
 		$.searchAccountList($("#search-input").val(), userid);
 	})
 	
+	// 수입/지출 검색
+	$(document).on("keyup", "#search-input", function() {
+		$.searchAccountList($("#search-input").val(), userid);
+	})
+	
 	// 수입/지출 추가 모달 열기
 	$(document).on("click", "#add-account-page", function() {
 		// 현재 날짜 가져오기

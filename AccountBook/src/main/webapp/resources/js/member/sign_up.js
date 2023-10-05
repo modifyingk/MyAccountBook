@@ -79,7 +79,7 @@ $(function () {
 	$(document).on("click", "#signUpBtn", function() {
 		// 성별 선택 체크
 		var gender = $("input[name=gender]:checked").val(); // 선택된 성별 값 gender 변수에 저장
-		if(gender == "남" || gender == "여") { // gender가 남 또는 여라는 값을 가진다면
+		if(gender == "M" || gender == "F") { // gender가 M 또는 F라는 값을 가진다면
 			genderChk = true;
 		} else {
 			genderChk = false;

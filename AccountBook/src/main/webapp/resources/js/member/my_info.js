@@ -63,10 +63,10 @@ $(function () {
 			
 			$("#username").attr("value", username);
 			
-			if(gender == "남") {
-				$("input[type=radio][value='남']").prop("checked", true);
+			if(gender == "M") {
+				$("input[type=radio][value='M']").prop("checked", true);
 			} else {
-				$("input[type=radio][value='여']").prop("checked", true);
+				$("input[type=radio][value='F']").prop("checked", true);
 			}
 			
 			$("#year").attr("value", birth[0]);
