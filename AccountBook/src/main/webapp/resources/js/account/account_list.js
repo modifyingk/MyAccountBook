@@ -106,8 +106,8 @@ $(function() {
 				
 				var stats_html = "<table class='list-table'>";
 				for(var key in map) {
-					stats_html += "<tr class='tr-statscate'><td>" + key + "</td>";
-					stats_html += "<td class='red h-normal'>" + map[key].toLocaleString() + "원</td></tr>";
+					stats_html += "<tr class='tr-statscate text-center'><td>" + key + "</td>";
+					stats_html += "<td class='red h-normal text-center'>" + map[key].toLocaleString() + "원</td></tr>";
 				}
 				stats_html += "</table>";
 				$(statsDiv).html(stats_html);
@@ -159,8 +159,8 @@ $(function() {
 				
 				var stats_html = "<table class='list-table'>";
 				for(var key in map) {
-					stats_html += "<tr class='tr-statscate'><td>" + key + "</td>";
-					stats_html += "<td class='blue h-normal'>" + map[key].toLocaleString() + "원</td></tr>";
+					stats_html += "<tr class='tr-statscate text-center'><td>" + key + "</td>";
+					stats_html += "<td class='blue h-normal text-center'>" + map[key].toLocaleString() + "원</td></tr>";
 				}
 				stats_html += "</table>";
 				$(statsDiv).html(stats_html);

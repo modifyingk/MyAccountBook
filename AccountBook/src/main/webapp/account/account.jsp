@@ -59,16 +59,47 @@
 				</div>
 				
 				<!-- 날짜 보여주기 -->
-				<div style="margin-left: 37%; margin-bottom: 3%;">
-					<table>
+				<div style="margin-bottom: 3%; width: 100%;">
+					<table style="width: 100%;">
 						<tr>
-							<td>
+							<td style="width: 33%; text-align: center;">
 								<i class="fi fi-rr-angle-circle-left fs-28 click-icon" id="before"></i>
 							</td>
-							<td>
-								<div id="month-div" style="width: 100%; margin: 10px;"></div>
+							<td style="width: 33%; text-align: center;">
+								<div id="month-div" style="margin: 10px; cursor: pointer;"></div>
+								
+								<!-- 날짜 선택 div -->
+								<div class="is-border" id="select-month" style="z-index: 2; position: absolute; background: white; display: none;">
+									<table class="date-table">
+										<tr>
+											<td id="before-year"><i class="fi fi-rr-angle-left"></i></td>
+											<td colspan="2" style="text-align: center;">
+												<div class="h-bold fs-18" id="current-year"></div>
+											</td>
+											<td id="after-year"><i class="fi fi-rr-angle-right"></i></td>
+										</tr>
+										<tr>
+											<td class="month-td">01월</td>
+											<td class="month-td">02월</td>
+											<td class="month-td">03월</td>
+											<td class="month-td">04월</td>
+										</tr>
+										<tr>
+											<td class="month-td">05월</td>
+											<td class="month-td">06월</td>
+											<td class="month-td">07월</td>
+											<td class="month-td">08월</td>
+										</tr>
+										<tr>
+											<td class="month-td">09월</td>
+											<td class="month-td">10월</td>
+											<td class="month-td">11월</td>
+											<td class="month-td">12월</td>
+										</tr>
+									</table>
+								</div>
 							</td>
-							<td>
+							<td style="width: 33%; text-align: center;">
 								<i class="fi fi-rr-angle-circle-right fs-28 click-icon" id="after"></i>
 							</td>
 						</tr>
@@ -79,7 +110,7 @@
 				<div>
 					<div class="col-5">
 						<!-- 전체, 수입, 지출 선택 -->
-						<div>
+						<div style="margin-left: 10%;">
 							<table class="select-table">
 								<tr>
 									<td class="active" id="total-account-btn">전체</td>
@@ -90,26 +121,26 @@
 						</div>
 						<br>
 						<!-- 총 금액 -->
-						<div>
+						<div style="margin-left: 10%;">
 							<table style="width: 500px; margin-left: 6%; text-align: center;">
 								<tr>
-									<td><div id="total-div"></div></td>
-									<td><div id="total-income-div"></div></td>
-									<td><div id="total-spend-div"></div></td>
+									<td style="width: 30%;"><div id="total-div"></div></td>
+									<td style="width: 30%;"><div id="total-income-div"></div></td>
+									<td style="width: 30%;"><div id="total-spend-div"></div></td>
 								</tr>
 							</table>
 						</div>
 						<br>
-						<div class="is-scroll" id="month-account-list-div" style="margin-left: 2%;"></div>
+						<div class="is-scroll" id="month-account-list-div" style="margin-left: 10%;"></div>
 					</div>
 					<div class="col-5">
-						<table class="select-table">
+						<table class="select-table" style="margin-left: 10%;">
 							<tr>
 								<td class="" id="in-stats-btn">수입</td>
 								<td class="active" id="out-stats-btn">지출</td>
 							</tr>
 						</table>
-						<div id="in-stats-div">
+						<div id="in-stats-div" style="margin-left: 10%; z-index: 1;">
 							<div id="piechart" style="width: 800px; height: 400px; margin-left: 100px; margin-top: 50px;"></div>
 							<div id="category-stats-div"></div>
 						</div>
@@ -123,13 +154,13 @@
 							<table class="is-center">
 								<tr>
 									<td>
-										<i class="fi fi-rr-angle-circle-left fs-28 click-icon" id="before-year"></i>
+										<i class="fi fi-rr-angle-circle-left fs-28 click-icon" id="before-graph"></i>
 									</td>
 									<td class="text-center" style="width: 150px;">
 										<i class="h-normal fs-28" id="graph-year"></i>
 									</td>
 									<td>
-										<i class="fi fi-rr-angle-circle-right fs-28 click-icon" id="after-year"></i>
+										<i class="fi fi-rr-angle-circle-right fs-28 click-icon" id="after-graph"></i>
 									</td>
 								</tr>
 							</table>
@@ -143,13 +174,29 @@
 					</div>
 				</div>
 				
+				<!-- 카테고리별 수입/지출 모달 -->
+				<div class="modal" id="catespend-modal" hidden="true">
+					<div class="modal-content wide">
+						<div class="modal-title">
+							<h3 class="h-normal fs-28" id="catename-div"><i class="fi fi-rr-money-check-edit"></i> 카테고리별 내역</h3>
+						</div>
+						<div class="modal-body wide">
+							<div id="cateaccount-total-div"></div>
+							<div id="cateaccount-list-div"></div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn right outline-green" id="close-catespend">닫기</button>
+						</div>
+					</div>
+				</div>
+			
 				<!-- 검색 모달 -->
 				<div class="modal" id="search-modal" hidden="true">
 					<div class="modal-content wide">
 						<div class="modal-title">
 							<h3 class="h-normal fs-28"><i class="fi fi-rr-search"></i> 검색</h3>
-							<input class="input" style="margin-left: 10px;" id="search-input">
-							<div id="autosearch-div" style="position:absolute; margin-left: 10px; display: none; background: white;" class="input">
+							<input class="input" style="margin-left: 10px; width: 510px;" id="search-input">
+							<div class="input" id="autosearch-div" style="position:absolute; margin-left: 10px; display: none; background: white; width: 510px;">
 								<div id="autosearch-list-div"></div>
 							</div>
 							<button class="btn green font-18" style="width: 100px; height: 45px;" id="search-btn"><i class="fi fi-rr-search"></i></button>
@@ -355,22 +402,6 @@
 					<hr>
 					<div class="modal-footer">
 						<button class="btn right outline-green" id="close-add-account">닫기</button>
-					</div>
-				</div>
-			</div>
-			
-			<!-- 카테고리별 수입/지출 모달 -->
-			<div class="modal" id="catespend-modal" hidden="true">
-				<div class="modal-content wide">
-					<div class="modal-title">
-						<h3 class="h-normal fs-28" id="catename-div"><i class="fi fi-rr-money-check-edit"></i> 카테고리별 내역</h3>
-					</div>
-					<div class="modal-body wide">
-						<div id="cateaccount-total-div"></div>
-						<div id="cateaccount-list-div"></div>
-					</div>
-					<div class="modal-footer">
-						<button class="btn right outline-green" id="close-catespend">닫기</button>
 					</div>
 				</div>
 			</div>

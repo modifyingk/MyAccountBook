@@ -59,7 +59,7 @@
 	justify-content: center;
 }
 .is-scroll {
-	height: 650px;
+	height: 550px;
 	overflow-y: auto;
 }
 ::-webkit-scrollbar { /* 스크롤바는 없애지만 기능은 유지 */
@@ -486,7 +486,7 @@
 .fix-col5-left-br {
 	position: absolute;
 	top: 90%;
-	left: 30%;
+	left: 32%;
 }
 .fix-left-bl {
 	position: absolute;
@@ -597,4 +597,36 @@
 	background: #2C952C;
 	color: white;
 	cursor: pointer;
+}
+.date-table {
+	width: 500px;
+	height: 250px;
+	padding: 10px;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+.date-table td {
+	width: 25%;
+	height: 50px;
+}
+.date-table .month-td {
+	border-radius: 10px;
+}
+.date-table .month-td:hover {
+	background: #2C952C;
+	color: white;
+}
+#before-year {
+	border-radius: 10px;
+}
+#before-year:hover {
+	background: #2C952C;
+	color: white;
+}
+#after-year {
+	border-radius: 10px;
+}
+#after-year:hover {
+	background: #2C952C;
+	color: white;
 }
