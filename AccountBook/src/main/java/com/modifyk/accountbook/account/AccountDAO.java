@@ -92,6 +92,11 @@ public class AccountDAO {
 		return my.selectList("accountMapper.searchAccount", accountVO);
 	}
 	
+	// 수입/지출 검색 자동완성
+	public List<String> autoSearch(AccountVO accountVO) {
+		return my.selectList("accountMapper.autoSearch", accountVO);
+	}
+	
 	/* // 월별 카테고리별 수입/지출 내역
 	public List<AccountVO> cateAccount(AccountVO accountVO) {
 		return my.selectList("accountMapper.cateAccount", accountVO);

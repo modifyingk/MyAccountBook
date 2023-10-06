@@ -217,9 +217,40 @@ $(function() {
 		$.searchAccountList($("#search-input").val(), userid);
 	})
 	
-	// 수입/지출 검색
+	// 수입/지출 검색 자동완성
 	$(document).on("keyup", "#search-input", function() {
-		$.searchAccountList($("#search-input").val(), userid);
+		if($("#search-input").val() != "") { // 사용자가 입력한 값이 있을 경우에만
+			$.ajax({
+				type : "post",
+				url : "autoSearch",
+				data : {
+					content : $("#search-input").val(),
+					userid : userid
+				},
+				success : function(list) {
+					if(list.length > 0) { // 사용자가 입력한 값이 포함되는 단어가 존재할 경우 자동완성 리스트 보여주기
+						var html = "<ul class='autocomplete'>";
+						for(var i = 0; i < list.length; i++) {
+							html += "<li class='autocomplete-list'>" + list[i] + "</li>";
+						}
+						html += "</ul>";
+						$("#autosearch-list-div").html(html);
+						
+						$("#autosearch-div").show();
+					}
+				}
+			})
+		} else { // 내용을 입력했다 지운 경우는 리스트 숨기기
+			$("#autosearch-div").hide();
+		}
+	})
+	
+	// 수입/지출 검색 자동완성된 단어 선택
+	$(document).on("click", ".autocomplete-list", function () {
+		$("#search-input").val($(this).text());
+		$("#search-btn").trigger("click"); // 검색 버튼 자동 클릭
+		
+		$("#autosearch-div").hide();
 	})
 	
 	// 수입/지출 추가 모달 열기

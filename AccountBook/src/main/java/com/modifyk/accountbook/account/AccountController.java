@@ -280,6 +280,14 @@ public class AccountController {
 		}
 		return map;
 	}
+
+	// 수입/지출 검색 단어 자동완성
+	@ResponseBody
+	@RequestMapping("account/autoSearch")
+	public List<String> autoSearch(AccountVO accountVO) {
+		List<String> list = aDao.autoSearch(accountVO);
+		return list;
+	}
 	
 	/*// 월별 카테고리별 수입/지출 내역
 	@ResponseBody

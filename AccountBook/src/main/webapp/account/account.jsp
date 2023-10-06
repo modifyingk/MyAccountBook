@@ -149,6 +149,9 @@
 						<div class="modal-title">
 							<h3 class="h-normal fs-28"><i class="fi fi-rr-search"></i> 검색</h3>
 							<input class="input" style="margin-left: 10px;" id="search-input">
+							<div id="autosearch-div" style="position:absolute; margin-left: 10px; display: none; background: white;" class="input">
+								<div id="autosearch-list-div"></div>
+							</div>
 							<button class="btn green font-18" style="width: 100px; height: 45px;" id="search-btn"><i class="fi fi-rr-search"></i></button>
 						</div>
 						<div class="modal-body wide">

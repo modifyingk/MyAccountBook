@@ -583,3 +583,18 @@
 #myinfo-btn:hover {
 	color: #2C952C;
 }
+.autocomplete {
+	margin: 0;
+	padding: 0;
+}
+.autocomplete-list {
+	list-style: none;
+	padding: 15px 10px;
+	margin: 0;
+	border-radius: 10px;
+}
+.autocomplete-list:hover {
+	background: #2C952C;
+	color: white;
+	cursor: pointer;
+}
