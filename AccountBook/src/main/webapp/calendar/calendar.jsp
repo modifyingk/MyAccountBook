@@ -39,24 +39,54 @@
 				<h3 class="h-normal fs-28"><i class="fi fi-rs-calendar-check"></i> 캘린더</h3>
 				
 				<!-- 날짜 -->
-				<div style="margin-left: 37%; margin-bottom: 2%;">
-					<table>
+				<div style="margin-bottom: 2%;">
+					<table style="width: 100%;">
 						<tr>
-							<td>
+							<td style="width: 33%; text-align: center;">
 								<i class="fi fi-rr-angle-circle-left fs-28 click-icon" id="before"></i>
 							</td>
-							<td>
-								<div id="month-div" style="width: 100%; margin: 10px;"></div>
+							<td style="width: 33%; text-align: center;">
+								<div id="month-div" style="width: 100%; margin: 10px; cursor: pointer;"></div>
+								
+								<!-- 날짜 선택 div -->
+								<div class="is-border" id="select-month" style="position: absolute; background: white; display: none;">
+									<table class="date-table">
+										<tr>
+											<td id="before-year"><i class="fi fi-rr-angle-left"></i></td>
+											<td colspan="2" style="text-align: center;">
+												<div class="h-bold fs-18" id="current-year"></div>
+											</td>
+											<td id="after-year"><i class="fi fi-rr-angle-right"></i></td>
+										</tr>
+										<tr>
+											<td class="month-td">01월</td>
+											<td class="month-td">02월</td>
+											<td class="month-td">03월</td>
+											<td class="month-td">04월</td>
+										</tr>
+										<tr>
+											<td class="month-td">05월</td>
+											<td class="month-td">06월</td>
+											<td class="month-td">07월</td>
+											<td class="month-td">08월</td>
+										</tr>
+									<tr>
+											<td class="month-td">09월</td>
+											<td class="month-td">10월</td>
+											<td class="month-td">11월</td>
+											<td class="month-td">12월</td>
+										</tr>
+									</table>
+								</div>
 							</td>
-							<td>
+							<td style="width: 33%; text-align: center;">
 								<i class="fi fi-rr-angle-circle-right fs-28 click-icon" id="after"></i>
 							</td>
 						</tr>
 					</table>
-				</div>
-				
+				</div>	
 				<!-- 달력 -->
-				<div>
+				<div style="margin-left: 5%;">
 					<table class="calendar-table">
 						<tr style="height: 50px;">
 							<td><div class="red">일</div></td>

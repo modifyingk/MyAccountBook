@@ -42,24 +42,57 @@
 				</div>
 				<!-- 날짜 보여주기 -->
 				<div>
-					<table>
+					<table style="width: 100%;">
 						<tr>
-							<td>
+							<td style="width: 33%; text-align: center;">
 								<i class="fi fi-rr-angle-circle-left fs-28 click-icon" id="before"></i>
 							</td>
-							<td>
-								<div id="aim-month-div" style="width: 100%; margin: 10px;"></div>
+							<td style="width: 33%; text-align: center;">
+								<div id="month-div" style="width: 100%; margin: 10px; cursor: pointer;"></div>
+								
+								<!-- 날짜 선택 div -->
+								<div class="is-border" id="select-month" style="position: absolute; background: white; display: none;">
+									<table class="date-table">
+										<tr>
+											<td id="before-year"><i class="fi fi-rr-angle-left"></i></td>
+											<td colspan="2" style="text-align: center;">
+												<div class="h-bold fs-18" id="current-year"></div>
+											</td>
+											<td id="after-year"><i class="fi fi-rr-angle-right"></i></td>
+										</tr>
+										<tr>
+											<td class="month-td">01월</td>
+											<td class="month-td">02월</td>
+											<td class="month-td">03월</td>
+											<td class="month-td">04월</td>
+										</tr>
+										<tr>
+											<td class="month-td">05월</td>
+											<td class="month-td">06월</td>
+											<td class="month-td">07월</td>
+											<td class="month-td">08월</td>
+										</tr>
+										<tr>
+											<td class="month-td">09월</td>
+											<td class="month-td">10월</td>
+											<td class="month-td">11월</td>
+											<td class="month-td">12월</td>
+										</tr>
+									</table>
+								</div>
 							</td>
-							<td>
+							<td style="width: 33%; text-align: center;">
 								<i class="fi fi-rr-angle-circle-right fs-28 click-icon" id="after"></i>
 							</td>
 						</tr>
 					</table>
 				</div>
-				<h4 class='h-normal fs-23'>지출 목표</h4>
-				<div class="is-scroll" id="aim-list-div" style="height: 350px;"></div>
-				<h4 class='h-normal fs-23'>수입 목표</h4>
-				<div class="is-scroll" id="aim-in-list-div" style="height: 350px;"></div>
+				<div style="margin-left: 13%;">
+					<h4 class='h-normal fs-23'>지출 목표</h4>
+					<div class="is-scroll" id="aim-list-div" style="height: 350px;"></div>
+					<h4 class='h-normal fs-23'>수입 목표</h4>
+					<div class="is-scroll" id="aim-in-list-div" style="height: 350px;"></div>
+				</div>
 				
 				
 			<!-- 목표 추가 모달 -->

@@ -99,6 +99,9 @@ $(function() {
 		
 		// 모달 닫기
 		$.closeModal("#close-date-account", "#date-account-modal");
+		
+		// 다른 영역 클릭 시 창 닫기
+		$.autoClose("#select-month"); // 날짜 선택 닫기
 	})
 	
 	// 이전 달 클릭
@@ -119,6 +122,33 @@ $(function() {
 		
 		$.clearCalendar(); // 달력 비우기
 		$.calendar(todayAll, todayYear, todayMonth);
+	})
+	
+	// 날짜 선택
+	$(document).on("click", "#month-div", function() {
+		$.selectDate(todayYear);
+	})
+	
+	// 날짜 선택에서 이전 연도 클릭
+	$(document).on("click", "#before-year", function() {
+		todayYear = $.selectBeforeYear(todayYear);
+	})
+	
+	// 날짜 선택에서 다음 연도 클릭
+	$(document).on("click", "#after-year", function() {
+		todayYear = $.selectAfterYear(todayYear);
+	})
+	
+	// 날짜 월 선택 시 보여줄 연월 값 변경
+	$(document).on("click", ".month-td", function() {
+		todayAll = $("#current-year").text().split("년")[0] + "-" + $(this).text().split("월")[0];
+		todayYear = todayAll.split("-")[0];
+		todayMonth = todayAll.split("-")[1];
+		
+		$.clearCalendar(); // 달력 비우기
+		$.calendar(todayAll, todayYear, todayMonth);
+		
+		$("#select-month").hide();
 	})
 	
 	// 달력 네모 칸 선택 시 해당 내역 보여주기

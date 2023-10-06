@@ -6,6 +6,7 @@ document.write('<script src="../resources/js/aim/aim_list.js"></script>'); // �
 
 $(function() {
 	var todayAll; // 현재 날짜 저장할 변수
+	var todayYear;
 	
 	// 목표 중복 확인 함수
 	$.overlapAim = function(aimdate) {
@@ -33,6 +34,7 @@ $(function() {
 	$(document).ready(function() {
 		// 현재 날짜 가져오기
 		todayAll = $.currentYM();
+		todayYear = todayAll.split("-")[0];
 		
 		// 숫자만 입력되도록
 		$.onlyNum("#add-year");
@@ -44,7 +46,7 @@ $(function() {
 		$.moneyFmt("#up-total");
 		
 		// 목표 가져오기
-		$.aimList(todayAll, userid, "#aim-month-div", "#aim-list-div"); // 지출 목표
+		$.aimList(todayAll, userid, "#month-div", "#aim-list-div"); // 지출 목표
 		$.inaimList(todayAll, userid, "#aim-in-list-div"); // 수입 목표
 		
 		// 목표 선택 및 값 자동 입력
@@ -66,20 +68,48 @@ $(function() {
 		$.closeModal("#close-select-incate", "#select-incate-modal"); // 수입 카테고리 선택 모달 닫기
 		$.closeModal("#close-select-outcate", "#select-outcate-modal"); // 지출 카테고리 선택 모달 닫기
 		
+		// 다른 영역 클릭 시 창 닫기
+		$.autoClose("#select-month"); // 날짜 선택 닫기
 	})
 	
 	// 이전 달 목표
 	$(document).on("click", "#before", function() {
 		todayAll = $.beforeDate(todayAll); // 날짜 이전 달로 setting
-		$.aimList(todayAll, userid, "#aim-month-div", "#aim-list-div"); // 지출 목표
+		$.aimList(todayAll, userid, "#month-div", "#aim-list-div"); // 지출 목표
 		$.inaimList(todayAll, userid, "#aim-in-list-div"); // 수입 목표
 	})
 	
 	// 다음 달 목표
 	$(document).on("click", "#after", function() {
 		todayAll = $.afterDate(todayAll); // 날짜 이전 달로 setting
-		$.aimList(todayAll, userid, "#aim-month-div", "#aim-list-div"); // 지출 목표
+		$.aimList(todayAll, userid, "#month-div", "#aim-list-div"); // 지출 목표
 		$.inaimList(todayAll, userid, "#aim-in-list-div"); // 수입 목표
+	})
+	
+	// 날짜 선택
+	$(document).on("click", "#month-div", function() {
+		$.selectDate(todayYear);
+	})
+	
+	// 날짜 선택에서 이전 연도 클릭
+	$(document).on("click", "#before-year", function() {
+		todayYear = $.selectBeforeYear(todayYear);
+	})
+	
+	// 날짜 선택에서 다음 연도 클릭
+	$(document).on("click", "#after-year", function() {
+		todayYear = $.selectAfterYear(todayYear);
+	})
+	
+	// 날짜 월 선택 시 보여줄 연월 값 변경
+	$(document).on("click", ".month-td", function() {
+		todayAll = $("#current-year").text().split("년")[0] + "-" + $(this).text().split("월")[0];
+		todayYear = todayAll.split("-")[0];
+		
+		$.aimList(todayAll, userid, "#month-div", "#aim-list-div"); // 지출 목표
+		$.inaimList(todayAll, userid, "#aim-in-list-div"); // 수입 목표
+		
+		$("#select-month").hide();
 	})
 	
 	// 목표 추가 모달 열기

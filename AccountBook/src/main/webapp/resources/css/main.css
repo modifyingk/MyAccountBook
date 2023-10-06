@@ -491,7 +491,7 @@
 .fix-left-bl {
 	position: absolute;
 	top: 90%;
-	left: 21%;
+	left: 24%;
 }
 .fix-right-bl {
 	position: absolute;
@@ -521,7 +521,7 @@
 .fix-left-br {
 	position: absolute;
 	top: 90%;
-	right: 21%;
+	right: 12%;
 }
 .no-data-div {
 	margin-top: 10%;

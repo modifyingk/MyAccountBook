@@ -27,4 +27,38 @@ $(function() {
 			$(modalID).hide();
 		})
 	}
+	
+	// 다른 영역 클릭 시 자동 창 닫기
+	// parameter : 숨길 요소 ID
+	$.autoClose = function(docID) {
+		$(document).mouseup(function (e) {
+			var closeDoc = $(docID);
+			if (closeDoc.has(e.target).length === 0) {
+				closeDoc.hide();
+			}
+		});
+	}
+	
+	// 날짜 선택
+	$.selectDate = function(todayYear) {
+		$("#select-month").show();
+		$("#current-year").html(todayYear + "년");
+	}
+	
+	// 날짜 선택에서 이전 연도 클릭
+	$.selectBeforeYear = function(todayYear) {
+		todayYear = parseInt(todayYear) - 1;
+		$("#current-year").html(todayYear + "년");
+		
+		return todayYear;
+	}
+	
+	// 날짜 선택에서 다음 연도 클릭
+	$.selectAfterYear = function(todayYear) {
+		todayYear = parseInt(todayYear) + 1;
+		$("#current-year").html(todayYear + "년");
+			
+		return todayYear;
+	}
+	
 })

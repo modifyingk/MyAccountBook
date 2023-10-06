@@ -1,16 +1,22 @@
 document.write('<script src="../resources/js/asset/transfer_list.js"></script>'); // 이체 목록 js
 document.write('<script src="../resources/js/cal_date.js"></script>'); // 이전 달, 다음 달 구하기 js
+document.write('<script src="../resources/js/main.js"></script>'); // 날짜 선택 js
 
 $(function() {
 	
 	var transToday; // 현재 날짜 저장할 변수
-
+	var todayYear;
+	
 	$(document).ready(function() {
 		// 현재 날짜 가져오기(이체용)
 		transToday = $.currentYM();
-
+		todayYear = transToday.split("-")[0];
+		
 		// 이체 내역 가져오기
 		$.transferList(transToday, userid, "#month-div", "#transfer-list-div");
+		
+		// 다른 영역 클릭 시 창 닫기
+		$.autoClose("#select-month"); // 날짜 선택 닫기
 	})
 	
 	// 이체 내역 이전 달 클릭
@@ -23,6 +29,30 @@ $(function() {
 	$(document).on("click", "#after", function() {
 		transToday = $.afterDate(transToday); // 날짜 다음 달로 setting
 		$.transferList(transToday, userid, "#month-div", "#transfer-list-div");
+	})
+	
+	// 날짜 선택
+	$(document).on("click", "#month-div", function() {
+		$.selectDate(todayYear);
+	})
+	
+	// 날짜 선택에서 이전 연도 클릭
+	$(document).on("click", "#before-year", function() {
+		todayYear = $.selectBeforeYear(todayYear);
+	})
+	
+	// 날짜 선택에서 다음 연도 클릭
+	$(document).on("click", "#after-year", function() {
+		todayYear = $.selectAfterYear(todayYear);
+	})
+	
+	// 날짜 월 선택 시 보여줄 연월 값 변경
+	$(document).on("click", ".month-td", function() {
+		transToday = $("#current-year").text().split("년")[0] + "-" + $(this).text().split("월")[0];
+		todayYear = transToday.split("-")[0];
+		
+		$.transferList(transToday, userid, "#month-div", "#transfer-list-div");
+		$("#select-month").hide();
 	})
 	
 	// 이체 추가 모달 열기

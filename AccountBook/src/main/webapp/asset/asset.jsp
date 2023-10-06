@@ -38,7 +38,7 @@
 			if(session.getAttribute("userid") != null) { %>
 				<div>
 					<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 자산관리</h3>
-					<div class="col-5">
+					<div class="col-5" class="is-border">
 						<div class="fix-right-tr-1">
 							<button class="btn green font-18 is-shadow" id="open-group-setting" style="width: 60px;"><i class="fi fi-rr-menu-burger"></i></button>
 						</div>
@@ -49,26 +49,58 @@
 							<button class="btn medium green font-18 is-shadow" id="add-asset-page"><i class="fi fi-rr-add"></i> 자산 추가</button>
 							<button class="btn small outline-green font-18 is-shadow" id="reset-asset-btn" style="margin-left: 10px;"><i class="fi fi-rr-rotate-right"></i> 초기화</button>
 						</div>
-						<div id="asset-total-div" style="margin: 5px;"></div><br>
-						<div id="asset-list-div"></div>
+						<div style="margin-left: 10%;">
+							<div id="asset-total-div" style="margin: 5px;"></div><br>
+							<div id="asset-list-div"></div>
+						</div>
 					</div>
-					<div class="col-5">
+					<div class="col-5" class="is-border">
 						<h3 class="h-normal fs-23"><i class="fi fi-rr-exchange"></i> 이체내역</h3>
 						<!-- 날짜 보여주기 -->
-						<div style="margin-left: 20%; margin-bottom: 3%;">
-							<table>
+						<div style="margin-bottom: 3%;">
+							<table style="width: 600px;">
 								<tr>
-									<td>
+									<td style="width: 33%; text-align: center;">
 										<i class="fi fi-rr-angle-circle-left fs-28 click-icon" id="before"></i>
 									</td>
-									<td>
-										<div id="month-div" style="width: 100%; margin: 10px;"></div>
+									<td style="width: 33%; text-align: center; cursor: pointer;">
+										<div id="month-div" style=" margin: 10px;"></div>
 									</td>
-									<td>
+									<td style="width: 33%; text-align: center;">
 										<i class="fi fi-rr-angle-circle-right fs-28 click-icon" id="after"></i>
 									</td>
 								</tr>
 							</table>
+							<!-- 날짜 선택 div -->
+							<div class="is-border" id="select-month" style="position: absolute; background: white; margin-left: 2%; text-align: center; display: none;">
+								<table class="date-table">
+									<tr>
+										<td id="before-year"><i class="fi fi-rr-angle-left"></i></td>
+										<td colspan="2" style="text-align: center;">
+											<div class="h-bold fs-18" id="current-year"></div>
+										</td>
+										<td id="after-year"><i class="fi fi-rr-angle-right"></i></td>
+									</tr>
+									<tr>
+										<td class="month-td">01월</td>
+										<td class="month-td">02월</td>
+										<td class="month-td">03월</td>
+										<td class="month-td">04월</td>
+									</tr>
+									<tr>
+										<td class="month-td">05월</td>
+										<td class="month-td">06월</td>
+										<td class="month-td">07월</td>
+										<td class="month-td">08월</td>
+									</tr>
+									<tr>
+										<td class="month-td">09월</td>
+										<td class="month-td">10월</td>
+										<td class="month-td">11월</td>
+										<td class="month-td">12월</td>
+									</tr>
+								</table>
+							</div>
 						</div>
 						<div class="is-scroll" id="transfer-list-div"></div>
 						<div class="fix-right-bl">

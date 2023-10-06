@@ -59,17 +59,6 @@ $(function() {
 		}
 	}
 	
-	// 다른 영역 클릭 시 자동 창 닫기
-	// parameter : 숨길 요소 ID
-	$.autoClose = function(docID) {
-		$(document).mouseup(function (e) {
-			var closeDoc = $(docID);
-			if (closeDoc.has(e.target).length === 0) {
-				closeDoc.hide();
-			}
-		});
-	}
-	
 	$(document).ready(function() {
 		// 현재 날짜 가져오기
 		todayAll = $.currentYM();
@@ -178,28 +167,27 @@ $(function() {
 	
 	// 날짜 선택
 	$(document).on("click", "#month-div", function() {
-		$("#select-month").show();
-		$("#current-year").html(todayYear + "년");
+		$.selectDate(todayYear);
 	})
 	
 	// 날짜 선택에서 이전 연도 클릭
 	$(document).on("click", "#before-year", function() {
-		todayYear = parseInt(todayYear) - 1;
-		$("#current-year").html(todayYear + "년");
+		todayYear = $.selectBeforeYear(todayYear);
 	})
 	
 	// 날짜 선택에서 다음 연도 클릭
 	$(document).on("click", "#after-year", function() {
-		todayYear = parseInt(todayYear) + 1;
-		$("#current-year").html(todayYear + "년");
+		todayYear = $.selectAfterYear(todayYear);
 	})
 	
 	// 날짜 월 선택 시 보여줄 연월 값 변경
 	$(document).on("click", ".month-td", function() {
 		$.activeBtn("#in-account-btn", "#out-account-btn", "#total-account-btn"); // 전체 보기 버튼 활성화
 		$.activeBtn("#in-stats-btn", "", "#out-stats-btn"); // 통계 지출 버튼 활성화
+		
 		todayAll = $("#current-year").text().split("년")[0] + "-" + $(this).text().split("월")[0];
 		todayYear = todayAll.split("-")[0];
+		
 		$.accountList("monthAccount", todayAll, userid, "#month-div", "#month-account-list-div", "#total-div", "#total-income-div", "#total-spend-div");
 		$.accountStats(todayAll, userid, "#category-stats-div");
 		$.monthAccountTotal("지출", todayAll.split("-")[0], userid); // 월별 그래프 보여주기
