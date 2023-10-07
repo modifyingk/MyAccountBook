@@ -16,7 +16,7 @@ $(function() {
 
 				var aim_html = "";
 				if(Object.keys(map) != "no") {
-					aim_html += "<table class='gage-table' style='width: 1200px;' id='out-aim-table'>";
+					aim_html += "<table class='gage-table' id='out-aim-table'>";
 	
 					for(var key in map) {
 						var value = map[key].split(",");
@@ -25,23 +25,24 @@ $(function() {
 							var percent = Math.round(parseInt(aim[2]) / parseInt(aim[1]) * 100);
 							
 							aim_html += "<tr><td style='display:none;'>" + aim[0] + "</td>";
-							aim_html += "<td>" + key + "</td><td><div class='gage-bar is-border'>";
+							if((parseInt(aim[1]) - parseInt(aim[2])) > 0) {
+								aim_html += "<td>" + key + "</td><td title='" + (parseInt(aim[1]) - parseInt(aim[2])).toLocaleString() + "원 더 사용할 수 있습니다!'><div class='gage-bar is-border'>";
+							} else {
+								aim_html += "<td>" + key + "</td><td title='목표를 초과했습니다...'><div class='gage-bar is-border'>";
+							}
 							
 							if(percent < 50) {
 								aim_html += "<div class='gage safe-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
-								aim_html += "</div></td><td colspan='2'>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td></tr>";
+								aim_html += "</div></td><td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td></tr>";
 							} else if(percent < 70) {
 								aim_html += "<div class='gage warn-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
-								aim_html += "</div></td><td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
-								aim_html += "<td class='warn'><i class='fi fi-rr-triangle-warning fs-28'></i> 주의</td></tr>";
+								aim_html += "</div></td><td class='yellow'>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
 							} else if(percent <= 100){
 								aim_html += "<div class='gage danger-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
-								aim_html += "</div></td><td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
-								aim_html += "<td class='warning'><i class='fi fi-rr-light-emergency-on fs-28'></i> 위험</td></tr>";
+								aim_html += "</div></td><td class='red'>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
 							} else {
 								aim_html += "<div class='gage danger-aim is-border' style='width: 100%;'>" + percent + "%</div>";
-								aim_html += "</div></td><td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
-								aim_html += "<td class='warning'><i class='fi fi-rr-light-emergency-on fs-28'></i> 초과</td></tr>";
+								aim_html += "</div></td><td class='red'>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
 							}
 						}
 					}
@@ -69,7 +70,7 @@ $(function() {
 			success : function(map) {
 				var aim_in_html = "";
 				if(Object.keys(map) != "no") {
-					aim_in_html += "<table class='gage-table' style='width: 1200px;' id='in-aim-table'>";
+					aim_in_html += "<table class='gage-table' id='in-aim-table'>";
 					
 					for(var key in map) {
 						var value = map[key].split(",");
@@ -78,7 +79,11 @@ $(function() {
 							var percent = Math.round(parseInt(aim[2]) / parseInt(aim[1]) * 100);
 							
 							aim_in_html += "<tr><td style='display:none;'>" + aim[0] + "</td>";
-							aim_in_html += "<td>" + key + "</td><td><div class='gage-bar is-border'>";
+							if((parseInt(aim[1]) - parseInt(aim[2])) > 0) {
+								aim_in_html += "<td>" + key + "</td><td title='목표 달성까지 " + (parseInt(aim[1]) - parseInt(aim[2])).toLocaleString() + "원 남았습니다!'><div class='gage-bar is-border'>";
+							} else {
+								aim_in_html += "<td>" + key + "</td><td title='목표 달성 성공!'><div class='gage-bar is-border'>";
+							}
 							
 							if(percent < 100) {
 								aim_in_html += "<div class='gage blue-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";

@@ -87,11 +87,15 @@
 						</tr>
 					</table>
 				</div>
-				<div style="margin-left: 13%;">
-					<h4 class='h-normal fs-23'>지출 목표</h4>
-					<div class="is-scroll" id="aim-list-div" style="height: 350px;"></div>
-					<h4 class='h-normal fs-23'>수입 목표</h4>
-					<div class="is-scroll" id="aim-in-list-div" style="height: 350px;"></div>
+				<div>
+					<div class="col-5" style="margin-left: 2%;">
+						<h4 class='h-normal fs-23 text-center'>지출 목표</h4>
+						<div class="is-scroll" id="aim-list-div" style="height: 700px; margin-top: 5%;"></div>
+					</div>
+					<div class="col-5">
+						<h4 class='h-normal fs-23 text-center'>수입 목표</h4>
+						<div class="is-scroll" id="aim-in-list-div" style="height: 700px; margin-top: 5%;"></div>
+					</div>
 				</div>
 				
 				
