@@ -113,11 +113,11 @@ public class AccountController {
 		}
 	}
 	
-	// 즐겨찾는 지출 내역 중복 없이 가져오기
+	// 즐겨찾기에 추가 가능한 내역 중복 없이 가져오기
 	@ResponseBody
-	@RequestMapping("account/addBookmarkInfo")
-	public List<AccountVO> addBookmarkInfo(String userid) {
-		List<AccountVO> addmarkList = aDao.addBookmarkInfo(userid);
+	@RequestMapping("account/canBookmarkInfo")
+	public List<AccountVO> canBookmarkInfo(String userid) {
+		List<AccountVO> addmarkList = aDao.canBookmarkInfo(userid);
 		return addmarkList;
 	}
 	
@@ -289,6 +289,14 @@ public class AccountController {
 		return list;
 	}
 	
+	// 반복에 추가 가능한 내역 중복 없이 가져오기
+	@ResponseBody
+	@RequestMapping("account/canRepeatInfo")
+	public List<AccountVO> canRepeatInfo(String userid) {
+		List<AccountVO> list = aDao.canRepeatInfo(userid);
+		return list;
+	}
+		
 	/*// 월별 카테고리별 수입/지출 내역
 	@ResponseBody
 	@RequestMapping("account/cateAccount")

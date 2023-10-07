@@ -161,6 +161,9 @@
 	border: 1px solid lightgray;
 	border-radius: 7px;
 }
+.input.tiny {
+	width: 120px;
+}
 .input.small {
 	width: 150px;
 }
@@ -483,12 +486,13 @@
 	color: gray;
 }
 .click-icon:hover {
+	color: #2C952C;
 	font-size: 29px;
 }
 .fix-col5-left-br {
 	position: absolute;
 	top: 90%;
-	left: 32%;
+	left: 25%;
 }
 .fix-left-bl {
 	position: absolute;
@@ -632,4 +636,7 @@
 #after-year:hover {
 	background: #2C952C;
 	color: white;
+}
+#month-div:hover {
+	color: #2C952C;
 }

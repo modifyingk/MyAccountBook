@@ -42,6 +42,7 @@
 				<div class="fix-col5-left-br">
 					<button class="btn medium green font-18 is-shadow" id="add-account-page"><i class="fi fi-rr-add"></i> 추가</button>
 					<button class="btn small outline-green font-18 is-shadow" id="bookmark-page"><i class="fi fi-rr-star"></i> 즐겨찾기</button>
+					<button class="btn small outline-green font-18 is-shadow" id="repeat-page"><i class="fi fi-rr-arrows-repeat"></i> 반복</button>
 				</div>
 				<div class="fix-right-tr-4">
 					<button class="btn outline-green font-18 is-shadow" id="open-search" style="width: 60px;"><i class="fi fi-rr-search"></i></button>
@@ -536,7 +537,7 @@
 			<div class="modal" id="add-bookmark-modal" hidden="true">
 				<div class="modal-content">
 					<div class="modal-title">
-						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 즐겨찾기 추가</h3>
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-star"></i> 즐겨찾기 추가</h3>
 					</div>
 					<div class="modal-body">
 						<div id="add-bookmark-list-div">
@@ -545,6 +546,137 @@
 					</div>
 					<div class="modal-footer">
 						<button class="btn right outline-green" id="close-add-bookmark">닫기</button>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 반복 목록 모달 -->
+			<div class="modal" id="repeat-modal" hidden="true">
+				<div class="modal-content">
+					<div class="modal-title">
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-arrows-repeat"></i> 반복</h3>
+					</div>
+					<button class="btn medium green" id="add-repeat-page" style="margin-left: 10px;">추가</button>
+					<div class="modal-body">
+						<div id="repeat-list-div">
+							
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn right outline-green" id="close-repeat">닫기</button>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 반복 추가 모달 -->
+			<div class="modal" id="add-repeat-modal" hidden="true">
+				<div class="modal-content">
+					<div class="modal-title">
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-arrows-repeat"></i> 반복 추가</h3>
+					</div>
+					<div class="modal-body">
+						<h5 class="h-normal fs-20"><i class="fi fi-rr-calendar-clock"></i> 반복 주기</h5>
+						<table>
+							<tr>
+								<td>
+									<select class="input small" id="repeat-option">
+										<option value="매월">매월</option>
+										<option value="매년">매년</option>
+										<option value="매주">매주</option>
+										<option value="매일">매일</option>
+									</select>
+								</td>
+								<td>
+									<!-- 매년 -->
+									<div id="every-year-div" hidden="true">
+										<select class="input tiny">
+											<option>월</option>
+											<option value="01">1</option>
+											<option value="02">2</option>
+											<option value="03">3</option>
+											<option value="04">4</option>
+											<option value="05">5</option>
+											<option value="06">6</option>
+											<option value="07">7</option>
+											<option value="08">8</option>
+											<option value="09">9</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+										</select>
+										<input class="input tiny" placeholder="일">
+									</div>
+								
+									<!-- 매월 -->
+									<div id="every-month-div">
+										<input class="input small" placeholder="일">
+									</div>
+									
+									<!-- 매주 -->
+									<div id="every-week-div" hidden="true">
+										<select class="input small">
+											<option>요일</option>
+											<option value="월">월</option>
+											<option value="화">화</option>
+											<option value="수">수</option>
+											<option value="목">목</option>
+											<option value="금">금</option>
+											<option value="토">토</option>
+											<option value="일">일</option>
+										</select>
+									</div>
+								</td>
+							</tr>				
+						</table>
+						<br>
+						<hr style="border: 1px solid lightgray;">
+						<div>
+							<div class="col-5">
+								<h5 class="h-normal fs-20"><i class="fi fi-rr-money-check-edit"></i> 반복 내역</h5>
+							</div>
+							<div class="col-5">
+								<button class="btn small outline-green right" style="width: 50px;" id="add-repeat-list-btn"><i class="fi fi-rr-search-alt fs-20"></i></button>
+							</div>
+						</div>
+						<table class="table">
+							<tr>
+								<td>자산</td>
+								<td><input type="text" class="input" id="rep-actasset" placeholder="자산선택" readonly></td>
+							</tr>
+							<tr>
+								<td>분류</td>
+								<td><input type="text" class="input" id="rep-actcatename" placeholder="분류선택" readonly></td>
+							</tr>
+							<tr>
+								<td>금액</td>
+								<td><input type="text" class="input" id="rep-acttotal"></td>
+							</tr>
+							<tr>
+								<td>내용</td>
+								<td><input type="text" class="input" id="rep-actcontent" maxlength="20"></td>
+							</tr>
+						</table>
+						<button class="btn medium green">추가</button>
+					</div>
+					<div class="modal-footer">
+						<button class="btn right outline-green" id="close-add-repeat">닫기</button>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 반복할 내역 찾기 모달 -->
+			<div class="modal" id="add-repeat-list-modal" hidden="true">
+				<div class="modal-content wide">
+					<div class="modal-title">
+						<h3 class="h-normal fs-28"><i class="fi fi-rr-arrows-repeat"></i> 반복 추가</h3>
+					</div>
+					<div class="modal-body wide">
+						<div id="add-repeat-list-div">
+							
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn right outline-green" id="close-add-repeat-list">닫기</button>
 					</div>
 				</div>
 			</div>

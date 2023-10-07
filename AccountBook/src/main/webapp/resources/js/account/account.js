@@ -78,6 +78,7 @@ $(function() {
 		// 금액 세 자리마다 콤마
 		$.moneyFmt("#up-acttotal");
 		$.moneyFmt("#add-acttotal");
+		$.moneyFmt("#rep-acttotal");
 		
 		// 수입/지출 추가 및 수정의 내용, 메모에 #이 들어가지 않도록
 		$.noHash("#add-actcontent");
@@ -105,6 +106,9 @@ $(function() {
 		$.openModal("#bookmark-page", "#bookmark-modal"); // 즐겨찾기 모달 열기
 		$.openModal("#add-bookmark-page", "#add-bookmark-modal"); // 즐겨찾기 추가 모달 열기
 		$.openModal("#open-graph", "#graph-modal"); // 그래프 모달 열기
+		$.openModal("#repeat-page", "#repeat-modal"); // 반복 모달 열기
+		$.openModal("#add-repeat-page", "#add-repeat-modal"); // 반복 추가 모달 열기
+		$.openModal("#add-repeat-list-btn", "#add-repeat-list-modal"); // 반복할 내역 찾기 모달 열기
 
 		// 모달 닫기
 		$.closeModal("#close-in-category", "#in-category-modal"); // 수입 카테고리 모달 닫기
@@ -122,6 +126,9 @@ $(function() {
 		$.closeModal("#close-add-bookmark", "#add-bookmark-modal"); // 즐겨찾기 추가 모달 닫기
 		$.closeModal("#close-graph", "#graph-modal"); // 그래프 모달 닫기
 		$.closeModal("#close-search", "#search-modal"); // 검색 모달 닫기
+		$.closeModal("#close-repeat", "#repeat-modal"); // 반복 모달 닫기
+		$.closeModal("#close-add-repeat", "#add-repeat-modal"); // 반복 추가 모달 닫기
+		$.closeModal("#close-add-repeat-list", "#add-repeat-list-modal"); // 반복할 내역 찾기 모달 닫기
 		
 		// 다른 영역 클릭 시 창 닫기
 		$.autoClose("#select-month"); // 날짜 선택 닫기
@@ -463,7 +470,7 @@ $(function() {
 	// 즐겨찾기에 추가 가능한 내역 가져오기
 	$.ajax({
 		type : "post",
-		url : "addBookmarkInfo",
+		url : "canBookmarkInfo",
 		data : {
 			userid : userid
 		},
@@ -577,4 +584,69 @@ $(function() {
 			})
 		}
 	})
+	
+	// 반복 옵션 선택
+	$(document).on("change", "#repeat-option", function() {
+		if($(this).val() == "매년") {
+			$("#every-month-div").hide();
+			$("#every-week-div").hide();
+			$("#every-year-div").show();
+		} else if($(this).val() == "매월") {
+			$("#every-year-div").hide();
+			$("#every-week-div").hide();
+			$("#every-month-div").show();
+		} else if($(this).val() == "매주") {
+			$("#every-year-div").hide();
+			$("#every-month-div").hide();
+			$("#every-week-div").show();
+		} else if($(this).val() == "매일") {
+			$("#every-year-div").hide();
+			$("#every-month-div").hide();
+			$("#every-week-div").hide();
+		} else {
+			$("#every-year-div").hide();
+			$("#every-month-div").hide();
+			$("#every-week-div").hide();
+		}
+	})
+	
+	// 반복에 추가 가능한 내역 가져오기
+	$.ajax({
+		type : "post",
+		url : "canRepeatInfo",
+		data : {
+			userid : userid
+		},
+		success : function(list) {
+			var html = "<table class='list-table' style='width:600px;'>";
+			for(var i = 0; i < list.length; i++) {
+				html += "<tr class='tr-addrepeat'><td style='width:20%;'>" + list[i].astname + "</td>";
+				html += "<td style='width:20%;'>" + list[i].catename + "</td>";
+				html += "<td style='width:20%;'>" + list[i].content + "</td>";
+				if(list[i].moneytype == "수입") {
+					html += "<td class='text-right blue' style='width:20%;'>" + parseInt(list[i].total).toLocaleString() + "원</td></tr>";
+				} else {
+					html += "<td class='text-right red' style='width:20%;'>" + parseInt(list[i].total).toLocaleString() + "원</td></tr>";
+				}
+			}
+			html += "</table>";
+			$("#add-repeat-list-div").html(html);
+		}
+	})
+	
+	// 반복 가능한 내역 tr 클릭 시 반복 내역에 자동입력
+	$(document).on("click", ".tr-addrepeat", function() {
+		var astname = $(this).children().eq(0).text();
+		var catename = $(this).children().eq(1).text();
+		var content = $(this).children().eq(2).text();
+		var total = ($(this).children().eq(3).text().split("원")[0]);
+		
+		$("#rep-actasset").attr("value", astname);
+		$("#rep-actcatename").attr("value", catename);
+		$("#rep-acttotal").attr("value", total);
+		$("#rep-actcontent").attr("value", content);
+		
+		$("#add-repeat-list-modal").hide();
+	})
+	
 })

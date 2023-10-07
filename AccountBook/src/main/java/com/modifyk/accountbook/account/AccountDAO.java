@@ -27,9 +27,9 @@ public class AccountDAO {
 		return my.delete("accountMapper.deleteAccount", accountVO);
 	}
 	
-	// 즐겨찾는 지출 내역 중복 없이 가져오기
-	public List<AccountVO> addBookmarkInfo(String userid) {
-		return my.selectList("accountMapper.addBookmarkInfo", userid);
+	// 즐겨찾기에 추가 가능한 내역 중복 없이 가져오기
+	public List<AccountVO> canBookmarkInfo(String userid) {
+		return my.selectList("accountMapper.canBookmarkInfo", userid);
 	}
 	
 	// 즐겨찾기 추가
@@ -37,7 +37,7 @@ public class AccountDAO {
 		return my.insert("bookmarkMapper.insertBookmark", bookmarkVO);
 	}
 	
-	// 즐겨찾기 추가
+	// 즐겨찾기 목록
 	public List<BookmarkVO> bookmarkInfo(String userid) {
 		return my.selectList("bookmarkMapper.bookmarkInfo", userid);
 	}
@@ -95,6 +95,11 @@ public class AccountDAO {
 	// 수입/지출 검색 자동완성
 	public List<String> autoSearch(AccountVO accountVO) {
 		return my.selectList("accountMapper.autoSearch", accountVO);
+	}
+	
+	// 반복에 추가 가능한 내역 중복 없이 가져오기
+	public List<AccountVO> canRepeatInfo(String userid) {
+		return my.selectList("accountMapper.canRepeatInfo", userid);
 	}
 	
 	/* // 월별 카테고리별 수입/지출 내역
