@@ -29,6 +29,9 @@ public class AccountController {
 	@Autowired
 	StatsMapService stMapSvc;
 	
+	@Autowired
+	RepeatToMapService repMapSvc;
+	
 	// 수입/지출 추가
 	@ResponseBody
 	@RequestMapping("account/insertAccount")
@@ -124,7 +127,7 @@ public class AccountController {
 	// 즐겨찾기에 추가
 	@ResponseBody
 	@RequestMapping("account/insertBookmark")
-	public String addBookmark(BookmarkVO bookmarkVO) {
+	public String insertBookmark(BookmarkVO bookmarkVO) {
 		int result = aDao.insertBookmark(bookmarkVO);
 		if(result == 1) {
 			return "success";
@@ -296,7 +299,45 @@ public class AccountController {
 		List<AccountVO> list = aDao.canRepeatInfo(userid);
 		return list;
 	}
-		
+	
+	// 반복에 추가
+	@ResponseBody
+	@RequestMapping("account/insertRepeat")
+	public String insertRepeat(RepeatVO repeatVO) {
+		int result = aDao.insertRepeat(repeatVO);
+		if(result == 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
+	// 반복 중복 확인
+	@ResponseBody
+	@RequestMapping("account/isOverlapRepeat")
+	public String isOverlapRepeat(RepeatVO repeatVO) {
+		String result = aDao.isOverlapRepeat(repeatVO);
+		if(result != null) {
+			return "impossible";
+		} else {
+			return "possible";
+		}
+	}
+	
+	// 반복 내역 가져오기
+	@ResponseBody
+	@RequestMapping("account/repeatInfo")
+	public HashMap<String, Object> repeatInfo(String userid) {
+		List<RepeatVO> repeatList = aDao.repeatInfo(userid);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(repeatList.size() < 1) {
+			map.put("no", "no");
+		} else {
+			map = repMapSvc.toMap(repeatList);
+		}
+		return map;
+	}
+	
 	/*// 월별 카테고리별 수입/지출 내역
 	@ResponseBody
 	@RequestMapping("account/cateAccount")

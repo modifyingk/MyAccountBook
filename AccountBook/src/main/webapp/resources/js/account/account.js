@@ -74,6 +74,7 @@ $(function() {
 		// 금액에 숫자만 입력되도록
 		$.onlyNum("#up-acttotal");
 		$.onlyNum("#add-acttotal");
+		$.onlyNum("#rep-acttotal");
 		
 		// 금액 세 자리마다 콤마
 		$.moneyFmt("#up-acttotal");
@@ -85,6 +86,7 @@ $(function() {
 		$.noHash("#add-actmemo");
 		$.noHash("#up-actcontent");
 		$.noHash("#up-actmemo");
+		$.noHash("#rep-actcontent");
 		
 		// 카테고리 설정 열고 닫기 (우측 상단 설정 버튼)
 		$.settingDiv(clickNum, "#open-cate-setting", "#cate-setting");
@@ -107,7 +109,6 @@ $(function() {
 		$.openModal("#add-bookmark-page", "#add-bookmark-modal"); // 즐겨찾기 추가 모달 열기
 		$.openModal("#open-graph", "#graph-modal"); // 그래프 모달 열기
 		$.openModal("#repeat-page", "#repeat-modal"); // 반복 모달 열기
-		$.openModal("#add-repeat-page", "#add-repeat-modal"); // 반복 추가 모달 열기
 		$.openModal("#add-repeat-list-btn", "#add-repeat-list-modal"); // 반복할 내역 찾기 모달 열기
 
 		// 모달 닫기
@@ -143,6 +144,7 @@ $(function() {
 		// 자산 선택 및 값 자동 입력
 		$.pickAsset("#add-actasset");
 		$.pickAsset("#up-actasset");
+		$.pickAsset("#rep-actasset");
 		
 		// 카테고리 선택 및 값 자동 입력 (수입/지출 추가)
 		$.openSelectCate("#add-actcatename", "select-mtype"); // 카테고리 선택 모달 열기
@@ -154,9 +156,15 @@ $(function() {
 		$.pickCategory("#select-incate-list-div #in-category-table tr", "#up-actcatename", "#select-incate-modal"); // 수입 카테고리 선택
 		$.pickCategory("#select-outcate-list-div #out-category-table tr", "#up-actcatename", "#select-outcate-modal"); // 지출 카테고리 선택
 		
+		// 카테고리 선택 및 값 자동 입력 (반복 추가)
+		$.openSelectCate("#rep-actcatename", "rep-mtype"); // 카테고리 선택 모달 열기
+		$.pickCategory("#select-incate-list-div #in-category-table tr", "#rep-actcatename", "#select-incate-modal"); // 수입 카테고리 선택
+		$.pickCategory("#select-outcate-list-div #out-category-table tr", "#rep-actcatename", "#select-outcate-modal"); // 지출 카테고리 선택
+		
 		// moneytype radio 값 변경 시 카테고리 재선택
 		$.chgMtype("#add-actcatename", "select-mtype");
 		$.chgMtype("#up-actcatename", "up-mtype");
+		$.chgMtype("#rep-actcatename", "rep-mtype");
 		
 	})
 
@@ -585,6 +593,16 @@ $(function() {
 		}
 	})
 	
+	/* 반복 */
+	// 반복 추가 모달 열기
+	$(document).on("click", "#add-repeat-page", function() {
+		$("#add-repeat-modal").show();
+		
+		$("#rep-actasset").attr("value", "");
+		$("#rep-actcatename").attr("value", "");
+		$("#rep-acttotal").attr("value", "");
+		$("#rep-actcontent").attr("value", "");
+	})
 	// 반복 옵션 선택
 	$(document).on("change", "#repeat-option", function() {
 		if($(this).val() == "매년") {
@@ -618,35 +636,172 @@ $(function() {
 			userid : userid
 		},
 		success : function(list) {
-			var html = "<table class='list-table' style='width:600px;'>";
-			for(var i = 0; i < list.length; i++) {
-				html += "<tr class='tr-addrepeat'><td style='width:20%;'>" + list[i].astname + "</td>";
-				html += "<td style='width:20%;'>" + list[i].catename + "</td>";
-				html += "<td style='width:20%;'>" + list[i].content + "</td>";
-				if(list[i].moneytype == "수입") {
-					html += "<td class='text-right blue' style='width:20%;'>" + parseInt(list[i].total).toLocaleString() + "원</td></tr>";
-				} else {
-					html += "<td class='text-right red' style='width:20%;'>" + parseInt(list[i].total).toLocaleString() + "원</td></tr>";
+			var html;
+			if(list.length > 0) {
+				html = "<table class='list-table' style='width:450px;'>";
+				for(var i = 0; i < list.length; i++) {
+					html += "<tr class='tr-addrepeat'>";
+					html += "<td>" + list[i].catename + "</td>";
+					html += "<td><div>" + list[i].content + "</div><div><span class='fs-16 info'>" + list[i].astname + "</span></div></td>";
+					if(list[i].moneytype == "수입") {
+						html += "<td class='text-right blue'>" + parseInt(list[i].total).toLocaleString() + "원</td>";
+					} else {
+						html += "<td class='text-right red'>" + parseInt(list[i].total).toLocaleString() + "원</td>";
+					}
+					html += "<td style='display:none;'>" + list[i].moneytype + "</td></tr>";
 				}
+				html += "</table>";
+			} else {
+				html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
 			}
-			html += "</table>";
+			
 			$("#add-repeat-list-div").html(html);
 		}
 	})
 	
 	// 반복 가능한 내역 tr 클릭 시 반복 내역에 자동입력
 	$(document).on("click", ".tr-addrepeat", function() {
-		var astname = $(this).children().eq(0).text();
-		var catename = $(this).children().eq(1).text();
-		var content = $(this).children().eq(2).text();
-		var total = ($(this).children().eq(3).text().split("원")[0]);
+		var astname = $(this).children().eq(1).children().eq(1).text();
+		var catename = $(this).children().eq(0).text();
+		var content = $(this).children().eq(1).children().eq(0).text();
+		var total = ($(this).children().eq(2).text().split("원")[0]);
+		var moneytype = $(this).children().eq(3).text();
 		
 		$("#rep-actasset").attr("value", astname);
 		$("#rep-actcatename").attr("value", catename);
 		$("#rep-acttotal").attr("value", total);
 		$("#rep-actcontent").attr("value", content);
 		
+		if(moneytype == "수입") {
+			$("input:radio[name='rep-mtype'][value='수입']").attr("checked", true);
+		} else {
+			$("input:radio[name='rep-mtype'][value='지출']").attr("checked", true);
+		}
+		
 		$("#add-repeat-list-modal").hide();
 	})
 	
+	// 반복 추가
+	var cycleChk = false;
+
+	$(document).on("click", "#add-repeat-btn", function() {
+		if($("#repeat-option").val() == "매년") {
+			if($("#every-year-month").val() == "월") {
+				cycleChk = false;
+			} else {
+				cycleChk = $.checkDate("#every-year-date", "");
+			}
+		} else if($("#repeat-option").val() == "매월") {
+			cycleChk = $.checkDate("#every-month-date", "");
+		} else if($("#repeat-option").val() == "매주") {
+			if($("#every-week-day").val() == "요일") {
+				cycleChk = false;
+			} else {
+				cycleChk = true;
+			}
+		} else if($("#repeat-option").val() == "매일") {
+			cycleChk = true;
+		}
+
+		if(!$.noEmpty("#rep-actasset") || !$.noEmpty("#rep-actcatename") || !$.noEmpty("#rep-acttotal") || cycleChk == false){ // 정규식에 맞지 않을 때 (빈 값인 경우)
+			alert("입력 값을 확인해주세요.")
+		} else {
+			// 중복 확인
+			$.ajax({
+				type: "post",
+				url : "isOverlapRepeat",
+				data : {
+					moneytype : $("input[name='rep-mtype']:checked").val(),
+					astname : $("#rep-actasset").val(),
+					catename : $("#rep-actcatename").val(),
+					total : $("#rep-acttotal").val().replaceAll(",", ""),
+					content : $("#rep-actcontent").val(),
+					userid : userid
+				},
+				success : function(x) {
+					if(x == "possible") { // 중복되는 반복 내역이 없는 경우 추가
+						var cycle = "";
+						if($("#repeat-option").val() == "매년") {
+							if($("#every-year-date").val().length == 1) {
+								cycle = "매년 " + $("#every-year-month").val() + "/0" + $("#every-year-date").val();
+							} else {
+								cycle = "매년 " + $("#every-year-month").val() + "/" + $("#every-year-date").val();
+							}
+						} else if($("#repeat-option").val() == "매월") {
+							if($("#every-month-date").val().length == 1) {
+								cycle = "매월 0" + $("#every-month-date").val();
+							} else {
+								cycle = "매월 " + $("#every-month-date").val();
+							}
+						} else if($("#repeat-option").val() == "매주") {
+							cycle = "매주 " + $("#every-week-day").val();
+						} else if($("#repeat-option").val() == "매일") {
+							cycle = "매일";
+						}
+						
+						$.ajax({
+							type: "post",
+							url : "insertRepeat",
+							data : {
+								repeatcycle : cycle,
+								moneytype : $("input[name='rep-mtype']:checked").val(),
+								astname : $("#rep-actasset").val(),
+								catename : $("#rep-actcatename").val(),
+								total : $("#rep-acttotal").val().replaceAll(",", ""),
+								content : $("#rep-actcontent").val(),
+								userid : userid
+							},
+							success : function(x) {
+								if(x == "success") {
+									window.location.reload();
+								} else {
+									alert("다시 시도해주세요.");
+								}
+							}
+						})
+					} else { // 중복되는 경우
+						alert("이미 반복이 설정된 내역입니다.");
+					}
+				}
+			})
+		}
+	})
+	
+	// 반복 내역
+	$.ajax({
+		type : "post",
+		url : "repeatInfo",
+		data : {
+			userid : userid
+		},
+		success : function(map) {
+			var repeat_html;
+			if(Object.keys(map) != "no") {
+				repeat_html = "<table class='list-table'>";
+				
+				for(var key in map) {
+					repeat_html += "<tr><td class='h-bold' colspan='5'>" + key + "</td></tr>";
+					var value = map[key].split(",");
+					for(var i = 0; i < value.length; i++) {
+						var repeat = value[i].split("#");
+						repeat_html += "<tr><td class='td-repeat h-bold' style='width:15%;'><p class='text-box green'>" + repeat[0] + "</p></td>"; // 주기 일자
+						repeat_html += "<td class='td-repeat' style='display:none;'>" + repeat[1] + "</td>"; // 반복 ID
+						repeat_html += "<td class='td-repeat' style='width:25%;'>" + repeat[4] + "</td>"; // 카테고리
+						repeat_html += "<td class='td-repeat' style='width:25%;'><div>" + repeat[5] + "</div><div><span class='fs-16 info'>" + repeat[3] + "</span></div></td>"; // 내용, 자산
+						if(repeat[2] == "수입") {
+							repeat_html += "<td class='td-repeat text-right blue' style='width:25%;'>" + parseInt(repeat[6]).toLocaleString() + "원</td></tr>"; // 돈
+						} else {
+							repeat_html += "<td class='td-repeat text-right red' style='width:25%;'>" + parseInt(repeat[6]).toLocaleString() + "원</td></tr>";
+						}
+					}
+				}
+				
+				repeat_html += "</table>";
+			} else {
+				repeat_html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+			}
+			
+			$("#repeat-list-div").html(repeat_html);
+		}
+	})
 })

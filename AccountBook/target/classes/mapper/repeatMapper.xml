@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="repeatMapper">
+	<!-- 반복 추가 -->
+	<insert id="insertRepeat" parameterType="repeatVO">
+		insert into repetition values (#{repeatid}, #{repeatcycle}, #{moneytype}, #{astname}, #{catename}, #{total}, #{content}, #{userid});
+	</insert>
+	
+	<!-- 반복 중복 확인 -->
+	<select id="isOverlapRepeat" parameterType="repeatVO" resultType="String">
+		select repeatid from repetition where moneytype = #{moneytype} and astname = #{astname} and catename = #{catename} and total = #{total}
+		and content = #{content} and userid = #{userid};
+	</select>
+	
+	<!-- 반복 내역 가져오기 -->
+	<select id="repeatInfo" parameterType="String" resultType="repeatVO">
+		select * from repetition where userid = #{userid} order by repeatcycle;
+	</select>
+</mapper>

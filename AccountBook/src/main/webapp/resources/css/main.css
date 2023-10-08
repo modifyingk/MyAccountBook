@@ -439,6 +439,9 @@
 .yellow {
 	color : #FFA500;
 }
+.green {
+	color : #2C952C;
+}
 /* ---------------------------------------------------------------- */
 .gage-bar {
 	width: 300px;
@@ -639,4 +642,13 @@
 }
 #month-div:hover {
 	color: #2C952C;
+}
+.text-box {
+	border-radius: 10px;
+	text-align: center;
+	padding: 7px 0;
+}
+.text-box.green {
+	background: #2C952C;
+	color: white;
 }

@@ -152,7 +152,7 @@ $(function () {
 			return true;
 		}
 	}
-	
+
 	// 작명 형식 확인 후 메시지
 	$.checkNaming = function(chkID, chkDiv) {
 		if(!$.namingReg(chkID)) {

@@ -102,6 +102,21 @@ public class AccountDAO {
 		return my.selectList("accountMapper.canRepeatInfo", userid);
 	}
 	
+	// 반복 추가
+	public int insertRepeat(RepeatVO repeatVO) {
+		return my.insert("repeatMapper.insertRepeat", repeatVO);
+	}
+	
+	// 반복 중복 확인
+	public String isOverlapRepeat(RepeatVO repeatVO) {
+		return my.selectOne("repeatMapper.isOverlapRepeat", repeatVO);
+	}
+	
+	// 반복 내역 가져오기
+	public List<RepeatVO> repeatInfo(String userid) {
+		return my.selectList("repeatMapper.repeatInfo", userid);
+	}
+	
 	/* // 월별 카테고리별 수입/지출 내역
 	public List<AccountVO> cateAccount(AccountVO accountVO) {
 		return my.selectList("accountMapper.cateAccount", accountVO);

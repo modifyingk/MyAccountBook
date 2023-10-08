@@ -13,6 +13,7 @@
       <typeAlias type="com.modifyk.accountbook.aim.AimVO" alias="aimVO"></typeAlias>
       <typeAlias type="com.modifyk.accountbook.aim.AimJoinVO" alias="aimjoinVO"></typeAlias>
       <typeAlias type="com.modifyk.accountbook.transfer.TransferVO" alias="transferVO"></typeAlias>
+      <typeAlias type="com.modifyk.accountbook.account.RepeatVO" alias="repeatVO"></typeAlias>
    </typeAliases>
    <mappers>
    <!-- SQL문 정의하는 파일들의 목록 -->
@@ -24,5 +25,6 @@
       <mapper resource="mapper/bookmarkMapper.xml" />
       <mapper resource="mapper/aimMapper.xml" />
       <mapper resource="mapper/transferMapper.xml" />
+      <mapper resource="mapper/repeatMapper.xml" />
    </mappers>
 </configuration>
