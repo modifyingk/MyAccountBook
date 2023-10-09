@@ -17,4 +17,9 @@
 	<select id="repeatInfo" parameterType="String" resultType="repeatVO">
 		select * from repetition where userid = #{userid} order by repeatcycle;
 	</select>
+	
+	<!-- 반복 삭제 -->
+	<delete id="deleteRepeat" parameterType="repeatVO">
+		delete from repetition where repeatid = #{repeatid} and userid = #{userid};
+	</delete>
 </mapper>

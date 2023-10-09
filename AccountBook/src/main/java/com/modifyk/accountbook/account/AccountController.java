@@ -338,6 +338,18 @@ public class AccountController {
 		return map;
 	}
 	
+	// 반복 삭제
+	@ResponseBody
+	@RequestMapping("account/deleteRepeat")
+	public String deleteRepeat(RepeatVO repeatVO) {
+		int result = aDao.deleteRepeat(repeatVO);
+		if(result == 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+		
 	/*// 월별 카테고리별 수입/지출 내역
 	@ResponseBody
 	@RequestMapping("account/cateAccount")

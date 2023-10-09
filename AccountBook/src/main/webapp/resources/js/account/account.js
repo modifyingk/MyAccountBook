@@ -31,6 +31,17 @@ $(function() {
 		})
 	}
 	
+	// moneytype 선택
+	$.selectMtype = function(mtype, radioName) {
+		if(mtype == "수입") {
+			$("input:radio[name='" + radioName + "'][value='지출']").attr("checked", false);
+			$("input:radio[name='" + radioName + "'][value='수입']").attr("checked", true);
+		} else {
+			$("input:radio[name='" + radioName + "'][value='수입']").attr("checked", false);
+			$("input:radio[name='" + radioName + "'][value='지출']").attr("checked", true);
+		}
+	}
+	
 	// moneytype radio 값 변경 시 카테고리 재선택
 	// parameter : 카테고리 선택 input ID, moneytype input name
 	$.chgMtype = function(cateID, mtypeName) {
@@ -56,6 +67,28 @@ $(function() {
 		} else if($(removeDoc2).hasClass("active")) {
 			$(removeDoc2).removeClass("active");
 			$(addDoc).addClass("active");
+		}
+	}
+	
+	// 반복 옵션 선택 함수
+	// parameter : 매년/매월/매주 선택 값, 매년 div, 매월 div, 매주 div
+	$.selectRepeatOption = function(selectID, everyYearDiv, everyMonthDiv, everyWeekDiv) {
+		if(selectID == "매년") {
+			$(everyMonthDiv).hide();
+			$(everyWeekDiv).hide();
+			$(everyYearDiv).show();
+		} else if(selectID == "매월") {
+			$(everyYearDiv).hide();
+			$(everyWeekDiv).hide();
+			$(everyMonthDiv).show();
+		} else if(selectID == "매주") {
+			$(everyYearDiv).hide();
+			$(everyMonthDiv).hide();
+			$(everyWeekDiv).show();
+		} else {
+			$(everyYearDiv).hide();
+			$(everyMonthDiv).hide();
+			$(everyWeekDiv).hide();
 		}
 	}
 	
@@ -130,6 +163,7 @@ $(function() {
 		$.closeModal("#close-repeat", "#repeat-modal"); // 반복 모달 닫기
 		$.closeModal("#close-add-repeat", "#add-repeat-modal"); // 반복 추가 모달 닫기
 		$.closeModal("#close-add-repeat-list", "#add-repeat-list-modal"); // 반복할 내역 찾기 모달 닫기
+		$.closeModal("#close-up-repeat", "#up-repeat-modal"); // 반복 수정 모달 닫기
 		
 		// 다른 영역 클릭 시 창 닫기
 		$.autoClose("#select-month"); // 날짜 선택 닫기
@@ -403,11 +437,7 @@ $(function() {
 		$("#up-acttotal").attr("value", acttotal.split("원")[0]);
 		$("#up-actmemo").html(actmemo);
 		
-		if(actmoneytype == "수입") {
-			$("input:radio[name='up-mtype'][value='수입']").attr("checked", true);
-		} else {
-			$("input:radio[name='up-mtype'][value='지출']").attr("checked", true);
-		}
+		$.selectMtype(actmoneytype, "up-mtype");
 	})
 	
 	// 수입/지출 수정
@@ -603,29 +633,10 @@ $(function() {
 		$("#rep-acttotal").attr("value", "");
 		$("#rep-actcontent").attr("value", "");
 	})
+	
 	// 반복 옵션 선택
 	$(document).on("change", "#repeat-option", function() {
-		if($(this).val() == "매년") {
-			$("#every-month-div").hide();
-			$("#every-week-div").hide();
-			$("#every-year-div").show();
-		} else if($(this).val() == "매월") {
-			$("#every-year-div").hide();
-			$("#every-week-div").hide();
-			$("#every-month-div").show();
-		} else if($(this).val() == "매주") {
-			$("#every-year-div").hide();
-			$("#every-month-div").hide();
-			$("#every-week-div").show();
-		} else if($(this).val() == "매일") {
-			$("#every-year-div").hide();
-			$("#every-month-div").hide();
-			$("#every-week-div").hide();
-		} else {
-			$("#every-year-div").hide();
-			$("#every-month-div").hide();
-			$("#every-week-div").hide();
-		}
+		$.selectRepeatOption($(this).val(), "#every-year-div", "#every-month-div", "#every-week-div");
 	})
 	
 	// 반복에 추가 가능한 내역 가져오기
@@ -667,20 +678,47 @@ $(function() {
 		var total = ($(this).children().eq(2).text().split("원")[0]);
 		var moneytype = $(this).children().eq(3).text();
 		
-		$("#rep-actasset").attr("value", astname);
-		$("#rep-actcatename").attr("value", catename);
-		$("#rep-acttotal").attr("value", total);
-		$("#rep-actcontent").attr("value", content);
+		// 반복 추가 자동입력
+		$("#rep-actasset").attr("value", astname); // 자산
+		$("#rep-actcatename").attr("value", catename); // 카테고리
+		$("#rep-acttotal").attr("value", total); // 금액
+		$("#rep-actcontent").attr("value", content); // 내용
+		$.selectMtype(moneytype, "rep-mtype"); // 수입/지출
 		
-		if(moneytype == "수입") {
-			$("input:radio[name='rep-mtype'][value='수입']").attr("checked", true);
-		} else {
-			$("input:radio[name='rep-mtype'][value='지출']").attr("checked", true);
-		}
+		// 반복 수정 자동입력
+		$("#up-rep-actasset").attr("value", astname); // 자산
+		$("#up-rep-actcatename").attr("value", catename); // 카테고리
+		$("#up-rep-acttotal").attr("value", total); // 금액
+		$("#up-rep-actcontent").attr("value", content); // 내용
+		$.selectMtype(moneytype, "up-rep-mtype"); // 수입/지출
 		
 		$("#add-repeat-list-modal").hide();
 	})
 	
+	$.isOverlapRepeat = function(moneytype, astname, catename, total, content, userid) {
+		var result;
+		$.ajax({
+			type: "post",
+			url : "isOverlapRepeat",
+			async : false,
+			data : {
+				moneytype : $("input[name='rep-mtype']:checked").val(),
+				astname : $("#rep-actasset").val(),
+				catename : $("#rep-actcatename").val(),
+				total : $("#rep-acttotal").val().replaceAll(",", ""),
+				content : $("#rep-actcontent").val(),
+				userid : userid
+			},
+			success : function(x) {
+				if(x == "possible") {
+					result = true;
+				} else {
+					result = false;
+				}
+			}
+		})
+		return result;
+	}
 	// 반복 추가
 	var cycleChk = false;
 
@@ -703,67 +741,60 @@ $(function() {
 			cycleChk = true;
 		}
 
+		var moneytype = $("input[name='rep-mtype']:checked").val();
+		var astname = $("#rep-actasset").val();
+		var catename = $("#rep-actcatename").val();
+		var total =  $("#rep-acttotal").val().replaceAll(",", "");
+		var content = $("#rep-actcontent").val();
+		
 		if(!$.noEmpty("#rep-actasset") || !$.noEmpty("#rep-actcatename") || !$.noEmpty("#rep-acttotal") || cycleChk == false){ // 정규식에 맞지 않을 때 (빈 값인 경우)
 			alert("입력 값을 확인해주세요.")
 		} else {
 			// 중복 확인
-			$.ajax({
-				type: "post",
-				url : "isOverlapRepeat",
-				data : {
-					moneytype : $("input[name='rep-mtype']:checked").val(),
-					astname : $("#rep-actasset").val(),
-					catename : $("#rep-actcatename").val(),
-					total : $("#rep-acttotal").val().replaceAll(",", ""),
-					content : $("#rep-actcontent").val(),
-					userid : userid
-				},
-				success : function(x) {
-					if(x == "possible") { // 중복되는 반복 내역이 없는 경우 추가
-						var cycle = "";
-						if($("#repeat-option").val() == "매년") {
-							if($("#every-year-date").val().length == 1) {
-								cycle = "매년 " + $("#every-year-month").val() + "/0" + $("#every-year-date").val();
-							} else {
-								cycle = "매년 " + $("#every-year-month").val() + "/" + $("#every-year-date").val();
-							}
-						} else if($("#repeat-option").val() == "매월") {
-							if($("#every-month-date").val().length == 1) {
-								cycle = "매월 0" + $("#every-month-date").val();
-							} else {
-								cycle = "매월 " + $("#every-month-date").val();
-							}
-						} else if($("#repeat-option").val() == "매주") {
-							cycle = "매주 " + $("#every-week-day").val();
-						} else if($("#repeat-option").val() == "매일") {
-							cycle = "매일";
-						}
-						
-						$.ajax({
-							type: "post",
-							url : "insertRepeat",
-							data : {
-								repeatcycle : cycle,
-								moneytype : $("input[name='rep-mtype']:checked").val(),
-								astname : $("#rep-actasset").val(),
-								catename : $("#rep-actcatename").val(),
-								total : $("#rep-acttotal").val().replaceAll(",", ""),
-								content : $("#rep-actcontent").val(),
-								userid : userid
-							},
-							success : function(x) {
-								if(x == "success") {
-									window.location.reload();
-								} else {
-									alert("다시 시도해주세요.");
-								}
-							}
-						})
-					} else { // 중복되는 경우
-						alert("이미 반복이 설정된 내역입니다.");
+			var chkRepeat = $.isOverlapRepeat(moneytype, astname, catename, total, content, userid);
+			if(chkRepeat) { // 중복되는 반복 내역이 없는 경우 추가
+				var cycle = "";
+				if($("#repeat-option").val() == "매년") {
+					if($("#every-year-date").val().length == 1) {
+						cycle = "매년 " + $("#every-year-month").val() + "/0" + $("#every-year-date").val();
+					} else {
+						cycle = "매년 " + $("#every-year-month").val() + "/" + $("#every-year-date").val();
 					}
+				} else if($("#repeat-option").val() == "매월") {
+					if($("#every-month-date").val().length == 1) {
+						cycle = "매월 0" + $("#every-month-date").val();
+					} else {
+						cycle = "매월 " + $("#every-month-date").val();
+					}
+				} else if($("#repeat-option").val() == "매주") {
+					cycle = "매주 " + $("#every-week-day").val();
+				} else if($("#repeat-option").val() == "매일") {
+					cycle = "매일";
 				}
-			})
+				
+				$.ajax({
+					type: "post",
+					url : "insertRepeat",
+					data : {
+						repeatcycle : cycle,
+						moneytype : moneytype,
+						astname : astname,
+						catename : catename,
+						total : total,
+						content : content,
+						userid : userid
+					},
+					success : function(x) {
+						if(x == "success") {
+							window.location.reload();
+						} else {
+							alert("다시 시도해주세요.");
+						}
+					}
+				})
+			} else { // 중복되는 경우
+				alert("이미 반복이 설정된 내역입니다.");
+			}
 		}
 	})
 	
@@ -784,15 +815,17 @@ $(function() {
 					var value = map[key].split(",");
 					for(var i = 0; i < value.length; i++) {
 						var repeat = value[i].split("#");
-						repeat_html += "<tr><td class='td-repeat h-bold' style='width:15%;'><p class='text-box green'>" + repeat[0] + "</p></td>"; // 주기 일자
+						repeat_html += "<tr class='tr-repeat'><td class='td-repeat' style='display:none;'>" + key + "</p></td>"; // 주기
+						repeat_html += "<td class='td-repeat h-bold' style='width:15%;'><p class='text-box green'>" + repeat[0] + "</p></td>"; // 주기 일자
 						repeat_html += "<td class='td-repeat' style='display:none;'>" + repeat[1] + "</td>"; // 반복 ID
 						repeat_html += "<td class='td-repeat' style='width:25%;'>" + repeat[4] + "</td>"; // 카테고리
 						repeat_html += "<td class='td-repeat' style='width:25%;'><div>" + repeat[5] + "</div><div><span class='fs-16 info'>" + repeat[3] + "</span></div></td>"; // 내용, 자산
 						if(repeat[2] == "수입") {
-							repeat_html += "<td class='td-repeat text-right blue' style='width:25%;'>" + parseInt(repeat[6]).toLocaleString() + "원</td></tr>"; // 돈
+							repeat_html += "<td class='td-repeat text-right blue' style='width:25%;'>" + parseInt(repeat[6]).toLocaleString() + "원</td>"; // 돈
 						} else {
-							repeat_html += "<td class='td-repeat text-right red' style='width:25%;'>" + parseInt(repeat[6]).toLocaleString() + "원</td></tr>";
+							repeat_html += "<td class='td-repeat text-right red' style='width:25%;'>" + parseInt(repeat[6]).toLocaleString() + "원</td>";
 						}
+						repeat_html += "<td class='td-repeat' style='display:none;'>" + repeat[2] + "</td></tr>";
 					}
 				}
 				
@@ -802,6 +835,64 @@ $(function() {
 			}
 			
 			$("#repeat-list-div").html(repeat_html);
+		}
+	})
+	
+	// 반복 수정 자동입력
+	$(document).on("click", ".tr-repeat", function() {
+		$("#up-repeat-modal").show();
+		
+		var cycle1 = $(this).children().eq(0).text();
+		var cycle2 = $(this).children().eq(1).text();
+		var repeatid = $(this).children().eq(2).text();
+		var astname = $(this).children().eq(4).children().eq(1).text();
+		var catename = $(this).children().eq(3).text();
+		var content = $(this).children().eq(4).children().eq(0).text();
+		var total = $(this).children().eq(5).text();
+		var moneytype = $(this).children().eq(6).text();
+
+		$("#up-repeat-option").val(cycle1).prop("selected", true);
+
+		$.selectRepeatOption(cycle1, "#up-every-year-div", "#up-every-month-div", "#up-every-week-div");
+		
+		if(cycle1 == "매년") {
+			$("#up-every-year-month").val(cycle2.split("/")[0]).prop("selected", true);
+			$("#up-every-year-date").attr("value", cycle2.split("/")[1]);
+		} else if(cycle1 == "매월") {
+			$("#up-every-month-date").attr("value", cycle2);
+		} else if(cycle1 == "매주") {
+			$("#up-every-week-div").show();
+			$("#up-every-week-day").attr("value", cycle2);
+		}
+		
+		$.selectMtype(moneytype, "up-rep-mtype");
+		
+		$("#up-repeatid").attr("value", repeatid);
+		$("#up-rep-actasset").attr("value", astname);
+		$("#up-rep-actcatename").attr("value", catename);
+		$("#up-rep-acttotal").attr("value", total);
+		$("#up-rep-actcontent").attr("value", content);
+	})
+	
+	// 반복 삭제
+	$(document).on("click", "#del-repeat-btn", function() {
+		var op = confirm("정말로 삭제하시겠습니까?");
+		if(op) {
+			$.ajax({
+				type : "post",
+				url : "deleteRepeat",
+				data : {
+					 repeatid : $("#up-repeatid").val(),
+					 userid : userid
+				},
+				success : function(x) {
+					if(x == "success") {
+						window.location.reload();
+					} else {
+						alert("다시 시도해주세요.")
+					}
+				}
+			})
 		}
 	})
 })
