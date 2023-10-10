@@ -122,6 +122,11 @@ public class AccountDAO {
 		return my.delete("repeatMapper.deleteRepeat", repeatVO);
 	}
 	
+	// 반복 수정
+	public int updateRepeat(RepeatVO repeatVO) {
+		return my.update("repeatMapper.updateRepeat", repeatVO);
+	}
+	
 	/* // 월별 카테고리별 수입/지출 내역
 	public List<AccountVO> cateAccount(AccountVO accountVO) {
 		return my.selectList("accountMapper.cateAccount", accountVO);

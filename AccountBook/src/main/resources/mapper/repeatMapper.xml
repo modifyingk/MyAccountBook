@@ -22,4 +22,10 @@
 	<delete id="deleteRepeat" parameterType="repeatVO">
 		delete from repetition where repeatid = #{repeatid} and userid = #{userid};
 	</delete>
+	
+	<!-- 반복 수정 -->
+	<update id="updateRepeat" parameterType="repeatVO">
+		update repetition set repeatcycle = #{repeatcycle}, moneytype = #{moneytype}, astname = #{astname}, catename = #{catename},
+		total = #{total}, content = #{content} where repeatid = #{repeatid} and userid = #{userid};
+	</update>
 </mapper>

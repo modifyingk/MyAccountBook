@@ -349,7 +349,19 @@ public class AccountController {
 			return "fail";
 		}
 	}
-		
+	
+	// 반복 수정
+	@ResponseBody
+	@RequestMapping("account/updateRepeat")
+	public String updateRepeat(RepeatVO repeatVO) {
+		int result = aDao.updateRepeat(repeatVO);
+		if(result == 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
 	/*// 월별 카테고리별 수입/지출 내역
 	@ResponseBody
 	@RequestMapping("account/cateAccount")

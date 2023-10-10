@@ -16,6 +16,8 @@ $(function() {
 	
 	var clickNum = 0; // 설정 클릭 횟수 (횟수에 따라 설정 열고 닫음)
 	
+	var cycleChk = false;
+	
 	// 자산 선택 및 값 자동 입력
 	// parameter : 자산 선택 input ID
 	$.pickAsset = function(assetID) {
@@ -90,6 +92,80 @@ $(function() {
 			$(everyMonthDiv).hide();
 			$(everyWeekDiv).hide();
 		}
+	}
+	
+	// 반복 형식 확인
+	// parameter : 매년/매월/매주 선택 값, 매년 월, 매년 일, 매월 일, 매주 요일
+	$.checkRepeat = function(repeatOption, everyYearMonth, everyYearDate, everyMonth, everyWeek) {
+		if($(repeatOption).val() == "매년") {
+			if($(everyYearMonth).val() == "월") {
+				cycleChk = false;
+			} else {
+				cycleChk = $.checkDate(everyYearDate, "");
+			}
+		} else if($(repeatOption).val() == "매월") {
+			cycleChk = $.checkDate(everyMonth, "");
+		} else if($(repeatOption).val() == "매주") {
+			if($(everyWeek).val() == "요일") {
+				cycleChk = false;
+			} else {
+				cycleChk = true;
+			}
+		} else if($(repeatOption).val() == "매일") {
+			cycleChk = true;
+		} else {
+			cycleChk = false;
+		}
+	}
+	
+	// 반복 주기 생성
+	// parameter : 매년/매월/매주 선택 값, 매년 월, 매년 일, 매월 일, 매주 요일
+	$.makeCycle = function(repeatOption, everyYearMonth, everyYearDate, everyMonth, everyWeek) {
+		var cycle = "";
+		if($(repeatOption).val() == "매년") {
+			if($(everyYearDate).val().length == 1) {
+				cycle = "매년 " + $(everyYearMonth).val() + "/0" + $(everyYearDate).val();
+			} else {
+				cycle = "매년 " + $(everyYearMonth).val() + "/" + $(everyYearDate).val();
+			}
+		} else if($(repeatOption).val() == "매월") {
+			if($(everyMonth).val().length == 1) {
+				cycle = "매월 0" + $(everyMonth).val();
+			} else {
+				cycle = "매월 " + $(everyMonth).val();
+			}
+		} else if($(repeatOption).val() == "매주") {
+			cycle = "매주 " + $(everyWeek).val();
+		} else if($(repeatOption).val() == "매일") {
+			cycle = "매일";
+		}
+		return cycle;
+	}
+	
+	// 반복 중복 확인
+	$.isOverlapRepeat = function(moneytype, astname, catename, total, content, userid) {
+		var result;
+		$.ajax({
+			type: "post",
+			url : "isOverlapRepeat",
+			async : false,
+			data : {
+				moneytype : moneytype,
+				astname : astname,
+				catename : catename,
+				total : total,
+				content : content,
+				userid : userid
+			},
+			success : function(x) {
+				if(x == "possible") {
+					result = true;
+				} else {
+					result = false;
+				}
+			}
+		})
+		return result;
 	}
 	
 	$(document).ready(function() {
@@ -179,6 +255,7 @@ $(function() {
 		$.pickAsset("#add-actasset");
 		$.pickAsset("#up-actasset");
 		$.pickAsset("#rep-actasset");
+		$.pickAsset("#up-rep-actasset");
 		
 		// 카테고리 선택 및 값 자동 입력 (수입/지출 추가)
 		$.openSelectCate("#add-actcatename", "select-mtype"); // 카테고리 선택 모달 열기
@@ -195,10 +272,16 @@ $(function() {
 		$.pickCategory("#select-incate-list-div #in-category-table tr", "#rep-actcatename", "#select-incate-modal"); // 수입 카테고리 선택
 		$.pickCategory("#select-outcate-list-div #out-category-table tr", "#rep-actcatename", "#select-outcate-modal"); // 지출 카테고리 선택
 		
+		// 카테고리 선택 및 값 자동 입력 (반복 수정)
+		$.openSelectCate("#up-rep-actcatename", "up-rep-mtype"); // 카테고리 선택 모달 열기
+		$.pickCategory("#select-incate-list-div #in-category-table tr", "#up-rep-actcatename", "#select-incate-modal"); // 수입 카테고리 선택
+		$.pickCategory("#select-outcate-list-div #out-category-table tr", "up-#rep-actcatename", "#select-outcate-modal"); // 지출 카테고리 선택
+		
 		// moneytype radio 값 변경 시 카테고리 재선택
 		$.chgMtype("#add-actcatename", "select-mtype");
 		$.chgMtype("#up-actcatename", "up-mtype");
 		$.chgMtype("#rep-actcatename", "rep-mtype");
+		$.chgMtype("#up-rep-actcatename", "up-rep-mtype");
 		
 	})
 
@@ -634,7 +717,7 @@ $(function() {
 		$("#rep-actcontent").attr("value", "");
 	})
 	
-	// 반복 옵션 선택
+	// 반복 추가에서 반복 옵션 선택
 	$(document).on("change", "#repeat-option", function() {
 		$.selectRepeatOption($(this).val(), "#every-year-div", "#every-month-div", "#every-week-div");
 	})
@@ -695,51 +778,11 @@ $(function() {
 		$("#add-repeat-list-modal").hide();
 	})
 	
-	$.isOverlapRepeat = function(moneytype, astname, catename, total, content, userid) {
-		var result;
-		$.ajax({
-			type: "post",
-			url : "isOverlapRepeat",
-			async : false,
-			data : {
-				moneytype : $("input[name='rep-mtype']:checked").val(),
-				astname : $("#rep-actasset").val(),
-				catename : $("#rep-actcatename").val(),
-				total : $("#rep-acttotal").val().replaceAll(",", ""),
-				content : $("#rep-actcontent").val(),
-				userid : userid
-			},
-			success : function(x) {
-				if(x == "possible") {
-					result = true;
-				} else {
-					result = false;
-				}
-			}
-		})
-		return result;
-	}
 	// 반복 추가
-	var cycleChk = false;
-
 	$(document).on("click", "#add-repeat-btn", function() {
-		if($("#repeat-option").val() == "매년") {
-			if($("#every-year-month").val() == "월") {
-				cycleChk = false;
-			} else {
-				cycleChk = $.checkDate("#every-year-date", "");
-			}
-		} else if($("#repeat-option").val() == "매월") {
-			cycleChk = $.checkDate("#every-month-date", "");
-		} else if($("#repeat-option").val() == "매주") {
-			if($("#every-week-day").val() == "요일") {
-				cycleChk = false;
-			} else {
-				cycleChk = true;
-			}
-		} else if($("#repeat-option").val() == "매일") {
-			cycleChk = true;
-		}
+		cycleChk = false;
+		// 반복 형식 확인
+		$.checkRepeat("#repeat-option", "#every-year-month", "#every-year-date", "#every-month-date", "#every-week-day");
 
 		var moneytype = $("input[name='rep-mtype']:checked").val();
 		var astname = $("#rep-actasset").val();
@@ -753,24 +796,8 @@ $(function() {
 			// 중복 확인
 			var chkRepeat = $.isOverlapRepeat(moneytype, astname, catename, total, content, userid);
 			if(chkRepeat) { // 중복되는 반복 내역이 없는 경우 추가
-				var cycle = "";
-				if($("#repeat-option").val() == "매년") {
-					if($("#every-year-date").val().length == 1) {
-						cycle = "매년 " + $("#every-year-month").val() + "/0" + $("#every-year-date").val();
-					} else {
-						cycle = "매년 " + $("#every-year-month").val() + "/" + $("#every-year-date").val();
-					}
-				} else if($("#repeat-option").val() == "매월") {
-					if($("#every-month-date").val().length == 1) {
-						cycle = "매월 0" + $("#every-month-date").val();
-					} else {
-						cycle = "매월 " + $("#every-month-date").val();
-					}
-				} else if($("#repeat-option").val() == "매주") {
-					cycle = "매주 " + $("#every-week-day").val();
-				} else if($("#repeat-option").val() == "매일") {
-					cycle = "매일";
-				}
+				
+				var cycle = $.makeCycle("#repeat-option", "#every-year-month", "#every-year-date", "#every-month-date", "#every-week-day");
 				
 				$.ajax({
 					type: "post",
@@ -848,7 +875,7 @@ $(function() {
 		var astname = $(this).children().eq(4).children().eq(1).text();
 		var catename = $(this).children().eq(3).text();
 		var content = $(this).children().eq(4).children().eq(0).text();
-		var total = $(this).children().eq(5).text();
+		var total = $(this).children().eq(5).text().split("원")[0];
 		var moneytype = $(this).children().eq(6).text();
 
 		$("#up-repeat-option").val(cycle1).prop("selected", true);
@@ -872,6 +899,59 @@ $(function() {
 		$("#up-rep-actcatename").attr("value", catename);
 		$("#up-rep-acttotal").attr("value", total);
 		$("#up-rep-actcontent").attr("value", content);
+	})
+	
+	// 반복 수정에서 반복 옵션 선택
+	$(document).on("change", "#up-repeat-option", function() {
+		$.selectRepeatOption($(this).val(), "#up-every-year-div", "#up-every-month-div", "#up-every-week-div");
+	})
+	
+	// 반복 수정
+	$(document).on("click", "#up-repeat-btn", function() {
+		cycleChk = false;
+		$.checkRepeat("#up-repeat-option", "#up-every-year-month", "#up-every-year-date", "#up-every-month-date", "#up-every-week-day");
+
+		var repeatid = $("#up-repeatid").val();
+		var moneytype = $("input[name='up-rep-mtype']:checked").val();
+		var astname = $("#up-rep-actasset").val();
+		var catename = $("#up-rep-actcatename").val();
+		var total =  $("#up-rep-acttotal").val().replaceAll(",", "");
+		var content = $("#up-rep-actcontent").val();
+
+		if(!$.noEmpty("#up-rep-actasset") || !$.noEmpty("#up-rep-actcatename") || !$.noEmpty("#up-rep-acttotal") || cycleChk == false){ // 정규식에 맞지 않을 때 (빈 값인 경우)
+			alert("입력 값을 확인해주세요.")
+		} else {
+			// 중복 확인
+			var chkRepeat = $.isOverlapRepeat(moneytype, astname, catename, total, content, userid);
+			if(chkRepeat) { // 중복되는 반복 내역이 없는 경우 수정
+				
+				var cycle = $.makeCycle("#up-repeat-option", "#up-every-year-month", "#up-every-year-date", "#up-every-month-date", "#up-every-week-day");
+				
+				$.ajax({
+					type: "post",
+					url : "updateRepeat",
+					data : {
+						repeatcycle : cycle,
+						repeatid : repeatid,
+						moneytype : moneytype,
+						astname : astname,
+						catename : catename,
+						total : total,
+						content : content,
+						userid : userid
+					},
+					success : function(x) {
+						if(x == "success") {
+							window.location.reload();
+						} else {
+							alert("다시 시도해주세요.");
+						}
+					}
+				})
+			} else { // 중복되는 경우
+				alert("이미 반복이 설정된 내역입니다.");
+			}
+		}
 	})
 	
 	// 반복 삭제
