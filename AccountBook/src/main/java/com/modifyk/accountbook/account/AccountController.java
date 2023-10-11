@@ -24,6 +24,9 @@ public class AccountController {
 	AssetDAO astDao;
 	
 	@Autowired
+	RepeatDAO rDao;
+	
+	@Autowired
 	AccountToMapService toMapSvc;
 	
 	@Autowired
@@ -296,7 +299,7 @@ public class AccountController {
 	@ResponseBody
 	@RequestMapping("account/canRepeatInfo")
 	public List<AccountVO> canRepeatInfo(String userid) {
-		List<AccountVO> list = aDao.canRepeatInfo(userid);
+		List<AccountVO> list = rDao.canRepeatInfo(userid);
 		return list;
 	}
 	
@@ -304,7 +307,7 @@ public class AccountController {
 	@ResponseBody
 	@RequestMapping("account/insertRepeat")
 	public String insertRepeat(RepeatVO repeatVO) {
-		int result = aDao.insertRepeat(repeatVO);
+		int result = rDao.insertRepeat(repeatVO);
 		if(result == 1) {
 			return "success";
 		} else {
@@ -316,7 +319,7 @@ public class AccountController {
 	@ResponseBody
 	@RequestMapping("account/isOverlapRepeat")
 	public String isOverlapRepeat(RepeatVO repeatVO) {
-		String result = aDao.isOverlapRepeat(repeatVO);
+		String result = rDao.isOverlapRepeat(repeatVO);
 		if(result != null) {
 			return "impossible";
 		} else {
@@ -328,7 +331,7 @@ public class AccountController {
 	@ResponseBody
 	@RequestMapping("account/repeatInfo")
 	public HashMap<String, Object> repeatInfo(String userid) {
-		List<RepeatVO> repeatList = aDao.repeatInfo(userid);
+		List<RepeatVO> repeatList = rDao.repeatInfo(userid);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		if(repeatList.size() < 1) {
 			map.put("no", "no");
@@ -342,7 +345,7 @@ public class AccountController {
 	@ResponseBody
 	@RequestMapping("account/deleteRepeat")
 	public String deleteRepeat(RepeatVO repeatVO) {
-		int result = aDao.deleteRepeat(repeatVO);
+		int result = rDao.deleteRepeat(repeatVO);
 		if(result == 1) {
 			return "success";
 		} else {
@@ -354,7 +357,7 @@ public class AccountController {
 	@ResponseBody
 	@RequestMapping("account/updateRepeat")
 	public String updateRepeat(RepeatVO repeatVO) {
-		int result = aDao.updateRepeat(repeatVO);
+		int result = rDao.updateRepeat(repeatVO);
 		if(result == 1) {
 			return "success";
 		} else {

@@ -58,7 +58,7 @@
 					<br>
 					<button class="btn small outline-green font-18 is-shadow" id="out-category-btn">지출 분류</button>
 				</div>
-				
+
 				<!-- 날짜 보여주기 -->
 				<div style="margin-bottom: 3%; width: 100%;">
 					<table style="width: 100%;">

@@ -121,25 +121,25 @@ $(function() {
 	// 반복 주기 생성
 	// parameter : 매년/매월/매주 선택 값, 매년 월, 매년 일, 매월 일, 매주 요일
 	$.makeCycle = function(repeatOption, everyYearMonth, everyYearDate, everyMonth, everyWeek) {
-		var cycle = "";
-		if($(repeatOption).val() == "매년") {
-			if($(everyYearDate).val().length == 1) {
-				cycle = "매년 " + $(everyYearMonth).val() + "/0" + $(everyYearDate).val();
-			} else {
-				cycle = "매년 " + $(everyYearMonth).val() + "/" + $(everyYearDate).val();
-			}
-		} else if($(repeatOption).val() == "매월") {
-			if($(everyMonth).val().length == 1) {
-				cycle = "매월 0" + $(everyMonth).val();
-			} else {
-				cycle = "매월 " + $(everyMonth).val();
-			}
-		} else if($(repeatOption).val() == "매주") {
-			cycle = "매주 " + $(everyWeek).val();
-		} else if($(repeatOption).val() == "매일") {
-			cycle = "매일";
-		}
-		return cycle;
+		 var cycle = "";
+		 if($(repeatOption).val() == "매년") {
+			 if($(everyYearDate).val().length == 1) {
+				 cycle = "매년 " + $(everyYearMonth).val() + "/0" + $(everyYearDate).val();
+			 } else {
+				 cycle = "매년 " + $(everyYearMonth).val() + "/" + $(everyYearDate).val();
+			 }
+		 } else if($(repeatOption).val() == "매월") {
+			 if($(everyMonth).val().length == 1) {
+				 cycle = "매월 0" + $(everyMonth).val();
+			 } else {
+				 cycle = "매월 " + $(everyMonth).val();
+			 }
+		 } else if($(repeatOption).val() == "매주") {
+			 cycle = "매주 " + $(everyWeek).val();
+		 } else {
+			 cycle = "매일";
+		 }
+		 return cycle;
 	}
 	
 	// 반복 중복 확인
