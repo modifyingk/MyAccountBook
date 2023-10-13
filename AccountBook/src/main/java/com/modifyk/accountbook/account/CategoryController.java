@@ -16,10 +16,7 @@ public class CategoryController {
 	CategoryDAO cDao;
 	
 	@Autowired
-	InsOrShowInCateService insIncateSvc;
-	
-	@Autowired
-	InsOrShowOutCateService insOutcateSvc;
+	InsertCategoryService insertCateSvc;
 	
 	// 카테고리 추가
 	@ResponseBody
@@ -113,18 +110,18 @@ public class CategoryController {
 			int result = cDao.deleteAllCategory(categoryVO);
 			if(result > 0) {
 				if(categoryVO.getMoneytype().equals("수입")) {
-					insIncateSvc.insertCategory(categoryVO);
+					insertCateSvc.insertInCategory(categoryVO);
 				} else {
-					insOutcateSvc.insertCategory(categoryVO);
+					insertCateSvc.insertOutCategory(categoryVO);
 				}
 			}
 		} catch (DataIntegrityViolationException e) { // 외래키 연관되어 있는 경우, 숨김으로 처리
 			int result = cDao.hideAllCategory(categoryVO);
 			if(result > 0) {
 				if(categoryVO.getMoneytype().equals("수입")) {
-					insIncateSvc.insertCategory(categoryVO);
+					insertCateSvc.insertInCategory(categoryVO);
 				} else {
-					insOutcateSvc.insertCategory(categoryVO);
+					insertCateSvc.insertOutCategory(categoryVO);
 				}
 			}
 		}

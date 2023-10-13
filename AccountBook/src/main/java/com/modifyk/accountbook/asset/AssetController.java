@@ -25,10 +25,7 @@ public class AssetController {
 	AccountToMapService actMapSvc;
 	
 	@Autowired
-	InsOrShowAssetService insAssetSvc;
-	
-	@Autowired
-	AutoInsertAccountService insAccountSvc;
+	AutoInsertActAstService insertSvc;
 	
 	// 자산 리스트
 	@ResponseBody
@@ -60,7 +57,7 @@ public class AssetController {
 			assetVO.setAstname(updateAsset);
 			assetVO.setAstmemo(updateMemo);
 			assetVO.setTotal(Integer.parseInt(updateTotal) - Integer.parseInt(originTotal));
-			insAccountSvc.insertAccount(assetVO);
+			insertSvc.insertAccount(assetVO);
 		}
 		
 		if(result == 1) {
@@ -90,7 +87,7 @@ public class AssetController {
 		String overlapResult = aDao.isOverlapHideAsset(assetVO);
 		// 자산 금액 가계부에 기록 
 		if(assetVO.getTotal() != 0) {
-			insAccountSvc.insertAccount(assetVO);
+			insertSvc.insertAccount(assetVO);
 		}
 					
 		if(overlapResult != null) {
@@ -143,7 +140,7 @@ public class AssetController {
 		if(accountList.size() < 1) {
 			map.put("no", "no");
 		} else {
-			map = actMapSvc.toMap(accountList);
+			map = actMapSvc.accountToMap(accountList);
 		}
 		return map;
 	}
@@ -155,12 +152,12 @@ public class AssetController {
 		try {
 			int result = aDao.deleteAllAsset(assetVO);
 			if(result > 0) {
-				insAssetSvc.insertAsset(assetVO);
+				insertSvc.insertAsset(assetVO);
 			}
 		} catch (DataIntegrityViolationException e) { // 외래키 연관되어 있는 경우, 숨김으로 처리
 			int result = aDao.hideAllAsset(assetVO);
 			if(result > 0) {
-				insAssetSvc.insertAsset(assetVO);
+				insertSvc.insertAsset(assetVO);
 			}
 		}
 	}

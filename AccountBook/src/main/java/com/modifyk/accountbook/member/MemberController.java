@@ -29,16 +29,7 @@ public class MemberController {
 	MakePwService makePwSvc;
 	
 	@Autowired
-	InsertAstGroupService astGroupSvc;
-	
-	@Autowired
-	InsertAssetService assetSvc;
-	
-	@Autowired
-	InsertInCategoryService incateSvc;
-	
-	@Autowired
-	InsertOutCategoryService outcateSvc;
+	AutoInsertService insertSvc;
 	
 	// 아이디 중복 확인
 	@ResponseBody
@@ -81,18 +72,18 @@ public class MemberController {
 		// asset group 기본값 삽입
 		AssetGroupVO astgroupVO = new AssetGroupVO();
 		astgroupVO.setUserid(memberVO.getUserid());
-		astGroupSvc.insertGroup(astgroupVO);
+		insertSvc.insertGroup(astgroupVO);
 		
 		// asset 기본값 삽입
 		AssetVO assetVO = new AssetVO();
 		assetVO.setUserid(memberVO.getUserid());
-		assetSvc.insertAsset(assetVO);
+		insertSvc.insertAsset(assetVO);
 		
 		// category 기본값 삽입
 		CategoryVO categoryVO = new CategoryVO();
 		categoryVO.setUserid(memberVO.getUserid());
-		incateSvc.insertCategory(categoryVO);
-		outcateSvc.insertCategory(categoryVO);
+		insertSvc.insertInCategory(categoryVO);
+		insertSvc.insertOutCategory(categoryVO);
 		
 		if(result == 1) {
 			return "success";

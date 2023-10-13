@@ -32,4 +32,15 @@
 	<select id="isOverlapAim" parameterType="aimVO" resultType="String">
 		select catename from aim where aimdate = #{aimdate} and catename = #{catename} and userid = #{userid};
 	</select>
+	
+	<!-- 유저별 카테고리별 목표, 총 금액 -->
+	<select id="aimAll" parameterType="aimVO" resultType="aimjoinVO">
+		select a.aimdate, a.moneytype, a.catename, a.total as aim_money, sum(c.total) as total, a.userid
+		from aim as a join account as c
+		on left(c.date, 7) = aimdate and a.catename = c.catename and a.userid = c.userid 
+		where a.moneytype = #{moneytype} and aimdate = #{aimdate} and (left(c.date, 7) = #{aimdate})
+		group by c.catename
+		union
+		select aimdate, moneytype, catename, total as aim_money, 0 as total, userid from aim where moneytype = #{moneytype} and aimdate = #{aimdate};
+	</select>
 </mapper>

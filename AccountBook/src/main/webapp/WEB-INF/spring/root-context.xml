@@ -55,6 +55,9 @@
 	<task:annotation-driven scheduler="scheduler"/>
 	<task:scheduler id="scheduler" pool-size="10"/>
 	<task:scheduled-tasks>
-		<task:scheduled ref="cronTest" method="test" cron="0 0 0 * * *"/>
+		<task:scheduled ref="autoRepeat" method="repeatAccount" cron="0 0 0 * * *"/>
+	</task:scheduled-tasks>
+	<task:scheduled-tasks>
+		<task:scheduled ref="achieveAim" method="achieveAim" cron="0 0 0 1 * *"/>
 	</task:scheduled-tasks>
 </beans>

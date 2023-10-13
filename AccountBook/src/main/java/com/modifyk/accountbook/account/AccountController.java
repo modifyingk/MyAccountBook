@@ -29,12 +29,6 @@ public class AccountController {
 	@Autowired
 	AccountToMapService toMapSvc;
 	
-	@Autowired
-	StatsMapService stMapSvc;
-	
-	@Autowired
-	RepeatToMapService repMapSvc;
-	
 	// 수입/지출 추가
 	@ResponseBody
 	@RequestMapping("account/insertAccount")
@@ -184,7 +178,7 @@ public class AccountController {
 		if(accountList.size() < 1) {
 			map.put("no", "no");
 		} else {
-			map = toMapSvc.toMap(accountList);
+			map = toMapSvc.accountToMap(accountList);
 		}
 		return map;
 	}
@@ -198,7 +192,7 @@ public class AccountController {
 		if(incomeList.size() < 1) {
 			map.put("no", "no");
 		} else {
-			map = toMapSvc.toMap(incomeList);
+			map = toMapSvc.accountToMap(incomeList);
 		}
 		return map;
 	}
@@ -212,7 +206,7 @@ public class AccountController {
 		if(spendList.size() < 1) {
 			map.put("no", "no");
 		} else {
-			map = toMapSvc.toMap(spendList);
+			map = toMapSvc.accountToMap(spendList);
 		}
 		return map;
 	}
@@ -222,7 +216,7 @@ public class AccountController {
 	@RequestMapping("account/cateSpend")
 	public HashMap<String, Object> cateSpend(AccountVO accountVO) {
 		List<AccountVO> accountList = aDao.monthSpend(accountVO);
-		HashMap<String, Object> map = stMapSvc.toMap(accountList);
+		HashMap<String, Object> map = toMapSvc.statsToMap(accountList);
 		return map;
 	}
 	
@@ -231,7 +225,7 @@ public class AccountController {
 	@RequestMapping("account/cateIncome")
 	public HashMap<String, Object> cateIncome(AccountVO accountVO) {
 		List<AccountVO> accountList = aDao.monthIncome(accountVO);
-		HashMap<String, Object> map = stMapSvc.toMap(accountList);
+		HashMap<String, Object> map = toMapSvc.statsToMap(accountList);
 		return map;
 	}
 	
@@ -244,7 +238,7 @@ public class AccountController {
 		if(catespendList.size() < 1) {
 			map.put("no", "no");
 		} else {
-			map = toMapSvc.toMap(catespendList);
+			map = toMapSvc.accountToMap(catespendList);
 		}
 		return map;
 	}
@@ -282,7 +276,7 @@ public class AccountController {
 		if(list.size() < 1) {
 			map.put("no", "no");
 		} else {
-			map = toMapSvc.toMap(list);
+			map = toMapSvc.accountToMap(list);
 		}
 		return map;
 	}
@@ -336,7 +330,7 @@ public class AccountController {
 		if(repeatList.size() < 1) {
 			map.put("no", "no");
 		} else {
-			map = repMapSvc.toMap(repeatList);
+			map = toMapSvc.repeatToMap(repeatList);
 		}
 		return map;
 	}

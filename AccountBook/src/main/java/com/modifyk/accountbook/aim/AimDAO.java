@@ -36,4 +36,9 @@ public class AimDAO {
 	public String isOverlapAim(AimVO aimVO) {
 		return my.selectOne("aimMapper.isOverlapAim", aimVO);
 	}
+	
+	// 유저별 카테고리별 목표, 총 금액
+	public List<AimJoinVO> aimAll(AimVO aimVO) {
+		return my.selectList("aimMapper.aimAll", aimVO);
+	}
 }

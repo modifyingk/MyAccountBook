@@ -18,4 +18,16 @@ public class AimToMapService {
 		
 		return map;
 	}
+	
+	public HashMap<String, String> toMapAll(List<AimJoinVO> aimList) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		for(int i = 0; i < aimList.size(); i++) {
+			if(map.get(aimList.get(i).getCatename()) == null) {
+				map.put(aimList.get(i).getCatename(), aimList.get(i).getAim_money() + "#" + aimList.get(i).getTotal() + "#" + aimList.get(i).getUserid());
+			}
+		}
+		
+		return map;
+	}
 }

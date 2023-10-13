@@ -10,10 +10,13 @@ import com.modifyk.accountbook.account.AccountDAO;
 import com.modifyk.accountbook.account.AccountVO;
 
 @Service
-public class AutoInsertAccountService {
+public class AutoInsertActAstService {
 	
 	@Autowired
 	AccountDAO actDao;
+
+	@Autowired
+	AssetDAO aDao;
 	
 	public void insertAccount(AssetVO assetVO) {
 		// 가계부 탭에 기록
@@ -38,5 +41,17 @@ public class AutoInsertAccountService {
 		account.setMemo("");
 		
 		actDao.insertAccount(account);
+	}
+	
+	public void insertAsset(AssetVO assetVO) {
+		assetVO.setAstname("현금");
+		assetVO.setAstgroup("현금");
+			
+		String overlapResult = aDao.isOverlapHideAsset(assetVO);
+		if(overlapResult != null) {
+			aDao.showAsset(assetVO);
+		} else {
+			aDao.insertAsset(assetVO);
+		}
 	}
 }
