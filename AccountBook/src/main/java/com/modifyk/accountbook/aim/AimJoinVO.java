@@ -45,4 +45,10 @@ public class AimJoinVO {
 		this.userid = userid;
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("AimJoinVO [aimid=%s, moneytype=%s, catename=%s, aim_money=%s, total=%s, userid=%s]",
+				aimid, moneytype, catename, aim_money, total, userid);
+	}
+	
 }

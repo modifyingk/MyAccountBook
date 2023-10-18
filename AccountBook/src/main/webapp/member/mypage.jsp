@@ -15,12 +15,12 @@
 		// 현재 세션의 포인트 정보 가져오기
 		$.ajax({
 			type : "post",
-			url : "userInfo",
+			url : "userMoneyInfo",
 			data : {
 				userid : userid
 			},
 			success : function(info) {
-				$("#point-div").html(info.point);
+				$("#point-div").html(info.userpoint);
 			}
 		})
 		
@@ -28,18 +28,27 @@
 			location.href = "../member/myInfo.jsp";
 		})
 		
-		/* $.ajax({
-			type : "post",
-			url : "../aim/isAchieve",
-			data : {
-				userid : userid
-			},
-			success : function(x) {
-				if(x > 0) {
-					alert("목표를 달성하여 " + x + "포인트가 적립되었습니다!");
-				}
+		var angle = 0;
+		$("#water-btn").mousedown(function() {
+			angle++;
+			$("#water-img").show();
+			if(angle >= 5) {
+				$("#plant-step").attr("src", "../resources/img/moneyleaf.png");
 			}
-		}) */
+			if(angle >= 10) {
+				$("#plant-step").attr("src", "../resources/img/moneyflower.png");
+			}
+			if(angle >= 15) {
+				$("#plant-step").attr("src", "../resources/img/moneyfruit.png");
+			}
+			if(angle == 16) {
+				$("#plant-step").attr("src", "../resources/img/moneyseed.png");
+				angle = 0;
+			}
+		})
+		$("#water-btn").mouseup(function() {
+			$("#water-img").hide();
+		})
 	})
 </script>
 </head>
@@ -66,6 +75,15 @@
 				<div>
 					<div class="col-8">
 						<h2 class="h-normal fs-35" id="myinfo-btn"><i class="fi fi-rs-user"></i> <%= session.getAttribute("userid") %></h2>
+						<div class="container margin-small">
+							<div>
+								<h2 class="text-center green fs-35"><i class="fi fi-ts-seedling"></i>  물 주세요 !</h2>
+								<h2 class="text-center info fs-28"><i class="fi fi-ts-seedling"></i>  물 하나에 10 포인트</h2>
+								<img src="../resources/img/watering.png" width="200px" id="water-btn">
+								<img src="../resources/img/water.png" width="80px;" id="water-img">
+								<img src="../resources/img/moneyseed.png" id="plant-step" width="200px;">
+							</div>
+						</div>			
 					</div>
 					<div class="col-2">
 						<br>

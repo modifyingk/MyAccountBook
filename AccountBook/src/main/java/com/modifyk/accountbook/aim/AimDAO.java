@@ -41,4 +41,14 @@ public class AimDAO {
 	public List<AimJoinVO> aimAll(AimVO aimVO) {
 		return my.selectList("aimMapper.aimAll", aimVO);
 	}
+	
+	// 목표 달성
+	public int achieveAim(AimVO aimVO) {
+		return my.update("aimMapper.achieveAim", aimVO);
+	}
+	
+	// 총 지출 목표 중 달성 개수
+	public List<AimRateVO> achieveRate(String aimdate) {
+		return my.selectList("aimMapper.achieveRate", aimdate);
+	}
 }

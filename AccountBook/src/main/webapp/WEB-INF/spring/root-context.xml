@@ -58,6 +58,6 @@
 		<task:scheduled ref="autoRepeat" method="repeatAccount" cron="0 0 0 * * *"/>
 	</task:scheduled-tasks>
 	<task:scheduled-tasks>
-		<task:scheduled ref="achieveAim" method="achieveAim" cron="0 0 0 1 * *"/>
+		<task:scheduled ref="achieveService" method="isachieve" cron="0 0 0 1 * *"/>
 	</task:scheduled-tasks>
 </beans>

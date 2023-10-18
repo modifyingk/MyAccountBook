@@ -4,18 +4,14 @@
 <mapper namespace="aimMapper">
 	<!-- 목표 추가 -->
 	<insert id="insertAim" parameterType="aimVO">
-		insert into aim values (#{aimid}, #{aimdate}, #{moneytype}, #{catename}, #{total}, #{userid});
+		insert into aim values (#{aimid}, #{aimdate}, #{moneytype}, #{catename}, #{total}, #{userid}, "x");
 	</insert>
 	
 	<!-- 목표 가져오기 -->
 	<select id="aimInfo" parameterType="aimVO" resultType="aimjoinVO">
-		select a.aimid, a.moneytype, a.catename, a.total as aim_money, sum(c.total) as total
-		from aim as a join account as c
-		on left(c.date, 7) = aimdate and a.catename = c.catename
-		where a.userid = #{userid} and a.moneytype = #{moneytype} and aimdate = #{aimdate} and (left(c.date, 7) = #{aimdate})
-		group by c.catename
-		union
-		select aimid, moneytype, catename, total as aim_money, 0 as total from aim where userid = #{userid} and moneytype = #{moneytype} and aimdate = #{aimdate};
+		select aimid, moneytype, catename, total as aim_money,
+		ifnull((select sum(total) from account where account.userid = aim.userid and account.catename = aim.catename and account.moneytype = aim.moneytype and left(account.date, 7) = aim.aimdate), 0) as total
+		from aim where aimdate = #{aimdate} and userid = #{userid} and moneytype = #{moneytype};
 	</select>
 	
 	<!-- 목표 수정 -->
@@ -23,6 +19,18 @@
 		update aim set total = #{total} where aimid = #{aimid} and userid = #{userid};
 	</update>
 	
+	<!-- 목표 달성 -->
+	<update id="achieveAim" parameterType="aimVO">
+		update aim set achieveaim = #{achieveaim} where aimid = #{aimid};
+	</update>
+
+	<!-- 총 지출 목표 중 달성 개수 -->
+	<select id="achieveRate" parameterType="String" resultType="aimrateVO">
+		select userid, count(*) as achieve_num,
+		(select count(*) as achieve from aim where moneytype = "지출" and userid = aim2.userid and aimdate = aim2.aimdate) as aim_num
+		from aim as aim2 where aimdate = #{aimdate} and moneytype = "지출" and achieveaim = "o" group by userid;
+	</select>
+		
 	<!-- 목표 삭제 -->
 	<delete id="deleteAim" parameterType="aimVO">
 		delete from aim where aimid = #{aimid} and userid = #{userid};
@@ -35,12 +43,8 @@
 	
 	<!-- 유저별 카테고리별 목표, 총 금액 -->
 	<select id="aimAll" parameterType="aimVO" resultType="aimjoinVO">
-		select a.aimdate, a.moneytype, a.catename, a.total as aim_money, sum(c.total) as total, a.userid
-		from aim as a join account as c
-		on left(c.date, 7) = aimdate and a.catename = c.catename and a.userid = c.userid 
-		where a.moneytype = #{moneytype} and aimdate = #{aimdate} and (left(c.date, 7) = #{aimdate})
-		group by c.catename
-		union
-		select aimdate, moneytype, catename, total as aim_money, 0 as total, userid from aim where moneytype = #{moneytype} and aimdate = #{aimdate};
+		select aimid, moneytype, catename, total as aim_money, userid,
+		ifnull((select sum(total) from account where account.userid = aim.userid and account.catename = aim.catename and account.moneytype = aim.moneytype and left(account.date, 7) = aim.aimdate), 0) as total
+		from aim where aimdate = #{aimdate} and moneytype = #{moneytype};
 	</select>
 </mapper>

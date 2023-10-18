@@ -85,6 +85,14 @@ public class MemberController {
 		insertSvc.insertInCategory(categoryVO);
 		insertSvc.insertOutCategory(categoryVO);
 		
+		// 포인트 기본값 삽입
+		MoneyVO moneyVO = new MoneyVO();
+		moneyVO.setUserid(memberVO.getUserid());
+		moneyVO.setUserpoint(0);
+		moneyVO.setPlantstep(0);
+		moneyVO.setUsercash(0);
+		mDao.insertMoney(moneyVO);
+		
 		if(result == 1) {
 			return "success";
 		} else {
@@ -222,15 +230,11 @@ public class MemberController {
 		}
 	}
 	
-	// 포인트 적립
+	// 회원 포인트 정보
 	@ResponseBody
-	@RequestMapping("member/updatePoint")
-	public String updatePoint(MemberVO memberVO) {
-		int result = mDao.updatePoint(memberVO);
-		if(result == 1) {
-			return "success";
-		} else {
-			return "fail";
-		}
+	@RequestMapping("member/userMoneyInfo")
+	public MoneyVO userMoneyInfo(String userid) {
+		MoneyVO money = mDao.userMoneyInfo(userid);
+		return money;
 	}
 }

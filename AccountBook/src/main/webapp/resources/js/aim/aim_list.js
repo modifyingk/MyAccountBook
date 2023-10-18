@@ -15,6 +15,7 @@ $(function() {
 				var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
 
 				var aim_html = "";
+				
 				if(Object.keys(map) != "no") {
 					aim_html += "<table class='gage-table' id='out-aim-table'>";
 	
@@ -69,6 +70,7 @@ $(function() {
 			},
 			success : function(map) {
 				var aim_in_html = "";
+				
 				if(Object.keys(map) != "no") {
 					aim_in_html += "<table class='gage-table' id='in-aim-table'>";
 					

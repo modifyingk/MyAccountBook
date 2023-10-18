@@ -9,7 +9,7 @@
 	
 	<!-- 회원가입 -->
 	<insert id="insertMember" parameterType="memberVO">
-		insert into member values (#{userid}, #{pw}, #{username}, #{gender}, #{birth}, #{email}, DATE_FORMAT(now(), '%Y-%m-%d'), #{point});
+		insert into member values (#{userid}, #{pw}, #{username}, #{gender}, #{birth}, #{email}, DATE_FORMAT(now(), '%Y-%m-%d'));
 	</insert>
 	
 	<!-- 로그인 -->
@@ -57,8 +57,18 @@
 		delete from member where userid = #{userid}
 	</delete>
 	
+	<!-- 회원 가입 시 포인트 셋팅 -->
+	<insert id="insertMoney" parameterType="moneyVO">
+		insert into money values (#{userid}, #{userpoint}, #{plantstep}, #{usercash});
+	</insert>
+	
 	<!-- 포인트 적립 -->
-	<update id="updatePoint">
-		update member set point = point + #{point} where userid = #{userid};
+	<update id="updatePoint" parameterType="moneyVO">
+		update money set userpoint = userpoint + #{userpoint} where userid = #{userid};
 	</update>
+	
+	<!-- 회원 포인트 정보 -->
+	<select id="userMoneyInfo" parameterType="String" resultType="moneyVO">
+		select * from money where userid = #{userid};
+	</select>
 </mapper>

@@ -7,6 +7,7 @@ public class AimVO {
 	private String catename;
 	private String total;
 	private String userid;
+	private char achieveaim;
 	
 	public int getAimid() {
 		return aimid;
@@ -44,10 +45,18 @@ public class AimVO {
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
+	public char isAchieveaim() {
+		return achieveaim;
+	}
+	public void setAchieveaim(char achieveaim) {
+		this.achieveaim = achieveaim;
+	}
+	
 	@Override
 	public String toString() {
-		return String.format("AimVO [aimid=%s, aimdate=%s, moneytype=%s, catename=%s, total=%s, userid=%s]", aimid,
-				aimdate, moneytype, catename, total, userid);
+		return String.format(
+				"AimVO [aimid=%s, aimdate=%s, moneytype=%s, catename=%s, total=%s, userid=%s, achieveaim=%s]", aimid,
+				aimdate, moneytype, catename, total, userid, achieveaim);
 	}
 	
 }

@@ -24,7 +24,7 @@ public class AimToMapService {
 		
 		for(int i = 0; i < aimList.size(); i++) {
 			if(map.get(aimList.get(i).getCatename()) == null) {
-				map.put(aimList.get(i).getCatename(), aimList.get(i).getAim_money() + "#" + aimList.get(i).getTotal() + "#" + aimList.get(i).getUserid());
+				map.put(aimList.get(i).getCatename(), aimList.get(i).getAimid() + "#" + aimList.get(i).getAim_money() + "#" + aimList.get(i).getTotal() + "#" + aimList.get(i).getUserid());
 			}
 		}
 		
