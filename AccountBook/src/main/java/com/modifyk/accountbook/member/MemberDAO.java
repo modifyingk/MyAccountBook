@@ -82,4 +82,9 @@ public class MemberDAO {
 	public MoneyVO userMoneyInfo(String userid) {
 		return my.selectOne("memberMapper.userMoneyInfo", userid);
 	}
+	
+	// 물 주기
+	public int usePoint(String userid) {
+		return my.update("memberMapper.usePoint", userid);
+	}
 }

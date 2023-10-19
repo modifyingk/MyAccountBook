@@ -9,47 +9,9 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="../resources/js/member/my_page.js"></script>
 <script>
-	$(function() {
-		var userid = "<%= session.getAttribute("userid") %>";
-		// 현재 세션의 포인트 정보 가져오기
-		$.ajax({
-			type : "post",
-			url : "userMoneyInfo",
-			data : {
-				userid : userid
-			},
-			success : function(info) {
-				$("#point-div").html(info.userpoint);
-			}
-		})
-		
-		$("#myinfo-btn").click(function() {
-			location.href = "../member/myInfo.jsp";
-		})
-		
-		var angle = 0;
-		$("#water-btn").mousedown(function() {
-			angle++;
-			$("#water-img").show();
-			if(angle >= 5) {
-				$("#plant-step").attr("src", "../resources/img/moneyleaf.png");
-			}
-			if(angle >= 10) {
-				$("#plant-step").attr("src", "../resources/img/moneyflower.png");
-			}
-			if(angle >= 15) {
-				$("#plant-step").attr("src", "../resources/img/moneyfruit.png");
-			}
-			if(angle == 16) {
-				$("#plant-step").attr("src", "../resources/img/moneyseed.png");
-				angle = 0;
-			}
-		})
-		$("#water-btn").mouseup(function() {
-			$("#water-img").hide();
-		})
-	})
+	var userid = "<%= session.getAttribute("userid") %>";
 </script>
 </head>
 <body>
@@ -79,9 +41,11 @@
 							<div>
 								<h2 class="text-center green fs-35"><i class="fi fi-ts-seedling"></i>  물 주세요 !</h2>
 								<h2 class="text-center info fs-28"><i class="fi fi-ts-seedling"></i>  물 하나에 10 포인트</h2>
-								<img src="../resources/img/watering.png" width="200px" id="water-btn">
+								<img src="../resources/img/watering.png" width="200px" id="water-btn" hidden>
 								<img src="../resources/img/water.png" width="80px;" id="water-img">
-								<img src="../resources/img/moneyseed.png" id="plant-step" width="200px;">
+								<div id="plant-step-div">
+									
+								</div>
 							</div>
 						</div>			
 					</div>

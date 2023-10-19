@@ -237,4 +237,17 @@ public class MemberController {
 		MoneyVO money = mDao.userMoneyInfo(userid);
 		return money;
 	}
+	
+	// 물 주기
+	@ResponseBody
+	@RequestMapping("member/usePoint")
+	public int usePoint(String userid) {
+		MoneyVO moneyVO = mDao.userMoneyInfo(userid);
+		if(moneyVO.getUserpoint() < 10) { // 포인트 부족
+			return -1;
+		} else {
+			mDao.usePoint(userid);
+			return 0;
+		}
+	}
 }

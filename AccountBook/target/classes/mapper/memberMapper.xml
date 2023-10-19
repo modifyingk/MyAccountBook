@@ -71,4 +71,9 @@
 	<select id="userMoneyInfo" parameterType="String" resultType="moneyVO">
 		select * from money where userid = #{userid};
 	</select>
+	
+	<!-- 물 주기 -->
+	<update id="usePoint" parameterType="String">
+		update money set userpoint = userpoint - 10, plantstep = plantstep + 1 where userid = #{userid};
+	</update>
 </mapper>

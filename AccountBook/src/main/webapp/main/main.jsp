@@ -24,31 +24,6 @@
 		$("#find_pw").click(function() {
 			location.href = "../member/find_pw.jsp";
 		})
-		
-		var angle = 0;
-		$("#watering").mousedown(function() {
-			angle++;
-			$("#water").show();
-			if(angle >= 5) {
-				$("#money").attr("src", "../resources/img/moneyleaf.png");
-			}
-			if(angle >= 10) {
-				$("#money").attr("src", "../resources/img/moneyflower.png");
-			}
-			if(angle >= 15) {
-				$("#money").attr("src", "../resources/img/moneyfruit.png");
-			}
-			if(angle == 16) {
-				$("#money").attr("src", "../resources/img/moneyseed.png");
-				angle = 0;
-			}
-		})
-		$("#watering").mouseup(function() {
-			$("#water").hide();
-		})
-		$("#sign").click(function() {
-			location.href = "../member/sign_up.jsp";
-		})
 	})
 </script>
 </head>
@@ -79,10 +54,10 @@
 				<div class="container margin-small">
 					<div>
 						<h2 class="main-text"><i class="fi fi-ts-seedling"></i>  Water Your Money!</h2>
-						<p class="msg info" style="text-align: center; font-size: 18px;">물 뿌리개를 클릭해보세요</p>
+						<br>
 						<img src="../resources/img/watering.png" width="200px" id="watering">
 						<img src="../resources/img/water.png" width="80px;" id="water">
-						<img src="../resources/img/moneyseed.png" id="money" width="200px;">
+						<img src="../resources/img/moneyseed.png" id="plant" width="200px;">
 					</div>
 					<div class="main-menu">
 						<button class="btn menu-btn outline-green" id="sign">회원가입</button>
