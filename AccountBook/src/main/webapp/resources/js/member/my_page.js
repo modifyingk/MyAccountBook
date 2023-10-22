@@ -1,4 +1,3 @@
-
 $(function () {
 	$(document).ready(function() {
 		// 현재 세션의 포인트 정보 가져오기
@@ -32,6 +31,7 @@ $(function () {
 		location.href = "../member/myInfo.jsp";
 	})
 	
+	// 물 주기
 	$(document).on("click", "#water-btn", function() {
 		$.ajax({
 			type : "post",
@@ -81,8 +81,26 @@ $(function () {
 		})
 	})
 	
+	// 랜덤 포인트 발생
 	$(document).on("click", ".money", function() {
 		// plant-step이 money일 때
-		// 랜덤 돈 얻기
+		// 랜덤 cash 뽑기 및 plant-step 0으로 설정
+		$.ajax({
+			type : "post",
+			url : "randomCash",
+			data : {
+				usercash : 0,
+				plantstep : 0,
+				userid : userid
+			},
+			success : function(x) {
+				if(x > 0) {
+					alert(x + "원 획득!");
+					window.location.reload();
+				} else {
+					alert("다시 시도해주세요.");
+				}
+			}
+		})
 	})
 })

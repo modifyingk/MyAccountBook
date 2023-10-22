@@ -31,6 +31,9 @@ public class MemberController {
 	@Autowired
 	AutoInsertService insertSvc;
 	
+	@Autowired
+	RandomCashService rCashSvc;
+	
 	// 아이디 중복 확인
 	@ResponseBody
 	@RequestMapping("member/isOverlapId")
@@ -247,6 +250,23 @@ public class MemberController {
 			return -1;
 		} else {
 			mDao.usePoint(userid);
+			return 0;
+		}
+	}
+	
+	// 캐시 적립 및 단계 리셋
+	@ResponseBody
+	@RequestMapping("member/randomCash")
+	public int randomCash(MoneyVO moneyVO) {
+		// 랜덤 cash 뽑기 및 값 setting
+		int cash = rCashSvc.makeCash();
+		moneyVO.setUsercash(cash);
+		
+		// 캐시 적립 및 단계 리셋
+		int result = mDao.updatePlant(moneyVO);
+		if(result > 0) {
+			return cash;
+		} else {
 			return 0;
 		}
 	}

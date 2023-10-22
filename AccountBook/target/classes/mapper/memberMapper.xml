@@ -76,4 +76,9 @@
 	<update id="usePoint" parameterType="String">
 		update money set userpoint = userpoint - 10, plantstep = plantstep + 1 where userid = #{userid};
 	</update>
+	
+	<!-- 캐시 적립 및 단계 리셋 -->
+	<update id="updatePlant" parameterType="moneyVO">
+		update money set usercash = usercash + #{usercash}, plantstep = #{plantstep} where userid = #{userid};
+	</update>
 </mapper>

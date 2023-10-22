@@ -87,4 +87,9 @@ public class MemberDAO {
 	public int usePoint(String userid) {
 		return my.update("memberMapper.usePoint", userid);
 	}
+	
+	// 캐시 적립 및 단계 리셋
+	public int updatePlant(MoneyVO moneyVO) {
+		return my.update("memberMapper.updatePlant", moneyVO);
+	}
 }
