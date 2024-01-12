@@ -22,7 +22,7 @@ public class MemberDAO {
 	}
 	
 	// 로그인
-	public String login(MemberVO memberVO) {
+	public MemberVO login(MemberVO memberVO) {
 		return my.selectOne("memberMapper.login", memberVO);
 	}
 	
@@ -91,5 +91,20 @@ public class MemberDAO {
 	// 캐시 적립 및 단계 리셋
 	public int updatePlant(MoneyVO moneyVO) {
 		return my.update("memberMapper.updatePlant", moneyVO);
+	}
+	
+	// 가입한 그룹 업데이트
+	public int updateParty(MemberVO memberVO) {
+		return my.update("memberMapper.updateParty", memberVO);
+	}
+	
+	// 해당 그룹의 멤버(그룹장 제외)
+	public List<String> partyMember(String partyname) {
+		return my.selectList("memberMapper.partyMember", partyname);
+	}
+	
+	// 가입한 그룹
+	public String joinedParty(String userid) {
+		return my.selectOne("memberMapper.joinedParty", userid);
 	}
 }

@@ -16,6 +16,11 @@
       <typeAlias type="com.modifyk.accountbook.transfer.TransferVO" alias="transferVO"></typeAlias>
       <typeAlias type="com.modifyk.accountbook.account.RepeatVO" alias="repeatVO"></typeAlias>
       <typeAlias type="com.modifyk.accountbook.member.MoneyVO" alias="moneyVO"></typeAlias>
+      <typeAlias type="com.modifyk.accountbook.board.BoardVO" alias="boardVO"></typeAlias>
+      <typeAlias type="com.modifyk.accountbook.board.FileVO" alias="fileVO"></typeAlias>
+      <typeAlias type="com.modifyk.accountbook.board.PageVO" alias="pageVO"></typeAlias>
+      <typeAlias type="com.modifyk.accountbook.board.ReplyVO" alias="replyVO"></typeAlias>
+      <typeAlias type="com.modifyk.accountbook.party.PartyVO" alias="partyVO"></typeAlias>
    </typeAliases>
    <mappers>
    <!-- SQL문 정의하는 파일들의 목록 -->
@@ -28,5 +33,7 @@
       <mapper resource="mapper/aimMapper.xml" />
       <mapper resource="mapper/transferMapper.xml" />
       <mapper resource="mapper/repeatMapper.xml" />
+      <mapper resource="mapper/boardMapper.xml" />
+      <mapper resource="mapper/partyMapper.xml" />
    </mappers>
 </configuration>

@@ -107,11 +107,12 @@ public class MemberController {
 	@ResponseBody
 	@RequestMapping("member/login")
 	public String login(MemberVO memberVO, HttpSession session) {
-		String loginid = mDao.login(memberVO);
+		MemberVO member = mDao.login(memberVO);
 		
-		if(loginid != null) { // 로그인 성공
-			session.setAttribute("userid", memberVO.getUserid());
-			return loginid;
+		if(member.getUserid() != null) { // 로그인 성공
+			session.setAttribute("userid", member.getUserid());
+			session.setAttribute("partyname", member.getPartyname());
+			return member.getUserid();
 		} else { // 로그인 실패
 			return "fail";
 		}
@@ -269,5 +270,32 @@ public class MemberController {
 		} else {
 			return 0;
 		}
+	}
+	
+	// 가입한 그룹 업데이트
+	@ResponseBody
+	@RequestMapping("member/updateParty")
+	public String updateParty(MemberVO memberVO) {
+		int result = mDao.updateParty(memberVO);
+		if(result > 0) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
+	// 해당 그룹의 멤버(그룹장 제외)
+	@ResponseBody
+	@RequestMapping("member/partyMember")
+	public List<String> partyMember(String partyname) {
+		List<String> list = mDao.partyMember(partyname);
+		return list;
+	}
+	
+	// 가입한 그룹
+	@ResponseBody
+	@RequestMapping("member/joinedParty")
+	public String joinedParty(String userid) {
+		return mDao.joinedParty(userid);
 	}
 }

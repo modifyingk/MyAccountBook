@@ -8,6 +8,7 @@ public class MemberVO {
 	private String birth;
 	private String email;
 	private String joindate;
+	private String partyname;
 	
 	public String getUserid() {
 		return userid;
@@ -50,5 +51,11 @@ public class MemberVO {
 	}
 	public void setJoindate(String joindate) {
 		this.joindate = joindate;
+	}
+	public String getPartyname() {
+		return partyname;
+	}
+	public void setPartyname(String partyname) {
+		this.partyname = partyname;
 	}
 }

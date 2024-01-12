@@ -28,6 +28,8 @@
 				<li class="menu"><i class="fi fi-rr-coins"></i> 자산관리</li>		
 				<li class="menu"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
 				<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표 관리</li>
+				<li class="menu"><i class="fi fi-rr-comment-alt"></i> 게시판</li>
+				<li class="menu"><i class="fi fi-rr-users-alt"></i> 그룹</li>
 				<li class="menu"><i class="fi fi-rr-sign-out-alt"></i> 로그아웃</li>
 			</ul>
 		</div>

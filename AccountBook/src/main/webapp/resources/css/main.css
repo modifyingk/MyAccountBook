@@ -40,6 +40,19 @@
 	width: 68%;
 	float: left;
 }
+.col-4 {
+	width: 40%;
+	height: 920px;
+	float: left;
+	padding: 10px;
+}
+.col-6 {
+	width: 56%;
+	height: 920px;
+	float: left;
+	margin-right: 10px;
+	padding: 10px;
+}
 .col-5 {
 	width: 49%;
 	float: left;
@@ -52,7 +65,7 @@
 	box-shadow: 2px 2px 5px lightgray;
 }
 .is-gradation {
-	background: linear-gradient(to bottom, white 70%, #6F4F28);
+	background: linear-gradient(to bottom, white 75%, #6F4F28);
 }
 .is-center {
 	display: flex;
@@ -670,18 +683,35 @@
 
 #water-btn {
 	position: absolute;
-	top:30%;
-	right: 25%;
+	top:40%;
+	left: 43%;
 	cursor: pointer;
 }
 #water-img {
 	position: absolute;
-	top: 43%;
-	right: 35%;
+	top: 53%;
+	left: 38%;
 	display: none;
 }
 #plant-step {
 	position: absolute;
-	top: 50%;
-	right: 40%;
+	top: 60%;
+	left: 28%;
+}
+#close-group-info:hover {
+	color: black;
+	cursor: pointer;
+}
+.page {
+	width: 45px;
+	margin: 5px;
+}
+.page:active {
+	background: #2C952C;
+	color: white;
+}
+#manage-board-div {
+	position: absolute;
+	left: 22%;
+	bottom: 5%;
 }

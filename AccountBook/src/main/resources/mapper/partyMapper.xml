@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="partyMapper">
+	<!-- 그룹 생성 -->
+	<insert id="insertParty" parameterType="partyVO">
+		insert into party values (#{partyname}, #{owner});
+	</insert>
+	
+	<!-- 그룹 목록 -->
+	<select id="selectParty" resultType="partyVO">
+		select * from party;
+	</select>
+	
+	<!-- 그룹명 중복확인 -->
+	<select id="isOverlapParty" parameterType="String" resultType="String">
+		select partyname from party where partyname = #{partyname};
+	</select>
+	
+	<!-- 그룹 정보 -->
+	<select id="partyInfo" parameterType="String" resultType="partyVO">
+		select * from party where partyname = #{partyname};
+	</select>
+	
+	<!-- 그룹 검색 -->
+	<select id="searchParty" parameterType="String" resultType="partyVO">
+		select * from party where partyname like concat('%', #{partyname}, '%');
+	</select>
+</mapper>
