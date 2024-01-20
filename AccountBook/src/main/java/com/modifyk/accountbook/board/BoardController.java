@@ -276,7 +276,6 @@ public class BoardController {
 		map.put("startBoard", pageVO.getStartBoard());
 		map.put("endBoard", pageVO.getEndBoard());
 		map.put("search", search);
-		System.out.println(bDao.searchBoard(map));
 		return bDao.searchBoard(map);
 	}
 	
@@ -285,9 +284,7 @@ public class BoardController {
 	@RequestMapping("board/countSearch")
 	public PageVO2 countSearch(String search, int showPage) {
 		int totalBoard = bDao.countSearch(search);
-		System.out.println("개수 : " + bDao.countSearch(search));
 		PageVO2 pageVO2 = new PageVO2(totalBoard, showPage);
-		System.out.println(pageVO2);
 		return pageVO2;
 	}
 }

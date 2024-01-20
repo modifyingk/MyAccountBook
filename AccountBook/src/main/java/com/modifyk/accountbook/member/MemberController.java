@@ -108,12 +108,12 @@ public class MemberController {
 	@RequestMapping("member/login")
 	public String login(MemberVO memberVO, HttpSession session) {
 		MemberVO member = mDao.login(memberVO);
-		
-		if(member.getUserid() != null) { // 로그인 성공
+		if(member != null) {
 			session.setAttribute("userid", member.getUserid());
 			session.setAttribute("partyname", member.getPartyname());
 			return member.getUserid();
-		} else { // 로그인 실패
+		}
+		else { // 로그인 실패
 			return "fail";
 		}
 	}

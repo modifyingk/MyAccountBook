@@ -58,4 +58,14 @@ public class MemberVO {
 	public void setPartyname(String partyname) {
 		this.partyname = partyname;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format(
+				"MemberVO [userid=%s, pw=%s, username=%s, gender=%s, birth=%s, email=%s, joindate=%s, partyname=%s, getUserid()=%s, getPw()=%s, getUsername()=%s, getGender()=%s, getBirth()=%s, getEmail()=%s, getJoindate()=%s, getPartyname()=%s, getClass()=%s, hashCode()=%s, toString()=%s]",
+				userid, pw, username, gender, birth, email, joindate, partyname, getUserid(), getPw(), getUsername(),
+				getGender(), getBirth(), getEmail(), getJoindate(), getPartyname(), getClass(), hashCode(),
+				super.toString());
+	}
+	
 }
