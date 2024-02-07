@@ -4,12 +4,14 @@ public class AccountVO {
 	private int accountid;
 	private String moneytype;
 	private String date;
-	private String astname;
+	private String assetname;
 	private String catename;
 	private String content;
 	private int total;
 	private String memo;
 	private String userid;
+	private int assetid;
+	private int repeatid;
 	
 	public int getAccountid() {
 		return accountid;
@@ -29,11 +31,11 @@ public class AccountVO {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public String getAstname() {
-		return astname;
+	public String getAssetname() {
+		return assetname;
 	}
-	public void setAstname(String astname) {
-		this.astname = astname;
+	public void setAssetname(String assetname) {
+		this.assetname = assetname;
 	}
 	public String getCatename() {
 		return catename;
@@ -65,12 +67,23 @@ public class AccountVO {
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
+	public int getAssetid() {
+		return assetid;
+	}
+	public void setAssetid(int assetid) {
+		this.assetid = assetid;
+	}
+	public int getRepeatid() {
+		return repeatid;
+	}
+	public void setRepeatid(int repeatid) {
+		this.repeatid = repeatid;
+	}
 	
 	@Override
 	public String toString() {
-		return "AccountVO [accountid=" + accountid + ", moneytype=" + moneytype + ", date=" + date + ", astname="
-				+ astname + ", catename=" + catename + ", content=" + content + ", total=" + total + ", memo=" + memo
-				+ ", userid=" + userid + "]";
+		return String.format(
+				"AccountVO [accountid=%s, moneytype=%s, date=%s, assetname=%s, catename=%s, content=%s, total=%s, memo=%s, userid=%s, assetid=%s, repeatid=%s]",
+				accountid, moneytype, date, assetname, catename, content, total, memo, userid, assetid, repeatid);
 	}
-	
 }

@@ -1,188 +1,71 @@
-document.write('<script src="../resources/js/account/account_list.js"></script>'); // 수입/지출 내역 js
-document.write('<script src="../resources/js/asset/asset_list.js"></script>'); // 자산 목록 js
-document.write('<script src="../resources/js/asset/asset_group.js"></script>'); // 자산 그룹 js
-document.write('<script src="../resources/js/asset/transfer.js"></script>'); // 이체 js
-document.write('<script src="../resources/js/cal_date.js"></script>'); // 이전 달, 다음 달 구하기 js
-document.write('<script src="../resources/js/reg_exp.js"></script>'); // 정규식 js
-document.write('<script src="../resources/js/main.js"></script>'); // 모달 및 카테고리 설정 js
+document.write('<script src="../resources/js/function/htmlFunc.js"></script>'); // html 함수
+document.write('<script src="../resources/js/function/regFunc.js"></script>'); // 유효성 검사 함수
+document.write('<script src="../resources/js/function/dateFunc.js"></script>'); // 날짜 함수
+document.write('<script src="../resources/js/asset/assetFunc.js"></script>'); // 자산 함수
+document.write('<script src="../resources/js/asset/transferFunc.js"></script>'); // 이체
 
 $(function() {
-	var todayAll; // 현재 날짜 저장할 변수
-	
-	var clickNum = 0; // 설정 클릭 횟수 (횟수에 따라 설정 열고 닫음)
-	
-	/* 자산 수정 모달 열기  변수 */
-	var originAsset; // 자산 수정 시 원래 자산명
-	var originActgroup; // 자산 수정 시 원래 자산그룹명
-	var originMemo; // 자산 수정 시 원래 메모
-	var originTotal; // 자산 수정 시 원래 금액
-	
-	var astname; // 선택한 자산 저장할 변수 (해당 자산의 수입/지출 목록 가져올 때 사용할 변수)
-	
-	/* 자산 그룹 수정 모달 열기 변수 */
-	var originGroup;
-	
-	var selectOp; // 이체 시 출금인지 입금인지 저장할 변수
-	
-	/* 자산 중복 확인 함수
-	   parameter : 중복 확인할 자산명 input ID */
-	$.overlapAsset = function(astnameID) {
-		var result;
-		$.ajax({ 
-			type : "post",
-			url : "isOverlapAsset",
-			async : false,
-			data : {
-				astname : $(astnameID).val(),
-				userid : userid
-			},
-			success : function(x) {
-				if(x == "possible") {
-					result = true;
-				} else {
-					result = false;
-				}
-			}
-		})
-		return result;
-	}
-	
-	/* 자산 수정 함수 */
-	$.updateAsset = function() {
-		$.ajax({
-			type : "post",
-			url : "updateAsset",
-			data : {
-				userid : userid,
-				originAsset : originAsset,
-				originTotal : originTotal.replaceAll(",", ""),
-				updateAsset : $("#up-asset-name").val(),
-				updateGroup : $("#up-astgroup-name").val(),
-				updateTotal : $("#up-asset-total").val().replaceAll(",", ""),
-				updateMemo : $("#up-astmemo-name").val()
-			},
-			success : function(x) {
-				if(x == "success") {
-					window.location.reload();
-				} else {
-					alert("다시 시도해주세요")
-				}
-			}
-		})
-	}
-	
-	/* 자산 그룹 선택 및 값 자동 입력
-	   parameter : 자산그룹 선택 input ID */
-	$.pickGroup = function(astgroupID) {
-		//  자산 그룹 선택
-		$(document).on("click", astgroupID, function() { // 자산선택 클릭 시
-			$("#select-group-modal").show(); // 자산 선택 모달 열기
-		})
-		// 자산 그룹 선택 시 input에 값 삽입
-		$(document).on("click", "#select-table .group-list", function() {
-			var idx = $(this).parent().index();
-			var option = $("#select-table .group-list").eq(idx).text();
-			
-			$(astgroupID).attr("value", option);
-			$("#select-group-modal").hide();
-		})
-	}
+	var date;
+	var today; // yyyy-mm 변수
+
+	var before_assetname;
 	
 	$(document).ready(function() {
 		// 현재 날짜 가져오기
-		todayAll = $.currentYM();
-
+		date = $.createDate();
+		
 		// 금액에 숫자만 입력되도록
-		$.onlyNum("#up-asset-total");
+		$.onlyNum("#update-asset-total");
 		$.onlyNum("#add-asset-total");
+		$.onlyNum("#add-transfer-total");
 		
 		// 금액 세 자리마다 콤마
-		$.moneyFmt("#up-asset-total");
+		$.moneyFmt("#update-asset-total");
 		$.moneyFmt("#add-asset-total");
+		$.moneyFmt("#add-transfer-total");
 		
-		// 자산, 자산그룹의 내용, 메모에 #이 들어가지 않도록
-		$.noHash("#up-asset-name");
-		$.noHash("#up-astmemo-name");
-		$.noHash("#add-asset-name");
-		$.noHash("#add-astmemo-name");
-		$.noHash("#up-group-name");
-		$.noHash("#astgroup");
-		
-		// 자산그룹 설정 열고 닫기 (우측 상단 설정 버튼)
-		$.settingDiv(clickNum, "#open-group-setting", "#group-setting");
-		
-		// 자산 그룹 가져오기
-		$.astgroupList();
-
 		// 전체 자산 목록 및 금액 그룹별로 가져오기
-		$.assetAllList(userid);
+		$.showAsset(userid);
+		
+		$.autoClose(".select-group-div"); // 자산 그룹 선택 닫기
 
-		// 자산 목록 가져오기 (이체 시 자산 선택 모달)
-		$.assetList(userid, "#select-asset-div");
-		
-		// 자산 그룹 선택 및 값 자동 입력
-		$.pickGroup("#add-astgroup-name");
-		$.pickGroup("#up-astgroup-name");
-		
-		// 모달 열기
-		$.openModal("#astgroup-btn", "#group-modal"); // 자산 그룹 모달 열기
-		
-		// 모달 닫기
-		$.closeModal("#close-asset-account", "#asset-account-modal"); // 자산별 수입/지출 내역 모달 닫기	
-		$.closeModal("#close-add-asset", "#add-asset-modal"); // 자산 추가 모달 닫기
-		$.closeModal("#close-up-asset", "#up-asset-modal"); // 자산 수정 모달 닫기
-		$.closeModal("#close-select-asset", "#select-asset-modal"); // 자산 선택 모달 닫기
-		$.closeModal("#close-select-group", "#select-group-modal"); // 자산 수정에서 자산그룹 선택 모달 닫기
-		$.closeModal("#close-group", "#group-modal"); // 자산 그룹 모달 닫기
-		$.closeModal("#close-add-group", "#add-group-modal"); // 자산 그룹 추가 모달 닫기
-		$.closeModal("#close-up-group", "#up-group-modal"); // 자산 그룹 수정 모달 닫기
-		$.closeModal("#close-add-transfer", "#add-transfer-modal"); // 이체 추가 모달 닫기
-		$.closeModal("#close-up-transfer", "#up-transfer-modal") // 이체 수정 모달 닫기
 	})
 	
-	// 자산별 수입/지출 목록 가져오기
-	$(document).on("click", ".asset-name .td-detail", function() { // asset-name 행 클릭 시
-		astname = $(this).eq(0).children().eq(0).text();
-		$.astAccountList(todayAll, astname, userid, "#modal-month-div", "#asset-account-list-div", "#total-div", "#total-income-div", "#total-spend-div");
-	})
-	
-	// 자산별 수입/지출 내역 이전 달 클릭
-	$(document).on("click", "#modal-before", function() {
-		todayAll = $.beforeDate(todayAll); // 날짜 이전 달로 setting
-		$.astAccountList(todayAll, astname, userid, "#modal-month-div", "#asset-account-list-div", "#total-div", "#total-income-div", "#total-spend-div")
-	})
-	
-	// 자산별 수입/지출 내역 다음 달 클릭
-	$(document).on("click", "#modal-after", function() {
-		todayAll = $.afterDate(todayAll); // 날짜 다음 달로 setting
-		$.astAccountList(todayAll, astname, userid, "#modal-month-div", "#asset-account-list-div", "#total-div", "#total-income-div", "#total-spend-div")
-	})
-	
-	// 자산 추가 모달 열기
-	$(document).on("click", "#add-asset-page", function() {
-		$("#add-asset-modal").show();
+	// 자산 추가 div 열기
+	$(document).on("click", "#open-add-asset", function() {
+		$("#add-asset-group").attr("value","");
+		$("#add-asset-name").attr("value", "");
+		$("#add-asset-memo").val("");
 		$("#add-asset-total").attr("value", "0");
+		
+		$("#transfer-div").hide();
+		$("#update-asset-div").hide();
+		$("#hide-asset-div").hide();
+		$("#add-transfer-div").hide();
+		$("#add-asset-div").show(); // 자산 추가 div 열기
+		$.pickGroup("#add-asset-group");
 	})
 	
 	// 자산 추가
 	$(document).on("click", "#add-asset-btn", function() {
-		if(!$.noEmpty("#up-asset-name") || !$.noEmpty("#up-astgroup-name") || !$.noEmpty("#up-asset-total")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
+		if(!$.checkMustReg("#add-asset-name") || !$.checkMustReg("#add-asset-group") || !$.checkMustReg("#add-asset-total")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
 			alert("입력 값을 확인해주세요.")
 		} else {
-			var chkName = $.overlapAsset("#add-asset-name"); // 자산명 중복 확인
+			var chkName = $.overlapAsset($("#add-asset-name").val()); // 자산명 중복 확인
 			if(chkName) { // 중복되지 않으면 추가
 				$.ajax({
 					type : "post",
 					url : "insertAsset",
 					data : {
-						userid : userid,
-						astname : $("#add-asset-name").val(),
-						astgroup : $("#add-astgroup-name").val(),
+						assetgroup : $("#add-asset-group").val(),
+						assetname : $("#add-asset-name").val(),
 						total : $("#add-asset-total").val().replaceAll(",", ""),
-						astmemo : $("#add-astmemo-name").val(),
+						memo : $("#add-asset-memo").val(),
+						userid : userid,
+						active : true
 					},
-					success : function(x) {
-						if(x == "success") {
+					success : function(res) {
+						if(res == true) {
 							window.location.reload();
 						} else {
 							alert("다시 시도해주세요")
@@ -195,52 +78,104 @@ $(function() {
 		}
 	})
 	
-	// 자산 수정 아이콘 클릭 시 수정 모달 열기
-	$(document).on("click", "#up-asset-page", function() { // 수정 아이콘(#up-asset-page) 클릭 시
-		originAsset = $(this).parent().children().eq(0).children().eq(0).text();
-		originActgroup = $(this).parent().children().eq(1).text();
-		originMemo = $(this).parent().children().eq(2).text();
-		originTotal = $(this).parent().children().eq(0).children().eq(1).text().split("원")[0];
-		$("#up-asset-modal").show(); // 자산 수정 모달 열기
-		
-		$("#up-astgroup-name").attr("value",originActgroup);
-		$("#up-asset-name").attr("value", originAsset);
-		$("#up-astmemo-name").val(originMemo);
-		$("#up-asset-total").attr("value", originTotal);
-		
+	// 자산 추가 div 닫기
+	$(document).on("click", "#close-add-asset", function() {
+		$("#add-asset-div").hide();
 	})
 	
+	// 자산 수정 div 열기
+	$(document).on("click", ".tr-asset .td-asset", function() { // 수정 아이콘 td 클릭 시
+		var assetid = $(this).parent().children().eq(0).text();
+		var assetgroup = $(this).parent().children().eq(1).text();
+		var assetname = $(this).parent().children().eq(2).children().eq(0).text();
+		var assettotal = $(this).parent().children().eq(2).children().eq(1).children().eq(0).text();
+		var assetmemo = $(this).parent().children().eq(3).text();
+		
+		before_assetname = assetname; // 원래 자산이름 값
+		
+		$("#update-assetid").attr("value",assetid);
+		$("#update-asset-group").attr("value",assetgroup);
+		$("#update-asset-name").attr("value", assetname);
+		$("#update-asset-memo").val(assetmemo);
+		$("#update-asset-total").attr("value", assettotal);
+		
+		$("#transfer-div").hide();
+		$("#add-asset-div").hide();
+		$("#hide-asset-div").hide();
+		$("#add-transfer-div").hide();
+		$("#update-asset-div").show(); // 자산 수정 div 열기
+		$.pickGroup("#update-asset-group");
+	})
+
 	// 자산 수정
-	$(document).on("click", "#up-asset-btn", function() {
-		if(!$.noEmpty("#up-asset-name") || !$.noEmpty("#up-astgroup-name") || !$.noEmpty("#up-asset-total")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
+	$(document).on("click", "#update-asset-btn", function() {
+		if(!$.checkMustReg($("#update-asset-name").val()) || !$.checkMustReg($("#update-asset-group").val()) || !$.checkMustReg($("#update-asset-total").val())){ // 정규식에 맞지 않을 때 (빈 값인 경우)
 			alert("입력 값을 확인해주세요.")
 		} else {
-			if($("#up-asset-name").val() != originAsset) { // 자산명이 변경된 경우
-				var chkName = $.overlapAsset("#up-asset-name"); // 자산명 중복 확인
-				if(chkName) { // 중복되지 않으면
-					$.updateAsset(); // 업데이트
-				} else {
-					alert("중복되는 자산입니다");
-				}
-			} else { // 자산명이 변경되지 않은 경우
-				$.updateAsset();
+			var chkName;
+			if(before_assetname != $("#update-asset-name").val()) { // 자산명이 변경되었다면
+				chkName = $.overlapAsset($("#update-asset-name").val()); // 중복 확인
+			} else {
+				chkName = true;
+			}
+			if(chkName) { // 중복되지 않으면
+				$.ajax({
+					type : "post",
+					url : "updateAsset",
+					data : {
+						assetid : $("#update-assetid").val(),
+						assetgroup : $("#update-asset-group").val(),
+						assetname : $("#update-asset-name").val(),
+						memo : $("#update-asset-memo").text(),
+						userid : userid,
+						total : $("#update-asset-total").val().replaceAll(",", "")
+					},
+					success : function(res) {
+						if(res == true) {
+							window.location.reload();
+						} else {
+							alert("다시 시도해주세요")
+						}
+					}
+				})
+			} else {
+				alert("중복되는 자산입니다");
+				$("#update-asset-name").focus();
 			}
 		}
 	})
 	
 	// 자산 삭제
-	$(document).on("click", "#del-asset-btn", function() {
-		var op = confirm(originAsset + " 자산을 삭제하시겠습니까?");
-		if(op == true) {
+	$(document).on("click", "#delete-asset-btn", function() {
+		var p = prompt("** 자산을 삭제하면 해당 자산과 관련된 모든 내역이 삭제됩니다. **\n\n내역을 남겨두고 싶으시다면 [비활성화]를 입력해주시고,\n내역을 모두 삭제하시려면 입력란에 [삭제]를 입력해주세요.");
+		if(p == "삭제") {
 			$.ajax({
 				type : "post",
 				url : "deleteAsset",
 				data : {
-					astname : $("#up-asset-name").val(),
+					assetid : $("#update-assetid").val(),
 					userid : userid
 				},
-				success : function(x) {
-					if(x == "success") {
+				success : function(res) {
+					if(res == 1) {
+						window.location.reload();
+					} else {
+						alert("다시 시도해주세요")
+					}
+				}
+			})
+		} else if(p == "비활성화") {
+			// 숨기기
+			$.ajax({
+				type : "post",
+				url : "activeAsset",
+				data : {
+					assetid : $("#update-assetid").val(),
+					userid : userid,
+					active : false
+				},
+				success : function(res) {
+					if(res == 1) {
 						window.location.reload();
 					} else {
 						alert("다시 시도해주세요")
@@ -249,42 +184,133 @@ $(function() {
 			})
 		}
 	})
+	
+	// 자산 수정 div 닫기
+	$(document).on("click", "#close-update-asset", function() {
+		$("#update-asset-div").hide();
+	})
+	
+	// 숨겨진 자산 가져오기
+	$(document).on("click", "#open-hide-asset", function() {
+		$.ajax({
+			type : "post",
+			url : "groupByGroup",
+			data : {
+				userid : userid,
+				active : false
+			},
+			success : function(map) {
+				if(Object.keys(map).length > 0) {
+					var html = "<table class='select-table'>"; // 자산 목록 테이블 만들기
+					
+					for(const [key, valList] of Object.entries(map)){
+						html += "<tr><td>" + key + "</td></tr>"; // key 값인 자산그룹 출력
+						for(var i = 0; i < valList.length; i++) {
+							html += "<tr class='tr-asset'><td class='hide'>" + valList[i].assetid + "</td>"; // 자산id
+							html += "<td class='td-select is-border td-hide-asset'><div class='col-5'>" + valList[i].assetname + "</div>"; // 자산명
+							if(parseInt(valList[i].total) < 0) { // 금액이 음수면 빨간색으로 출력 
+								html += "<div class='col-5 text-right red'><money>" + parseInt(valList[i].total).toLocaleString() + "</money>원</div></td>" // 금액
+							} else { // 금액이 양수면 파란색으로 출력 
+								html += "<div class='col-5 text-right blue'><money>" + parseInt(valList[i].total).toLocaleString() + "</money>원</div></td>"
+							}
+							html += "<td id='active-asset-btn'><button><i class='i fi-rr-eye'></i></button></td></tr>"; // 숨김 취소
+						}
+						html += "<tr><td></td></tr>";
+					}
+					html += "</table>";
+				} else {
+					var html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+				}
+				$("#hide-asset-list-div").html(html);
+			}
+		})
 		
-	// 자산 초기화
-	$(document).on("click", "#reset-asset-btn", function() {
-		var op = confirm("초기화 시 생성한 자산이 모두 삭제되고 기본값으로 설정됩니다. 정말로 초기화하시겠습니까?");
-		if(op) {
+		$("#transfer-div").hide();
+		$("#add-asset-div").hide();
+		$("#add-transfer-div").hide();
+		$("#update-asset-div").hide();
+		$("#hide-asset-div").show();
+	})
+	
+	// 숨겨진 자산 div 닫기
+	$(document).on("click", "#close-hide-asset", function() {
+		$("#hide-asset-div").hide();
+	})
+	
+	// 자산 활성화
+	$(document).on("click", "#active-asset-btn", function() {
+		var idVal = $(this).parent().children().eq(0).text();
+		$.ajax({
+			type: "post",
+			url: "activeAsset",
+			data: {
+				assetid: idVal,
+				userid: userid,
+				active: true
+			},
+			success: function(res) {
+				if(res == 1) {
+					window.location.reload();
+				} else {
+					alert("다시 시도해주세요")
+				}
+			}
+		})
+	})
+	
+	// 자산 이체 div 열기
+	$(document).on("click", ".transfer-icon", function() {
+		var id = $(this).parent().parent().children().eq(0).text();
+		var withdraw = $(this).parent().parent().children().eq(2).children().eq(0).text();
+		$("#add-transfer-date").attr("value", $.getFullDate(date));
+		$("#add-withdraw-id").attr("value", id);
+		$("#add-withdraw").attr("value", withdraw);
+		
+		$("#transfer-div").hide();
+		$("#add-asset-div").hide();
+		$("#update-asset-div").hide();
+		$("#hide-asset-div").hide();
+		$("#add-transfer-div").show(); // 자산 추가 div 열기
+		
+		$.pickAsset("#add-deposit-id", "#add-deposit");
+	})
+	
+	// 자산 이체 div 닫기
+	$(document).on("click", "#close-add-transfer", function() {
+		$("#add-transfer-div").hide();
+	})
+	
+	// 자산 이체
+	$(document).on("click", "#add-transfer-btn", function() {
+		if($("#add-withdraw-id").val() == $("#add-deposit-id").val()) {
+			alert("이체가 불가능합니다.")
+		} else {
 			$.ajax({
 				type : "post",
-				url : "resetAsset",
+				url : "../transfer/insertTransfer",
 				data : {
+					date: $("#add-transfer-date").val(),
+					withdrawid: $("#add-withdraw-id").val(),
+					withdraw: $("#add-withdraw").val(),
+					depositid: $("#add-deposit-id").val(),
+					deposit: $("#add-deposit").val(),
+					total: $("#add-transfer-total").val().replaceAll(",", ""),
+					memo: $("#add-transfer-memo").val(),
 					userid: userid
 				},
-				success : function(x) {
-					window.location.reload();
+				success: function(res) {
+					if(res == true) {
+						window.location.reload();
+					} else {
+						alert("다시 시도해주세요")
+					}
 				}
 			})
 		}
 	})
 	
-	// 이체 시 자산 선택
-	$(document).on("click", "#add-withdraw-asset", function() { // 출금 자산
-		selectOp = "addwithdraw";
-		$("#select-asset-modal").show();
+	// 자산 이체 내역 페이지 열기
+	$(document).on("click", "#open-transfer-list", function() {
+		location.href = "transfer.jsp";
 	})
-	$(document).on("click", "#add-deposit-asset", function() { // 입금 자산
-		selectOp = "adddeposit";
-		$("#select-asset-modal").show();
-	})
-	
-	// 이체 자산 선택 시 값 자동 입력
-	$(document).on("click", ".asset-name", function() {
-		if(selectOp == "addwithdraw") {
-			$("#add-withdraw-asset").attr("value", $(this).text());
-		} else if(selectOp == "adddeposit"){
-			$("#add-deposit-asset").attr("value", $(this).text());
-		}
-		$("#select-asset-modal").hide();
-	})
-		
 })

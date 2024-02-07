@@ -19,8 +19,8 @@
 					userid : $("#userid").val(),
 					pw : $("#pw").val()
 				},
-				success : function(x) {
-					if(x == "success") {
+				success : function(res) {
+					if(res == true) {
 						location.href = "update_pw.jsp";
 					} else {
 						alert("비밀번호가 일치하지 않습니다.");
@@ -34,7 +34,7 @@
 <body>
 	<div>
 		<!-- 사이드바 -->
-		<div class="col-2 is-border is-shadow">
+		<div class="col-2 height-1050 is-border is-shadow">
 			<jsp:include page="../main/sidebar.jsp"></jsp:include>
 			<img src="../resources/img/logo.png" style="width: 90%;" onclick="location.href='../main/main.jsp'">
 			<ul class="menu-group">
@@ -43,8 +43,6 @@
 				<li class="menu"><i class="fi fi-rr-coins"></i> 자산관리</li>		
 				<li class="menu"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
 				<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표 관리</li>
-				<li class="menu"><i class="fi fi-rr-comment-alt"></i> 게시판</li>
-				<li class="menu"><i class="fi fi-rr-users-alt"></i> 그룹</li>
 				<li class="menu"><i class="fi fi-rr-sign-out-alt"></i> 로그아웃</li>
 			</ul>
 		</div>

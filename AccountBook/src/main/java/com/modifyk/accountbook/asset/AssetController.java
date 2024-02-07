@@ -4,13 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.modifyk.accountbook.account.AccountToMapService;
-import com.modifyk.accountbook.account.AccountVO;
 
 @Controller
 public class AssetController {
@@ -22,143 +18,94 @@ public class AssetController {
 	AssetToMapService toMapSvc;
 	
 	@Autowired
-	AccountToMapService actMapSvc;
-	
-	@Autowired
-	AutoInsertActAstService insertSvc;
-	
-	// 자산 리스트
-	@ResponseBody
-	@RequestMapping("asset/assetInfo")
-	public HashMap<String, Object> assetInfo(String userid) {
-		List<AssetVO> assetList = aDao.assetInfo(userid);
-		HashMap<String, Object> map = toMapSvc.toMap(assetList); // List 타입의 자산 리스트 결과를 HashMap으로 변환
-		return map;
-	}
-	
-	// 자산 수정
-	@ResponseBody
-	@RequestMapping("asset/updateAsset")
-	public String updateAsset(String originAsset, String updateAsset, String updateGroup, String updateTotal, String updateMemo, String userid, String originTotal) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("originAsset", originAsset);
-		map.put("updateAsset", updateAsset);
-		map.put("updateGroup", updateGroup);
-		map.put("updateTotal", updateTotal);
-		map.put("updateMemo", updateMemo);
-		map.put("userid", userid);
-		
-		int result = aDao.updateAsset(map);
-		
-		if(Integer.parseInt(updateTotal) - Integer.parseInt(originTotal) != 0) {
-			AssetVO assetVO = new AssetVO();
-			assetVO.setUserid(userid);
-			assetVO.setAstgroup(updateGroup);
-			assetVO.setAstname(updateAsset);
-			assetVO.setAstmemo(updateMemo);
-			assetVO.setTotal(Integer.parseInt(updateTotal) - Integer.parseInt(originTotal));
-			insertSvc.insertAccount(assetVO);
-		}
-		
-		if(result == 1) {
-			return "success";
-		} else {
-			return "fail";
-		}
-	}
+	AccountService accountSvc;
 	
 	// 자산 중복 확인
 	@ResponseBody
-	@RequestMapping("asset/isOverlapAsset")
-	public String isOverlapAsset(AssetVO assetVO) {
-		String result = aDao.isOverlapAsset(assetVO);
+	@RequestMapping("asset/overlapAsset")
+	public boolean overlapAsset(AssetVO assetVO) {
+		String result = aDao.overlapAsset(assetVO);
 		if(result != null) {
-			return "impossible";
+			return false;
 		} else {
-			return "possible";
+			return true;
 		}
 	}
 	
 	// 자산 추가
 	@ResponseBody
 	@RequestMapping("asset/insertAsset")
-	public String insertAsset(AssetVO assetVO) {
-		// 카테고리명이 중복되면서 show가 x인 경우
-		String overlapResult = aDao.isOverlapHideAsset(assetVO);
-		// 자산 금액 가계부에 기록 
-		if(assetVO.getTotal() != 0) {
-			insertSvc.insertAccount(assetVO);
-		}
-					
-		if(overlapResult != null) {
-			// 해당 카테고리의 show를 o로 변경
-			int showResult = aDao.showAsset(assetVO);
-			if(showResult == 1) {
-				aDao.updateTotal(assetVO);
-				return "success";
+	public boolean insertAsset(AssetVO assetVO) {
+		if(assetVO.getMemo() == null) assetVO.setMemo(""); // 메모 null이면 공백 채우기
+		System.out.println(assetVO);
+		int assetRes = aDao.insertAsset(assetVO);
+		if(assetRes > 0) {
+			if(assetVO.getTotal() != 0) { // 입력된 자산의 금액이 0이 아니라면 증가/감소된 금액만큼 수입/지출에 기록
+				int accountRes = accountSvc.insertAccount(assetVO);
+				if(accountRes > 0)
+					return true;
+				else
+					return false;
 			} else {
-				return "fail";
+				return true;
 			}
 		} else {
-			int inResult = aDao.insertAsset(assetVO);
-			
-			if(inResult == 1) {
-				return "success";
-			} else {
-				return "fail";
+			return false;
+		}
+	}
+
+	// 자산 수정
+	@ResponseBody
+	@RequestMapping("asset/updateAsset")
+	public boolean updateAsset(AssetVO assetVO) {
+		int beforeTotal = aDao.checkAsset(assetVO); // 업데이트 전 금액
+		int afterTotal = assetVO.getTotal(); // 업데이트 후 금액
+		int updateVal = afterTotal - beforeTotal; // 차이
+		
+		int assetRes = aDao.updateAsset(assetVO);
+		if(assetRes > 0) { // 자산 수정 성공 시
+			// 자산 금액 변경되었다면 증가/감소된 금액만큼 수입/지출에 기록
+			if(updateVal != 0) {
+				assetVO.setTotal(updateVal);
+				accountSvc.insertAccount(assetVO);
 			}
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
 	// 자산 삭제
 	@ResponseBody
 	@RequestMapping("asset/deleteAsset")
-	public String deleteAsset(AssetVO assetVO) {
-		try {
-			int result = aDao.deleteAsset(assetVO);
-			if(result == 1) {
-				return "success";
-			} else {
-				return "fail";
-			}
-		} catch (DataIntegrityViolationException e) { // 외래키 연관되어 있는 경우, 숨김으로 처리
-			int result = aDao.hideAsset(assetVO);
-			if(result == 1) {
-				return "success";
-			} else {
-				return "fail";
-			}
-		}
+	public int deleteAsset(AssetVO assetVO) {
+		int result = aDao.deleteAsset(assetVO);
+		return result;
+	
 	}
 	
-	// 자산별 내역
+	// 자산 활성화/비활성화
 	@ResponseBody
-	@RequestMapping("asset/assetAccount")
-	public HashMap<String, Object> assetAccount(AccountVO accountVO) {
-		List<AccountVO> accountList = aDao.assetAccount(accountVO);
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		if(accountList.size() < 1) {
-			map.put("no", "no");
-		} else {
-			map = actMapSvc.accountToMap(accountList);
-		}
+	@RequestMapping("asset/activeAsset")
+	public int activeAsset(AssetVO assetVO) {
+		int result = aDao.activeAsset(assetVO);
+		return result;
+	}
+	
+	// 자산 목록
+	@ResponseBody
+	@RequestMapping("asset/assetList")
+	public List<AssetVO> assetList(AssetVO assetVO) {
+		List<AssetVO> assetList = aDao.assetList(assetVO);
+		return assetList;
+	}
+	
+	// 자산 목록 자산그룹별로 그룹화
+	@ResponseBody
+	@RequestMapping("asset/groupByGroup")
+	public HashMap<String, List<AssetVO>> groupByGroup(AssetVO assetVO) {
+		List<AssetVO> assetList = assetList(assetVO);
+		HashMap<String, List<AssetVO>> map = toMapSvc.toMap(assetList);
 		return map;
-	}
-	
-	// 자산 초기화
-	@ResponseBody
-	@RequestMapping("asset/resetAsset")
-	public void resetCategory(AssetVO assetVO) {
-		try {
-			int result = aDao.deleteAllAsset(assetVO);
-			if(result > 0) {
-				insertSvc.insertAsset(assetVO);
-			}
-		} catch (DataIntegrityViolationException e) { // 외래키 연관되어 있는 경우, 숨김으로 처리
-			int result = aDao.hideAllAsset(assetVO);
-			if(result > 0) {
-				insertSvc.insertAsset(assetVO);
-			}
-		}
 	}
 }

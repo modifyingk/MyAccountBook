@@ -10,7 +10,7 @@ public class SendMailService {
 	@Autowired
 	private MailSender mailSender;
 	
-	public String sendMail(String to, String from, String subject, String text) {
+	public boolean sendMail(String to, String from, String subject, String text) {
 		try {
 			SimpleMailMessage msg = new SimpleMailMessage();
 			
@@ -21,11 +21,11 @@ public class SendMailService {
 			
 			mailSender.send(msg);
 			
-			return "success";
+			return true;
 			
 		} catch (Exception e) {
 			System.out.println(e);
-			return "fail";
+			return false;
 		}
 		
 	}

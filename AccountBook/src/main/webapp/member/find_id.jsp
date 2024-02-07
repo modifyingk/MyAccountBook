@@ -15,7 +15,7 @@
 	<div>
 		<div>
 			<!-- 사이드바 -->
-			<div class="col-3 is-border is-shadow">
+			<div class="col-3 height-1050 is-border is-shadow">
 				<jsp:include page="../main/mainbar.jsp"></jsp:include>
 				<img src="../resources/img/logo.png" class="side-logo" onclick="location.href='../main/main.jsp'">
 				<ul class="menu-group">
@@ -34,41 +34,42 @@
 				<br>
 				<p class="msg info">&nbsp 본인확인 이메일 주소와 입력한 이메일 주소가 같아야, 인증번호를 받을 수 있습니다.</p>
 				<br><br>
+				
 				<form method="post" action="showId">
-				<table class="table">
-					<tr>
-						<th>이름</th>
-						<td>
-							<div>
-								<input class="input" type="text" name="username" id="username">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<th>이메일</th>
-						<td>
-							<div>
-								<input class="input small" type="text" id="email1"> @
-								<input class="input small" type="text" id="email2">
-								<select class="input small" id="selectEmail">
-									<option value="self">직접입력</option>
-									<option value="naver.com">naver.com</option>
-									<option value="google.com">google.com</option>
-									<option value="kakao.com">kakao.com</option>
-									<option value="nate.com">nate.com</option>
-								</select>
-								<button type="button" class="btn green" id="makeCodeBtn">인증번호 받기</button>
-							</div>
-							<div style="margin-top: 10px;">
-								<input class="input" type="text" id="inputCode">
-								<button type="button" class="btn outline-green" id="verifCodeBtn">인증하기</button>
-							</div>
-						</td>
-					</tr>
-					<tr hidden="true">
-						<td colspan="2"><input name="email" id="email"></td>
-					</tr>
-				</table>
+					<table class="table">
+						<tr>
+							<th>이름</th>
+							<td>
+								<div>
+									<input class="input" type="text" name="username" id="username">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th>이메일</th>
+							<td>
+								<div>
+									<input class="input small" type="text" id="email1"> @
+									<input class="input small" type="text" id="email2">
+									<select class="input small" id="selectEmail">
+										<option value="self">직접입력</option>
+										<option value="naver.com">naver.com</option>
+										<option value="google.com">google.com</option>
+										<option value="kakao.com">kakao.com</option>
+										<option value="nate.com">nate.com</option>
+									</select>
+									<button type="button" class="btn green" id="makeCodeBtn">인증번호 받기</button>
+								</div>
+								<div style="margin-top: 10px;">
+									<input class="input" type="text" id="inputCode">
+									<button type="button" class="btn outline-green" id="verifCodeBtn">인증하기</button>
+								</div>
+							</td>
+						</tr>
+						<tr hidden="true">
+							<td colspan="2"><input name="email" id="email"></td>
+						</tr>
+					</table>
 				<button type="submit" class="btn long green" id="findidBtn" disabled>아이디 찾기</button>
 				</form>
 				</div>

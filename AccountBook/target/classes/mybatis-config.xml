@@ -5,7 +5,6 @@
 	<!-- SQL문 정의 시 VO 간단히 표현 -->
    <typeAliases>
       <typeAlias type="com.modifyk.accountbook.member.MemberVO" alias="memberVO"></typeAlias>
-      <typeAlias type="com.modifyk.accountbook.asset.AssetGroupVO" alias="assetGroupVO"></typeAlias>
       <typeAlias type="com.modifyk.accountbook.asset.AssetVO" alias="assetVO"></typeAlias>
       <typeAlias type="com.modifyk.accountbook.account.CategoryVO" alias="categoryVO"></typeAlias>
       <typeAlias type="com.modifyk.accountbook.account.AccountVO" alias="accountVO"></typeAlias>
@@ -15,25 +14,18 @@
       <typeAlias type="com.modifyk.accountbook.aim.AimRateVO" alias="aimrateVO"></typeAlias>
       <typeAlias type="com.modifyk.accountbook.transfer.TransferVO" alias="transferVO"></typeAlias>
       <typeAlias type="com.modifyk.accountbook.account.RepeatVO" alias="repeatVO"></typeAlias>
+      <typeAlias type="com.modifyk.accountbook.account.AccountRepeatVO" alias="accountRepeatVO"></typeAlias>
       <typeAlias type="com.modifyk.accountbook.member.MoneyVO" alias="moneyVO"></typeAlias>
-      <typeAlias type="com.modifyk.accountbook.board.BoardVO" alias="boardVO"></typeAlias>
-      <typeAlias type="com.modifyk.accountbook.board.FileVO" alias="fileVO"></typeAlias>
-      <typeAlias type="com.modifyk.accountbook.board.PageVO" alias="pageVO"></typeAlias>
-      <typeAlias type="com.modifyk.accountbook.board.ReplyVO" alias="replyVO"></typeAlias>
-      <typeAlias type="com.modifyk.accountbook.party.PartyVO" alias="partyVO"></typeAlias>
    </typeAliases>
    <mappers>
    <!-- SQL문 정의하는 파일들의 목록 -->
       <mapper resource="mapper/memberMapper.xml" />
       <mapper resource="mapper/assetMapper.xml" />
-      <mapper resource="mapper/assetgroupMapper.xml" />
       <mapper resource="mapper/categoryMapper.xml" />
       <mapper resource="mapper/accountMapper.xml" />
       <mapper resource="mapper/bookmarkMapper.xml" />
       <mapper resource="mapper/aimMapper.xml" />
       <mapper resource="mapper/transferMapper.xml" />
       <mapper resource="mapper/repeatMapper.xml" />
-      <mapper resource="mapper/boardMapper.xml" />
-      <mapper resource="mapper/partyMapper.xml" />
    </mappers>
 </configuration>

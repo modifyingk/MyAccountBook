@@ -1,11 +1,17 @@
 package com.modifyk.accountbook.account;
 
 public class CategoryVO {
+	private int categoryid;
 	private String moneytype;
 	private String catename;
 	private String userid;
-	private String showcate;
 	
+	public int getCategoryid() {
+		return categoryid;
+	}
+	public void setCategoryid(int categoryid) {
+		this.categoryid = categoryid;
+	}
 	public String getMoneytype() {
 		return moneytype;
 	}
@@ -24,16 +30,10 @@ public class CategoryVO {
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
-	public String getShowcate() {
-		return showcate;
-	}
-	public void setShowcate(String showcate) {
-		this.showcate = showcate;
-	}
 	
 	@Override
 	public String toString() {
-		return "CategoryVO [moneytype=" + moneytype + ", catename=" + catename + ", userid=" + userid + ", showcate=" + showcate + "]";
+		return String.format("CategoryVO [categoryid=%s, moneytype=%s, catename=%s, userid=%s]", categoryid, moneytype,
+				catename, userid);
 	}
-	
 }

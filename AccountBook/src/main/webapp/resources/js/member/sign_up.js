@@ -1,5 +1,8 @@
-document.write('<script src="../resources/js/reg_exp.js"></script>'); // 유효성 검사 함수가 저장된 js 파일 가져오기
-document.write('<script src="../resources/js/email.js"></script>'); // 이메일 함수 js 가져오기
+document.write('<script src="../resources/js/function/regFunc.js"></script>'); // 유효성 검사 함수
+document.write('<script src="../resources/js/function/emailFunc.js"></script>'); // 이메일 함수
+document.write('<script src="../resources/js/function/pwFunc.js"></script>'); // 비밀번호 확인 함수
+document.write('<script src="../resources/js/function/birthFunc.js"></script>'); // 생년월일 함수
+document.write('<script src="../resources/js/function/idFunc.js"></script>'); // 아이디 중복 확인 함수
 
 $(function () {
 	
@@ -20,29 +23,41 @@ $(function () {
 		$.onlyLetter("#username"); // 이름
 		
 		// 이메일 주소 선택
-		$.selectAddress("#selectEmail", "#email2");
+		$.selectAddress($("#selectEmail").val(), "#email2");
 	})
 	
 	// 아이디 확인
 	$(document).on("blur", "#userid", function() {
-		idChk = $.checkID("#userid", "#idCheck"); // 아이디 유효성 검사
+		idChk = $.checkIDReg($("#userid").val()); // 아이디 유효성 검사
 		
-		if(idChk) {
+		if(idChk) { // 정규식에 맞을 때
+			$("#idCheck").children().removeClass("warning"); 
+			$("#idCheck").children().addClass("info"); // 붉은색 경고 지우기
+			
 			$(document).on("click", "#overlapBtn", function() { // 아이디 중복 확인
-				$.checkOverlapID("#userid", "#idCheck", "#overlapBtn")
+				idChk = $.checkOverlapID($("#userid").val());
+				if(idChk) { // 중복 x
+					$("#idCheck").html("<p class='msg safe'>사용 가능한 아이디입니다</p>");
+				} else { // 중복
+					$("#idCheck").html("<p class='msg warning'>사용할 수 없는  아이디입니다</p>");
+				}
 			})
+			
+		} else { // 정규식에 맞지 않을 때
+			$("#idCheck").children().removeClass("info"); 
+			$("#idCheck").children().addClass("warning"); // 붉은색으로 경고
 		}
 	})
 	
 	// 비밀번호 확인
 	$(document).on("blur", "#pw, #pw2", function () {
-		pwChk = $.checkPw("#pw", "#pwRegCheck");
-		pwChk2 = $.checkPw2("#pw", "#pw2", "#pwCheck");
+		pwChk = $.checkPw($("#pw").val(), "#pwRegCheck");
+		pwChk2 = $.checkPw2($("#pw").val(), $("#pw2").val(), "#pwCheck");
 	})
 	
 	// 이름 확인
 	$(document).on("blur", "#username", function() {
-		if(!$.checkNameReg("#username")) { // 정규식에 맞지 않을 때
+		if(!$.checkNameReg($("#username").val())) { // 정규식에 맞지 않을 때
 			$("#nameCheck").html("<p class='msg warning'>이름이 정확한지 확인해주세요</p>");
 			nameChk = false;
 		} else {
@@ -53,10 +68,7 @@ $(function () {
 	
 	// 생년월일 잘못된 값 입력 방지
 	$(document).on("blur", "#year, #month, #date", function() {
-		birthChk = $.checkBirth("#year", "#month", "#date", "#birthCheck");
-	})
-	$(document).on("blur", "#date", function() {
-		birthChk = $.checkDate("#date", "#birthCheck");
+		birthChk = $.checkBirth($("#year").val(), $("#month").val(), $("#date").val(), "#birthCheck");
 	})
 
 	// 인증번호 받기 버튼 클릭
@@ -114,8 +126,8 @@ $(function () {
 					tel : $("#tel").val(),
 					email : email
 				},
-				success : function(x) {
-					if(x == "success") {
+				success : function(res) {
+					if(res == true) {
 						location.href = "../member/login.jsp"
 					} else {
 						alert("회원가입에 실패했습니다. 다시 시도해주세요!)");
@@ -125,6 +137,6 @@ $(function () {
 		} else {
 			alert("입력 값들을 확인해주세요")
 		}
-		
 	})
+	
 })

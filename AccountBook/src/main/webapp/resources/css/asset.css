@@ -1,0 +1,90 @@
+@charset "UTF-8";
+.transfer-icon { /* 이체 아이콘 버튼 */
+	cursor: pointer;
+	height: 50px;
+	width: 50px;
+	background: #2C952C;
+	color: white;
+	border: 1px solid #2C952C;
+	border-radius: 10px;
+}
+.add-div {
+	position: absolute;
+	padding: 20px;
+}
+.add-div .btn {
+	width: 500px;
+}
+.x-btn {
+	position: absolute;
+	right: 15px;
+	top: 15px;
+}
+#add-asset-div { /* 자산 추가 div */
+	top: 250px;
+	right: 200px;
+}
+#update-asset-div { /* 자산 수정 div */
+	top: 250px;
+	right: 200px;
+}
+#update-asset-btn { /* 자산 수정 버튼 */
+	width: 300px;
+}
+#delete-asset-btn { /* 자산 삭제 버튼 */
+	width: 200px;
+}
+#add-transfer-div { /* 이체 추가 div */
+	top: 250px;
+	right: 200px;
+}
+#transfer-div { /* 자산 이체 내역 div */
+	width: 600px;
+	height: 800px;
+	top: 150px;
+	right: 150px;
+}
+#hide-asset-div { /* 숨겨진 자산 div */
+	width: 500px;
+	height: 700px;
+	top: 200px;
+	right: 200px;
+}
+#active-asset-btn { /* 자산 숨김 취소 버튼 td */
+	width: 100px;
+}
+#active-asset-btn button{
+	width: 50px;
+	height: 50px;
+	padding: 10px;
+	border: 0;
+	border-radius: 10px;
+	background: #2C952C;
+	color: white;
+	font-size: 18px;
+	cursor: pointer;
+}
+#open-hide-asset { /* 숨겨진 자산 div 열기 버튼 */
+	position: absolute;
+	top: 10px;
+	right: 30px;
+}
+#open-transfer-list { /* 이체 내역 div 열기 버튼 */
+	position: absolute;
+	top: 10px;
+	right: 200px;
+}
+#update-transfer-div { /* 이체 수정 div */
+	top: 250px;
+	right: 200px;
+}
+#update-transfer-btn { /* 이체 수정 버튼 */
+	width: 300px;
+}
+#delete-transfer-btn { /* 이체 삭제 버튼 */
+	width: 200px;
+}
+#transfer-div { /* 이체 내역 div */
+	margin-top: 30px;
+	margin-left: 40px;
+}

@@ -1,30 +1,37 @@
 package com.modifyk.accountbook.asset;
 
 public class AssetVO {
-	private String astname;
-	private String astgroup;
-	private String astmemo;
-	private String userid;
-	private String showasset;
+	private int assetid;
+	private String assetgroup;
+	private String assetname;
 	private int total;
+	private String memo;
+	private String userid;
+	private boolean active;
 	
-	public String getAstname() {
-		return astname;
+	public int getAssetid() {
+		return assetid;
 	}
-	public void setAstname(String astname) {
-		this.astname = astname;
+	public void setAssetid(int assetid) {
+		this.assetid = assetid;
 	}
-	public String getAstgroup() {
-		return astgroup;
+	public String getAssetgroup() {
+		return assetgroup;
 	}
-	public void setAstgroup(String astgroup) {
-		this.astgroup = astgroup;
+	public void setAssetgroup(String assetgroup) {
+		this.assetgroup = assetgroup;
 	}
-	public String getAstmemo() {
-		return astmemo;
+	public String getAssetname() {
+		return assetname;
 	}
-	public void setAstmemo(String astmemo) {
-		this.astmemo = astmemo;
+	public void setAssetname(String assetname) {
+		this.assetname = assetname;
+	}
+	public String getMemo() {
+		return memo;
+	}
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 	public String getUserid() {
 		return userid;
@@ -32,23 +39,23 @@ public class AssetVO {
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
-	public String getShowasset() {
-		return showasset;
-	}
-	public void setShowasset(String showasset) {
-		this.showasset = showasset;
-	}
 	public int getTotal() {
 		return total;
 	}
 	public void setTotal(int total) {
 		this.total = total;
 	}
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 	
 	@Override
 	public String toString() {
-		return "AssetVO [astname=" + astname + ", astgroup=" + astgroup + ", astmemo=" + astmemo + ", userid=" + userid
-				+ "showassett=" + showasset + "total=" + total + "]";
+		return String.format(
+				"AssetVO [assetid=%s, assetgroup=%s, assetname=%s, total=%s, memo=%s, userid=%s, active=%s]", assetid,
+				assetgroup, assetname, total, memo, userid, active);
 	}
-	
 }

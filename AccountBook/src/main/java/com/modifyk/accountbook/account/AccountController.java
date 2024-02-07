@@ -1,5 +1,6 @@
 package com.modifyk.accountbook.account;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.modifyk.accountbook.asset.AssetDAO;
-import com.modifyk.accountbook.asset.AssetVO;
 
 @Controller
 public class AccountController {
@@ -29,217 +29,133 @@ public class AccountController {
 	@Autowired
 	AccountToMapService toMapSvc;
 	
+	@Autowired
+	AssetService assetSvc;
+	
 	// 수입/지출 추가
 	@ResponseBody
 	@RequestMapping("account/insertAccount")
-	public String insertAccount(AccountVO accountVO) {
-        
-		int result = aDao.insertAccount(accountVO);
-		if(result == 1) {
-			// 수입/지출이 추가되었을 경우, 자산 금액 업데이트
-			AssetVO assetVO = new AssetVO();
-			assetVO.setAstname(accountVO.getAstname());
-			assetVO.setTotal(accountVO.getTotal());
-			assetVO.setUserid(accountVO.getUserid());
+	public boolean insertAccount(AccountVO accountVO, String repeatcycle) {
+		int insertRes = aDao.insertAccount(accountVO);
+		int accountid = accountVO.getAccountid();
+		
+		if(!repeatcycle.equals("없음")) {
+			// 반복 값 세팅
+			RepeatVO repeatVO = new RepeatVO();
+			repeatVO.setRepeatcycle(repeatcycle);
+			repeatVO.setDate(accountVO.getDate());
+			repeatVO.setAccountid(accountid);
+			repeatVO.setUserid(accountVO.getUserid());
+			rDao.insertRepeat(repeatVO);
+			int repeatid = repeatVO.getRepeatid();
 			
-			if(accountVO.getMoneytype().equals("지출")) {
-				astDao.minusTotal(assetVO);
-			} else if(accountVO.getMoneytype().equals("수입")) {
-				astDao.plusTotal(assetVO);
-			}
+			// account테이블에 repeatid 업데이트
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("accountid", accountid);
+			map.put("repeatid", repeatid);
+			map.put("userid", accountVO.getUserid());
+			aDao.updateRepeatid(map);
+		}
 
-			return "success";
+		if(insertRes > 0) {
+			assetSvc.updateAsset(accountVO);
+			return true;
 		} else {
-			return "fail";
+			return false;
 		}
 	}
 	
 	// 수입/지출 수정
 	@ResponseBody
 	@RequestMapping("account/updateAccount")
-	public String updateAccount(AccountVO accountVO) {
-		// 해당 accountid의 값들 조회하기
-		AccountVO idResult = aDao.accountidInfo(accountVO);
+	public boolean updateAccount(AccountVO accountVO) {
+		AccountVO before = aDao.checkAccount(accountVO);
+		int updateRes = aDao.updateAccount(accountVO); // 수입/지출 수정
 		
-		// 수정
-		int result = aDao.updateAccount(accountVO);
-		if(result == 1) {
-			// 수입/지출이 수정되었을 경우, 자산 금액 업데이트
-			int beforeMoney = idResult.getTotal(); // 수정하기 전 금액
-			int afterMoney = accountVO.getTotal(); // 수정한 후 금액
-			
-			int updateValue = afterMoney - beforeMoney;
-			
-			AssetVO assetVO = new AssetVO();
-			assetVO.setAstname(idResult.getAstname());
-			assetVO.setTotal(updateValue);
-			assetVO.setUserid(idResult.getUserid());
-					
-			if(idResult.getMoneytype().equals("지출")) {
-				astDao.minusTotal(assetVO);
-			} else if(idResult.getMoneytype().equals("수입")) {
-				astDao.plusTotal(assetVO);
-			}
-			return "success";
+		if(updateRes > 0) {
+			assetSvc.updateAsset(before, accountVO);
+			return true;
 		} else {
-			return "fail";
+			return false;
 		}
 	}
 	
 	// 수입/지출 삭제
 	@ResponseBody
 	@RequestMapping("account/deleteAccount")
-	public String deleteAccount(AccountVO accountVO) {
-		// 해당 accountid의 값들 조회하기
-		AccountVO idResult = aDao.accountidInfo(accountVO);
+	public boolean deleteAccount(AccountVO accountVO) {
+		AccountVO before = aDao.checkAccount(accountVO); // 삭제 전 데이터
+		System.out.println(before);
+		int deleteRes = aDao.deleteAccount(accountVO); // 수입/지출 삭제
 
-		// 삭제
-		int result = aDao.deleteAccount(accountVO);
-		if(result == 1) {
+		if(deleteRes > 0) {
 			// 수입/지출이 삭제되었을 경우, 자산 금액 업데이트
-			AssetVO assetVO = new AssetVO();
-			assetVO.setAstname(idResult.getAstname());
-			assetVO.setTotal(idResult.getTotal());
-			assetVO.setUserid(idResult.getUserid());
-			
-			if(idResult.getMoneytype().equals("지출")) {
-				astDao.plusTotal(assetVO);
-			} else if(idResult.getMoneytype().equals("수입")) {
-				astDao.minusTotal(assetVO);
-			}
-			return "success";
+			accountVO.setAssetid(before.getAssetid());
+			accountVO.setMoneytype(before.getMoneytype());
+			accountVO.setTotal(before.getTotal() * (-1));
+			assetSvc.updateAsset(accountVO);
+			return true;
 		} else {
-			return "fail";
+			return false;
 		}
-	}
-	
-	// 즐겨찾기에 추가 가능한 내역 중복 없이 가져오기
-	@ResponseBody
-	@RequestMapping("account/canBookmarkInfo")
-	public List<AccountVO> canBookmarkInfo(String userid) {
-		List<AccountVO> addmarkList = aDao.canBookmarkInfo(userid);
-		return addmarkList;
-	}
-	
-	// 즐겨찾기에 추가
-	@ResponseBody
-	@RequestMapping("account/insertBookmark")
-	public String insertBookmark(BookmarkVO bookmarkVO) {
-		int result = aDao.insertBookmark(bookmarkVO);
-		if(result == 1) {
-			return "success";
-		} else {
-			return "fail";
-		}
-	}
-	
-	// 즐겨찾기 목록
-	@ResponseBody
-	@RequestMapping("account/bookmarkInfo")
-	public List<BookmarkVO> bookmarkInfo(String userid) {
-		List<BookmarkVO> bookmarkList = aDao.bookmarkInfo(userid);
-		return bookmarkList;
-	}
-	
-	// 즐겨찾기 삭제
-	@ResponseBody
-	@RequestMapping("account/deleteBookmark")
-	public String deleteBookmark(BookmarkVO bookmarkVO) {
-		int result = aDao.deleteBookmark(bookmarkVO);
-		if(result == 1) {
-			return "success";
-		} else {
-			return "fail";
-		}
-	}
-	
-	// 즐겨찾기의 카테고리가 존재하는지 확인
-	@ResponseBody
-	@RequestMapping("account/isPossibleCate")
-	public String isPossibleCate(CategoryVO categoryVO) {
-		// 카테고리 목록 가져오기 (숨김 아닌 것들만)
-		List<CategoryVO> cateList = cDao.CategoryInfo(categoryVO);
-		String result = "impossible";
-		for(int i = 0; i < cateList.size(); i++) {
-			// 북마크의 카테고리명이 카테고리에 존재하는지 확인
-			if(cateList.get(i).getCatename().equals(categoryVO.getCatename())) {
-				result = "possible";
-			}
-		}
-		return result;
 	}
 	
 	// 수입/지출 목록
-	@ResponseBody
-	@RequestMapping("account/monthAccount")
-	public HashMap<String, Object> monthAccount(AccountVO accountVO) {
-		List<AccountVO> accountList = aDao.monthAccount(accountVO);
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		if(accountList.size() < 1) {
-			map.put("no", "no");
+	public List<AccountVO> accountList(AccountVO accountVO, String moneytype) {
+		List<AccountVO> accountList = new ArrayList<>();
+		if(moneytype.equals("income")) {
+			accountList = aDao.incomeList(accountVO);
+		} else if(moneytype.equals("spend")) {
+			accountList = aDao.spendList(accountVO);
 		} else {
-			map = toMapSvc.accountToMap(accountList);
+			accountList = aDao.accountList(accountVO);
 		}
+		return accountList;
+	}
+	
+	// 수입/지출 목록 날짜별로 그룹화
+	@ResponseBody
+	@RequestMapping("account/groupByDate")
+	public HashMap<String, List<AccountVO>> groupByDate(AccountVO accountVO, String moneytype) {
+		List<AccountVO> list = accountList(accountVO, moneytype);
+		HashMap<String, List<AccountVO>> map = toMapSvc.accountToMap(list); // 날짜별로 그룹한 map
 		return map;
 	}
 	
-	// 수입 목록
+	// 수입/지출 목록 카테고리별 합계
 	@ResponseBody
-	@RequestMapping("account/monthIncome")
-	public HashMap<String, Object> monthIncome(AccountVO accountVO) {
-		List<AccountVO> incomeList = aDao.monthIncome(accountVO);
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		if(incomeList.size() < 1) {
-			map.put("no", "no");
-		} else {
-			map = toMapSvc.accountToMap(incomeList);
-		}
+	@RequestMapping("account/groupByCategory")
+	public HashMap<String, Object> groupByCategory(AccountVO accountVO, String moneytype) {
+		List<AccountVO> list = accountList(accountVO, moneytype);
+		HashMap<String, Object> map = toMapSvc.categoryToMap(list); // 카테고리별로 그룹한 map
 		return map;
 	}
-	
-	// 지출 목록
+
+	// 수입/지출 목록 자산별 합계
 	@ResponseBody
-	@RequestMapping("account/monthSpend")
-	public HashMap<String, Object> monthSpend(AccountVO accountVO) {
-		List<AccountVO> spendList = aDao.monthSpend(accountVO);
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		if(spendList.size() < 1) {
-			map.put("no", "no");
-		} else {
-			map = toMapSvc.accountToMap(spendList);
-		}
+	@RequestMapping("account/groupByAsset")
+	public HashMap<String, Object> groupByAsset(AccountVO accountVO, String moneytype) {
+		List<AccountVO> list = accountList(accountVO, moneytype);
+		HashMap<String, Object> map = toMapSvc.assetToMap(list); // 카테고리별로 그룹한 map
 		return map;
 	}
 		
-	// 카테고리별 합계
+	// 카테고리별 내역
 	@ResponseBody
-	@RequestMapping("account/cateSpend")
-	public HashMap<String, Object> cateSpend(AccountVO accountVO) {
-		List<AccountVO> accountList = aDao.monthSpend(accountVO);
-		HashMap<String, Object> map = toMapSvc.statsToMap(accountList);
+	@RequestMapping("account/detailsOfCategory")
+	public HashMap<String, List<AccountVO>> detailsOfCategory(AccountVO accountVO) {
+		List<AccountVO> list = aDao.detailsOfCategory(accountVO);
+		HashMap<String, List<AccountVO>> map = toMapSvc.accountToMap(list);
 		return map;
 	}
 	
-	// 카테고리별 합계
+	// 자산별 내역
 	@ResponseBody
-	@RequestMapping("account/cateIncome")
-	public HashMap<String, Object> cateIncome(AccountVO accountVO) {
-		List<AccountVO> accountList = aDao.monthIncome(accountVO);
-		HashMap<String, Object> map = toMapSvc.statsToMap(accountList);
-		return map;
-	}
-	
-	// 해당 월의 카테고리별 수입/지출 내역
-	@ResponseBody
-	@RequestMapping("account/monthCateList")
-	public HashMap<String, Object> monthCateList(AccountVO accountVO) {
-		List<AccountVO> catespendList = aDao.monthCateList(accountVO);
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		if(catespendList.size() < 1) {
-			map.put("no", "no");
-		} else {
-			map = toMapSvc.accountToMap(catespendList);
-		}
+	@RequestMapping("asset/detailsOfAsset")
+	public HashMap<String, List<AccountVO>> detailsOfAsset(AccountVO accountVO) {
+		List<AccountVO> list = aDao.detailsOfAsset(accountVO);
+		HashMap<String, List<AccountVO>> map = toMapSvc.accountToMap(list);
+		System.out.println(map);
 		return map;
 	}
 	
@@ -259,25 +175,21 @@ public class AccountController {
 		return list;
 	}
 	
-	// 월별 수입/지출 합계
+	/*
+	// 해당 연도의 월별 수입/지출 합계
 	@ResponseBody
-	@RequestMapping("account/monthTotal")
-	public List<AccountVO> monthTotal(AccountVO accountVO) {
-		List<AccountVO> list = aDao.monthTotal(accountVO);
+	@RequestMapping("account/detailsOfYear")
+	public List<AccountVO> detailsOfYear(AccountVO accountVO) {
+		List<AccountVO> list = aDao.detailsOfYear(accountVO);
 		return list;
 	}
 	
 	// 수입/지출 검색
 	@ResponseBody
 	@RequestMapping("account/searchAccount")
-	public HashMap<String, Object> searchAccount(AccountVO accountVO) {
+	public HashMap<String, List<AccountVO>> searchAccount(AccountVO accountVO) {
 		List<AccountVO> list = aDao.searchAccount(accountVO);
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		if(list.size() < 1) {
-			map.put("no", "no");
-		} else {
-			map = toMapSvc.accountToMap(list);
-		}
+		HashMap<String, List<AccountVO>> map = toMapSvc.accountToMap(list);
 		return map;
 	}
 
@@ -287,66 +199,24 @@ public class AccountController {
 	public List<String> autoSearch(AccountVO accountVO) {
 		List<String> list = aDao.autoSearch(accountVO);
 		return list;
-	}
-	
-	// 반복에 추가 가능한 내역 중복 없이 가져오기
-	@ResponseBody
-	@RequestMapping("account/canRepeatInfo")
-	public List<AccountVO> canRepeatInfo(String userid) {
-		List<AccountVO> list = rDao.canRepeatInfo(userid);
-		return list;
-	}
-	
-	// 반복에 추가
-	@ResponseBody
-	@RequestMapping("account/insertRepeat")
-	public String insertRepeat(RepeatVO repeatVO) {
-		int result = rDao.insertRepeat(repeatVO);
-		if(result == 1) {
-			return "success";
-		} else {
-			return "fail";
-		}
-	}
-	
-	// 반복 중복 확인
-	@ResponseBody
-	@RequestMapping("account/isOverlapRepeat")
-	public String isOverlapRepeat(RepeatVO repeatVO) {
-		String result = rDao.isOverlapRepeat(repeatVO);
-		if(result != null) {
-			return "impossible";
-		} else {
-			return "possible";
-		}
-	}
-	
+	}*/
+
 	// 반복 내역 가져오기
 	@ResponseBody
-	@RequestMapping("account/repeatInfo")
-	public HashMap<String, Object> repeatInfo(String userid) {
-		List<RepeatVO> repeatList = rDao.repeatInfo(userid);
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		if(repeatList.size() < 1) {
-			map.put("no", "no");
-		} else {
-			map = toMapSvc.repeatToMap(repeatList);
-		}
-		return map;
+	@RequestMapping("account/repeatList")
+	public List<AccountRepeatVO> repeatList(String userid) {
+		List<AccountRepeatVO> repeatList = rDao.repeatList(userid);
+		return repeatList;
 	}
 	
 	// 반복 삭제
 	@ResponseBody
 	@RequestMapping("account/deleteRepeat")
-	public String deleteRepeat(RepeatVO repeatVO) {
+	public int deleteRepeat(RepeatVO repeatVO) {
 		int result = rDao.deleteRepeat(repeatVO);
-		if(result == 1) {
-			return "success";
-		} else {
-			return "fail";
-		}
+		return result;
 	}
-	
+	/*
 	// 반복 수정
 	@ResponseBody
 	@RequestMapping("account/updateRepeat")
@@ -358,7 +228,7 @@ public class AccountController {
 			return "fail";
 		}
 	}
-	
+	*/
 	/*// 월별 카테고리별 수입/지출 내역
 	@ResponseBody
 	@RequestMapping("account/cateAccount")

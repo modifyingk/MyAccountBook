@@ -4,11 +4,11 @@
 <mapper namespace="transferMapper">
 	<!-- 이체 추가 -->
 	<insert id="insertTransfer" parameterType="transferVO">
-		insert into transfer values (#{transferid}, #{date}, #{withdraw}, #{deposit}, #{total}, #{memo}, #{userid});
+		insert into transfer values (#{transferid}, #{date}, #{withdrawid}, #{withdraw}, #{depositid}, #{deposit}, #{total}, #{memo}, #{userid});
 	</insert>
 	
 	<!-- 월별 이체내역 -->
-	<select id="transferInfo" parameterType="transferVO" resultType="transferVO">
+	<select id="transferList" parameterType="transferVO" resultType="transferVO">
 		select * from transfer where left(date, 7) = #{date} and userid = #{userid} order by date desc;
 	</select>
 	
@@ -18,9 +18,9 @@
 		where transferid = #{transferid} and userid = #{userid};
 	</update>
 	
-	<!-- transferid 값으로 검색 -->
-	<select id="transferidInfo" parameterType="transferVO" resultType="transferVO">
-		select * from transfer where transferid = #{transferid} and userid = #{userid};
+	<!-- 이체 금액 확인 -->
+	<select id="checkTransfer" parameterType="transferVO" resultType="transferVO">
+		select withdrawid, depositid, total from transfer where transferid = #{transferid} and userid = #{userid};
 	</select>
 	
 	<!-- 이체 삭제 -->

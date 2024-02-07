@@ -9,12 +9,12 @@
 	
 	<!-- 회원가입 -->
 	<insert id="insertMember" parameterType="memberVO">
-		insert into member values (#{userid}, #{pw}, #{username}, #{gender}, #{birth}, #{email}, DATE_FORMAT(now(), '%Y-%m-%d'), #{partyname});
+		insert into member values (#{userid}, #{pw}, #{username}, #{gender}, #{birth}, #{email}, DATE_FORMAT(now(), '%Y-%m-%d'));
 	</insert>
 	
-	<!-- 로그인 -->
-	<select id="login" parameterType="memberVO" resultType="memberVO">
-		select userid, partyname from member where userid = #{userid} and pw = #{pw};
+	<!-- 로그인 / 비밀번호 확인 -->
+	<select id="login" parameterType="memberVO" resultType="String">
+		select userid from member where userid = #{userid} and pw = #{pw};
 	</select>
 	
 	<!-- 아이디 찾기 -->
@@ -46,11 +46,6 @@
 	<update id="updateMember" parameterType="memberVO">
 		update member set username = #{username}, gender = #{gender}, birth = #{birth} where userid = #{userid}
 	</update>
-	
-	<!-- 비밀번호 확인 -->
-	<select id="checkPw" parameterType="memberVO" resultType="String">
-		select userid from member where userid = #{userid} and pw = #{pw}
-	</select>
 
 	<!-- 회원탈퇴  -->
 	<delete id="deleteMember" parameterType="String">
@@ -79,21 +74,7 @@
 	
 	<!-- 캐시 적립 및 단계 리셋 -->
 	<update id="updatePlant" parameterType="moneyVO">
-		update money set usercash = usercash + #{usercash}, plantstep = #{plantstep} where userid = #{userid};
+		update money set usercash = usercash + #{usercash}, plantstep = 0 where userid = #{userid};
 	</update>
 	
-	<!-- 가입한 그룹 업데이트 -->
-	<update id="updateParty" parameterType="memberVO">
-		update member set partyname = #{partyname} where userid = #{userid};
-	</update>
-	
-	<!-- 해당 그룹의 멤버(그룹장 제외)  -->
-	<select id="partyMember" parameterType="String" resultType="String">
-		select userid from member where partyname = #{partyname} and userid not like (select owner from party where partyname = #{partyname});
-	</select>
-	
-	<!-- 가입한 그룹 -->
-	<select id="joinedParty" parameterType="String" resultType="String">
-		select partyname from member where userid = #{userid};
-	</select>
 </mapper>

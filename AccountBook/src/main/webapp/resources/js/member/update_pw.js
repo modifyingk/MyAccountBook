@@ -1,4 +1,4 @@
-document.write('<script src="../resources/js/reg_exp.js"></script>'); // 이메일 함수 js 가져오기
+document.write('<script src="../resources/js/function/pwFunc.js"></script>'); // 비밀번호 확인 함수
 
 $(function () {
 	var pwChk = false;
@@ -20,8 +20,8 @@ $(function () {
 					userid : userid,
 					pw : $("#pw").val()
 				},
-				success : function(x) {
-					if(x == "success") {
+				success : function(res) {
+					if(res == true) {
 						alert("비밀번호가 성공적으로 변경되었습니다.");
 						location.href = "myInfo.jsp";
 					} else {
@@ -33,4 +33,5 @@ $(function () {
 			alert("입력 값을 다시 확인해주세요.");		
 		}
 	})
+	
 })

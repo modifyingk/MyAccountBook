@@ -9,6 +9,7 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/table.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript" src="../resources/js/aim/aim.js"></script>
 <script>
@@ -18,7 +19,7 @@
 <body>
 	<div class="">
 		<!-- 사이드바 -->
-		<div class="col-2 is-border is-shadow">
+		<div class="col-2 height-1050 is-border is-shadow">
 			<jsp:include page="../main/sidebar.jsp"></jsp:include>
 			<img src="../resources/img/logo.png" style="width: 90%;" onclick="location.href='../main/main.jsp'">
 			<ul class="menu-group">
@@ -27,8 +28,6 @@
 				<li class="menu"><i class="fi fi-rr-coins"></i> 자산관리</li>		
 				<li class="menu"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
 				<li class="menu active"><i class="fi fi-rs-chart-histogram"></i> 목표 관리</li>
-				<li class="menu"><i class="fi fi-rr-comment-alt"></i> 게시판</li>
-				<li class="menu"><i class="fi fi-rr-users-alt"></i> 그룹</li>
 				<li class="menu"><i class="fi fi-rr-sign-out-alt"></i> 로그아웃</li>
 			</ul>
 		</div>
@@ -141,7 +140,13 @@
 								</tr>
 								<tr>
 									<td>분류</td>
-									<td><input type="text" class="input" id="add-catename" placeholder="분류선택" readonly></td>
+									<td>
+										<input type="text" class="input" id="add-catename" placeholder="분류선택" readonly>
+										<div class="input is-scroll select-category-div" style="position:absolute; display: none; background: white; height:400px;">
+											<div class="select-category-list"></div>
+										</div>
+									</td>
+									
 								</tr>
 								<tr>
 									<td>금액</td>
@@ -185,34 +190,6 @@
 					</div>
 					<div class="modal-footer">
 						<button class="btn right outline-green" id="close-up-aim">닫기</button>
-					</div>
-				</div>
-			</div>
-			<!-- 수입 카테고리 선택 모달 -->
-			<div class="modal" id="select-incate-modal" hidden="true">
-				<div class="modal-content">
-					<div class="modal-title">
-						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 수입 카테고리</h3>
-					</div>
-					<div class="modal-body">
-						<div id="select-incate-list-div"></div>
-					</div>
-					<div class="modal-footer">
-						<button class="btn right outline-green" id="close-select-incate">닫기</button>
-					</div>
-				</div>
-			</div>
-			<!-- 지출 카테고리 선택 모달 -->
-			<div class="modal" id="select-outcate-modal" hidden="true">
-				<div class="modal-content">
-					<div class="modal-title">
-						<h3 class="h-normal fs-28"><i class="fi fi-rr-coins"></i> 지출 카테고리</h3>
-					</div>
-					<div class="modal-body">
-						<div id="select-outcate-list-div"></div>
-					</div>
-					<div class="modal-footer">
-						<button class="btn right outline-green" id="close-select-outcate">닫기</button>
 					</div>
 				</div>
 			</div>

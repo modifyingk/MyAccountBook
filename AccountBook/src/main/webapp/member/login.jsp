@@ -39,7 +39,7 @@
 	<div>
 		<div>
 			<!-- 사이드바 -->
-			<div class="col-3 is-border is-shadow">
+			<div class="col-3 height-1050 is-border is-shadow">
 				<jsp:include page="../main/mainbar.jsp"></jsp:include>
 				<img src="../resources/img/logo.png" class="side-logo" onclick="location.href='../main/main.jsp'">
 				<ul class="menu-group">

@@ -22,7 +22,6 @@
 /* ---------------------------------------------------------------- */
 .col-2 {
 	width: 18%;
-	height: 1050px;
 	float: left;
 }
 .col-8 {
@@ -33,29 +32,29 @@
 }
 .col-3 {
 	width: 30%;
-	height: 1050px;
 	float: left;
 }
 .col-7 {
 	width: 68%;
 	float: left;
 }
-.col-4 {
-	width: 40%;
-	height: 920px;
-	float: left;
-	padding: 10px;
-}
-.col-6 {
-	width: 56%;
-	height: 920px;
-	float: left;
-	margin-right: 10px;
-	padding: 10px;
-}
 .col-5 {
 	width: 49%;
 	float: left;
+}
+.col-4 {
+	width: 38%;
+	float: left;
+}
+.col-1 {
+	width: 15%;
+	float: left;
+}
+.height-1050 {
+	height: 1050px;
+}
+.float-right {
+	float: right;
 }
 .is-border {
 	border: 1px solid lightgray;
@@ -65,14 +64,14 @@
 	box-shadow: 2px 2px 5px lightgray;
 }
 .is-gradation {
-	background: linear-gradient(to bottom, white 75%, #6F4F28);
+	background: linear-gradient(to bottom, white 70%, #6F4F28);
 }
 .is-center {
 	display: flex;
 	justify-content: center;
 }
 .is-scroll {
-	height: 550px;
+	height: 600px;
 	overflow-y: auto;
 }
 ::-webkit-scrollbar { /* 스크롤바는 없애지만 기능은 유지 */
@@ -408,27 +407,6 @@
 	border-color: lightgray;
 	cursor: pointer;
 }
-.select-table {
-	margin-left: 2%;
-	width: 600px;
-}
-.select-table td {
-	height: 50px;
-	font-size: 18px;
-	color: #2C952C;
-	text-align: center;
-	border: 1px solid #2C952C; 
-	border-radius: 10px;
-}
-.select-table td:hover{
-	cursor: pointer;
-	background: #2C952C;
-	color: white;
-}
-.select-table td.active{
-	background: #2C952C;
-	color: white;
-}
 .gage-table {
 	width: 750px;
 	font-size: 18px;
@@ -504,14 +482,14 @@
 	position: absolute;
 	bottom: 0;
 	border-radius: 10px;
-}
+}/*
 .modal-table {
 	width: 100%;
 }
 .modal-table td {
 	height : 30px;
 	font-size : 18px;
-}
+}*/
 .click-icon {
 	cursor: pointer;
 	color: gray;
@@ -574,15 +552,6 @@
 }
 .is-pointer {
 	cursor: pointer;
-}
-.update-icon {
-	cursor: pointer;
-	height: 50px;
-	width: 50px;
-	background: #2C952C;
-	color: white;
-	border: 1px solid #2C952C;
-	border-radius: 10px;
 }
 .cal-date-div {
 	text-align: center;
@@ -683,35 +652,22 @@
 
 #water-btn {
 	position: absolute;
-	top:40%;
-	left: 43%;
+	top:30%;
+	right: 25%;
 	cursor: pointer;
 }
 #water-img {
 	position: absolute;
-	top: 53%;
-	left: 38%;
+	top: 43%;
+	right: 35%;
 	display: none;
 }
 #plant-step {
 	position: absolute;
-	top: 60%;
-	left: 28%;
+	top: 50%;
+	right: 40%;
 }
-#close-group-info:hover {
-	color: black;
-	cursor: pointer;
-}
-.page {
-	width: 45px;
-	margin: 5px;
-}
-.page:active {
-	background: #2C952C;
-	color: white;
-}
-#manage-board-div {
-	position: absolute;
-	left: 22%;
-	bottom: 5%;
+
+.hide {
+	display: none;	
 }

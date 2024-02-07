@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.modifyk.accountbook.account.CategoryVO;
-import com.modifyk.accountbook.asset.AssetGroupVO;
 import com.modifyk.accountbook.asset.AssetVO;
 
 @Controller
@@ -37,12 +36,12 @@ public class MemberController {
 	// 아이디 중복 확인
 	@ResponseBody
 	@RequestMapping("member/isOverlapId")
-	public String isOverlapId(String userid) {
-		String idExist = mDao.isOverlapId(userid);
-		if(idExist != null) { // 아이디가 존재하는 경우
-			return "impossible";
+	public boolean isOverlapId(String userid) {
+		String result = mDao.isOverlapId(userid);
+		if(result != null) { // 아이디가 존재하는 경우
+			return false;
 		} else {
-			return "possible";
+			return true;
 		}
 	}
 	
@@ -56,9 +55,9 @@ public class MemberController {
 		String subject = "[MoneyPlant] 이메일 인증번호";
 		String text = "[MoneyPlant] 이메일 인증을 위한 인증번호입니다.\n 인증번호 : " + code;
 		
-		String result = sendMailSvc.sendMail(email, from, subject, text);
+		boolean result = sendMailSvc.sendMail(email, from, subject, text);
 		
-		if(result.equals("success")) {
+		if(result == true) {
 			return code;
 		} else {
 			return "fail";
@@ -68,14 +67,9 @@ public class MemberController {
 	// 회원 가입
 	@ResponseBody
 	@RequestMapping("member/insertMember")
-	public String insertMember(MemberVO memberVO) {
+	public boolean insertMember(MemberVO memberVO) {
 
 		int result = mDao.insertMember(memberVO);
-		
-		// asset group 기본값 삽입
-		AssetGroupVO astgroupVO = new AssetGroupVO();
-		astgroupVO.setUserid(memberVO.getUserid());
-		insertSvc.insertGroup(astgroupVO);
 		
 		// asset 기본값 삽입
 		AssetVO assetVO = new AssetVO();
@@ -96,10 +90,10 @@ public class MemberController {
 		moneyVO.setUsercash(0);
 		mDao.insertMoney(moneyVO);
 		
-		if(result == 1) {
-			return "success";
+		if(result > 0) {
+			return true;
 		} else {
-			return "fail";
+			return false;
 		}
 	}
 	
@@ -107,13 +101,12 @@ public class MemberController {
 	@ResponseBody
 	@RequestMapping("member/login")
 	public String login(MemberVO memberVO, HttpSession session) {
-		MemberVO member = mDao.login(memberVO);
-		if(member != null) {
-			session.setAttribute("userid", member.getUserid());
-			session.setAttribute("partyname", member.getPartyname());
-			return member.getUserid();
-		}
-		else { // 로그인 실패
+		String loginid = mDao.login(memberVO);
+		
+		if(loginid != null) { // 로그인 성공
+			session.setAttribute("userid", memberVO.getUserid());
+			return loginid;
+		} else { // 로그인 실패
 			return "fail";
 		}
 	}
@@ -155,26 +148,26 @@ public class MemberController {
 	// 임시 비밀번호 발급
 	@ResponseBody
 	@RequestMapping("member/tempPw")
-	public String tempPw(MemberVO memberVO) {
+	public boolean tempPw(MemberVO memberVO) {
 		String tmpPw = makePwSvc.makePw(); // 임시 비밀번호 생성
 		memberVO.setPw(tmpPw); // 임시 비밀번호 셋팅
 		
 		// 비밀번호 임시비밀번호로 업데이트
 		int result = mDao.updatePw(memberVO);
-		if(result == 1) {
+		if(result > 0) {
 			// 임시비밀번호 메일로 전송
 			String from = "구글 계정";
 			String subject = "[MoneyPlant] 임시 비밀번호 발급";
 			String text = "[MoneyPlant] 임시 비밀번호입니다. 로그인 후 변경해주세요!\n 임시 비밀번호 : " + tmpPw;
 			
-			String mailResult = sendMailSvc.sendMail(memberVO.getEmail(), from, subject, text);
-			if(mailResult.equals("success")) {
-				return "success";
+			boolean mailResult = sendMailSvc.sendMail(memberVO.getEmail(), from, subject, text);
+			if(mailResult == true) {
+				return true;
 			} else {
-				return "fail";
+				return false;
 			}
 		} else {
-			return "fail";
+			return false;
 		}
 	}
 	
@@ -189,48 +182,48 @@ public class MemberController {
 	// 회원정보 수정
 	@ResponseBody
 	@RequestMapping("member/updateMember")
-	public String updateMember(MemberVO memberVO) {
+	public boolean updateMember(MemberVO memberVO) {
 		int result = mDao.updateMember(memberVO);
-		if(result == 1) {
-			return "success";
+		if(result > 0) {
+			return true;
 		} else {
-			return "fail";
+			return false;
 		}
 	}
 	
 	// 비밀번호 확인
 	@ResponseBody
 	@RequestMapping("member/checkPw")
-	public String checkPw(MemberVO memberVO) {
-		String result = mDao.checkPw(memberVO);
+	public boolean checkPw(MemberVO memberVO) {
+		String result = mDao.login(memberVO);
 		if(result != null) {
-			return "success";
+			return true;
 		} else {
-			return "fail";
+			return false;
 		}
 	}
 	
 	// 비밀번호 변경
 	@ResponseBody
 	@RequestMapping("member/updatePw")
-	public String updatePw(MemberVO memberVO) {
+	public boolean updatePw(MemberVO memberVO) {
 		int result = mDao.updatePw(memberVO);
-		if(result == 1) {
-			return "success";
+		if(result > 0) {
+			return true;
 		} else {
-			return "fail";
+			return false;
 		}
 	}
 	
 	// 회원 탈퇴
 	@ResponseBody
 	@RequestMapping("member/deleteMember")
-	public String deleteMember(String userid) {
+	public boolean deleteMember(String userid) {
 		int result = mDao.deleteMember(userid);
-		if(result == 1) {
-			return "success";
+		if(result > 0) {
+			return true;
 		} else {
-			return "fail";
+			return false;
 		}
 	}
 	
@@ -270,32 +263,5 @@ public class MemberController {
 		} else {
 			return 0;
 		}
-	}
-	
-	// 가입한 그룹 업데이트
-	@ResponseBody
-	@RequestMapping("member/updateParty")
-	public String updateParty(MemberVO memberVO) {
-		int result = mDao.updateParty(memberVO);
-		if(result > 0) {
-			return "success";
-		} else {
-			return "fail";
-		}
-	}
-	
-	// 해당 그룹의 멤버(그룹장 제외)
-	@ResponseBody
-	@RequestMapping("member/partyMember")
-	public List<String> partyMember(String partyname) {
-		List<String> list = mDao.partyMember(partyname);
-		return list;
-	}
-	
-	// 가입한 그룹
-	@ResponseBody
-	@RequestMapping("member/joinedParty")
-	public String joinedParty(String userid) {
-		return mDao.joinedParty(userid);
 	}
 }

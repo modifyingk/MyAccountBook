@@ -1,119 +1,60 @@
-$(function() {
-	// 카테고리 중복 확인
-	// parameter : #moneytype, #catename, 아이디
-	$.overlapCategory = function(moneytype, catename, userid) {
-		var result;
-		$.ajax({ // 카테고리가 중복되는지 확인
-			type : "post",
-			url : "isOverlapCate",
-			async : false,
-			data : {
-				moneytype : $(moneytype).val(),
-				catename : $(catename).val(),
-				userid : userid
-			},
-			success : function(x) {
-				if(x == "possible") { // 카테고리가 중복되지 않는 경우
-					result = true;
-				} else {
-					result = false;
-				}
-			}
-		})
-		return result;
-	}
-	
-	// 카테고리 추가 모달 열기
-	$(document).on("click", "#add-in-category-page", function() {
-		$("#add-category-modal").show();
-		$("#moneytype").attr("value", "수입");
-	})	
-	$(document).on("click", "#add-out-category-page", function() {
-		$("#add-category-modal").show();
-		$("#moneytype").attr("value", "지출");
-	})
+document.write('<script src="../resources/js/account/categoryFunc.js"></script>'); // 카테고리
+document.write('<script src="../resources/js/function/regFunc.js"></script>'); // 카테고리
 
-	// 카테고리 수정 모달 열기
-	$.openUpdateCate = function(docID) {
-		$(document).on("click", docID, function() {
-			originCate = $(this).children().eq(0).text();
-			originName = $(this).children().eq(1).text();
-			$("#up-moneytype").attr("value", originCate); // 수정 모달 input에 현재 분류 값 삽입
-			$("#up-catename").attr("value", originName); // 수정 모달 input에 현재 이름 값 삽입
-			
-			$("#up-category-modal").show(); // 모달 열기
-		})
-	}
+$(function() {
+	$(document).ready(function() {
+		$.showCategory("수입", "#in-category-list-div");
+		$.showCategory("지출", "#out-category-list-div");
+	})
 	
-	// 카테고리 초기화
-	// parameter : 초기화 버튼 ID, moneytype(수입/지출)
-	$.resetCategory = function(btnID, mtype) {
-		$(document).on("click", btnID, function() {
-			var op = confirm("초기화 시 생성한 카테고리가 모두 삭제되고 기본값으로 설정됩니다. 정말로 초기화하시겠습니까?");
-			if(op) {
-				$.ajax({
-					type : "post",
-					url : "resetCate",
-					data : {
-						moneytype: mtype,
-						userid: userid
-					},
-					success : function(x) {
-						window.location.reload();
-					}
-				})
+	// 수입 카테고리 추가
+	$(document).on("click", "#add-income-btn", function() {
+		$.addCategory("수입", "#income-catename");
+	})
+	
+	// 지출 카테고리 추가
+	$(document).on("click", "#add-spend-btn", function() {
+		$.addCategory("지출", "#spend-catename");
+	})
+	
+	// 카테고리 수정 가능
+	$(document).on("dblclick", ".input-func", function() {
+		var clickObj = $(this);
+		$(this).attr("readonly", false);
+		$(this).parent().children().eq(1).removeClass("hide");
+		$(this).parent().children().eq(2).removeClass("hide");
+		
+		$(document).click(function(e) {
+			if($(e.target).closest(clickObj).length == 0) { // 다른 영역 클릭 시 체크표시, 삭제표시 숨김
+				$("#in-category-list-div button").addClass("hide");
+				$("#out-category-list-div button").addClass("hide");
 			}
 		})
-	}
-	
-	// 카테고리 추가
-	$(document).on("click", "#add-category-btn", function() {
-		chkCate = $.checkNaming("#catename", "#add-catename-check-div p"); // 카테고리명 형식 확인
-		if(chkCate) {
-			var chkName = $.overlapCategory("#moneytype", "#catename", userid); // 카테고리 중복 확인
-			if(chkName) {
-				$.ajax({
-					type : "post",
-					url : "insertCategory",
-					data : {
-						moneytype : $("#moneytype").val(),
-						catename : $("#catename").val(),
-						userid : userid
-					},
-					success : function(x) {
-						if(x == "success") { // 카테고리 추가 성공
-							window.location.reload();
-						} else { // 카테고리 추가 실패
-							alert("다시 시도해주세요");
-						}
-					}
-				})
-			} else { // 카테고리가 중복되는 경우
-				alert("중복되는 카테고리입니다.");
-			}
-		}
 	})
 	
 	// 카테고리 수정
-	$(document).on("click", "#up-category-btn", function() { // 수정 버튼 클릭
-		chkCate = $.checkNaming("#up-catename", "#up-catename-check-div p"); // 카테고리명 형식 확인
-		if(chkCate) {
-			var chkName = $.overlapCategory("#up-moneytype", "#up-catename", userid); // 카테고리 중복 확인
+	$(document).on("click", "#update-btn", function() {
+		var idVal = $(this).parent().parent().children().eq(0).text(); // 카테고리 id
+		var typeVal = $(this).parent().parent().children().eq(1).text(); // 수입/지출
+		var nameVal = $(this).parent().children().eq(0).val(); // 입력한 카테고리명
+		
+		if(!$.checkMustReg(nameVal)) { // 카테고리명 빈 값인지 확인
+			alert("카테고리명을 확인해주세요.")
+		} else {
+			var chkName = $.overlapCategory(typeVal, nameVal, userid); // 카테고리 중복 확인
 			if(chkName) {
 				$.ajax({
 					type : "post",
 					url : "updateCategory",
 					data : {
-						originType : originCate,
-						originName : originName,
-						updateType : $("#up-moneytype").val(),
-						updateName : $("#up-catename").val(),
+						categoryid : idVal,
+						catename : nameVal,
 						userid : userid
 					},
-					success : function(x) {
-						if(x == "success") {
+					success : function(res) {
+						if(res == true) { // 카테고리 수정 성공
 							window.location.reload();
-						} else {
+						} else { // 카테고리 수정 실패
 							alert("다시 시도해주세요");
 						}
 					}
@@ -124,19 +65,26 @@ $(function() {
 		}
 	})
 	
-	// 카테고리 추가/수정 시 moneytype 선택 모달
-	$(document).on("click", "#moneytype, #up-moneytype", function() {
-		$("#select-moneytype-modal").show();
-		$("#in").click(function() {
-			$("#moneytype").attr("value", "수입");
-			$("#up-moneytype").attr("value", "수입");
-			$("#select-moneytype-modal").hide();
-		})
-		$("#out").click(function() {
-			$("#moneytype").attr("value", "지출");
-			$("#up-moneytype").attr("value", "지출");
-			$("#select-moneytype-modal").hide();
-		})
+	// 카테고리 삭제
+	$(document).on("click", "#delete-btn", function() {
+		var idVal = $(this).parent().parent().children().eq(0).text(); // 카테고리 id
+		var op = confirm("정말로 삭제하시겠습니까?");
+		if(op) {
+			$.ajax({
+				type : "post",
+				url : "deleteCategory",
+				data : {
+					categoryid : idVal,
+					userid : userid
+				},
+				success : function(res) {
+					if(res == true) { // 카테고리 삭제 성공
+						window.location.reload();
+					} else { // 카테고리 삭제 실패
+						alert("다시 시도해주세요");
+					}
+				}
+			})
+		}
 	})
-	
 })

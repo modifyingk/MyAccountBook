@@ -1,158 +1,147 @@
-document.write('<script src="../resources/js/asset/transfer_list.js"></script>'); // 이체 목록 js
-document.write('<script src="../resources/js/cal_date.js"></script>'); // 이전 달, 다음 달 구하기 js
-document.write('<script src="../resources/js/main.js"></script>'); // 날짜 선택 js
+document.write('<script src="../resources/js/asset/transferFunc.js"></script>'); // 이체 함수
+document.write('<script src="../resources/js/function/dateFunc.js"></script>'); // 날짜 함수
+document.write('<script src="../resources/js/function/htmlFunc.js"></script>'); // html 함수
+document.write('<script src="../resources/js/function/regFunc.js"></script>'); // 유효성 검사 함수
 
 $(function() {
-	
-	var transToday; // 현재 날짜 저장할 변수
-	var todayYear;
+	var date;
+	var today; // yyyy-mm 변수
 	
 	$(document).ready(function() {
-		// 현재 날짜 가져오기(이체용)
-		transToday = $.currentYM();
-		todayYear = transToday.split("-")[0];
+		// 현재 날짜 가져오기
+		date = $.createDate();
+		today = $.getYearMonth(date);
+		year = date.getFullYear();
+		month = date.getMonth() + 1;
+
+		// 날짜 세팅
+		$.setDate(year, month);
 		
 		// 이체 내역 가져오기
-		$.transferList(transToday, userid, "#month-div", "#transfer-list-div");
-		
-		// 다른 영역 클릭 시 창 닫기
-		$.autoClose("#select-month"); // 날짜 선택 닫기
+		$.showTransfer(today, userid);
 	})
 	
-	// 이체 내역 이전 달 클릭
-	$(document).on("click", "#before", function() {
-		transToday = $.beforeDate(transToday); // 날짜 이전 달로 setting
-		$.transferList(transToday, userid, "#month-div", "#transfer-list-div");
+	// 자산 이체 내역 보여주기
+	$(document).on("click", "#open-transfer-list", function() {
+		location.href = "transfer.jsp";
 	})
 	
-	// 이체 내역 다음 달 클릭
-	$(document).on("click", "#after", function() {
-		transToday = $.afterDate(transToday); // 날짜 다음 달로 setting
-		$.transferList(transToday, userid, "#month-div", "#transfer-list-div");
-	})
-	
-	// 날짜 선택
+	// 날짜 선택 창 보여주기
 	$(document).on("click", "#month-div", function() {
-		$.selectDate(todayYear);
+		$.showSelectDate(year);
 	})
 	
-	// 날짜 선택에서 이전 연도 클릭
+	// 날짜 선택 창에서 이전 연도 클릭
 	$(document).on("click", "#before-year", function() {
-		todayYear = $.selectBeforeYear(todayYear);
+		year = $.selectBeforeYear(year);
 	})
 	
-	// 날짜 선택에서 다음 연도 클릭
+	// 날짜 선택 창에서 다음 연도 클릭
 	$(document).on("click", "#after-year", function() {
-		todayYear = $.selectAfterYear(todayYear);
+		year = $.selectAfterYear(year);
 	})
 	
-	// 날짜 월 선택 시 보여줄 연월 값 변경
+	// 날짜 선택 창에서 월 선택
 	$(document).on("click", ".month-td", function() {
-		transToday = $("#current-year").text().split("년")[0] + "-" + $(this).text().split("월")[0];
-		todayYear = transToday.split("-")[0];
+		today = $.selectDate($("#current-year").text(), $(this).text());
+		year = $.getYear(today);
+		month = $.getMonth(today);
 		
-		$.transferList(transToday, userid, "#month-div", "#transfer-list-div");
+		// 해당 날짜의 이체 내역
+		$.setDate(year, month);
+		$.showTransfer(today, userid);
+		
 		$("#select-month").hide();
 	})
 	
-	// 이체 추가 모달 열기
-	$(document).on("click", "#add-transfer-page", function() {
-		// 현재 날짜 가져오기
-		var dateValue = $.currentDate();
-
-		// 값 다 비우고 추가 날짜만 현재 날짜로 setting
-		$("#add-transfer-date").attr("value", dateValue);
-		$("#add-withdraw-asset").attr("value", "");
-		$("#add-deposit-asset").attr("value", "");
-		$("#add-transfer-modal").show();
+	// 이전 달 클릭
+	$(document).on("click", "#before", function() {
+		// 이전 달로 month-div 세팅
+		today = $.beforeDate(today);
+		year = $.getYear(today);
+		month = $.getMonth(today);
+		$.setDate(year, month);
+		
+		// 해당 날짜의 이체 내역
+		$.showTransfer(today, userid);
 	})
 	
-	// 이체 추가
-	$(document).on("click", "#add-transfer-btn", function() {
-		$.ajax({
-			type : "post",
-			url : "../transfer/insertTransfer",
-			data : {
-				date : $("#add-transfer-date").val(),
-				withdraw : $("#add-withdraw-asset").val(),
-				deposit : $("#add-deposit-asset").val(),
-				total : $("#add-transfer-total").val(),
-				memo : $("#add-transfer-memo").val(),
-				userid : userid
-			},
-			success : function(x) {
-				if(x == "success") {
-					window.location.reload();
-				} else {
-					alert("다시 시도해주세요.");
-				}
-			}
-		})
+	// 다음 달 클릭
+	$(document).on("click", "#after", function() {
+		// 다음 달로  month-div 세팅
+		today = $.afterDate(today);
+		year = $.getYear(today);
+		month = $.getMonth(today);
+		$.setDate(year, month);
+		
+		// 해당 날짜의 이체 내역
+		$.showTransfer(today, userid);;
 	})
 	
-	// 이체 내역 날짜 tr 클릭 시 현재 날짜로 이체 추가 모달 열기
-	$(document).on("click", ".tr-transfer-date", function() {
-		$("#add-transfer-modal").show();
-		$("#add-transfer-date").attr("value", $(this).text());
+	// 이체 내역 div 닫기
+	$(document).on("click", "#close-transfer-div", function() {
+		$("#transfer-div").hide();
 	})
 	
-	// 이체 내역 내용 tr 클릭 시 해당 내역 수정 모달 열기
-	$(document).on("click", ".tr-transfer-content", function() {
-		var date = $(this).parent().children().eq(0).text();
-		var transferid = $(this).children().eq(0).text();
-		var withdraw = $(this).children().eq(1).children().eq(0).text();
-		var deposit = $(this).children().eq(1).children().eq(1).text();
-		var total = $(this).children().eq(2).text();
-		var memo = $(this).children().eq(3).text();
-
-		$("#up-transfer-id").attr("value", transferid);
-		$("#up-transfer-date").attr("value", date);
-		$("#up-withdraw-asset").attr("value", withdraw);
-		$("#up-deposit-asset").attr("value", deposit);
-		$("#up-transfer-total").attr("value", total);
-		$("#up-total-memo").attr("value", memo);
-		$("#up-transfer-modal").show();
+	// 이체 내역 수정 div 열기
+	$(document).on("click", ".tr-content", function() {
+		var d = $(this).children().eq(0).text();
+		var id = $(this).children().eq(1).text();
+		var withdraw = $(this).children().eq(2).children().eq(0).text();
+		var deposit = $(this).children().eq(2).children().eq(1).text();
+		var total = $(this).children().eq(3).children().eq(0).text();
+		var memo = $(this).children().eq(4).text();
+		
+		$("#update-transfer-date").attr("value", d);
+		$("#update-transfer-id").attr("value", id);
+		$("#update-withdraw").attr("value", withdraw);
+		$("#update-deposit").attr("value", deposit);
+		$("#update-transfer-total").attr("value", total);
+		$("#update-transfer-memo").val(memo);
+		
+		$("#update-transfer-div").show();
+	})
+	
+	// 이체 수정 div 닫기
+	$(document).on("click", "#close-update-transfer", function() {
+		$("#update-transfer-div").hide();
 	})
 	
 	// 이체 수정
-	$(document).on("click", "#up-transfer-btn", function() {
+	$(document).on("click", "#update-transfer-btn", function() {
 		$.ajax({
-			type : "post",
+			type: "post",
 			url : "../transfer/updateTransfer",
 			data : {
-				transferid : $("#up-transfer-id").val(),
-				date : $("#up-transfer-date").val(),
-				withdraw : $("#up-withdraw-asset").val(),
-				deposit : $("#up-deposit-asset").val(),
-				total : $("#up-transfer-total").val().replaceAll(",", ""),
-				memo : $("#up-transfer-memo").val(),
-				userid : userid
+				date: $("#update-transfer-date").val(),
+				transferid: $("#update-transfer-id").val(),
+				total: $("#update-transfer-total").val().replace(",", ""),
+				memo: $("#update-transfer-memo").val(),
+				userid: userid
 			},
-			success : function(x) {
-				if(x == "success") {
+			success: function(res) {
+				if(res == true)
 					window.location.reload();
-				} else {
-					alert("다시 시도해주세요.");
-				}
+				else
+					alert("다시 시도해주세요")
 			}
 		})
 	})
 	
 	// 이체 삭제
-	$(document).on("click", "#del-transfer-btn", function() {
+	$(document).on("click", "#delete-transfer-btn", function() {
 		$.ajax({
-			type : "post",
+			type: "post",
 			url : "../transfer/deleteTransfer",
 			data : {
-				transferid : $("#up-transfer-id").val(),
-				userid : userid
+				transferid: $("#update-transfer-id").val(),
+				userid: userid
 			},
-			success : function(x) {
-				if(x == "success") {
+			success: function(res) {
+				if(res == true)
 					window.location.reload();
-				} else {
-					alert("다시 시도해주세요.");
-				}
+				else
+					alert("다시 시도해주세요")
 			}
 		})
 	})

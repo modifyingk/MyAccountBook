@@ -8,7 +8,7 @@
 	</insert>
 	
 	<!-- 즐겨찾기 목록 -->
-	<select id="bookmarkInfo" parameterType="String" resultType="bookmarkVO">
+	<select id="bookmarkList" parameterType="String" resultType="bookmarkVO">
 		select * from bookmark where userid = #{userid};
 	</select>
 	

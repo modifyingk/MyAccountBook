@@ -1,4 +1,4 @@
-document.write('<script src="../resources/js/email.js"></script>'); // 이메일 함수 js 가져오기
+document.write('<script src="../resources/js/function/emailFunc.js"></script>'); // 이메일 함수
 
 $(function () {
 	$(document).ready(function() {
@@ -26,8 +26,8 @@ $(function () {
 							userid : x,
 							email : email
 						},
-						success : function(x) {
-							if(x == "success") {
+						success : function(res) {
+							if(res == true) {
 								alert("입력하신 이메일로 임시 비밀번호가 전송되었습니다.")
 								location.href = "../member/login.jsp";
 							} else {

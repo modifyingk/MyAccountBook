@@ -1,101 +1,36 @@
-document.write('<script src="../resources/js/cal_date.js"></script>'); // 이전 달, 다음 달 구하기 js
-document.write('<script src="../resources/js/main.js"></script>'); // 모달 및 카테고리 설정 js
+document.write('<script src="../resources/js/function/htmlFunc.js"></script>'); // html 함수
+document.write('<script src="../resources/js/function/regFunc.js"></script>'); // 유효성 검사 함수
+document.write('<script src="../resources/js/function/dateFunc.js"></script>'); // 날짜 함수
+document.write('<script src="../resources/js/calendar/calendarFunc.js"></script>'); // 날짜 함수
 
 $(function() {
-	var date = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-	var day = ["일", "월", "화", "수", "목", "금", "토"];
+	var dates = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+	var days = ["일", "월", "화", "수", "목", "금", "토"];
 	
-	var todayAll; // 현재 날짜 저장할 변수
+	var today; // 현재 날짜 저장할 변수
+	var year;
+	var month;
+	var day;
+	/*
 	var todayYear; // 현재 연도 저장할 변수
 	var todayMonth; // 현재 월 저장할 변수
-	var todayDate; // 현재 일 저장할 변수
-	
-	var totalDate; // 전체 날짜 수
-	
-	/* 달력 생성
-	   parameter : 연월, 연도, 월, 일 */
-	$.calendar = function(todayAll, todayYear, todayMonth, todayDate) {
-		// 연도와 월 보여주기
-		var month_html = "<i class='h-normal fs-28'>" + todayYear + "년 " + todayMonth + "월" + "</i>";
-		$("#month-div").html(month_html);
-		
-		date[1] = $.calYear(todayYear); // 평년 윤년 계산
-		totalDate = $.calDay(todayYear, todayMonth, date); // 현재까지의 전체 날 수
-		
-		// 달력에 날짜 넣기
-		var idx = parseInt(totalDate % 7); // 요일 index
-		var j = 1;
-		for(var i = 1; i <= date[parseInt(todayMonth) - 1]; i++) {
-			if(idx + 1 > 6) {
-				j++;
-				idx = -1;
-			}
-			$(".calendar-table").children().children().eq(j).children().eq(idx + 1).children().eq(0).html(i);
-			
-			if($("#month-div").text() + "-" + $(".calendar-table").children().children().eq(j).children().eq(idx + 1).children().eq(0).text() == todayAll + "-" + todayDate) {
-				$(".calendar-table").children().children().eq(j).children().eq(idx + 1).children().eq(0).addClass("active");
-			} else {
-				$(".calendar-table").children().children().eq(j).children().eq(idx + 1).children().eq(0).removeClass("active");
-			}
-			idx++;
-		}
-		
-		$.calendarList(todayAll);
-	}
-	
-	/* 날짜별 수입/지출 내역
-	   parameter : 현재 날짜 */
-	$.calendarList = function(todayAll) {
-		$.ajax({
-			type : "post",
-			url : "../account/calendarTotal",
-			data : {
-				date : todayAll,
-				userid : userid
-			},
-			success : function(list) {
-				for(var i = 1; i < 7; i++) {
-					for(var j = 0; j < 7; j++) {
-						var calNum = $(".calendar-table").children().children().eq(i).children().eq(j).children().eq(0).text();
-						for(var k = 0; k < list.length; k++) {
-							var dateNum = list[k].date.split("-")[2];
-							if(dateNum.charAt(0) == "0") {
-								dateNum = dateNum.replace("0", "");
-							}
-							if(dateNum == calNum) {
-								if(list[k].moneytype == "수입") {
-									$(".calendar-table").children().children().eq(i).children().eq(j).children().eq(1).html("<i class='h-normal blue'>" + (list[k].total).toLocaleString() + "</i>");
-								} else {
-									$(".calendar-table").children().children().eq(i).children().eq(j).children().eq(2).html("<i class='h-normal red'>" + (list[k].total).toLocaleString() + "</i>");
-								}
-							}
-						}
-					}
-				}
-			}
-		})
-	}
-	
-	// 달력 내용 다 지우기
-	$.clearCalendar = function() {
-		for(var i = 1; i < 7; i++) {
-			for(var j = 0; j < 7; j++) {
-				$(".calendar-table").children().children().eq(i).children().eq(j).children().eq(0).html("");
-				$(".calendar-table").children().children().eq(i).children().eq(j).children().eq(1).html("");
-				$(".calendar-table").children().children().eq(i).children().eq(j).children().eq(2).html("");
-			}
-		}
-	}
+	var todayDate; // 현재 일 저장할 변수*/
 	
 	$(document).ready(function() {
 		// 현재 날짜 가져오기
-		todayAll = $.currentYM();
+		date = $.createDate();
+		today = $.getYearMonth(date);
+		
+		year = date.getFullYear();
+		month = $.monthFmt(date.getMonth() + 1);
+		day = $.dayFmt(date.getDate());
+		/*
 		todayYear = $.currentYear();
 		todayMonth = $.currentMonth();
-		todayDate = $.currentD();
+		todayDate = $.currentD();*/
 		
 		// 달력 생성 및 날짜별 수입/지출 합계 표시
-		$.calendar(todayAll, todayYear, todayMonth, todayDate);
+		$.calendar(today, year, month, day);
 		
 		// 모달 닫기
 		$.closeModal("#close-date-account", "#date-account-modal");
@@ -106,47 +41,47 @@ $(function() {
 	
 	// 이전 달 클릭
 	$(document).on("click", "#before", function() {
-		todayAll = $.beforeDate(todayAll); // 날짜 이전 달로 setting
-		todayYear = todayAll.split("-")[0];
-		todayMonth = todayAll.split("-")[1];
+		today = $.beforeDate(today); // 날짜 이전 달로 setting
+		year = $.getYear(today);
+		month = $.getMonth(today);
 		
 		$.clearCalendar(); // 달력 비우기
-		$.calendar(todayAll, todayYear, todayMonth);
+		$.calendar(today, year, month, day);
 	})
 	
 	// 다음 달 클릭
 	$(document).on("click", "#after", function() {
-		todayAll = $.afterDate(todayAll); // 날짜 다음 달로 setting
-		todayYear = todayAll.split("-")[0];
-		todayMonth = todayAll.split("-")[1];
+		today = $.afterDate(today); // 날짜 다음 달로 setting
+		year = $.getYear(today);
+		month = $.getMonth(today);
 		
 		$.clearCalendar(); // 달력 비우기
-		$.calendar(todayAll, todayYear, todayMonth);
+		$.calendar(today, year, month, day);
 	})
 	
 	// 날짜 선택
 	$(document).on("click", "#month-div", function() {
-		$.selectDate(todayYear);
+		$.showSelectDate(year);
 	})
 	
 	// 날짜 선택에서 이전 연도 클릭
 	$(document).on("click", "#before-year", function() {
-		todayYear = $.selectBeforeYear(todayYear);
+		year = $.selectBeforeYear(year);
 	})
 	
 	// 날짜 선택에서 다음 연도 클릭
 	$(document).on("click", "#after-year", function() {
-		todayYear = $.selectAfterYear(todayYear);
+		year = $.selectAfterYear(year);
 	})
 	
 	// 날짜 월 선택 시 보여줄 연월 값 변경
 	$(document).on("click", ".month-td", function() {
-		todayAll = $("#current-year").text().split("년")[0] + "-" + $(this).text().split("월")[0];
-		todayYear = todayAll.split("-")[0];
-		todayMonth = todayAll.split("-")[1];
-		
+		today = $("#current-year").text().split("년")[0] + "-" + $(this).text().split("월")[0];
+		year = $.getYear(today);
+		month = $.getMonth(today);
+
 		$.clearCalendar(); // 달력 비우기
-		$.calendar(todayAll, todayYear, todayMonth);
+		$.calendar(today, year, month, day);
 		
 		$("#select-month").hide();
 	})
@@ -161,7 +96,7 @@ $(function() {
 			if(selectDate.length == 1) {
 				selectDate = "0" + selectDate;
 			}
-			var selectAll = todayAll + "-" + selectDate;
+			var selectAll = today + "-" + selectDate;
 			
 			$.ajax({
 				type : "post",
@@ -181,7 +116,7 @@ $(function() {
 						for(var i = 0; i < list.length; i++) {
 							html += "<tr><td style='display:none;'>" + list[i].accountid + "</td>";
 							html += "<td>" + list[i].catename + "</td>";
-							html += "<td><div>" + list[i].content + "</div><div><span class='fs-16 info'>" + list[i].astname + "</span></div></td>";
+							html += "<td><div>" + list[i].content + "</div><div><span class='fs-16 info'>" + list[i].assetname + "</span></div></td>";
 							if(list[i].moneytype == "수입") {
 								html += "<td class='text-right blue'>" + list[i].total.toLocaleString() + "</td></tr>";
 								total_income += list[i].total;

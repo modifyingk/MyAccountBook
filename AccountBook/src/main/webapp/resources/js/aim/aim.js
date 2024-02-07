@@ -1,40 +1,19 @@
-document.write('<script src="../resources/js/reg_exp.js"></script>'); // 정규식 js
-document.write('<script src="../resources/js/main.js"></script>'); // 모달 및 카테고리 설정 js
-document.write('<script src="../resources/js/cal_date.js"></script>'); // 이전 달, 다음 달 구하기 js
-document.write('<script src="../resources/js/account/category_list.js"></script>'); // 카테고리 목록 js
-document.write('<script src="../resources/js/aim/aim_list.js"></script>'); // 목표 목록 js
+document.write('<script src="../resources/js/function/htmlFunc.js"></script>'); // html 함수
+document.write('<script src="../resources/js/function/regFunc.js"></script>'); // 유효성 검사 함수
+document.write('<script src="../resources/js/function/dateFunc.js"></script>'); // 날짜 함수
+document.write('<script src="../resources/js/account/categoryFunc.js"></script>'); // 카테고리
+document.write('<script src="../resources/js/aim/aimFunc.js"></script>'); // 목표 목록 js
 
 $(function() {
-	var todayAll; // 현재 날짜 저장할 변수
-	var todayYear;
-	
-	// 목표 중복 확인 함수
-	$.overlapAim = function(aimdate) {
-		var result;
-		$.ajax({
-			type : "post",
-			url : "isOverlapAim",
-			async : false,
-			data : {
-				aimdate : aimdate,
-				catename : $("#add-catename").val(),
-				userid : userid
-			},
-			success : function(x) {
-				if(x == "possible") {
-					result = true;
-				} else {
-					result = false;
-				}
-			}
-		})
-		return result;
-	}
+	var date;
+	var today; // 현재 날짜 저장할 변수
+	var year; // 현재 연도 저장할 변수
 	
 	$(document).ready(function() {
 		// 현재 날짜 가져오기
-		todayAll = $.currentYM();
-		todayYear = todayAll.split("-")[0];
+		date = $.createDate();
+		today = $.getYearMonth(date);
+		year = date.getFullYear();
 		
 		// 숫자만 입력되도록
 		$.onlyNum("#add-year");
@@ -46,8 +25,8 @@ $(function() {
 		$.moneyFmt("#up-total");
 		
 		// 목표 가져오기
-		$.aimList(todayAll, userid, "#month-div", "#aim-list-div"); // 지출 목표
-		$.inaimList(todayAll, userid, "#aim-in-list-div"); // 수입 목표
+		$.aimList(today, userid, "#month-div", "#aim-list-div"); // 지출 목표
+		$.inaimList(today, userid, "#aim-in-list-div"); // 수입 목표
 		
 		// 목표 선택 및 값 자동 입력
 		$.pickAim("#out-aim-table tr");
@@ -58,56 +37,66 @@ $(function() {
 		$.categoryList(userid, "#select-incate-list-div", "#select-outcate-list-div"); // 카테고리 선택 모달
 		
 		// 카테고리 선택 및 값 자동 입력 (목표 추가)
-		$.openSelectCate("#add-catename", "select-mtype");
+		//$.openSelectCate("#add-catename", "select-mtype");
 		$.pickCategory("#in-category-table tr", "#add-catename", "#select-incate-modal");
 		$.pickCategory("#out-category-table tr", "#add-catename", "#select-outcate-modal");
 		
 		// 모달 닫기
-		$.closeModal("#close-add-aim", "#add-aim-modal"); // 목표 추가 모달 닫기
-		$.closeModal("#close-up-aim", "#up-aim-modal"); // 목표 수정 모달 닫기
-		$.closeModal("#close-select-incate", "#select-incate-modal"); // 수입 카테고리 선택 모달 닫기
-		$.closeModal("#close-select-outcate", "#select-outcate-modal"); // 지출 카테고리 선택 모달 닫기
+		//$.closeModal("#close-add-aim", "#add-aim-modal"); // 목표 추가 모달 닫기
+		//$.closeModal("#close-up-aim", "#up-aim-modal"); // 목표 수정 모달 닫기
+		//$.closeModal("#close-select-incate", "#select-incate-modal"); // 수입 카테고리 선택 모달 닫기
+		//$.closeModal("#close-select-outcate", "#select-outcate-modal"); // 지출 카테고리 선택 모달 닫기
 		
 		// 다른 영역 클릭 시 창 닫기
 		$.autoClose("#select-month"); // 날짜 선택 닫기
 	})
 	
+	// 목표 추가 모달 닫기
+	$(document).on("click", "#close-add-aim", function() {
+		$("#add-aim-modal").hide();
+	})
+	
+	// 목표 수정 모달 닫기
+	$(document).on("click", "#close-up-aim", function() {
+		$("#up-aim-modal").hide();
+	})
+	
 	// 이전 달 목표
 	$(document).on("click", "#before", function() {
-		todayAll = $.beforeDate(todayAll); // 날짜 이전 달로 setting
-		$.aimList(todayAll, userid, "#month-div", "#aim-list-div"); // 지출 목표
-		$.inaimList(todayAll, userid, "#aim-in-list-div"); // 수입 목표
+		today = $.beforeDate(today); // 날짜 이전 달로 setting
+		$.aimList(today, userid, "#month-div", "#aim-list-div"); // 지출 목표
+		$.inaimList(today, userid, "#aim-in-list-div"); // 수입 목표
 	})
 	
 	// 다음 달 목표
 	$(document).on("click", "#after", function() {
-		todayAll = $.afterDate(todayAll); // 날짜 이전 달로 setting
-		$.aimList(todayAll, userid, "#month-div", "#aim-list-div"); // 지출 목표
-		$.inaimList(todayAll, userid, "#aim-in-list-div"); // 수입 목표
+		today = $.afterDate(today); // 날짜 이전 달로 setting
+		$.aimList(today, userid, "#month-div", "#aim-list-div"); // 지출 목표
+		$.inaimList(today, userid, "#aim-in-list-div"); // 수입 목표
 	})
 	
 	// 날짜 선택
 	$(document).on("click", "#month-div", function() {
-		$.selectDate(todayYear);
+		$.showSelectDate(year);
 	})
 	
 	// 날짜 선택에서 이전 연도 클릭
 	$(document).on("click", "#before-year", function() {
-		todayYear = $.selectBeforeYear(todayYear);
+		year = $.selectBeforeYear(year);
 	})
 	
 	// 날짜 선택에서 다음 연도 클릭
 	$(document).on("click", "#after-year", function() {
-		todayYear = $.selectAfterYear(todayYear);
+		year = $.selectAfterYear(year);
 	})
 	
 	// 날짜 월 선택 시 보여줄 연월 값 변경
 	$(document).on("click", ".month-td", function() {
-		todayAll = $("#current-year").text().split("년")[0] + "-" + $(this).text().split("월")[0];
-		todayYear = todayAll.split("-")[0];
+		today = $("#current-year").text().split("년")[0] + "-" + $(this).text().split("월")[0];
+		year = $.getYear(today);
 		
-		$.aimList(todayAll, userid, "#month-div", "#aim-list-div"); // 지출 목표
-		$.inaimList(todayAll, userid, "#aim-in-list-div"); // 수입 목표
+		$.aimList(today, userid, "#month-div", "#aim-list-div"); // 지출 목표
+		$.inaimList(today, userid, "#aim-in-list-div"); // 수입 목표
 		
 		$("#select-month").hide();
 	})
@@ -116,24 +105,37 @@ $(function() {
 	$(document).on("click", "#add-aim-page", function() {
 		$("#add-aim-modal").show();
 
-		var yearVal = todayAll.split("-")[0]; // 연도
-		var monthVal = todayAll.split("-")[1]; // 월
+		var yearVal = $.getYear(today);
+		var monthVal = $.getMonth(today);
 
 		$("#add-year").attr("value", yearVal);
 		$("#add-month").val(monthVal).prop("selected");
+		
+		$.pickCategory("#add-catename", "select-mtype");
 	})
+	
+	// 카테고리 선택 및 값 자동 입력
+	$.pickCategory = function(categoryID, mtypeName) {
+		$(document).on("click", categoryID, function() {
+			var mtype = $("input[name=" + mtypeName + "]:checked").val(); // 선택된 값 변수에 저장
+			$.showSelectCategory(mtype, ".select-category-list");
+			$(".select-category-div").show();
+		})
+		$(document).on("click", ".select-category-div tr", function() {
+			var categoryVal = $(this).children().eq(1).text();
+			$(categoryID).attr("value", categoryVal);
+			$(".select-category-div").hide();
+		})
+	}
 	
 	// 목표 추가
 	$(document).on("click", "#add-aim-btn", function() {
 		var mtype = $("input[name=select-mtype]:checked").val();
-		var year = $("#add-year").val();
-		var date = $("#add-month").val();
-		if(date.length == 1) {
-			date = "0" + date;
-		}
-		var aimdate = year + "-" + date;
+		var y = $("#add-year").val();
+		var d = $.monthFmt($("#add-month").val());
+		var aimdate = year + "-" + d;
 
-		if(!$.noEmpty("#add-catename") || !$.noEmpty("#add-year") || !$.noEmpty("#add-month") || !$.noEmpty("#add-total")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
+		if(!$.checkMustReg("#add-catename") || !$.checkMustReg("#add-year") || !$.checkMustReg("#add-month") || !$.checkMustReg("#add-total")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
 			alert("입력 값을 확인해주세요.")
 		} else {
 			var chkAim = $.overlapAim(aimdate); // 목표 중복 확인
@@ -174,7 +176,7 @@ $(function() {
 	
 	// 목표 수정
 	$(document).on("click", "#up-aim-btn", function() {
-		if(!$.noEmpty("#up-total")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
+		if(!$.checkMustReg("#up-total")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
 			alert("입력 값을 확인해주세요.")
 		} else {
 			$.ajax({

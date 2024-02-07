@@ -1,4 +1,4 @@
-document.write('<script src="../resources/js/email.js"></script>'); // 이메일 함수 js 가져오기
+document.write('<script src="../resources/js/function/emailFunc.js"></script>'); // 이메일 함수
 
 $(function () {
 	$(document).ready(function() {
@@ -17,9 +17,9 @@ $(function () {
 				username : $("#username").val(),
 				email : email
 			},
-			success : function(findList) {
-				if(findList != "") { // 이름과 이메일 정보가 일치할 경우
-					$("#email").attr("value", findList[0].email);
+			success : function(res) {
+				if(res != "") { // 이름과 이메일 정보가 일치할 경우
+					$("#email").attr("value", res[0].email);
 					code = $.makeCode(email);
 				} else {
 					alert("이름과 이메일을 다시 확인해주세요");

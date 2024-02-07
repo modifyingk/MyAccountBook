@@ -4,33 +4,24 @@
 <mapper namespace="repeatMapper">
 	<!-- 반복 추가 -->
 	<insert id="insertRepeat" parameterType="repeatVO">
-		insert into repetition values (#{repeatid}, #{repeatcycle}, #{moneytype}, #{astname}, #{catename}, #{total}, #{content}, #{userid});
+		insert into repetition values (#{repeatid}, #{repeatcycle}, #{date}, #{accountid}, #{userid});
+		<selectKey keyProperty="repeatid" resultType="int" order="AFTER">
+			select MAX(repeatid) from repetition;
+		</selectKey>
 	</insert>
 	
-	<!-- 반복 중복 확인 -->
-	<select id="isOverlapRepeat" parameterType="repeatVO" resultType="String">
-		select repeatid from repetition where moneytype = #{moneytype} and astname = #{astname} and catename = #{catename} and total = #{total}
-		and content = #{content} and userid = #{userid};
-	</select>
-	
 	<!-- 반복 내역 가져오기 -->
-	<select id="repeatInfo" parameterType="String" resultType="repeatVO">
-		select * from repetition where userid = #{userid} order by repeatcycle;
+	<select id="repeatList" parameterType="String" resultType="accountRepeatVO">
+		select r.repeatid, repeatcycle, a.date, moneytype, assetid, assetname, catename, content, total from repetition r join account a on r.accountid = a.accountid where r.userid = #{userid};
 	</select>
 	
-	<!-- 반복 삭제 -->
+	<!--반복 삭제 -->
 	<delete id="deleteRepeat" parameterType="repeatVO">
 		delete from repetition where repeatid = #{repeatid} and userid = #{userid};
 	</delete>
 	
-	<!-- 반복 수정 -->
-	<update id="updateRepeat" parameterType="repeatVO">
-		update repetition set repeatcycle = #{repeatcycle}, moneytype = #{moneytype}, astname = #{astname}, catename = #{catename},
-		total = #{total}, content = #{content} where repeatid = #{repeatid} and userid = #{userid};
-	</update>
-	
-	<!-- 모든 반복 데이터 가져오기 -->
-	<select id="repeatAll" resultType="repeatVO">
-		select * from repetition;
+	<!--모든 반복 데이터 가져오기 --> 
+	<select id="repeatAll" resultType="accountRepeatVO">
+		select r.repeatid, repeatcycle, a.date, moneytype, assetid, assetname, catename, content, total, a.userid from repetition r join account a on r.accountid = a.accountid;
 	</select>
 </mapper>

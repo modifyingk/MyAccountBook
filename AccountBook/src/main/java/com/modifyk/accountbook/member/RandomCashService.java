@@ -12,11 +12,11 @@ public class RandomCashService {
 		double prob = rand.nextDouble();
 		int cash = 0;
 		
-		if(prob <= 0.8) { // 80%
+		if(prob <= 0.8) { 
 			cash = 500;
-		} else if(prob <= 0.9) { // 10%
+		} else if(prob <= 0.9) { 
 			cash = 1000;
-		} else if(prob <= 0.95) { // 5%
+		} else if(prob <= 0.95) { 
 			cash = 1500;
 		} else if(prob <= 0.999) {
 			cash = 2000;

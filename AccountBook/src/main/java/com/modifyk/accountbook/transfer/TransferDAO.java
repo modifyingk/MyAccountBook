@@ -18,8 +18,8 @@ public class TransferDAO {
 	}
 	
 	// 월별 이체 내역
-	public List<TransferVO> transferInfo(TransferVO transferVO) {
-		return my.selectList("transferMapper.transferInfo", transferVO);
+	public List<TransferVO> transferList(TransferVO transferVO) {
+		return my.selectList("transferMapper.transferList", transferVO);
 	}
 	
 	// 이체 수정
@@ -27,9 +27,9 @@ public class TransferDAO {
 		return my.update("transferMapper.updateTransfer", transferVO);
 	}
 	
-	// transferid 값으로 검색
-	public TransferVO transferidInfo(TransferVO transferVO) {
-		return my.selectOne("transferMapper.transferidInfo", transferVO);
+	// 자산 금액 확인
+	public TransferVO checkTransfer(TransferVO transferVO) {
+		return my.selectOne("transferMapper.checkTransfer", transferVO);
 	}
 	
 	// 이체 삭제

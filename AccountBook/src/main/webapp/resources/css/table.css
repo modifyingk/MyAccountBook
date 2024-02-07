@@ -1,0 +1,51 @@
+@charset "UTF-8";
+/* 선택용 목록 테이블 */
+.select-table {
+	width: 100%;
+}
+.select-table td {
+	height : 30px;
+	font-size : 18px;
+	padding: 10px;
+}
+.td-select:hover {
+	background: #F3F3F3;
+	border-color: lightgray;
+	cursor: pointer;
+}
+.td-border td {
+	border: 1px solid lightgray;
+	border-radius: 10px;
+}
+.tr-hover tr:hover {
+	background: #F3F3F3;
+	border-color: lightgray;
+	cursor: pointer;
+}
+
+#asset-list-div .select-table td {
+	padding: 5px 10px;
+}
+
+/* 버튼 형식 테이블(전체 수입 지출) */
+.button-table {
+	margin-left: 2%;
+	width: 600px;
+}
+.button-table td {
+	height: 50px;
+	font-size: 18px;
+	color: #2C952C;
+	text-align: center;
+	border: 1px solid #2C952C; 
+	border-radius: 10px;
+}
+.button-table td:hover{
+	cursor: pointer;
+	background: #2C952C;
+	color: white;
+}
+.button-table td.active{
+	background: #2C952C;
+	color: white;
+}

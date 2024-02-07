@@ -4,12 +4,25 @@
 <mapper namespace="accountMapper">
 	<!-- 수입/지출 내역 추가 -->
 	<insert id="insertAccount" parameterType="accountVO">
-		insert into account values (#{accountid}, #{moneytype}, #{date}, #{astname}, #{catename}, #{content}, #{total}, #{memo}, #{userid});
+		insert into account values (#{accountid}, #{moneytype}, #{date}, #{assetid}, #{assetname}, #{catename}, #{content}, #{total}, #{memo}, #{userid}, #{repeatid});
+		<selectKey keyProperty="accountid" resultType="int" order="AFTER">
+			select MAX(accountid) from account;
+		</selectKey>
 	</insert>
+	
+	<!-- account의 반복 id 업데이트 -->
+	<update id="updateRepeatid" parameterType="map">
+		update account set repeatid = #{repeatid} where accountid = #{accountid} and userid = #{userid};
+	</update>
+	
+	<!-- 수입/지출 금액 확인 -->
+	<select id="checkAccount" parameterType="accountVO" resultType="accountVO">
+		select moneytype, assetid, total from account where accountid = #{accountid} and userid = #{userid};
+	</select>
 	
 	<!-- 수입/지출 내역 수정 -->
 	<update id="updateAccount" parameterType="accountVO">
-		update account set moneytype = #{moneytype}, date = #{date}, astname = #{astname}, catename = #{catename}, content = #{content}, total = #{total}, memo = #{memo} where userid = #{userid} and accountid = #{accountid};
+		update account set moneytype = #{moneytype}, date = #{date}, assetid = #{assetid}, assetname = #{assetname}, catename = #{catename}, content = #{content}, total = #{total}, memo = #{memo} where userid = #{userid} and accountid = #{accountid};
 	</update>
 	
 	<!-- 수입/지출 내역 삭제 -->
@@ -17,34 +30,34 @@
 		delete from account where accountid = #{accountid} and userid = #{userid};
 	</delete>
 	
-	<!-- 즐겨찾기에 추가 가능한 내역 중복 없이 가져오기 -->
-	<select id="canBookmarkInfo" parameterType="String" resultType="accountVO">
-		select distinct catename, content, total from account where userid = #{userid} and moneytype = "지출";
-	</select>
-	
-	<!-- 월별 수입/지출 내역 -->
-	<select id="monthAccount" parameterType="accountVO" resultType="accountVO">
+	<!-- 수입/지출 내역 -->
+	<select id="accountList" parameterType="accountVO" resultType="accountVO">
 		select * from account where userid = #{userid} and left(date, 7) = #{date} order by date desc;
 	</select>
 	
-	<!-- 월별 수입 내역 -->
-	<select id="monthIncome" parameterType="accountVO" resultType="accountVO">
+	<!-- 수입 내역 -->
+	<select id="incomeList" parameterType="accountVO" resultType="accountVO">
 		select * from account where userid = #{userid} and left(date, 7) = #{date} and moneytype = "수입" order by date desc;
 	</select>
 	
-	<!-- 월별 지출 내역 -->
-	<select id="monthSpend" parameterType="accountVO" resultType="accountVO">
+	<!-- 지출 내역 -->
+	<select id="spendList" parameterType="accountVO" resultType="accountVO">
 		select * from account where userid = #{userid} and left(date, 7) = #{date} and moneytype = "지출" order by date desc;
 	</select>
 	
-	<!-- 해당 월의 카테고리별 수입/지출 내역 -->
-	<select id="monthCateList" parameterType="accountVO" resultType="accountVO">
+	<!-- 자산명 업데이트 -->
+	<update id="updateAsset" parameterType="assetVO">
+		update account set assetname = #{assetname} where assetid = #{assetid} and userid = #{userid};
+	</update>
+	
+	<!-- 카테고리별 내역 -->
+	<select id="detailsOfCategory" parameterType="accountVO" resultType="accountVO">
 		select * from account where userid = #{userid} and left(date, 7) = #{date} and catename = #{catename} and moneytype = #{moneytype} order by date desc;
 	</select>
 	
 	<!-- 자산별 내역 -->
-	<select id="assetAccount" parameterType="accountVO" resultType="accountVO">
-		select * from account where userid = #{userid} and astname = #{astname} and left(date, 7) = #{date} order by date desc;
+	<select id="detailsOfAsset" parameterType="accountVO" resultType="accountVO">
+		select * from account where userid = #{userid} and left(date, 7) = #{date} and assetname = #{assetname} and moneytype = #{moneytype} order by date desc;
 	</select>
 	
 	<!-- 달력에 표시할 날짜별 합계 -->
@@ -57,35 +70,24 @@
 		select * from account where date = #{date} and userid = #{userid};
 	</select>
 	
-	<!-- accountid 값으로 검색 -->
-	<select id="accountidInfo" parameterType="accountVO" resultType="accountVO">
-		select * from account where accountid = #{accountid} and userid = #{userid};
-	</select>
-	
-	<!-- 월별 수입/지출 합계 -->
-	<select id="monthTotal" parameterType="accountVO" resultType="accountVO">
+	<!-- 해당 연도의 월별 수입/지출 합계 -->
+	<select id="detailsOfYear" parameterType="accountVO" resultType="accountVO">
 		select left(date, 7) as date, sum(total) as total from account where userid = #{userid} and moneytype = #{moneytype} and left(date, 4) = #{date} group by left(date, 7) order by date;
 	</select>
 	
-	<!-- 수입/지출 검색 -->
+	<!-- 수입/지출 검색 
 	<select id="searchAccount" parameterType="accountVO" resultType="accountVO">
 		select * from account where content like concat('%', #{content}, '%') and userid = #{userid} order by date desc;
 	</select>
 	
-	<!-- 수입/지출 검색 자동완성 -->
+	수입/지출 검색 자동완성
 	<select id="autoSearch" parameterType="accountVO" resultType="String">
 		select distinct content from account where content like concat('%', #{content}, '%') and userid = #{userid};
 	</select>
 	
-	<!-- 반복에 추가 가능한 내역 중복 없이 가져오기 -->
+	반복에 추가 가능한 내역 중복 없이 가져오기
 	<select id="canRepeatInfo" parameterType="String" resultType="accountVO">
-		select distinct moneytype, astname, catename, content, total from account where userid = #{userid};
-	</select>
-	
-	<!-- 월별 카테고리별 수입/지출 내역 -->
-	<!--<select id="cateAccount" parameterType="accountVO" resultType="accountVO">
-		select accountid, moneytype, left(date, 7) as date, astname, catename, content, sum(total) as total, memo from account
-		where userid = #{userid} and moneytype = #{moneytype} and catename = #{catename} group by left(date, 7) order by date;
+		select distinct moneytype, assetname, catename, content, total from account where userid = #{userid};
 	</select>
 	-->
 </mapper>

@@ -1,0 +1,141 @@
+@charset "UTF-8";
+.add-div {
+	position: absolute;
+	padding: 20px;
+}
+#add-account-div .btn {
+	width: 500px;
+}
+#update-account-btn {
+	width: 300px;
+}
+#delete-account-btn {
+	width: 200px;
+}
+.x-btn {
+	position: absolute;
+	right: 15px;
+	top: 15px;
+}
+#add-account-div {
+	right: 200px;
+}
+#add-category-div {
+	top : 150px;
+	right: 150px;
+}
+#update-account-div {
+	right: 200px;
+}
+.category-div {
+	height: 800px;
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	padding: 10px;
+	margin: 10px;
+}
+.category-div div {
+	height: 740px;
+}
+.category-div button {
+	border: none;
+	background: white;
+	width: 35px;
+	height: 30px;
+	background: transparent;
+}
+.category-div button:hover {
+	cursor: pointer;
+	border-radius: 10px;
+	color: white;
+}
+#in-category-list-div .check-btn, #out-category-list-div .check-btn {
+	width: 10%;
+}
+.category-div .check-btn {
+	font-size: 23px;
+	color: #2C952C;
+}
+.category-div .check-btn:hover {
+	background: #2C952C;
+}
+.category-div .cross-btn {
+	width: 10%;
+	font-size: 20px;
+	color:#E34234;
+}
+.category-div .cross-btn:hover {
+	background: #E34234;
+	color: white;
+}
+#in-category-list-div .select-table input, #out-category-list-div .select-table input {
+	width: 78%;
+}
+.select-table input{
+	width: 90%;
+	font-size: 18px;
+	border: none;
+}
+.select-table input:focus{
+	outline: none;
+}
+.select-table input::placeholder{
+	color: #a2a2a2;
+}
+.input-func {
+	background: transparent;
+}
+
+#details-category-div {
+	right: 150px;
+	height: 700px;
+}
+
+#category-btn { /* 카테고리 관리 페이지 버튼 */
+	position: absolute;
+	right: 30px;
+	top: 10px;
+}
+#open-add-account { /* 수입/지출 추가 div 버튼 */
+	border-radius: 60px;
+	width: 65px;
+	height: 60px;
+	font-size: 28px;
+	box-shadow: 2px 2px 5px lightgray;
+	position: absolute;
+	top: 280px;
+	left: 500px;
+}
+.select-repeat {
+	position: absolute;
+	right: 70px;
+	top: 95px;
+}
+.select-repeat input[type="radio"]{
+	display: none;
+}
+.select-repeat input[type="radio"]:checked+label{
+	color: #2C952C;
+}
+.select-repeat input[type="radio"]+label {
+    cursor: pointer;
+    text-align: center;
+    font-size: 23px;
+}
+.select-repeat input[type="radio"]+label:hover{
+	color: #2C952C;
+}
+#repeat-btn {
+	position: absolute;
+	right: 200px;
+	top: 10px;
+}
+#repeat-list-div {
+	width: 700px;
+}
+#repeat-list-div table{
+	width: 700px;
+}
+#repeat-list-div table td{
+	width: 20%;
+}
