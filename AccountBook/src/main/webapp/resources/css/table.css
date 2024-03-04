@@ -17,6 +17,11 @@
 	border: 1px solid lightgray;
 	border-radius: 10px;
 }
+.td-hover td:hover {
+	background: #F3F3F3;
+	border-color: lightgray;
+	cursor: pointer;
+}
 .tr-hover tr:hover {
 	background: #F3F3F3;
 	border-color: lightgray;

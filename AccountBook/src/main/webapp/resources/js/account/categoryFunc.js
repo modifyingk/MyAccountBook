@@ -1,57 +1,173 @@
 $(function() {
-	
-	// 카테고리 중복 확인
-	$.overlapCategory = function(moneytype, catename, userid) {
-		var result;
-		$.ajax({ // 카테고리가 중복되는지 확인
-			type : "post",
-			url : "overlapCategory",
-			async : false,
-			data : {
-				moneytype : moneytype,
-				catename : catename,
-				userid : userid
-			},
-			success : function(res) {
-				result = res;
-			}
-		})
-		return result;
-	}
-	
-	// 카테고리 목록 가져오기
-	$.categoryList = function(typeVal) {
+	// 수입 소분류 목록
+	$.incategoryList = function() {
 		var result;
 		$.ajax({
-			type : "post",
-			url : "../account/categoryList",
-			async : false,
+			type: "post",
+			url: "../account/incategoryList",
+			async: false,
 			data : {
-				moneytype : typeVal,
-				userid : userid
+				userid: userid
 			},
-			success : function(res) {
+			success: function(res) {
 				result = res;
 			}
 		})
 		return result;
 	}
 	
-	// 카테고리 목록 보여주기
-	$.showCategory = function(typeVal, listDiv) {
-		var list = $.categoryList(typeVal);
-		var html = "<table class='select-table td-border tr-hover'>";
-		
+	// 수입 소분류 목록 html
+	$.showIncategory = function() {
+		var list = $.incategoryList();
 		for(let i = 0; i < list.length; i++) {
-			html += "<tr><td class='hide'>" + list[i].categoryid + "</td>";
-			html += "<td class='hide'>" + list[i].moneytype + "</td>";
-			html += "<td><input class='input-func' value='" + list[i].catename + "' readonly>" +
-					"<button class='check-btn hide' id='update-btn'><i class='fi fi-rr-check'></i></button>" +
-					"<button class='cross-btn hide' id='delete-btn'><i class='fi fi-rr-cross'></i></button></td></tr>";
+			$.checkIncate(list[i].categoryid, list[i].bigcate, list[i].smallcate);
 		}
-		html += "</table>";
-		$(listDiv).html(html);
 	}
+	
+	// 지출 소분류 목록
+	$.outcategoryList = function() {
+		var result;
+		$.ajax({
+			type: "post",
+			url: "../account/outcategoryList",
+			async: false,
+			data : {
+				userid: userid
+			},
+			success: function(res) {
+				result = res;
+			}
+		})
+		return result;
+	}
+	
+	// 지출 소분류 목록 html
+	$.showOutcategory = function() {
+		let list = $.outcategoryList();
+		for(let i = 0; i < list.length; i++) {
+			$.checkOutcate(list[i].categoryid, list[i].bigcate, list[i].smallcate);
+		}
+	}
+	
+	// 카테고리 중복 확인
+	$.overlapCategory = function(cateVal, mtype) {
+		var result;
+		$.ajax({ // 카테고리가 중복되는지 확인
+			type: "post",
+			url: "overlapCategory",
+			async: false,
+			data: {
+				smallcate: cateVal,
+				userid: userid,
+				mtype: mtype
+			},
+			success: function(res) {
+				result = res;
+			}
+		})
+		return result;
+	}
+	
+	// 수입 소분류 판단
+	$.checkIncate = function(categoryid, bigVal, smallVal) {
+		let list_html = "<tr><td class='hide'>" + categoryid + "</td>" +
+		"<td><div class='is-border'><input class='input inner update' value='" + smallVal + "'>" +
+		"<button class='update-btn check-btn hide' id='update-btn'><i class='fi fi-rr-check'></i></button>" +
+		"<button class='update-btn cross-btn hide' id='delete-btn'><i class='fi fi-rr-cross'></i></button></div></td></tr>";
+		
+		if(bigVal == "월급") {
+			$("#income-t1").append(list_html);
+		} else if(bigVal == "상여금") {
+			$("#income-t2").append(list_html);
+		} else if(bigVal == "부수입") {
+			$("#income-t3").append(list_html);
+		} else if(bigVal == "이자") {
+			$("#income-t4").append(list_html);
+		} else if(bigVal == "용돈") {
+			$("#income-t5").append(list_html);
+		} else {
+			$("#income-t6").append(list_html);
+		}
+	}
+	
+	// 지출 소분류 판단
+	$.checkOutcate = function(categoryid, bigVal, smallVal) {
+		let list_html = "<tr><td class='hide'>" + categoryid + "</td>" +
+		"<td><div class='is-border'><input class='input inner update' value='" + smallVal + "'>" +
+		"<button class='update-btn check-btn hide' id='update-btn'><i class='fi fi-rr-check'></i></button>" +
+		"<button class='update-btn cross-btn hide' id='delete-btn'><i class='fi fi-rr-cross'></i></button></div></td></tr>";
+		
+		if(bigVal == "식비") {
+			$("#spend-t1").append(list_html);
+		} else if(bigVal == "문화/여가") {
+			$("#spend-t2").append(list_html);
+		} else if(bigVal == "패션/뷰티") {
+			$("#spend-t3").append(list_html);
+		} else if(bigVal == "교육") {
+			$("#spend-t4").append(list_html);
+		} else if(bigVal == "마트/편의점") {
+			$("#spend-t5").append(list_html);
+		} else if(bigVal == "주거/통신") {
+			$("#spend-t6").append(list_html);
+		} else if(bigVal == "의료/건강") {
+			$("#spend-t7").append(list_html);
+		} else if(bigVal == "구독") {
+			$("#spend-t8").append(list_html);
+		} else if(bigVal == "생활용품") {
+			$("#spend-t9").append(list_html);
+		} else if(bigVal == "교통/차량") {
+			$("#spend-t10").append(list_html);
+		} else if(bigVal == "선물/경조사") {
+			$("#spend-t11").append(list_html);
+		} else {
+			$("#spend-t12").append(list_html);
+		}
+	}
+	
+	// 카테고리 추가
+	$.insertCategory = function(bigVal, smallVal, mtype) {
+		$.ajax({
+			type: "post",
+			url: "insertCategory",
+			data: {
+				bigcate: bigVal,
+				smallcate: smallVal,
+				userid: userid,
+				mtype: mtype
+			},
+			success: function(res) {
+				if(res > 0) {
+					if(mtype == "수입")
+						$.checkIncate(res, bigVal, smallVal);
+					else {
+						$.checkOutcate(res, bigVal, smallVal);
+					}
+				} else {
+					alert("다시 시도해주세요.");
+				}
+			}
+		})
+	}
+	
+	// 카테고리 수정
+	$.updateCategory = function(idVal, cateVal, mtype) {
+		$.ajax({
+			type: "post",
+			url: "updateCategory",
+			data: {
+				categoryid: idVal,
+				smallcate: cateVal,
+				userid: userid,
+				mtype: mtype
+			},
+			success: function(res) {
+				if(res != true) { // 카테고리 수정 실패
+					alert("다시 시도해주세요");
+				}
+			}
+		})
+	}
+	/*
 	
 	// 카테고리 선택 목록 보여주기
 	$.showSelectCategory = function(typeVal, listDiv) {
@@ -66,37 +182,7 @@ $(function() {
 		$(listDiv).html(html);
 		return html;
 	}
-	
-	// 카테고리 추가
-	$.addCategory = function(typeVal, inputID) {
-		if(!$.checkMustReg($(inputID).val())) { // 카테고리명 빈 값인지 확인
-			alert("카테고리명을 확인해주세요.")
-		} else {
-			var chkName = $.overlapCategory(typeVal, $(inputID).val(), userid); // 카테고리 중복 확인
-			if(chkName) {
-				$.ajax({
-					type : "post",
-					url : "insertCategory",
-					data : {
-						moneytype : typeVal,
-						catename : $(inputID).val(),
-						userid : userid
-					},
-					success : function(res) {
-						if(res == true) { // 카테고리 추가 성공
-							window.location.reload();
-						} else { // 카테고리 추가 실패
-							alert("다시 시도해주세요");
-						}
-					}
-				})
-			} else { // 카테고리가 중복되는 경우
-				$(inputID).focus();
-				$(inputID).val("");
-				alert("중복되는 카테고리입니다.");
-			}
-		}
-	}
+	*/
 	
 	/*
 	// 카테고리 선택 모달 열기

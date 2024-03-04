@@ -9,7 +9,7 @@
 	
 	<!-- 목표 가져오기 -->
 	<select id="aimInfo" parameterType="aimVO" resultType="aimjoinVO">
-		select aimid, moneytype, catename, total as aim_money,
+		select aimid, moneytype, catename, total as aim_money, userid,
 		ifnull((select sum(total) from account where account.userid = aim.userid and account.catename = aim.catename and account.moneytype = aim.moneytype and left(account.date, 7) = aim.aimdate), 0) as total
 		from aim where aimdate = #{aimdate} and userid = #{userid} and moneytype = #{moneytype};
 	</select>
@@ -44,7 +44,9 @@
 	<!-- 유저별 카테고리별 목표, 총 금액 -->
 	<select id="aimAll" parameterType="aimVO" resultType="aimjoinVO">
 		select aimid, moneytype, catename, total as aim_money, userid,
-		ifnull((select sum(total) from account where account.userid = aim.userid and account.catename = aim.catename and account.moneytype = aim.moneytype and left(account.date, 7) = aim.aimdate), 0) as total
+		ifnull((select sum(total) from account where account.userid = aim.userid and account.catename = aim.catename 
+		and account.moneytype = aim.moneytype and left(account.date, 7) = aim.aimdate), 0) as total
 		from aim where aimdate = #{aimdate} and moneytype = #{moneytype};
 	</select>
+	
 </mapper>

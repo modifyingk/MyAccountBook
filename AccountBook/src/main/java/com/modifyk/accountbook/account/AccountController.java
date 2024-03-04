@@ -35,10 +35,14 @@ public class AccountController {
 	// 수입/지출 추가
 	@ResponseBody
 	@RequestMapping("account/insertAccount")
-	public boolean insertAccount(AccountVO accountVO, String repeatcycle) {
+	public boolean insertAccount(AccountVO accountVO) {
+		System.out.println(accountVO);
+		if(accountVO.getMoneytype().equals("지출")) // 지출인 경우 마이너스 붙이기
+			accountVO.setTotal(accountVO.getTotal() * -1);
+		System.out.println(accountVO);
 		int insertRes = aDao.insertAccount(accountVO);
-		int accountid = accountVO.getAccountid();
-		
+		/*int accountid = accountVO.getAccountid();*/
+		/*
 		if(!repeatcycle.equals("없음")) {
 			// 반복 값 세팅
 			RepeatVO repeatVO = new RepeatVO();
@@ -56,9 +60,8 @@ public class AccountController {
 			map.put("userid", accountVO.getUserid());
 			aDao.updateRepeatid(map);
 		}
-
+*/
 		if(insertRes > 0) {
-			assetSvc.updateAsset(accountVO);
 			return true;
 		} else {
 			return false;

@@ -2,8 +2,8 @@ package com.modifyk.accountbook.account;
 
 public class CategoryVO {
 	private int categoryid;
-	private String moneytype;
-	private String catename;
+	private String bigcate;
+	private String smallcate;
 	private String userid;
 	
 	public int getCategoryid() {
@@ -12,17 +12,17 @@ public class CategoryVO {
 	public void setCategoryid(int categoryid) {
 		this.categoryid = categoryid;
 	}
-	public String getMoneytype() {
-		return moneytype;
+	public String getBigcate() {
+		return bigcate;
 	}
-	public void setMoneytype(String moneytype) {
-		this.moneytype = moneytype;
+	public void setBigcate(String bigcate) {
+		this.bigcate = bigcate;
 	}
-	public String getCatename() {
-		return catename;
+	public String getSmallcate() {
+		return smallcate;
 	}
-	public void setCatename(String catename) {
-		this.catename = catename;
+	public void setSmallcate(String smallcate) {
+		this.smallcate = smallcate;
 	}
 	public String getUserid() {
 		return userid;
@@ -33,7 +33,8 @@ public class CategoryVO {
 	
 	@Override
 	public String toString() {
-		return String.format("CategoryVO [categoryid=%s, moneytype=%s, catename=%s, userid=%s]", categoryid, moneytype,
-				catename, userid);
+		return String.format("CategoryVO [categoryid=%s, bigcate=%s, smallcate=%s, userid=%s]", categoryid, bigcate,
+				smallcate, userid);
 	}
+	
 }

@@ -12,8 +12,8 @@ public class MemberDAO {
 	SqlSessionTemplate my;
 	
 	// 아이디 중복 확인
-	public String isOverlapId(String userid) {
-		return my.selectOne("memberMapper.isOverlapId", userid);
+	public String overlapId(String userid) {
+		return my.selectOne("memberMapper.overlapId", userid);
 	}
 	
 	// 회원가입
@@ -31,12 +31,6 @@ public class MemberDAO {
 		return my.selectList("memberMapper.findId", memberVO);
 	}
 	
-	// 아이디 보여주기
-	public List<MemberVO> showId(MemberVO memberVO) {
-		List<MemberVO> idList = my.selectList("memberMapper.showId", memberVO);
-		return idList;
-	}
-
 	// 비밀번호 찾기
 	public String findPw(MemberVO memberVO) {
 		return my.selectOne("memberMapper.findPw", memberVO);

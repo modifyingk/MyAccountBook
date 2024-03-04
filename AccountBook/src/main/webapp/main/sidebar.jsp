@@ -1,26 +1,109 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script>	
-/* 메뉴 클릭 시 이벤트 -> 해당 메뉴에 대한 content 출력 */
-$(function() {
-	$("li").click(function() { // li 클릭하면
-		var idx = $(this).index(); // tab-ul li 중 클릭한 것이 몇 번째인지 확인
-		if(idx == 0) {
-			location.href = "/accountbook/member/mypage.jsp";
-		} else if(idx == 1) {
-			location.href = "/accountbook/account/account.jsp"; // 수입지출관리 페이지로
-		} else if(idx == 2) {
-			location.href = "/accountbook/asset/asset.jsp"; // 자산관리 페이지로
-		} else if(idx == 3) {
-			location.href = "/accountbook/calendar/calendar.jsp"; // 캘린더 페이지로
-		} else if(idx == 4){
-			location.href = "/accountbook/aim/aim.jsp"; // 목표 관리 페이지로
-		} else {
-			var op = confirm("로그아웃 하시겠습니까?")
-			if(op) {
-				location.href = "/accountbook/member/logout";
-			}
-		}
-	});
-});
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+	#nav {
+		box-sizing:border-box;
+		width: 20%;
+		height:990px;
+		float: left;
+		border-radius: 10px;
+		background: #f3f3f3;
+		padding: 20px;
+	}
+	.menu-title {
+		font-size: 20px;
+		padding: 10px 20px;
+		cursor: default;
+	}
+	.menu-group {
+		list-style: none;
+	}
+	.menu-group li {
+		width: 200px;
+		padding: 10px;
+		font-size: 20px;
+		margin: 20px;
+	}
+	.menu-group li:hover {
+		cursor: pointer;
+		color: #f38c12;
+		font-weight: bold;
+	}
+	#myinfo {
+		text-align: center;
+		cursor: pointer;
+		padding: 10px;
+	}
+</style>
+<script type="text/javascript">
+	$(function () {
+		$("#myinfo").click(function () {
+			location.href = "../member/myInfo.jsp";
+		})
+	})
 </script>
+</head>
+<body>
+	<div id="nav">
+		<div id="myinfo">
+			<i class="fi fi-rr-circle-user" style="font-size: 120px; color: #f39c12;"></i>
+			<p style="font-size: 23px; font-weight: bold; margin-top: 0;"><%= session.getAttribute("userid") %></p>
+		</div>
+		<hr>
+		<div>
+			<div class="menu-title">가계부</div>
+			<ul class="menu-group" id="group1">
+				<li><i class="fi fi-rr-rectangle-list"></i> 수입/지출 내역</li>
+				<li><i class="fi fi-rr-calendar-check"></i> 캘린더</li>
+				<li><i class="fi fi-rs-chart-pie-alt"></i> 분석</li>
+			</ul>
+		</div>
+		<hr>
+		<div>
+			<div class="menu-title">자산</div>
+			<ul class="menu-group" id="group2">
+				<li><i class="fi fi-rr-hands-usd"></i> 자산 관리</li>
+			</ul>
+		</div>
+		<hr>
+		<div>
+			<div class="menu-title">목표</div>
+			<ul class="menu-group" id="group3">
+				<li><i class="fi fi-rs-checkbox"></i> 목표 관리</li>
+				<li><i class="fi fi-rr-trophy"></i> 목표 달성</li>
+			</ul>
+		</div>
+	</div>
+</body>
+<script>
+	$(function() {
+		$(".menu-group li").click(function() { // li 클릭하면
+			let group = $(this).parent().attr("id");
+			let menu_idx = $(this).index();
+			if(group == "group1") {
+				if(menu_idx == 0) {
+					location.href = "../account/account.jsp";
+				} else if(menu_idx == 1) {
+					location.href = "../calendar/calendar.jsp";
+				} else if(menu_idx == 2) {
+					location.href = "../account/category_stats.jsp";
+					
+				}
+			} else if(group == "group2") {
+				if(menu_idx == 0) {
+					location.href = "../asset/asset.jsp";
+				}
+			} else if(group == "group3") {
+				if(menu_idx == 0) {
+					location.href = "../aim/aim.jsp";
+				} else if(menu_idx == 1) {
+					
+				}
+			}
+		});
+	});
+</script>
+</html>

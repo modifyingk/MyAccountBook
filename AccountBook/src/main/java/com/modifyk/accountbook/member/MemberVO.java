@@ -51,4 +51,10 @@ public class MemberVO {
 	public void setJoindate(String joindate) {
 		this.joindate = joindate;
 	}
+	@Override
+	public String toString() {
+		return String.format("MemberVO [userid=%s, pw=%s, username=%s, gender=%s, birth=%s, email=%s, joindate=%s]",
+				userid, pw, username, gender, birth, email, joindate);
+	}
+	
 }

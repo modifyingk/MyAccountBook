@@ -5,13 +5,11 @@ public class AccountVO {
 	private String moneytype;
 	private String date;
 	private String assetname;
-	private String catename;
+	private String bigcate;
+	private String smallcate;
 	private String content;
 	private int total;
-	private String memo;
 	private String userid;
-	private int assetid;
-	private int repeatid;
 	
 	public int getAccountid() {
 		return accountid;
@@ -37,11 +35,17 @@ public class AccountVO {
 	public void setAssetname(String assetname) {
 		this.assetname = assetname;
 	}
-	public String getCatename() {
-		return catename;
+	public String getBigcate() {
+		return bigcate;
 	}
-	public void setCatename(String catename) {
-		this.catename = catename;
+	public void setBigcate(String bigcate) {
+		this.bigcate = bigcate;
+	}
+	public String getSmallcate() {
+		return smallcate;
+	}
+	public void setSmallcate(String smallcate) {
+		this.smallcate = smallcate;
 	}
 	public String getContent() {
 		return content;
@@ -55,35 +59,18 @@ public class AccountVO {
 	public void setTotal(int total) {
 		this.total = total;
 	}
-	public String getMemo() {
-		return memo;
-	}
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
 	public String getUserid() {
 		return userid;
 	}
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
-	public int getAssetid() {
-		return assetid;
-	}
-	public void setAssetid(int assetid) {
-		this.assetid = assetid;
-	}
-	public int getRepeatid() {
-		return repeatid;
-	}
-	public void setRepeatid(int repeatid) {
-		this.repeatid = repeatid;
-	}
 	
 	@Override
 	public String toString() {
 		return String.format(
-				"AccountVO [accountid=%s, moneytype=%s, date=%s, assetname=%s, catename=%s, content=%s, total=%s, memo=%s, userid=%s, assetid=%s, repeatid=%s]",
-				accountid, moneytype, date, assetname, catename, content, total, memo, userid, assetid, repeatid);
+				"AccountVO [accountid=%s, moneytype=%s, date=%s, assetname=%s, bigcate=%s, smallcate=%s, content=%s, total=%s,userid=%s]",
+				accountid, moneytype, date, assetname, bigcate, smallcate, content, total, userid);
 	}
+	
 }

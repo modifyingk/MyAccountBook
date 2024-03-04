@@ -11,11 +11,6 @@ public class AssetDAO {
 	@Autowired
 	SqlSessionTemplate my;
 	
-	// 자산 목록
-	public List<AssetVO> assetList(AssetVO assetVO) {
-		return my.selectList("assetMapper.assetList", assetVO);
-	}
-	
 	// 자산 중복 확인
 	public String overlapAsset(AssetVO assetVO) {
 		return my.selectOne("assetMapper.overlapAsset", assetVO);
@@ -41,11 +36,21 @@ public class AssetDAO {
 		return my.delete("assetMapper.deleteAsset", assetVO);
 	}
 	
+	// 자산 목록
+	public List<AssetVO> assetList(String userid) {
+		return my.selectList("assetMapper.assetList", userid);
+	}
+	
+	// 자산 목록
+	public List<String> assetnameList(String userid) {
+		return my.selectList("assetMapper.assetnameList", userid);
+	}
+	/*
 	// 자산 활성화/비활성화
 	public int activeAsset(AssetVO assetVO) {
 		return my.update("assetMapper.activeAsset", assetVO);
 	}
-	
+	*/
 	// 자산 금액 업데이트
 	public int updateTotal(AssetVO assetVO) {
 		return my.update("assetMapper.updateTotal", assetVO);

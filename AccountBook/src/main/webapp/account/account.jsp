@@ -8,30 +8,85 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
-<link rel="stylesheet" type="text/css" href="../resources/css/main.css">
-<link rel="stylesheet" type="text/css" href="../resources/css/table.css">
-<link rel="stylesheet" type="text/css" href="../resources/css/account.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/main-style.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript" src="../resources/js/account/account.js"></script>
 <script>
 	var userid = "<%= session.getAttribute("userid") %>";
 </script>
+<style type="text/css">
+	#select-month {
+		z-index: 2;
+		position: absolute;
+		background: white;
+		display: none;
+	}
+	#date-div:hover {
+		cursor: pointer;
+		color: #f39c12;
+	}
+	#month {
+		font-size: 32px;
+		font-weight: bold;
+	}
+	#year {
+		font-size: 25px;
+		font-weight: bold;
+	}
+	.td-input {
+		border: 1px solid lightgray;
+		border-radius: 5px;
+	}
+	.td-input input {
+		width: 200px;
+		font-size: 18px;
+		padding: 10px;
+		border: none;
+	}
+	.td-input input:focus {
+		outline: none;
+	}
+	#add-account-btn {
+		width: 70px;
+		height: 55px;
+		font-size: 30px;
+	}
+	.switch {
+		width:100px;
+		height: 55px;
+		border-radius: 5px;
+		text-align: center;
+		line-height: 50px;
+		font-weight: bold;
+		cursor: pointer;
+		border: none;
+		color: white;
+	}
+	.switch input[type=checkbox] {
+		display: none;
+	}
+	.switch label {
+		cursor: pointer;
+	}
+	.switch.income {
+		background:  #6482B9;
+		/*border: 1px solid #0C70F2;
+		color: #0C70F2;*/
+	}
+	.switch.spend {
+		background:  #F56E6E;
+		/*border: 1px solid #E34234;
+		color: #E34234;*/
+	}
+	.select-table td {
+		width: 30%;
+	}
+</style>
 </head>
 <body>
 	<div>
-		<!-- 사이드바 -->
-		<div class="col-2 height-1050 is-border is-shadow">
-			<jsp:include page="../main/sidebar.jsp"></jsp:include>
-			<img src="../resources/img/logo.png" style="width: 90%;" onclick="location.href='../main/main.jsp'">
-			<ul class="menu-group">
-				<li class="menu"><i class="fi fi-rr-home"></i> 메인페이지</li>
-				<li class="menu active"><i class="fi fi-rr-money-check-edit"></i> 수입/지출 관리</li>		
-				<li class="menu"><i class="fi fi-rr-coins"></i> 자산관리</li>		
-				<li class="menu"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
-				<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표 관리</li>
-				<li class="menu"><i class="fi fi-rr-sign-out-alt"></i> 로그아웃</li>
-			</ul>
-		</div>
+		<jsp:include page="../main/header.jsp"></jsp:include>
+		<jsp:include page="../main/sidebar.jsp"></jsp:include>
 
 		<!-- 컨텐츠 -->
 		<div class="col-8">
@@ -39,7 +94,135 @@
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
 			<div>
-				<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 수입/지출 관리</h3>
+				<h2 class="fs35 main-color"><i class="fi fi-rr-money-check-edit"></i> 수입/지출 내역</h2>
+				<div>
+					<table style="display: flex; justify-content: center;">
+						<tr>
+							<td>
+								<i class="fi fi-rr-angle-left fs28 click-icon" id="before"></i>
+							</td>
+							<td style="width: 500px; text-align: center;">
+								<!-- 날짜 -->
+								<div id="date-div">
+									<div id="month"></div>
+									<div id="year"></div>
+								</div>
+								
+								<!-- 날짜 선택 div -->
+								<div class="is-border" id="select-month">
+									<table class="date-table">
+										<tr>
+											<td id="before-year"><i class="fi fi-rr-angle-left"></i></td>
+											<td colspan="2" style="text-align: center;">
+												<div class="h-bold fs-18" id="current-year"></div>
+											</td>
+											<td id="after-year"><i class="fi fi-rr-angle-right"></i></td>
+										</tr>
+										<tr>
+											<td class="month-td">01월</td>
+											<td class="month-td">02월</td>
+											<td class="month-td">03월</td>
+											<td class="month-td">04월</td>
+										</tr>
+										<tr>
+											<td class="month-td">05월</td>
+											<td class="month-td">06월</td>
+											<td class="month-td">07월</td>
+											<td class="month-td">08월</td>
+										</tr>
+										<tr>
+											<td class="month-td">09월</td>
+											<td class="month-td">10월</td>
+											<td class="month-td">11월</td>
+											<td class="month-td">12월</td>
+										</tr>
+									</table>
+								</div>
+							</td>
+							<td>
+								<i class="fi fi-rr-angle-right fs28 click-icon" id="after"></i>
+							</td>
+						</tr>
+					</table>
+				</div> 
+				
+				<!-- 수입/지출 추가 -->
+				<table style="margin-left: auto; margin-right: auto; text-align: left;">
+					<tr>
+						<td>
+							<div class="switch spend">
+								<input type="checkbox" name="add-moneytype" id="add-moneytype"><label for="add-moneytype">지출</label>
+							</div>
+						</td>
+						<td class="td-input"><input type="date" id="add-date" placeholder="일자"></td>
+						<td class="td-input">
+							<input type="text" id="add-asset" placeholder="자산">
+							<div class="input is-scroll select-asset-div" style="position:absolute; display: none; background: white; width:200px; height:300px;">
+								<div class="select-asset-list"></div>
+							</div>
+						</td>
+						<td class="td-input">
+							<input type="text" id="add-bigcate" placeholder="분류">
+							<div class="input is-scroll select-incate-div" style="position:absolute; display: none; background: white; width:500px; height:120px; text-align: center;">
+								<div class="select-incate-list">
+									<table class="select-table td-border td-hover">
+										<tr>
+											<td>월급</td>
+											<td>부수입</td>
+											<td>용돈</td>
+										</tr>
+										<tr>
+											<td>성과금</td>
+											<td>이자</td>
+											<td>기타</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<div class="input is-scroll select-outcate-div" style="position:absolute; display: none; background: white; width:500px; height:220px; text-align: center;">
+								<div class="select-outcate-list">
+									<table class="select-table td-border td-hover">
+										<tr>
+											<td>식비</td>
+											<td>마트/편의점</td>
+											<td>생활용품</td>
+										</tr>
+										<tr>
+											<td>문화/여가</td>
+											<td>주거/통신</td>
+											<td>교통/차량</td>
+										</tr>
+										<tr>
+											<td>패션/뷰티</td>
+											<td>의료/건강</td>
+											<td>선물/경조사</td>
+										</tr>
+										<tr>
+											<td>교육</td>
+											<td>구독</td>
+											<td>기타</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</td>
+						<td class="td-input">
+							<input type="text" id="add-smallcate" placeholder="소분류">
+							<div class="input is-scroll select-smallcate-div" style="position:absolute; display: none; background: white; width:300px; height:220px; text-align: center;">
+								<div class="select-smallcate-list"></div>
+							</div>
+						</td>
+						<td class="td-input"><input type="text" id="add-content" placeholder="내용"></td>
+						<td class="td-input"><input type="text" id="add-total" placeholder="금액"></td>
+						<td><button class="btn main-color-btn" id="add-account-btn">+</button></td>
+					</tr>
+				</table>
+			</div>
+			
+			<div>
+				<div class="is-scroll" id="month-account-list-div" style="margin-left: 10%;"></div>
+			</div>
+				<!--
 				<button class="btn outline-green" id="open-add-account">+</button>
 				<a href="category.jsp"><button class="btn outline-green" id="category-btn">카테고리 관리</button></a>
 				<button class="btn outline-green" id="repeat-btn">반복 관리</button>
@@ -64,7 +247,7 @@
 					</div>
 -->
 				<!-- 날짜 보여주기 -->
-				<div style="margin-bottom: 3%; width: 50%;">
+		<!--		<div style="margin-bottom: 3%; width: 50%;">
 					<table class="is-center" style="width: 100%;">
 						<tr>
 							<td>
@@ -74,7 +257,7 @@
 								<div id="month-div" style="margin: 10px; cursor: pointer;"></div>
 								
 								<!-- 날짜 선택 div -->
-								<div class="is-border" id="select-month" style="z-index: 2; position: absolute; background: white; display: none;">
+		<!--						<div class="is-border" id="select-month" style="z-index: 2; position: absolute; background: white; display: none;">
 									<table class="date-table">
 										<tr>
 											<td id="before-year"><i class="fi fi-rr-angle-left"></i></td>
@@ -113,9 +296,9 @@
 				
 				<div>
 					<!-- 월별 수입/지출 내역 -->
-					<div class="col-5">
+	<!--				<div class="col-5">
 						<!-- 전체, 수입, 지출 선택 -->
-						<div style="margin-left: 10%;">
+	<!--					<div style="margin-left: 10%;">
 							<table class="button-table">
 								<tr>
 									<td class="active" id="total-account-btn">전체</td>
@@ -126,7 +309,7 @@
 						</div>
 						<br>
 						<!-- 총 금액 -->
-						<div style="margin-left: 10%;">
+		<!--				<div style="margin-left: 10%;">
 							<table style="width: 500px; margin-left: 6%; text-align: center;">
 								<tr>
 									<td style="width: 30%;">
@@ -143,7 +326,7 @@
 						</div>
 						<br>
 						<!-- 내역 -->
-						<div class="is-scroll" id="month-account-list-div" style="margin-left: 10%;"></div>
+		<!--				<div class="is-scroll" id="month-account-list-div" style="margin-left: 10%;"></div>
 					</div>
 					
 					<div class="col-5">
@@ -154,7 +337,7 @@
 						<button class="btn green" id="asset-stats-btn">자산 통계</button>
 						
 						<!-- 수입/지출 추가 -->					
-						<div id="add-account-div" class="add-div is-border is-shadow hide">
+		<!--				<div id="add-account-div" class="add-div is-border is-shadow hide">
 							<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 수입/지출 추가</h3>
 							<button class="x-btn" id="close-add-account">x</button>
 							<table class='table'>
@@ -170,7 +353,7 @@
 												<table class="select-table tr-hover td-border">
 													<tr><td class="td-repeat-option">없음</td></tr>
 												<!-- <tr><td class="td-repeat-option">매주</td></tr>  -->
-													<tr><td class="td-repeat-option">매월</td></tr>
+		<!--											<tr><td class="td-repeat-option">매월</td></tr>
 													<tr><td class="td-repeat-option">매년</td></tr>
 												</table>
 											</div>
@@ -223,7 +406,7 @@
 						</div>
 						
 						<!-- 수입/지출 수정 -->
-						<div id="update-account-div" class="add-div is-border is-shadow hide">
+		<!--				<div id="update-account-div" class="add-div is-border is-shadow hide">
 							<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 수입/지출 수정</h3>
 							<button class="x-btn" id="close-update-account">x</button>
 							<table class='table'>
@@ -287,7 +470,7 @@
 						</div>
 						
 						<!-- 반복 내역 -->
-						<div id="repeat-list-div" class="add-div is-border is-shadow hide">
+	<!--					<div id="repeat-list-div" class="add-div is-border is-shadow hide">
 							<h3 class="h-normal fs-28"><i class="fi fi-rr-money-check-edit"></i> 반복 내역</h3>
 							<button class="x-btn" id="close-repeat-list">x</button>
 							<div id="repeat-list"></div>
@@ -345,10 +528,10 @@
 				-->
 				
 				
-			</div>
+		<!--	</div>
 			
 			<!-- 즐겨찾기 목록 모달 -->
-			<div class="modal" id="bookmark-modal" hidden="true">
+		<!--	<div class="modal" id="bookmark-modal" hidden="true">
 				<div class="modal-content">
 					<div class="modal-title">
 						<h3 class="h-normal fs-28"><i class="fi fi-rr-star"></i> 즐겨찾기</h3>
@@ -366,7 +549,7 @@
 			</div>
 			
 			<!-- 즐겨찾기 추가 모달 -->
-			<div class="modal" id="add-bookmark-modal" hidden="true">
+		<!--	<div class="modal" id="add-bookmark-modal" hidden="true">
 				<div class="modal-content">
 					<div class="modal-title">
 						<h3 class="h-normal fs-28"><i class="fi fi-rr-star"></i> 즐겨찾기 추가</h3>
@@ -383,7 +566,7 @@
 			</div>
 			
 			<!-- 반복 목록 모달 -->
-			<div class="modal" id="repeat-modal" hidden="true">
+		<!--	<div class="modal" id="repeat-modal" hidden="true">
 				<div class="modal-content wide">
 					<div class="modal-title">
 						<h3 class="h-normal fs-28"><i class="fi fi-rr-arrows-repeat"></i> 반복</h3>
@@ -401,7 +584,7 @@
 			</div>
 			
 			<!-- 반복 추가 모달 -->
-			<div class="modal" id="add-repeat-modal" hidden="true">
+		<!--	<div class="modal" id="add-repeat-modal" hidden="true">
 				<div class="modal-content">
 					<div class="modal-title">
 						<h3 class="h-normal fs-28"><i class="fi fi-rr-arrows-repeat"></i> 반복 추가</h3>
@@ -420,7 +603,7 @@
 								</td>
 								<td>
 									<!-- 매년 -->
-									<div id="every-year-div" hidden="true">
+			<!--						<div id="every-year-div" hidden="true">
 										<select class="input tiny" id="every-year-month">
 											<option>월</option>
 											<option value="01">1</option>
@@ -440,12 +623,12 @@
 									</div>
 								
 									<!-- 매월 -->
-									<div id="every-month-div">
+		<!--							<div id="every-month-div">
 										<input class="input small" placeholder="일" id="every-month-date">
 									</div>
 									
 									<!-- 매주 -->
-									<div id="every-week-div" hidden="true">
+		<!--							<div id="every-week-div" hidden="true">
 										<select class="input small" id="every-week-day">
 											<option>요일</option>
 											<option value="월">월</option>
@@ -505,7 +688,7 @@
 			</div>
 			
 			<!-- 반복 수정 모달 -->
-			<div class="modal" id="up-repeat-modal" hidden="true">
+	<!--		<div class="modal" id="up-repeat-modal" hidden="true">
 				<div class="modal-content">
 					<div class="modal-title">
 						<h3 class="h-normal fs-28"><i class="fi fi-rr-arrows-repeat"></i> 반복 수정</h3>
@@ -524,7 +707,7 @@
 								</td>
 								<td>
 									<!-- 매년 -->
-									<div id="up-every-year-div" hidden="true">
+		<!--							<div id="up-every-year-div" hidden="true">
 										<select class="input tiny" id="up-every-year-month">
 											<option>월</option>
 											<option value="01">1</option>
@@ -544,12 +727,12 @@
 									</div>
 								
 									<!-- 매월 -->
-									<div id="up-every-month-div">
+		<!--							<div id="up-every-month-div">
 										<input class="input small" placeholder="일" id="up-every-month-date">
 									</div>
 									
 									<!-- 매주 -->
-									<div id="up-every-week-div" hidden="true">
+		<!--							<div id="up-every-week-div" hidden="true">
 										<select class="input small" id="up-every-week-day">
 											<option>요일</option>
 											<option value="월">월</option>
@@ -613,7 +796,7 @@
 			</div>
 			
 			<!-- 반복할 내역 찾기 모달 -->
-			<div class="modal" id="add-repeat-list-modal" hidden="true">
+	<!--		<div class="modal" id="add-repeat-list-modal" hidden="true">
 				<div class="modal-content">
 					<div class="modal-title">
 						<h3 class="h-normal fs-28"><i class="fi fi-rr-arrows-repeat"></i> 반복 추가</h3>
@@ -625,7 +808,7 @@
 						<button class="btn right outline-green" id="close-add-repeat-list">닫기</button>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<% }
 			/* 로그인이 되어 있지 않을 때 */
 			else { %>

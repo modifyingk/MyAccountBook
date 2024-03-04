@@ -2,28 +2,69 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="categoryMapper">
-	<!-- 카테고리 추가 -->
-	<insert id="insertCategory" parameterType="categoryVO">
-		insert into category values (#{categoryid}, #{moneytype}, #{catename}, #{userid});
-	</insert>
-	
-	<!-- 카테고리 수정 -->
-	<update id="updateCategory" parameterType="categoryVO">
-		update category set catename = #{catename} where categoryid = #{categoryid} and userid = #{userid};
-	</update>	
+	<!-- 수입 소분류 목록 -->
+	<select id="incategoryList" parameterType="String" resultType="categoryVO">
+		select categoryid, bigcate, smallcate from incategory where userid = #{userid};
+	</select>
 
-	<!-- 카테고리 삭제 -->
-	<delete id="deleteCategory" parameterType="categoryVO">
-		delete from category where categoryid = #{categoryid} and userid = #{userid};
-	</delete>
-
-	<!-- 카테고리 목록 -->
-	<select id="categoryList" parameterType="categoryVO" resultType="categoryVO">
-		select * from category where userid = #{userid} and moneytype = #{moneytype};
+	<!-- 지출 소분류 목록 -->
+	<select id="outcategoryList" parameterType="String" resultType="categoryVO">
+		select categoryid, bigcate, smallcate from outcategory where userid = #{userid};
 	</select>
 	
-	<!-- 카테고리 중복 검사 -->
-	<select id="overlapCategory" parameterType="categoryVO" resultType="String">
-		select catename from category where moneytype = #{moneytype} and catename = #{catename} and userid = #{userid};
+	<!-- 수입 소분류 중복 확인 -->
+	<select id="overlapIncate" parameterType="categoryVO" resultType="String">
+		select smallcate from incategory where smallcate = #{smallcate} and userid = #{userid};
+	</select>
+	
+	<!-- 지출 소분류 중복 확인 -->
+	<select id="overlapOutcate" parameterType="categoryVO" resultType="String">
+		select smallcate from outcategory where smallcate = #{smallcate} and userid = #{userid};
+	</select>
+	
+	<!-- 수입 소분류 추가 -->
+	<insert id="insertIncate" parameterType="categoryVO">
+		insert into incategory values (#{categoryid}, #{bigcate}, #{smallcate}, #{userid});
+		<selectKey keyProperty="categoryid" resultType="int" order="AFTER">
+			select MAX(categoryid) from incategory;
+		</selectKey>
+	</insert>
+	
+	<!-- 지출 소분류 추가 -->
+	<insert id="insertOutcate" parameterType="categoryVO">
+		insert into outcategory values (#{categoryid}, #{bigcate}, #{smallcate}, #{userid});
+		<selectKey keyProperty="categoryid" resultType="int" order="AFTER">
+			select MAX(categoryid) from outcategory;
+		</selectKey>
+	</insert>
+	
+	<!-- 수입 소분류 수정 -->
+	<update id="updateIncate" parameterType="categoryVO">
+		update incategory set smallcate = #{smallcate} where categoryid = #{categoryid} and userid = #{userid};
+	</update>
+	
+	<!-- 지출 소분류 수정 -->
+	<update id="updateOutcate" parameterType="categoryVO">
+		update outcategory set smallcate = #{smallcate} where categoryid = #{categoryid} and userid = #{userid};
+	</update>
+	
+	<!-- 수입 소분류 삭제 -->
+	<delete id="deleteIncate" parameterType="categoryVO">
+		delete from incategory where categoryid = #{categoryid} and userid = #{userid};
+	</delete>
+	
+	<!-- 지출 소분류 삭제 -->
+	<delete id="deleteOutcate" parameterType="categoryVO">
+		delete from outcategory where categoryid = #{categoryid} and userid = #{userid};
+	</delete>
+	
+	<!-- 특정 수입 대분류의 소분류 목록  -->
+	<select id="inSmallcateList" parameterType="categoryVO" resultType="String">
+		select smallcate from incategory where bigcate = #{bigcate} and userid = #{userid};
+	</select>
+	
+	<!-- 특정 지출 대분류의 소분류 목록  -->
+	<select id="outSmallcateList" parameterType="categoryVO" resultType="String">
+		select smallcate from outcategory where bigcate = #{bigcate} and userid = #{userid};
 	</select>
 </mapper>

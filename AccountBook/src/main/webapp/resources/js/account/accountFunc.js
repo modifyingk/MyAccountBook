@@ -1,6 +1,8 @@
 $(function() {
 	// 날짜 세팅
 	$.setDate = function(year, month) {
+		$("#month").html(month + "월");
+		$("#year").html(year);
 		$("#month-div").html("<i class='h-normal fs-28'>" + year + "년 " + month + "월</i>")
 	}
 	
@@ -208,22 +210,52 @@ $(function() {
 	}
 	
 	// 자산 선택 및 값 자동 입력
-	$.pickAsset = function(assetid, asset) {
-		$(document).on("click", asset, function() {
+	$.pickAsset = function(assetID) {
+		$(document).on("click", assetID, function() {
 			$.showSelectAsset(".select-asset-list");
 			$(".select-asset-div").show();
 		})
 		$(document).on("click", ".select-asset-div tr", function() {
-			var assetidVal = $(this).children().eq(0).text();
-			var assetVal = $(this).children().eq(1).text();
-			
-			$(assetid).attr("value", assetidVal);
-			$(asset).attr("value", assetVal);
-			
+			let assetVal = $(this).children().eq(0).text();
+			$(assetID).attr("value", assetVal);
 			$(".select-asset-div").hide();
 		})
 	}
 	
+	// 대분류 선택 및 값 자동 입력
+	$.pickBigcate = function(categoryID) {
+		$(document).on("click", categoryID, function() {
+			let mtype = $(".switch label").text(); // 선택된 값 변수에 저장
+			if(mtype == "수입") {
+				$(".select-incate-div").show();
+			} else {
+				$(".select-outcate-div").show();
+			}
+		})
+		$(document).on("click", ".select-incate-div td", function() {
+			let categoryVal = $(this).text();
+			$(categoryID).attr("value", categoryVal);
+			$(".select-incate-div").hide();
+		})
+		$(document).on("click", ".select-outcate-div td", function() {
+			let categoryVal = $(this).text();
+			$(categoryID).attr("value", categoryVal);
+			$(".select-outcate-div").hide();
+		})
+	}
+	
+	// 대분류 선택 및 값 자동 입력
+	$.pickSmallcate = function(categoryID) {
+		$(document).on("click", categoryID, function() {
+			$(".select-smallcate-div").show();
+		})
+		$(document).on("click", ".select-smallcate-div td", function() {
+			let categoryVal = $(this).text();
+			$(categoryID).attr("value", categoryVal);
+			$(".select-smallcate-div").hide();
+		})
+	}
+	/*
 	// 카테고리 선택 및 값 자동 입력
 	$.pickCategory = function(categoryID, mtypeName) {
 		$(document).on("click", categoryID, function() {
@@ -237,7 +269,7 @@ $(function() {
 			$(".select-category-div").hide();
 		})
 	}
-	
+	*/
 	// moneytype radio 값 변경 시 카테고리 값 비우기
 	$.chgMtype = function(categoryID, mtypeName) {
 		$(document).on("click", "input:radio[name='" + mtypeName + "']", function() {

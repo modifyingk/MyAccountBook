@@ -20,19 +20,8 @@
 </head>
 <body>
 	<div>
-		<!-- 사이드바 -->
-		<div class="col-2 height-1050 is-border is-shadow">
-			<jsp:include page="../main/sidebar.jsp"></jsp:include>
-			<img src="../resources/img/logo.png" style="width: 90%;" onclick="location.href='../main/main.jsp'">
-			<ul class="menu-group">
-				<li class="menu"><i class="fi fi-rr-home"></i> 메인페이지</li>
-				<li class="menu active"><i class="fi fi-rr-money-check-edit"></i> 수입/지출 관리</li>		
-				<li class="menu"><i class="fi fi-rr-coins"></i> 자산관리</li>		
-				<li class="menu"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
-				<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표 관리</li>
-				<li class="menu"><i class="fi fi-rr-sign-out-alt"></i> 로그아웃</li>
-			</ul>
-		</div>
+		<jsp:include page="../main/header.jsp"></jsp:include>
+		<jsp:include page="../main/sidebar.jsp"></jsp:include>
 
 		<!-- 컨텐츠 -->
 		<div class="col-8">

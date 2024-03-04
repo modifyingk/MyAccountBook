@@ -11,12 +11,8 @@ $(function() {
 				catename : $("#add-catename").val(),
 				userid : userid
 			},
-			success : function(x) {
-				if(x == "possible") {
-					result = true;
-				} else {
-					result = false;
-				}
+			success : function(res) {
+				result = res;
 			}
 		})
 		return result;
@@ -37,44 +33,38 @@ $(function() {
 				var month_html = "<i class='h-normal fs-28'>" + date[0] + "년 " + date[1] + "월</i>";
 
 				var aim_html = "";
-				
-				if(Object.keys(map) != "no") {
-					aim_html += "<table class='gage-table' id='out-aim-table'>";
-	
-					for(var key in map) {
-						var value = map[key].split(",");
-						for(var i = 0; i < value.length; i++) {
-							var aim = value[i].split("#");
-							var percent = Math.round(parseInt(aim[2]) / parseInt(aim[1]) * 100);
-							
-							aim_html += "<tr><td style='display:none;'>" + aim[0] + "</td>";
-							if((parseInt(aim[1]) - parseInt(aim[2])) > 0) {
-								aim_html += "<td>" + key + "</td><td title='" + (parseInt(aim[1]) - parseInt(aim[2])).toLocaleString() + "원 더 사용할 수 있습니다!'><div class='gage-bar is-border'>";
-							} else {
-								aim_html += "<td>" + key + "</td><td title='목표를 초과했습니다...'><div class='gage-bar is-border'>";
-							}
-							
-							if(percent < 50) {
-								aim_html += "<div class='gage safe-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
-								aim_html += "</div></td><td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td></tr>";
-							} else if(percent < 70) {
-								aim_html += "<div class='gage warn-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
-								aim_html += "</div></td><td class='yellow'>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
-							} else if(percent <= 100){
-								aim_html += "<div class='gage danger-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
-								aim_html += "</div></td><td class='red'>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
-							} else {
-								aim_html += "<div class='gage danger-aim is-border' style='width: 100%;'>" + percent + "%</div>";
-								aim_html += "</div></td><td class='red'>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td>";
-							}
+				if(Object.keys(map).length > 0) {
+					var html = "<table class='gage-table' id='in-aim-table'>";
+					for(const [key, val] of Object.entries(map)) {
+						var percent = Math.round(val.total / val.aim_money * 100);
+						
+						html += "<tr><td style='display:none;'>" + val.aimid + "</td>";
+						if((val.aim_money - val.total) > 0) {
+							html += "<td>" + key + "</td><td title='" + (val.aim_money - val.total).toLocaleString() + "원 더 사용할 수 있습니다!'><div class='gage-bar is-border'>";
+						} else {
+							html += "<td>" + key + "</td><td title='목표를 초과했습니다...'><div class='gage-bar is-border'>";
+						}
+						
+						if(percent < 50) {
+							html += "<div class='gage safe-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
+							html += "</div></td><td>" + val.total.toLocaleString() + "원 / " + val.aim_money.toLocaleString() + "원</td></tr>";
+						} else if(percent < 70) {
+							html += "<div class='gage warn-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
+							html += "</div></td><td class='yellow'>" + val.total.toLocaleString() + "원 / " + val.aim_money.toLocaleString() + "원</td>";
+						} else if(percent <= 100){
+							html += "<div class='gage danger-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
+							html += "</div></td><td class='red'>" + val.total.toLocaleString() + "원 / " + val.aim_money.toLocaleString() + "원</td>";
+						} else {
+							html += "<div class='gage danger-aim is-border' style='width: 100%;'>" + percent + "%</div>";
+							html += "</div></td><td class='red'>" + val.total.toLocaleString() + "원 / " + val.aim_money.toLocaleString() + "원</td>";
 						}
 					}
-					aim_html += "</table>";
+					html += "</table>";
 				} else {
-					aim_html += "<div class='no-aim-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+					var html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
 				}
 				$(monthDiv).html(month_html);
-				$(aimListDiv).html(aim_html);
+				$(aimListDiv).html(html);
 			}
 		})
 	}
@@ -90,39 +80,32 @@ $(function() {
 				userid : userid
 			},
 			success : function(map) {
-				var aim_in_html = "";
-				
-				if(Object.keys(map) != "no") {
-					aim_in_html += "<table class='gage-table' id='in-aim-table'>";
-					
-					for(var key in map) {
-						var value = map[key].split(",");
-						for(var i = 0; i < value.length; i++) {
-							var aim = value[i].split("#");
-							var percent = Math.round(parseInt(aim[2]) / parseInt(aim[1]) * 100);
+				if(Object.keys(map).length > 0) {
+					var html = "<table class='gage-table' id='in-aim-table'>";
+					for(const [key, val] of Object.entries(map)) {
+						var percent = Math.round(val.total / val.aim_money * 100);
+						html += "<tr><td style='display:none;'>" + val.aimid + "</td>";
 							
-							aim_in_html += "<tr><td style='display:none;'>" + aim[0] + "</td>";
-							if((parseInt(aim[1]) - parseInt(aim[2])) > 0) {
-								aim_in_html += "<td>" + key + "</td><td title='목표 달성까지 " + (parseInt(aim[1]) - parseInt(aim[2])).toLocaleString() + "원 남았습니다!'><div class='gage-bar is-border'>";
-							} else {
-								aim_in_html += "<td>" + key + "</td><td title='목표 달성 성공!'><div class='gage-bar is-border'>";
-							}
-							
-							if(percent < 100) {
-								aim_in_html += "<div class='gage blue-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
-							} else {
-								aim_in_html += "<div class='gage blue-aim is-border' style='width: 100%;'>" + percent + "%</div>";
-							}
-							aim_in_html += "</div></td>";
-							aim_in_html += "<td>" + parseInt(aim[2]).toLocaleString() + "원 / " + parseInt(aim[1]).toLocaleString() + "원</td></tr>";
+						if((val.aim_money - val.total) > 0) {
+							html += "<td>" + key + "</td><td title='목표 달성까지 " + (val.aim_money - val.total).toLocaleString() + "원 남았습니다!'><div class='gage-bar is-border'>";
+						} else {
+							html += "<td>" + key + "</td><td title='목표 달성 성공!'><div class='gage-bar is-border'>";
 						}
+							
+						if(percent < 100) {
+							html += "<div class='gage blue-aim is-border' style='width: " + percent + "%;'>" + percent + "%</div>";
+						} else {
+							html += "<div class='gage blue-aim is-border' style='width: 100%;'>" + percent + "%</div>";
+						}
+						html += "</div></td>";
+						html += "<td>" + val.total.toLocaleString() + "원 / " + val.aim_money.toLocaleString() + "원</td></tr>";
 					}
-					aim_in_html += "</table>";
-				} else {
-					aim_in_html += "<div class='no-aim-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+					html += "</table>";
 				}
-				
-				$(aimlistDiv).html(aim_in_html);
+				else {
+					var html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+				}
+				$(aimlistDiv).html(html);
 			}
 		})
 	}

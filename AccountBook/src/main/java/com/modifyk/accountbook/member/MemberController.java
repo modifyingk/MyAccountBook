@@ -10,22 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.modifyk.accountbook.account.CategoryVO;
-import com.modifyk.accountbook.asset.AssetVO;
-
 @Controller
 public class MemberController {
 	@Autowired
 	MemberDAO mDao;
 	
 	@Autowired
-	MakeCodeService makeCodeSvc;
-	
-	@Autowired
-	SendMailService sendMailSvc;
-	
-	@Autowired
-	MakePwService makePwSvc;
+	EmailService emailSvc;
 	
 	@Autowired
 	AutoInsertService insertSvc;
@@ -35,9 +26,9 @@ public class MemberController {
 	
 	// 아이디 중복 확인
 	@ResponseBody
-	@RequestMapping("member/isOverlapId")
-	public boolean isOverlapId(String userid) {
-		String result = mDao.isOverlapId(userid);
+	@RequestMapping("member/overlapId")
+	public boolean overlapId(String userid) {
+		String result = mDao.overlapId(userid);
 		if(result != null) { // 아이디가 존재하는 경우
 			return false;
 		} else {
@@ -45,55 +36,74 @@ public class MemberController {
 		}
 	}
 	
-	// 이메일 인증번호 전송
+	// 회원 가입
 	@ResponseBody
-	@RequestMapping("member/sendCode")
-	public String sendCode(String email) {
-		String code = makeCodeSvc.makeCode(); // 6자리 인증번호 생성 service
+	@RequestMapping("member/insertMember")
+	public String insertMember(MemberVO memberVO, int code) {
+		if(!overlapId(memberVO.getUserid())) // 아이디 중복 다시 확인
+			return "id_error";
 		
-		String from = "구글 계정";
-		String subject = "[MoneyPlant] 이메일 인증번호";
-		String text = "[MoneyPlant] 이메일 인증을 위한 인증번호입니다.\n 인증번호 : " + code;
+		if(!emailSvc.verifyCode(memberVO.getEmail(), code)) { // 인증번호 확인
+			return "code_error";
+		}
 		
-		boolean result = sendMailSvc.sendMail(email, from, subject, text);
+		int result = mDao.insertMember(memberVO);
+		String userid = memberVO.getUserid();
+		insertSvc.autoInsert(userid);
 		
-		if(result == true) {
-			return code;
+		if(result > 0) {
+			emailSvc.removeCode(memberVO.getEmail()); // 회원 가입 성공 시 인증번호 map 삭제
+			return "ok";
 		} else {
 			return "fail";
 		}
 	}
 	
-	// 회원 가입
+	// 이메일 인증번호 전송
 	@ResponseBody
-	@RequestMapping("member/insertMember")
-	public boolean insertMember(MemberVO memberVO) {
-
-		int result = mDao.insertMember(memberVO);
-		
-		// asset 기본값 삽입
-		AssetVO assetVO = new AssetVO();
-		assetVO.setUserid(memberVO.getUserid());
-		insertSvc.insertAsset(assetVO);
-		
-		// category 기본값 삽입
-		CategoryVO categoryVO = new CategoryVO();
-		categoryVO.setUserid(memberVO.getUserid());
-		insertSvc.insertInCategory(categoryVO);
-		insertSvc.insertOutCategory(categoryVO);
-		
-		// 포인트 기본값 삽입
-		MoneyVO moneyVO = new MoneyVO();
-		moneyVO.setUserid(memberVO.getUserid());
-		moneyVO.setUserpoint(0);
-		moneyVO.setPlantstep(0);
-		moneyVO.setUsercash(0);
-		mDao.insertMoney(moneyVO);
-		
-		if(result > 0) {
+	@RequestMapping("member/sendCode")
+	public void sendCode(String email) {
+		emailSvc.sendCode(email);
+	}
+	
+	// 아이디 찾기
+	@ResponseBody
+	@RequestMapping("member/findId")
+	public boolean findId(MemberVO memberVO) {
+		List<MemberVO> findList = mDao.findId(memberVO);
+		System.out.println(findList);
+		if(findList.size() > 0) { // 이름과 이메일이 일치하면 메일 전송
+			sendCode(memberVO.getEmail());
 			return true;
-		} else {
+		}
+		else
 			return false;
+	}
+	
+	// 인증번호 확인
+	@ResponseBody
+	@RequestMapping("member/verifyCode")
+	public boolean verifyCode(String email, int code) {
+		return emailSvc.verifyCode(email, code);
+	}
+	
+	// 찾은 아이디 보여주기
+	@RequestMapping("member/showId")
+	public void showId(MemberVO memberVO, Model model) {
+		List<MemberVO> idList = mDao.findId(memberVO);
+		model.addAttribute("idList", idList);
+	}
+	
+	// 비밀번호 찾기
+	@ResponseBody
+	@RequestMapping("member/findPw")
+	public String findPw(MemberVO memberVO) {
+		String result = mDao.findPw(memberVO);
+		if(result != null) {
+			emailSvc.sendPw(memberVO);
+			return "ok";
+		} else {
+			return "fail";
 		}
 	}
 	
@@ -110,67 +120,14 @@ public class MemberController {
 			return "fail";
 		}
 	}
-	
+		
 	// 로그아웃
 	@RequestMapping("member/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:../main/main.jsp";
 	}
-	
-	// 아이디 찾기
-	@ResponseBody
-	@RequestMapping("member/findId")
-	public List<MemberVO> findId(MemberVO memberVO) {
-		List<MemberVO> findList = mDao.findId(memberVO);
-		return findList;
-	}
-	
-	// 찾은 아이디 보여주기
-	@RequestMapping("member/showId")
-	public void showId(MemberVO memberVO, Model model) {
-		List<MemberVO> idList = mDao.showId(memberVO);
-		model.addAttribute("idList", idList);
-	}
-	
-	// 비밀번호 찾기
-	@ResponseBody
-	@RequestMapping("member/findPw")
-	public String findPw(MemberVO memberVO) {
-		String result = mDao.findPw(memberVO);
-		if(result != null) {
-			return result;
-		} else {
-			return "fail";
-		}
-	}
-	
-	// 임시 비밀번호 발급
-	@ResponseBody
-	@RequestMapping("member/tempPw")
-	public boolean tempPw(MemberVO memberVO) {
-		String tmpPw = makePwSvc.makePw(); // 임시 비밀번호 생성
-		memberVO.setPw(tmpPw); // 임시 비밀번호 셋팅
 		
-		// 비밀번호 임시비밀번호로 업데이트
-		int result = mDao.updatePw(memberVO);
-		if(result > 0) {
-			// 임시비밀번호 메일로 전송
-			String from = "구글 계정";
-			String subject = "[MoneyPlant] 임시 비밀번호 발급";
-			String text = "[MoneyPlant] 임시 비밀번호입니다. 로그인 후 변경해주세요!\n 임시 비밀번호 : " + tmpPw;
-			
-			boolean mailResult = sendMailSvc.sendMail(memberVO.getEmail(), from, subject, text);
-			if(mailResult == true) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-	
 	// 회원정보
 	@ResponseBody
 	@RequestMapping("member/userInfo")

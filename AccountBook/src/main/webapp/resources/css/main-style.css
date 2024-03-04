@@ -1,0 +1,273 @@
+@charset "UTF-8";
+/* text */
+.h-normal {
+	font-weight: normal;
+	margin: 2%;
+	font-style: normal;
+}
+.fs50 {
+	font-size: 50px;
+}
+.fs40 {
+	font-size: 40px;
+}
+.fs35 {
+	font-size: 35px;
+}
+.fs28 {
+	font-size: 28px;
+}
+.fs23 {
+	font-size: 23px;
+}
+.main-color {
+	color: #f39c12;
+}
+.red {
+	color: #E34234;
+}
+.blue {
+	color: #0C70F2;
+}
+.gray {
+	color: gray;
+}
+.green {
+	color: #2C952C;
+}
+.yellow {
+	color: #FFA500;
+}
+.text-left {
+	text-align: left;
+}
+.text-right {
+	text-align: right;
+}
+
+/* button */
+.btn {
+	border: 0;
+	border-radius: 10px;
+	width: 150px;
+	height: 45px;
+	line-height: 20px;
+	font-size: 16px;
+	cursor: pointer;
+}
+.btn.right {
+	float: right;
+}
+.btn:hover {
+	background-color: lightgray;
+}
+.main-color-btn {
+	background-color: #f39c12;
+	color: white;
+}
+.main-color-btn:hover {
+	background-color: #f38e12;
+}
+.main-outline-btn {
+	border: 1px solid #f39c12;
+	background-color: white;
+	color: #f39c12;
+}
+.main-outline-btn:hover {
+	background-color: #f39c12;
+	color: white;
+}
+.btn:disabled {
+	background: lightgray;
+	color: gray;
+	cursor: default;
+}
+.click-icon {
+	cursor: pointer;
+	color: gray;
+}
+.click-icon:hover {
+	color: #f39c12;
+	font-size: 29px;
+}
+
+/* div */
+.container { /* center */
+	width: 100%;
+	text-align: center;
+}
+.col-5 {
+	width: 50%;
+	float: left;
+	box-sizing: border-box;
+}
+.is-border {
+	border: 1px solid lightgray;
+	border-radius: 10px;
+}
+.is-shadow {
+	box-shadow: 2px 2px 5px lightgray;
+}
+.is-scroll {
+	overflow-y: auto;
+}
+.is-scroll.h700 {
+	height: 700px;
+}
+::-webkit-scrollbar { /* 스크롤바는 없애지만 기능은 유지 */
+  display: none;
+}
+.hide {
+	display: none;	
+}
+
+/* table */
+.center-table { /* center */
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+}
+.center-table th {
+	width: 15%;
+	height: 60px;
+	text-align: center;
+}
+.center-table td {
+	width: 85%;
+}
+
+.select-table {
+	width: 100%;
+}
+.select-table td {
+	height : 30px;
+	font-size : 18px;
+	padding: 10px;
+}
+.td-border td {
+	border: 1px solid lightgray;
+	border-radius: 10px;
+}
+.td-hover td:hover {
+	background: #F3F3F3;
+	border-color: lightgray;
+	cursor: pointer;
+}
+.tr-hover tr:hover {
+	background: #F3F3F3;
+	border-color: lightgray;
+	cursor: pointer;
+}
+.table {
+	margin-bottom: 15px;
+	font-size: 18px;
+}
+.table td {
+	width: 90%;
+	height: 100%;
+	padding: 10px;
+}
+.table th {
+	width: 20%;
+	font-weight: normal;
+	text-align: left;
+	padding: 10px;
+}
+.date-table {
+	width: 500px;
+	height: 250px;
+	padding: 10px;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+.date-table td {
+	width: 25%;
+	height: 50px;
+}
+.date-table .month-td {
+	border-radius: 10px;
+}
+.date-table .month-td:hover {
+	background: #f39c12;
+	color: white;
+}
+#before-year {
+	border-radius: 10px;
+}
+#before-year:hover {
+	background: #f39c12;
+	color: white;
+}
+#after-year {
+	border-radius: 10px;
+}
+#after-year:hover {
+	background: #f39c12;
+	color: white;
+}
+.input {
+	width: 350px;
+	padding: 12px 10px;
+    font-size: 16px;
+	border: 1px solid lightgray;
+	border-radius: 10px;
+}
+.input.small {
+	width: 150px;
+	margin-bottom: 10px;
+}
+.select input[type="radio"] {
+	display: none;
+}
+.select input[type="radio"]+label {
+	width: 158px;
+	padding: 10px;
+	display: inline-block;
+	border: 1px solid lightgray;
+	border-radius: 7px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+}
+.select input[type="radio"]:checked+label{
+	border-color: #f39c12;
+	color: #f39c12;
+	box-shadow: 2px 2px 5px lightgray;
+}
+
+/* Modal */
+.modal {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: none;
+}
+.modal-content {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 500px;
+	height: 800px;
+	padding: 20px;
+	background-color: white;
+	border-radius: 10px;
+	transform: translateX(-50%) translateY(-50%);
+}
+.modal-body {
+	height: 580px;
+	overflow-y: auto;
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	padding: 10px;
+	margin: 10px;
+	overflow-y: auto;
+}
+.modal-content.medium { 
+	height: 620px;
+}
+.modal-body.medium {
+	height: 470px;
+}

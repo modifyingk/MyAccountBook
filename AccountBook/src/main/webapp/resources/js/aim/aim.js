@@ -150,8 +150,8 @@ $(function() {
 						total : $("#add-total").val().replaceAll(",", ""),
 						userid : userid
 					},
-					success : function(x) {
-						if(x == "success") {
+					success : function(res) {
+						if(res == true) {
 							window.location.reload();
 						} else {
 							alert("다시 시도해주세요.");
@@ -187,8 +187,8 @@ $(function() {
 					total : ($("#up-total").val()).replaceAll(",", ""),
 					userid : userid
 				},
-				success : function(x) {
-					if(x == "success") {
+				success : function(res) {
+					if(res == true) {
 						window.location.reload();
 					} else {
 						alert("다시 시도해주세요.");
@@ -207,8 +207,8 @@ $(function() {
 				aimid : $("#up-aimid").val(),
 				userid : userid
 			},
-			success : function(x) {
-				if(x == "success") {
+			success : function(res) {
+				if(res == true) {
 					window.location.reload();
 				} else {
 					alert("다시 시도해주세요.");

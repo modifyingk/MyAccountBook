@@ -25,63 +25,57 @@ public class AimController {
 	// 목표 추가
 	@ResponseBody
 	@RequestMapping("aim/insertAim")
-	public String insertAim(AimVO aimVO) {
+	public boolean insertAim(AimVO aimVO) {
 		int result = aDao.insertAim(aimVO);
-		if(result == 1) {
-			return "success";
+		if(result > 0) {
+			return true;
 		} else {
-			return "fail";
+			return false;
 		}
 	}
 	
 	// 목표 가져오기
 	@ResponseBody
 	@RequestMapping("aim/aimInfo")
-	
-	public HashMap<String, Object> aimInfo(AimVO aimVO) {
+	public HashMap<String, AimJoinVO> aimInfo(AimVO aimVO) {
 		List<AimJoinVO> aimList = aDao.aimInfo(aimVO);
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		if(aimList.size() < 1) {
-			map.put("no", "no");
-		} else {
-			map = toMapSvc.toMap(aimList);
-		}
+		HashMap<String, AimJoinVO> map = toMapSvc.toMap(aimList);
 		return map;
 	}
 	
 	// 목표 수정
 	@ResponseBody
 	@RequestMapping("aim/updateAim")
-	public String updateAim(AimVO aimVO) {
+	public boolean updateAim(AimVO aimVO) {
 		int result = aDao.updateAim(aimVO);
-		if(result == 1) {
-			return "success";
+		if(result > 0) {
+			return true;
 		} else {
-			return "fail";
+			return false;
 		}
 	}
 	
 	// 목표 삭제
 	@ResponseBody
 	@RequestMapping("aim/deleteAim")
-	public String deleteAim(AimVO aimVO) {
+	public boolean deleteAim(AimVO aimVO) {
 		int result = aDao.deleteAim(aimVO);
-		if(result == 1) {
-			return "success";
+		if(result > 0) {
+			return true;
 		} else {
-			return "fail";
+			return false;
 		}
 	}
 	
 	// 목표 카테고리 중복 확인
 	@ResponseBody
 	@RequestMapping("aim/isOverlapAim")
-	public String isOverlapAim(AimVO aimVO) {
+	public boolean isOverlapAim(AimVO aimVO) {
 		String result = aDao.isOverlapAim(aimVO);
 		if(result != null) {
-			return "impossible";
+			return false;
 		} else {
-			return "possible";
+			return true;
 		}
 	}
 }

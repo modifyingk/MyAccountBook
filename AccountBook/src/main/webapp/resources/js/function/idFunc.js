@@ -4,18 +4,13 @@ $(function() {
 		var ovlpChk;
 		$.ajax({
 			type : "post",
-			url : "isOverlapId",
+			url : "overlapId",
 			data : {
 				userid : idVal
 			},
 			async : false,
 			success : function(res) {
-				if(res == true) {
-					ovlpChk = true;
-				}
-				else {
-					ovlpChk = false;
-				}
+				ovlpChk = res;
 			}
 		})
 		return ovlpChk;

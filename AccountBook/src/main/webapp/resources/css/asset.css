@@ -44,31 +44,6 @@
 	top: 150px;
 	right: 150px;
 }
-#hide-asset-div { /* 숨겨진 자산 div */
-	width: 500px;
-	height: 700px;
-	top: 200px;
-	right: 200px;
-}
-#active-asset-btn { /* 자산 숨김 취소 버튼 td */
-	width: 100px;
-}
-#active-asset-btn button{
-	width: 50px;
-	height: 50px;
-	padding: 10px;
-	border: 0;
-	border-radius: 10px;
-	background: #2C952C;
-	color: white;
-	font-size: 18px;
-	cursor: pointer;
-}
-#open-hide-asset { /* 숨겨진 자산 div 열기 버튼 */
-	position: absolute;
-	top: 10px;
-	right: 30px;
-}
 #open-transfer-list { /* 이체 내역 div 열기 버튼 */
 	position: absolute;
 	top: 10px;

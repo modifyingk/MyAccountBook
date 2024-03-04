@@ -3,7 +3,7 @@
 
 <mapper namespace="memberMapper">
 	<!-- 아이디 중복 확인 -->
-	<select id="isOverlapId" parameterType="String" resultType="String">
+	<select id="overlapId" parameterType="String" resultType="String">
 		select userid from member where userid = #{userid};
 	</select>
 	
@@ -19,11 +19,6 @@
 	
 	<!-- 아이디 찾기 -->
 	<select id="findId" parameterType="memberVO" resultType="memberVO">
-		select username, email from member where username = #{username} and email = #{email};
-	</select>
-	
-	<!-- 찾은 아이디 및 가입일자 -->
-	<select id="showId" parameterType="memberVO" resultType="memberVO">
 		select userid, joindate from member where username = #{username} and email = #{email};
 	</select>
 	

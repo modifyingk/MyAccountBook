@@ -7,7 +7,7 @@
 <title>가계부</title>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
-<link rel="stylesheet" type="text/css" href="../resources/css/main.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/main-style.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript" src="../resources/js/member/my_page.js"></script>
 <script>
@@ -16,25 +16,17 @@
 </head>
 <body>
 	<div>
-		<!-- 사이드바 -->
-		<div class="col-2 height-1050 is-border is-shadow">
-			<jsp:include page="../main/sidebar.jsp"></jsp:include>
-			<img src="../resources/img/logo.png" style="width: 90%;" onclick="location.href='../main/main.jsp'">
-			<ul class="menu-group">
-				<li class="menu active"><i class="fi fi-rr-home"></i> 메인페이지</li>
-				<li class="menu"><i class="fi fi-rr-money-check-edit"></i> 수입/지출 관리</li>		
-				<li class="menu"><i class="fi fi-rr-coins"></i> 자산관리</li>		
-				<li class="menu"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
-				<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표 관리</li>
-				<li class="menu"><i class="fi fi-rr-sign-out-alt"></i> 로그아웃</li>
-			</ul>
-		</div>
+		<jsp:include page="../main/header.jsp"></jsp:include>
+		<jsp:include page="../main/sidebar.jsp"></jsp:include>
+		
 		<!-- 컨텐츠 -->
 		<div class="col-8">
 		
 			<%
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
+				<!-- <img src="https://cdn.pixabay.com/photo/2023/02/13/23/07/tree-7788512_1280.jpg" style="opacity: 0.5;" width="100%"> -->
+					<!-- 
 				<div>
 					<div class="col-8">
 						<h2 class="h-normal fs-35" id="myinfo-btn"><i class="fi fi-rs-user"></i> <%= session.getAttribute("userid") %></h2>
@@ -58,6 +50,7 @@
 						</div>
 					</div>
 				</div>
+					 -->
 			<% }
 			/* 로그인이 되어 있지 않을 때 */
 			else { %>

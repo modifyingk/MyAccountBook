@@ -4,10 +4,7 @@
 <mapper namespace="accountMapper">
 	<!-- 수입/지출 내역 추가 -->
 	<insert id="insertAccount" parameterType="accountVO">
-		insert into account values (#{accountid}, #{moneytype}, #{date}, #{assetid}, #{assetname}, #{catename}, #{content}, #{total}, #{memo}, #{userid}, #{repeatid});
-		<selectKey keyProperty="accountid" resultType="int" order="AFTER">
-			select MAX(accountid) from account;
-		</selectKey>
+		insert into account values (#{accountid}, #{moneytype}, #{date}, #{assetname}, #{bigcate}, #{smallcate}, #{content}, #{total}, #{userid});
 	</insert>
 	
 	<!-- account의 반복 id 업데이트 -->

@@ -1,5 +1,5 @@
 @charset "UTF-8";
-.menu-group {
+/* .menu-group {
 	list-style: none;
 }
 .menu {
@@ -18,13 +18,14 @@
 .menu.active {
 	background: #2C952C;
 	color: white;
-}
+} */
 /* ---------------------------------------------------------------- */
 .col-2 {
 	width: 18%;
 	float: left;
 }
 .col-8 {
+	box-sizing:border-box;
 	width: 79%;
 	float: left;
 	padding-left: 2%;
@@ -306,7 +307,7 @@
 	to {opacity : 0;}
 }
 /* ---------------------------------------------------------------- */
-/* Modal css */
+/* Modal */
 .modal {
 	position: absolute;
 	top: 0;
@@ -636,9 +637,6 @@
 #after-year:hover {
 	background: #2C952C;
 	color: white;
-}
-#month-div:hover {
-	color: #2C952C;
 }
 .text-box {
 	border-radius: 10px;

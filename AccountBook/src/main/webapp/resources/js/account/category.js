@@ -3,8 +3,9 @@ document.write('<script src="../resources/js/function/regFunc.js"></script>'); /
 
 $(function() {
 	$(document).ready(function() {
-		$.showCategory("수입", "#in-category-list-div");
-		$.showCategory("지출", "#out-category-list-div");
+		$.showIncategory(); // 수입 소분류 목록 보여주기
+//		$.showCategory("수입", "#in-category-list-div");
+//		$.showCategory("지출", "#out-category-list-div");
 	})
 	
 	// 수입 카테고리 추가

@@ -37,7 +37,6 @@ public class AssetController {
 	@RequestMapping("asset/insertAsset")
 	public boolean insertAsset(AssetVO assetVO) {
 		if(assetVO.getMemo() == null) assetVO.setMemo(""); // 메모 null이면 공백 채우기
-		System.out.println(assetVO);
 		int assetRes = aDao.insertAsset(assetVO);
 		if(assetRes > 0) {
 			if(assetVO.getTotal() != 0) { // 입력된 자산의 금액이 0이 아니라면 증가/감소된 금액만큼 수입/지출에 기록
@@ -84,28 +83,27 @@ public class AssetController {
 	
 	}
 	
-	// 자산 활성화/비활성화
-	@ResponseBody
-	@RequestMapping("asset/activeAsset")
-	public int activeAsset(AssetVO assetVO) {
-		int result = aDao.activeAsset(assetVO);
-		return result;
-	}
-	
 	// 자산 목록
 	@ResponseBody
 	@RequestMapping("asset/assetList")
-	public List<AssetVO> assetList(AssetVO assetVO) {
-		List<AssetVO> assetList = aDao.assetList(assetVO);
-		return assetList;
+	public HashMap<String, List<AssetVO>> assetList(String userid) {
+		List<AssetVO> assetList = aDao.assetList(userid);
+		HashMap<String, List<AssetVO>> map = toMapSvc.toMap(assetList);
+		return map;
 	}
-	
+	/*
 	// 자산 목록 자산그룹별로 그룹화
 	@ResponseBody
 	@RequestMapping("asset/groupByGroup")
 	public HashMap<String, List<AssetVO>> groupByGroup(AssetVO assetVO) {
 		List<AssetVO> assetList = assetList(assetVO);
-		HashMap<String, List<AssetVO>> map = toMapSvc.toMap(assetList);
-		return map;
+	}
+	*/
+	// 자산 목록
+	@ResponseBody
+	@RequestMapping("asset/assetnameList")
+	public List<String> assetnameList(String userid) {
+		List<String> assetnames = aDao.assetnameList(userid);
+		return assetnames;
 	}
 }

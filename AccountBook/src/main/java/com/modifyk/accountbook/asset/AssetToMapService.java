@@ -2,6 +2,7 @@ package com.modifyk.accountbook.asset;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -9,9 +10,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class AssetToMapService {
 	public HashMap<String, List<AssetVO>> toMap(List<AssetVO> assetList) {
-		HashMap<String, List<AssetVO>> map = new HashMap<String, List<AssetVO>>();
+		HashMap<String, List<AssetVO>> map = new LinkedHashMap<String, List<AssetVO>>();
 		
-		String tmpKey; // map의 key값이 될 날짜
+		String tmpKey; // map의 key값이 될 그룹
 		for(int i = 0; i < assetList.size(); i++) {
 			tmpKey = assetList.get(i).getAssetgroup();
 			if(map.get(tmpKey) != null) { // 해당 자산그룹이 이미 있다면

@@ -41,15 +41,13 @@ public class AchieveService {
 
 		// 목표, 총 지출 금액 가져오기
 		List<AimJoinVO> aimList = aDao.aimAll(aimVO);
-		HashMap<String, String> map = toMapSvc.toMapAll(aimList);
+		HashMap<String, AimJoinVO> map = toMapSvc.toMap(aimList);
 		
 		// 목표 달성
-		for(String key : map.values()) {
-			String[] value = key.split("#");
-			if(Integer.parseInt(value[2]) < Integer.parseInt(value[1])) { // 총 지출 금액이 목표 금액보다 적은 경우
-
-				aimVO.setAimid(Integer.parseInt(value[0]));
-				aimVO.setUserid(value[3]);
+		for(String key : map.keySet()) {
+			if(map.get(key).getTotal() < map.get(key).getAim_money()) {
+				aimVO.setAimid(map.get(key).getAimid());
+				aimVO.setUserid(map.get(key).getUserid());
 				aimVO.setAchieveaim('o'); // 목표 달성 o 로 setting
 				
 				aDao.achieveAim(aimVO);
