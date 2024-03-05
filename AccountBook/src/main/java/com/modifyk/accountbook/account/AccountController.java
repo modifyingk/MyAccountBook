@@ -2,6 +2,7 @@ package com.modifyk.accountbook.account;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,15 +69,26 @@ public class AccountController {
 		}
 	}
 	
+	// 수입/지출 내역
+	@ResponseBody
+	@RequestMapping("account/selectAccount")
+	public LinkedHashMap<String, List<AccountVO>> selectAccount(AccountVO accountVO) {
+		List<AccountVO> list = aDao.selectAccount(accountVO);
+		LinkedHashMap<String, List<AccountVO>> map = toMapSvc.accountToMap(list); // 날짜별로 그룹한 map
+		System.out.println(map);
+		return map;
+	}
+	
+	
 	// 수입/지출 수정
 	@ResponseBody
 	@RequestMapping("account/updateAccount")
 	public boolean updateAccount(AccountVO accountVO) {
-		AccountVO before = aDao.checkAccount(accountVO);
+		//AccountVO before = aDao.checkAccount(accountVO);
 		int updateRes = aDao.updateAccount(accountVO); // 수입/지출 수정
 		
 		if(updateRes > 0) {
-			assetSvc.updateAsset(before, accountVO);
+		//	assetSvc.updateAsset(before, accountVO);
 			return true;
 		} else {
 			return false;
@@ -87,22 +99,22 @@ public class AccountController {
 	@ResponseBody
 	@RequestMapping("account/deleteAccount")
 	public boolean deleteAccount(AccountVO accountVO) {
-		AccountVO before = aDao.checkAccount(accountVO); // 삭제 전 데이터
-		System.out.println(before);
+		//AccountVO before = aDao.checkAccount(accountVO); // 삭제 전 데이터
+		//System.out.println(before);
 		int deleteRes = aDao.deleteAccount(accountVO); // 수입/지출 삭제
 
 		if(deleteRes > 0) {
 			// 수입/지출이 삭제되었을 경우, 자산 금액 업데이트
-			accountVO.setAssetid(before.getAssetid());
-			accountVO.setMoneytype(before.getMoneytype());
-			accountVO.setTotal(before.getTotal() * (-1));
-			assetSvc.updateAsset(accountVO);
+			//accountVO.setAssetid(before.getAssetid());
+		//	accountVO.setMoneytype(before.getMoneytype());
+			//accountVO.setTotal(before.getTotal() * (-1));
+			//assetSvc.updateAsset(accountVO);
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+	/*
 	// 수입/지출 목록
 	public List<AccountVO> accountList(AccountVO accountVO, String moneytype) {
 		List<AccountVO> accountList = new ArrayList<>();
@@ -203,7 +215,7 @@ public class AccountController {
 		List<String> list = aDao.autoSearch(accountVO);
 		return list;
 	}*/
-
+/*
 	// 반복 내역 가져오기
 	@ResponseBody
 	@RequestMapping("account/repeatList")

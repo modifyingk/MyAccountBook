@@ -20,6 +20,12 @@
 .fs23 {
 	font-size: 23px;
 }
+.fs20 {
+	font-size: 20px;
+}
+.fs18 {
+	font-size: 18px;
+}
 .main-color {
 	color: #f39c12;
 }
@@ -43,6 +49,9 @@
 }
 .text-right {
 	text-align: right;
+}
+.text-center {
+	text-align: center;
 }
 
 /* button */
@@ -143,6 +152,27 @@
 	height : 30px;
 	font-size : 18px;
 	padding: 10px;
+}
+.list-table {
+	border-collapse: collapse;
+	width: 600px;
+	font-size: 18px;
+}
+.list-table td {
+	width: 30%;
+	padding: 10px;
+	height: 35px;
+}
+.list-table tr {
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	border-left: 0;
+	border-right: 0;
+}
+.list-table tr:hover {
+	background: #F3F3F3;
+	border-color: lightgray;
+	cursor: pointer;
 }
 .td-border td {
 	border: 1px solid lightgray;
@@ -270,4 +300,9 @@
 }
 .modal-body.medium {
 	height: 470px;
+}
+.x-btn {
+	position: absolute;
+	right: 15px;
+	top: 15px;
 }

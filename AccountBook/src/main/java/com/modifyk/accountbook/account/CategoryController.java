@@ -98,14 +98,12 @@ public class CategoryController {
 	@ResponseBody
 	@RequestMapping("account/smallcateList")
 	public List<String> smallcateList(CategoryVO categoryVO, String mtype) {
-		System.out.println(categoryVO);
 		List<String> list = new ArrayList<String>();
 		if(mtype.equals("수입")) {
 			list = cDao.inSmallcateList(categoryVO);
 		} else {
 			list = cDao.outSmallcateList(categoryVO);
 		}
-		System.out.println(list);
 		return list;
 	}
 }

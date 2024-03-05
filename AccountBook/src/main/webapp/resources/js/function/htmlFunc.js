@@ -38,31 +38,4 @@ $(function() {
 			}
 		});
 	}
-	
-	// 날짜 선택 창 보여주기 & 현재 연도 세팅
-	$.showSelectDate = function(year) {
-		$("#select-month").show();
-		$("#current-year").html(year + "년");
-	}
-	
-	// 날짜 선택 창에서 이전 연도 클릭
-	$.selectBeforeYear = function(year) {
-		year = parseInt(year) - 1;
-		$("#current-year").html(year + "년");
-		return year;
-	}
-	
-	// 날짜 선택 창에서 다음 연도 클릭
-	$.selectAfterYear = function(year) {
-		year = parseInt(year) + 1;
-		$("#current-year").html(year + "년");
-		return year;
-	}
-	
-	// 날짜 선택 창에서 선택한 날짜 반환
-	$.selectDate = function(yearText, monthText) {
-		var y = yearText.substring(0, 4);
-		var m = monthText.substring(0, 2);
-		return y + "-" + m;
-	}
 })

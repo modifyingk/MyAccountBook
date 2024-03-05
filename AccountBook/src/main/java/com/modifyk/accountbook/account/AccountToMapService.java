@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountToMapService {
 	
-	public HashMap<String, List<AccountVO>> accountToMap(List<AccountVO> accountList) {
-		HashMap<String, List<AccountVO>> map = new LinkedHashMap<>();
+	public LinkedHashMap<String, List<AccountVO>> accountToMap(List<AccountVO> accountList) {
+		LinkedHashMap<String, List<AccountVO>> map = new LinkedHashMap<>();
 
 		String tmpKey; // map의 key값이 될 날짜
 		for(int i = 0; i < accountList.size(); i++) {

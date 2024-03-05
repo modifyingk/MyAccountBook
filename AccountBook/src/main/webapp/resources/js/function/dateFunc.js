@@ -1,35 +1,59 @@
 $(function() {
 	// 현재 날짜
 	$.createDate = function() {
-		var date = new Date();
+		let date = new Date();
 		return date;
 	}
 	
 	// 년
 	$.getYear = function(today) {
-		return today.split("-")[0];
+		return today.substring(0, 4);
 	}
 	
 	// 월
 	$.getMonth = function(today) {
-		return today.split("-")[1];
+		return today.substring(4, 6);
 	}
 	
 	// 일
 	$.getDay = function(today) {
-		return today.split("-")[2];
+		return today.substring(6, 8);
+	}
+	
+	// yyyy-mm-dd 형식
+	$.getDateFmt = function(date) {
+		return $.getYear(date) + "-" + $.getMonth(date) + "-" + $.getDay(date);
+	}
+	
+	// 
+	$.insertZero = function(date) {
+		let dateStr = date + ''; // 인자가 숫자일수도 있으므로 문자로 변환
+		if(dateStr.length == 1) // 월을 두자리 숫자로 표현
+			dateStr = '0' + dateStr;
+		return dateStr;
 	}
 	
 	// 월 형식 지정
 	$.monthFmt = function(month) {
-		var monthStr = month + ''; // 인자가 숫자일수도 있으므로 문자로 변환
+		let monthStr = month + ''; // 인자가 숫자일수도 있으므로 문자로 변환
 		if(monthStr.length == 1) // 월을 두자리 숫자로 표현
 			monthStr = '0' + monthStr;
 		return monthStr;
 	}
 	
+	$.removeZero = function(date) {
+		if(date.length > 1)
+			if(date.substring(0, 1) == 0)
+				return date.substr(1, 1);
+			else
+				return date;
+		else
+			return date;
+	}
+	
+	// 일 형식 지정
 	$.dayFmt = function(day) {
-		var dayStr = day + '';
+		let dayStr = day + '';
 		if(dayStr.length == 1)
 			dayStr = '0' + dayStr;
 		return dayStr;
@@ -37,63 +61,57 @@ $(function() {
 	
 	// yyyy-mm-dd
 	$.getFullDate = function(date) {
-		var y = date.getFullYear(); // 년
-		var m = $.monthFmt(date.getMonth() + 1); // 형식 지정 월
-		var d = $.dayFmt(date.getDate());
+		let y = date.getFullYear(); // 년
+		let m = $.insertZero(date.getMonth() + 1); // 형식 지정 월
+		let d = $.dayFmt(date.getDate());
 		return y + "-" + m + "-" + d;
 	}
 	
 	// yyyy-mm
 	$.getYearMonth = function(date) {
-		var y = date.getFullYear(); // 년
-		var m = $.monthFmt(date.getMonth() + 1); // 형식 지정 월
-		return y + "-" + m;
+		let y = date.getFullYear(); // 년
+		let m = $.insertZero(date.getMonth() + 1); // 형식 지정 월
+		return y + m;
 	}
 	
 	// 이전 달 계산
 	// parameter : 현재 날짜
 	$.beforeDate = function(today) {
-		var current = today.split("-");
-		var beforeYear;
-		var beforeMonth;
-		var beforeAll;
+		let currentYear = today.substring(0, 4);
+		let currentMonth = today.substring(4, 6);
 		
-		if(current[1] == "01") {
-			beforeYear = (parseInt(current[0]) - 1) + "";
+		let beforeYear;
+		let beforeMonth;
+		
+		if(currentMonth == "01") {
+			beforeYear = (parseInt(currentYear) - 1) + "";
 			beforeMonth = "12";
 		} else {
-			beforeYear = current[0];
-			beforeMonth = (parseInt(current[1]) - 1) + "";
+			beforeYear = currentYear;
+			beforeMonth = (parseInt(currentMonth) - 1) + "";
 		}
-		if(beforeMonth.length == 1) {
-			beforeMonth = "0" + beforeMonth;
-		}
-		beforeAll = beforeYear + "-" + beforeMonth;
-		
-		return beforeAll;
+		beforeMonth = $.insertZero(beforeMonth);
+		return beforeYear + beforeMonth;
 	}
 	
 	// 다음 달 계산
 	// parameter : 현재 날짜
 	$.afterDate = function(today) {
-		var current = today.split("-");
-		var afterYear;
-		var afterMonth;
-		var afterAll;
+		let currentYear = today.substring(0, 4);
+		let currentMonth = today.substring(4, 6);
 		
-		if(current[1] == "12") {
-			afterYear = (parseInt(current[0]) + 1) + "";
+		let afterYear;
+		let afterMonth;
+		
+		if(currentMonth == "12") {
+			afterYear = (parseInt(currentYear) + 1) + "";
 			afterMonth = "01";
 		} else {
-			afterYear = current[0];
-			afterMonth = (parseInt(current[1]) + 1) + "";
+			afterYear = currentYear;
+			afterMonth = (parseInt(currentMonth) + 1) + "";
 		}
-		if(afterMonth.length == 1) {
-			afterMonth = "0" + afterMonth;
-		}
-		afterAll = afterYear + "-" + afterMonth;
-		
-		return afterAll;
+		afterMonth = $.insertZero(afterMonth);
+		return afterYear + afterMonth;
 	}
 	
 	// 평년 윤년 계산
@@ -118,6 +136,47 @@ $(function() {
 		return totalDays;
 	}
 	
+	// 날짜 선택 창 보여주기 & 현재 연도 세팅
+	$.showSelectDate = function(year) {
+		$("#select-date").show();
+		$("#current-year").html(year + "년");
+	}
+	
+	// 날짜 선택 창에서 이전 연도 클릭
+	$.selectBeforeYear = function(year) {
+		year = parseInt(year) - 1;
+		$("#current-year").html(year + "년");
+		return year;
+	}
+	
+	// 날짜 선택 창에서 다음 연도 클릭
+	$.selectAfterYear = function(year) {
+		year = parseInt(year) + 1;
+		$("#current-year").html(year + "년");
+		return year;
+	}
+	
+	// 날짜 선택 창에서 선택한 날짜 반환
+	$.selectDate = function(yearText, monthText) {
+		var y = yearText.split("년")[0];
+		var m = $.insertZero(monthText.split("월")[0]);
+		return y + m;
+	}
+	
+	$.getDayOfWeek = function(date) {
+		let yyyymmdd = $.getYear(date) + "-" + $.getMonth(date) + "-" + $.getDay(date);;
+		let dayOfWeek = new Date(yyyymmdd).getDay();
+		switch(dayOfWeek) {
+			case 0: dayOfWeek = "일"; break;
+			case 1: dayOfWeek = "월"; break;
+			case 2: dayOfWeek = "화"; break;
+			case 3: dayOfWeek = "수"; break;
+			case 4: dayOfWeek = "목"; break;
+			case 5: dayOfWeek = "금"; break;
+			case 6: dayOfWeek = "토"; break;
+		}
+		return dayOfWeek;
+	}
 	/*
 	// 현재 연도 가져오기
 	$.currentYear = function() {

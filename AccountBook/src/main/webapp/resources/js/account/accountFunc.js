@@ -1,22 +1,21 @@
 $(function() {
 	// 날짜 세팅
 	$.setDate = function(year, month) {
-		$("#month").html(month + "월");
+		$("#month").html($.removeZero(month) + "월");
 		$("#year").html(year);
 		$("#month-div").html("<i class='h-normal fs-28'>" + year + "년 " + month + "월</i>")
 	}
 	
 	// 수입/지출 내역 가져오기
-	$.accountList = function(dateVal, useridVal, typeVal) {
+	$.accountList = function(dateVal, useridVal) {
 		var result;
 		$.ajax({
 			type : "post",
-			url : "groupByDate",
+			url : "selectAccount",
 			async : false,
 			data : {
 				date : dateVal,
 				userid : useridVal,
-				moneytype : typeVal
 			},
 			success : function(res) {
 				result = res;
@@ -28,40 +27,44 @@ $(function() {
 	// 수입/지출 내역 html
 	$.accountHtml = function(map) {
 		if(Object.keys(map).length > 0) {
-			var html = "<table class='list-table'>";
-			
 			for(const [key, valList] of Object.entries(map)){
-				html += "<tr class='tr-date'><td colspan='5' style='font-weight: bold;'>" + $.getDay(key) + "일</td></tr>";
-				for(var i = 0; i < valList.length; i++) {
-					html += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>";
-					html += "<td style='display:none;'>" + valList[i].accountid + "</td>"; // 수입/지출 id
-					html += "<td style='display:none;'>" + valList[i].moneytype + "</td>"; // 수입/지출
-					html += "<td>" + valList[i].catename + "</td>"; // 카테고리
-					html += "<td><div>" + valList[i].content + "</div><div><span class='fs-16 info'>" + valList[i].assetname + "</span></div><div class='hide'>" + valList[i].assetid + "</div></td>"; // 내용, 자산
+				console.log(key);
+				let income = 0; let spend = 0;
+				let html1 = "<table class='account-table'>";
+				let html2 = "<tr class='tr-date'><td class='td-date'>" + $.removeZero($.getMonth(key)) + "월 " + $.removeZero($.getDay(key)) + "일 " + $.getDayOfWeek(key) + "</td>";
+				let html3 = "";
+				for(let i = 0; i < valList.length; i++) {
+					html3 += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>";
+					html3 += "<td class='hide'>" + valList[i].accountid + "</td>"; // 수입/지출 id
+					html3 += "<td class='hide'>" + valList[i].moneytype + "</td>"; // 수입/지출
+					html3 += "<td class='td-category'><div class='key-div'>" + valList[i].bigcate + "</div>"; // 대분류
+					html3 += "<div style='padding:10px;'>" + valList[i].smallcate + "</div></td>"; // 소분류
+					html3 += "<td class='td-content'>" + valList[i].content + "</td>";
+					html3 += "<td class='td-asset gray'>" + valList[i].assetname + "</td>";
 					if(valList[i].moneytype == "수입") {
-						html += "<td class='td-income text-right blue'>" + parseInt(valList[i].total).toLocaleString() + "원</td>"; // 돈
+						html3 += "<td class='td-income text-right blue'>" + parseInt(valList[i].total).toLocaleString() + "원</td>"; // 돈
+						income += parseInt(valList[i].total);
 					} else {
-						html += "<td class='td-spend text-right red'>" + parseInt(valList[i].total).toLocaleString() + "원</td>";
-					}
-					html += "<td style='display:none;'>" + valList[i].memo + "</td>"; // 메모
-					if(valList[i].fixed) {
-						html += "<td><i class='fi fi-sr-star yellow'></i></td></tr>"; // 고정지출
+						html3 += "<td class='td-spend text-right red'>" + parseInt(valList[i].total).toLocaleString() + "원</td>";
+						spend += parseInt(valList[i].total);
 					}
 				}
-				html += "<tr style='border : 0;'></tr>";
+				
+				html2 += "<td colspan='3'><div class='part-spend'> " + spend + "원</div><div class='part-income'>" + income + "원</div></td></tr>";
+				let html = html1 + html2 + html3 + "</table><br><br>";
+				$("#account-list-div").prepend(html);
+
 			}
-			html += "</table>";
 		} else {
-			var html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+			let html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+			$("#account-list-div").append(html);
 		}
-		return html;
 	}
 	
 	// 수입/지출 내역 보여주기
-	$.showAccount = function(today, userid, typeVal) {
-		var html ="";
-		html += $.accountHtml($.accountList(today, userid, typeVal));
-		$("#month-account-list-div").html(html);
+	$.showAccount = function(today, userid) {
+		$("#account-list-div").html("");
+		$.accountHtml($.accountList(today, userid));
 	}
 
 	// 금액 합계 계산
@@ -77,9 +80,9 @@ $(function() {
 	
 	// 금액 합계 보여주기
 	$.showTotal = function() {
-		$("#total-div i").html(($.calcTotal(".td-income") - $.calcTotal(".td-spend")).toLocaleString());
-		$("#income-div i").html($.calcTotal(".td-income").toLocaleString());
-		$("#spend-div i").html($.calcTotal(".td-spend").toLocaleString());
+		$("#total-div i").html(($.calcTotal(".part-income") + $.calcTotal(".part-spend")).toLocaleString());
+		$("#income-div i").html($.calcTotal(".part-income").toLocaleString());
+		$("#spend-div i").html($.calcTotal(".part-spend").toLocaleString());
 	}
 	
 	$.showStatsTotal = function(typeVal) {
@@ -243,8 +246,8 @@ $(function() {
 			$(".select-outcate-div").hide();
 		})
 	}
-	
-	// 대분류 선택 및 값 자동 입력
+	/*
+	// 소분류 선택 및 값 자동 입력
 	$.pickSmallcate = function(categoryID) {
 		$(document).on("click", categoryID, function() {
 			$(".select-smallcate-div").show();
@@ -254,7 +257,7 @@ $(function() {
 			$(categoryID).attr("value", categoryVal);
 			$(".select-smallcate-div").hide();
 		})
-	}
+	}*/
 	/*
 	// 카테고리 선택 및 값 자동 입력
 	$.pickCategory = function(categoryID, mtypeName) {
@@ -271,11 +274,11 @@ $(function() {
 	}
 	*/
 	// moneytype radio 값 변경 시 카테고리 값 비우기
-	$.chgMtype = function(categoryID, mtypeName) {
+	/*$.chgMtype = function(categoryID, mtypeName) {
 		$(document).on("click", "input:radio[name='" + mtypeName + "']", function() {
 			$(categoryID).attr("value", "");
 		})
-	}
+	}*/
 	
 	// 수입/지출 현황
 	$.info = function() {
@@ -440,7 +443,7 @@ $(function() {
 			}
 		})
 	}
-	*/
+	*//*
 	// moneytype 선택
 	$.selectMtype = function(mtype, radioName) {
 		if(mtype == "수입") {
@@ -450,8 +453,8 @@ $(function() {
 			$("input:radio[name='" + radioName + "'][value='수입']").attr("checked", false);
 			$("input:radio[name='" + radioName + "'][value='지출']").attr("checked", true);
 		}
-	}
-	
+	}*/
+	/*
 	// 전체, 수입만, 지출만 버튼 활성화
 	$.activeBtn = function(removeDoc1, removeDoc2, addDoc) {
 		if($(removeDoc1).hasClass("active")) {
@@ -461,7 +464,7 @@ $(function() {
 			$(removeDoc2).removeClass("active");
 			$(addDoc).addClass("active");
 		}
-	}
+	}*/
 	/*
 	// 반복 옵션 선택 함수
 	// parameter : 매년/매월/매주 선택 값, 매년 div, 매월 div, 매주 div

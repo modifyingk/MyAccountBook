@@ -46,11 +46,6 @@
 		background: #f38e12;
 		color: white;
 	}
-	.x-btn {
-		position: absolute;
-		right: 15px;
-		top: 15px;
-	}
 	#open-add-asset {
 		position: absolute;
 		right: 40px;

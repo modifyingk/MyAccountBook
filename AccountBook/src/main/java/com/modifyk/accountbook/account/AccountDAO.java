@@ -21,6 +21,22 @@ public class AccountDAO {
 		return my.insert("accountMapper.insertAccount", accountVO);
 	}
 	
+	// 수입/지출 내역
+	public List<AccountVO> selectAccount(AccountVO accountVO) {
+		return my.selectList("accountMapper.selectAccount", accountVO);
+	}
+	
+	// 수입/지출 수정
+	public int updateAccount(AccountVO accountVO) {
+		return my.update("accountMapper.updateAccount", accountVO);
+	}
+	
+	// 수입/지출 삭제
+	public int deleteAccount(AccountVO accountVO) {
+		return my.delete("accountMapper.deleteAccount", accountVO);
+	}
+	
+	/*
 	// account의 반복 id 업데이트
 	public int updateRepeatid(HashMap<String, Object> map) {
 		return my.update("accountMapper.updateRepeatid", map);
@@ -61,7 +77,7 @@ public class AccountDAO {
 		return my.delete("bookmarkMapper.deleteBookmark", bookmarkVO);
 	}
 	*/
-	
+	/*
 	// 수입/지출 내역
 	public List<AccountVO> accountList(AccountVO accountVO) {
 		return my.selectList("accountMapper.accountList", accountVO);
