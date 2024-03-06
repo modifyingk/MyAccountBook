@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -70,20 +71,19 @@ public class AccountController {
 	}
 	
 	// 수입/지출 내역
-	@ResponseBody
 	@RequestMapping("account/selectAccount")
-	public LinkedHashMap<String, List<AccountVO>> selectAccount(AccountVO accountVO) {
+	public void selectAccount(AccountVO accountVO, Model model) {
 		List<AccountVO> list = aDao.selectAccount(accountVO);
 		LinkedHashMap<String, List<AccountVO>> map = toMapSvc.accountToMap(list); // 날짜별로 그룹한 map
-		System.out.println(map);
-		return map;
+		model.addAttribute("map", map);
 	}
-	
 	
 	// 수입/지출 수정
 	@ResponseBody
 	@RequestMapping("account/updateAccount")
 	public boolean updateAccount(AccountVO accountVO) {
+		if(accountVO.getMoneytype().equals("지출")) // 지출인 경우 마이너스 붙이기
+			accountVO.setTotal(accountVO.getTotal() * -1);
 		//AccountVO before = aDao.checkAccount(accountVO);
 		int updateRes = aDao.updateAccount(accountVO); // 수입/지출 수정
 		

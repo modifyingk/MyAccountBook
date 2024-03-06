@@ -98,8 +98,8 @@
 	.account-table {
 		margin-left: auto;
 		margin-right: auto;
-		width: 60%;
-		font-size: 18px;
+		width: 55%;
+		font-size: 17px;
 		border-collapse: collapse;
 		border-bottom: 1px solid lightgray;
 		cursor: pointer ;
@@ -117,27 +117,44 @@
 		padding: 10px;
 	}
 	.td-category {
-		width: 40%;
+		width: 32%;
 	}
 	.td-content, .td-asset, .td-income, .td-spend {
-		width: 25%;
+		width: 20%;
 	}
 	.td-date {
-		font-size: 20px;
+		font-size: 19px;
 		font-weight: bold;
 	}
 	.key-div {
-		width:150px;
-		color:white;
+		width: 130px;
+		color:  white;
 		text-align: center;
-		padding:10px;
-		background: #f39c12;
+		padding: 10px;
+		/* red #F56E6E blue #6482B9 yellow #f39c12*/
 		border-radius: 50px;
 		font-weight: bold;
-		font-size: 17px;
+		font-size: 16px;
 		cursor: pointer;
 		float: left;
 		margin-right: 20px;
+	}
+	.key-div.income {
+		background: #6482B9;
+	}
+	.key-div.spend {
+		background: #F56E6E;
+	}
+	.td-smallcate.income {
+		color: #6482B9;
+	}
+	.td-smallcate.spend {
+		color: #F56E6E;
+	}
+	.td-smallcate {
+		padding: 10px;
+		color:  #f39c12;
+		font-weight: bold;
 	}
 	.part-income {
 		float: right;
@@ -172,6 +189,25 @@
 		margin-left: auto;
 		margin-right: auto;
 		text-align: left;
+	}
+	.show-range {
+		width: 20px;
+		height: 25px;
+		margin: 5px 10px;
+		border: 1px solid #f39c12;
+		border-radius: 5px;
+		cursor: pointer;
+		float: left;
+		color: white;
+		font-weight: bold;
+	}
+	.show-range:hover {
+		background: #f39c12;
+		color: white;
+	}
+	.show-range.active {
+		background: #f39c12;
+		color: white;
 	}
 </style>
 </head>
@@ -249,30 +285,25 @@
 						<td class="td-input"><input type="date" id="add-date" placeholder="일자"></td>
 						<td class="td-input">
 							<input type="text" id="add-asset" placeholder="자산" readonly="readonly">
-							<div class="input is-scroll select-asset-div select-div" style="width:200px; height:300px;">
-								<div class="select-asset-list"></div>
+							<div class="input is-scroll select-add-asset select-div" style="width:200px; height:300px;">
+								<div class="add-asset-list"></div>
 							</div>
 						</td>
 						<td class="td-input">
 							<input type="text" id="add-bigcate" placeholder="분류" readonly="readonly">
-							<div class="input is-scroll select-incate-div select-div text-center" style="width:500px; height:120px;">
-								<div class="select-incate-list">
+							<div class="input is-scroll select-add-incate select-div text-center" style="width:500px; height:60px;">
+								<div class="add-incate-list">
 									<table class="select-table td-border td-hover">
 										<tr>
-											<td>월급</td>
-											<td>부수입</td>
-											<td>용돈</td>
-										</tr>
-										<tr>
-											<td>성과금</td>
-											<td>이자</td>
+											<td>소득</td>
+											<td>저축</td>
 											<td>기타</td>
 										</tr>
 									</table>
 								</div>
 							</div>
-							<div class="input is-scroll select-outcate-div select-div text-center" style="width:500px; height:220px;">
-								<div class="select-outcate-list">
+							<div class="input is-scroll select-add-outcate select-div text-center" style="width:500px; height:220px;">
+								<div class="add-outcate-list">
 									<table class="select-table td-border td-hover">
 										<tr>
 											<td>식비</td>
@@ -290,16 +321,16 @@
 											<td>선물/경조사</td>
 										</tr>
 										<tr>
+											<td>공과금</td>
 											<td>교육</td>
-											<td>구독</td>
 											<td>기타</td>
 										</tr>
 									</table>
 								</div>
 							</div>
 							<input type="text" id="add-smallcate" placeholder="소분류" disabled="disabled" readonly="readonly">
-							<div class="input is-scroll select-smallcate-div select-div text-center" style="width:330px; height:220px;">
-								<div class="select-smallcate-list"></div>
+							<div class="input is-scroll select-add-smallcate select-div text-center" style="width:330px; height:220px;">
+								<div class="add-smallcate-list"></div>
 							</div>
 						</td>
 						<td class="td-input"><input type="text" id="add-content" placeholder="내용"></td>
@@ -309,23 +340,37 @@
 				</table>
 			</div>
 			<br>
+			
+			<!-- 수입/지출 내역 옵션
+			<div style="position: fixed; left: 25.5%;">
+				<table id="show-range">
+					<tr><td><div class="active" id="show-all">전체</div></td>
+					<td><div id="show-income">수입</div></td>
+					<td><div id="show-spend">지출</div></td></tr>
+				</table>
+			</div>
+			 -->
 			<!-- 합계 -->
 			<div>
 				<table class="total-table">
 					<tr>
 						<td>
+							<div class="show-range active" id="show-all"><i class="fi fi-rs-check"></i></div>
 							<div id="total-div"><h4 class='h-normal fs20 gray'>합계</h4><i class='h-normal fs20'></i></div>
 						</td>
 						<td>
+							<div class="show-range" id="show-income"><i class="fi fi-rs-check"></i></div>
 							<div id="income-div"><h4 class='h-normal fs20 gray'>총 수입</h4><i class='blue h-normal fs20'></i></div>
 						</td>
 						<td>
+							<div class="show-range" id="show-spend"><i class="fi fi-rs-check"></i></div>
 							<div id="spend-div"><h4 class='h-normal fs20 gray'>총 지출</h4><i class='red h-normal fs20'></i></div>
 						</td>
 					</tr>
 				</table>
 			</div>
 			<br>
+			
 			<!-- 수입/지출 내역 -->
 			<div class="is-scroll" style="height: 650px;">
 				<div id="account-list-div"></div>
@@ -959,8 +1004,8 @@
 						<th>자산</th>
 						<td>
 							<input type="text" class="input" id="update-asset" placeholder="분류선택" readonly>
-							<div class="input is-scroll select-asset-div" style="position:absolute; display: none; background: white; height:400px;">
-								<div class="select-asset-list"></div>
+							<div class="input is-scroll select-update-asset" style="position:absolute; display: none; background: white; height:400px;">
+								<div class="update-asset-list"></div>
 							</div>
 						</td>
 					</tr>
@@ -968,24 +1013,19 @@
 						<th>대분류</th>
 						<td>
 							<input type="text" class="input" id="update-bigcate" placeholder="분류선택" readonly>
-							<div class="input is-scroll select-incate-div select-div text-center" style="width:500px; height:120px;">
-								<div class="select-incate-list">
+							<div class="input is-scroll select-update-incate select-div text-center" style="width:500px; height:120px;">
+								<div class="select-update-incate">
 									<table class="select-table td-border td-hover">
 										<tr>
-											<td>월급</td>
-											<td>부수입</td>
-											<td>용돈</td>
-										</tr>
-										<tr>
-											<td>성과금</td>
-											<td>이자</td>
+											<td>소득</td>
+											<td>저축</td>
 											<td>기타</td>
 										</tr>
 									</table>
 								</div>
 							</div>
-							<div class="input is-scroll select-outcate-div select-div text-center" style="width:500px; height:220px;">
-								<div class="select-outcate-list">
+							<div class="input is-scroll select-update-outcate select-div text-center" style="width:500px; height:220px;">
+								<div class="select-update-outcate">
 									<table class="select-table td-border td-hover">
 										<tr>
 											<td>식비</td>
@@ -1003,8 +1043,8 @@
 											<td>선물/경조사</td>
 										</tr>
 										<tr>
+											<td>공과금</td>
 											<td>교육</td>
-											<td>구독</td>
 											<td>기타</td>
 										</tr>
 									</table>
@@ -1016,18 +1056,18 @@
 						<th>소분류</th>
 						<td>
 							<input type="text" class="input" id="update-smallcate" placeholder="분류선택" readonly>
-							<div class="input is-scroll select-smallcate-div select-div text-center" style="width:330px; height:220px;">
-								<div class="select-smallcate-list"></div>
+							<div class="input is-scroll select-update-smallcate select-div text-center" style="width:330px; height:220px;">
+								<div class="select-update-smallcate-list"></div>
 							</div>
 						</td>
 					</tr>
 					<tr>
-						<th>금액</th>
-						<td><input type="text" class="input" id="update-total"></td>
-					</tr>
-					<tr>
 						<th>내용</th>
 						<td><input type="text" class="input" id="update-content" maxlength="20"></td>
+					</tr>
+					<tr>
+						<th>금액</th>
+						<td><input type="text" class="input" id="update-total"></td>
 					</tr>
 				</table>
 				<button class="btn main-color-btn" id="update-account-btn">수정</button>

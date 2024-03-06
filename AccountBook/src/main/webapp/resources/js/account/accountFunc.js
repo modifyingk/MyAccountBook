@@ -8,22 +8,25 @@ $(function() {
 	
 	// 수입/지출 내역 가져오기
 	$.accountList = function(dateVal, useridVal) {
-		var result;
 		$.ajax({
 			type : "post",
 			url : "selectAccount",
-			async : false,
 			data : {
 				date : dateVal,
 				userid : useridVal,
 			},
 			success : function(res) {
 				result = res;
+				$("#account-list-div").html("");
+				$("#account-list-div").append(result);
 			}
 		})
-		return result;
 	}
-	
+	// 수입/지출 내역 보여주기
+	$.showAccount = function(today, userid) {
+		$.accountList(today, userid);
+	}
+	/*
 	// 수입/지출 내역 html
 	$.accountHtml = function(map) {
 		if(Object.keys(map).length > 0) {
@@ -60,39 +63,8 @@ $(function() {
 			$("#account-list-div").append(html);
 		}
 	}
-	
-	// 수입/지출 내역 보여주기
-	$.showAccount = function(today, userid) {
-		$("#account-list-div").html("");
-		$.accountHtml($.accountList(today, userid));
-	}
+	*/
 
-	// 금액 합계 계산
-	$.calcTotal = function(calcID) {
-		var n = $(calcID).length;
-		var total = 0;
-		for(var i = 0; i < n; i++) {
-			var val = $(calcID).eq(i).text().split("원")[0].replace(",", "");
-			total += parseInt(val);
-		}
-		return total;
-	}
-	
-	// 금액 합계 보여주기
-	$.showTotal = function() {
-		$("#total-div i").html(($.calcTotal(".part-income") + $.calcTotal(".part-spend")).toLocaleString());
-		$("#income-div i").html($.calcTotal(".part-income").toLocaleString());
-		$("#spend-div i").html($.calcTotal(".part-spend").toLocaleString());
-	}
-	
-	$.showStatsTotal = function(typeVal) {
-		if(typeVal == "수입") {
-			$("#account-total-div").html("<h3 class='h-normal fs-23'>합계<i class='h-normal blue'>" + $.calcTotal(".td-income").toLocaleString() + "원</i></h3>");
-		} else {
-			$("#account-total-div").html("<h3 class='h-normal fs-23'>합계<i class='h-normal red'>" + $.calcTotal(".td-spend").toLocaleString() + "원</i></h3>");
-		}
-	}
-	
 	// 카테고리별 통계
 	$.categoryStatsList = function(dateVal, useridVal, typeVal) {
 		var result;
@@ -212,52 +184,6 @@ $(function() {
 		return result;
 	}
 	
-	// 자산 선택 및 값 자동 입력
-	$.pickAsset = function(assetID) {
-		$(document).on("click", assetID, function() {
-			$.showSelectAsset(".select-asset-list");
-			$(".select-asset-div").show();
-		})
-		$(document).on("click", ".select-asset-div tr", function() {
-			let assetVal = $(this).children().eq(0).text();
-			$(assetID).attr("value", assetVal);
-			$(".select-asset-div").hide();
-		})
-	}
-	
-	// 대분류 선택 및 값 자동 입력
-	$.pickBigcate = function(categoryID) {
-		$(document).on("click", categoryID, function() {
-			let mtype = $(".switch label").text(); // 선택된 값 변수에 저장
-			if(mtype == "수입") {
-				$(".select-incate-div").show();
-			} else {
-				$(".select-outcate-div").show();
-			}
-		})
-		$(document).on("click", ".select-incate-div td", function() {
-			let categoryVal = $(this).text();
-			$(categoryID).attr("value", categoryVal);
-			$(".select-incate-div").hide();
-		})
-		$(document).on("click", ".select-outcate-div td", function() {
-			let categoryVal = $(this).text();
-			$(categoryID).attr("value", categoryVal);
-			$(".select-outcate-div").hide();
-		})
-	}
-	/*
-	// 소분류 선택 및 값 자동 입력
-	$.pickSmallcate = function(categoryID) {
-		$(document).on("click", categoryID, function() {
-			$(".select-smallcate-div").show();
-		})
-		$(document).on("click", ".select-smallcate-div td", function() {
-			let categoryVal = $(this).text();
-			$(categoryID).attr("value", categoryVal);
-			$(".select-smallcate-div").hide();
-		})
-	}*/
 	/*
 	// 카테고리 선택 및 값 자동 입력
 	$.pickCategory = function(categoryID, mtypeName) {

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>가계부 | 아이디찾기</title>
+<title>가계부 | 아이디/비밀번호 찾기</title>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript" src="../resources/js/member/find_id_pw.js"></script>
@@ -57,7 +57,7 @@
 			<div id="find-id-div" hidden="hidden">
 				<div>
 					<h2 class="fs40 main-color"><i class="fi fi-rr-search"></i> 아이디 찾기</h2>
-					<p>본인확인 이메일 주소와 입력한 이메일 주소가 같아야, 인증번호를 받을 수 있습니다.</p><br>
+					<p>본인확인 이메일 주소와 입력한 이메일 주소가 같아야, 아이디를 찾으실 수 있습니다.</p><br>
 				</div>
 				<div>
 					<form method="post" id="find-id-form" action="showId">
@@ -101,7 +101,7 @@
 			<div id="find-pw-div">
 				<div>
 					<h2 class="fs40 main-color"><i class="fi fi-rr-search"></i> 비밀번호 찾기</h2>
-					<p>본인확인 이메일 주소와 입력한 이메일 주소가 같아야, 인증번호를 받을 수 있습니다.</p><br>
+					<p>본인확인 이메일 주소와 입력한 이메일 주소가 같아야, 비밀번호를 찾으실 수 있습니다.</p><br>
 				</div>
 				<div>
 					<table class="center-table">

@@ -101,8 +101,8 @@ $(function() {
 
 		
 		var op = confirm("정말로 삭제하시겠습니까?");
-		$(this).closest("tr").remove();
 		if(op) {
+			$(this).closest("tr").remove();
 			$.ajax({
 				type : "post",
 				url : "deleteCategory",

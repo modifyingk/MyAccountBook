@@ -49,6 +49,7 @@
 	.incategory-div, .outcategory-div {
 		width: 470px;
 		height: 350px;
+		overflow-y: auto;
 	}
 	.incategory-div .key-div {
 		background: #6482B9;
@@ -155,7 +156,7 @@
 					<div style="float: left;">
 						<div class="incategory-div">
 							<table id="income-t1">
-								<tr><td><div class="key-div">월급</div><button class="manage-btn">···</button></td></tr>
+								<tr><td><div class="key-div">소득</div><button class="manage-btn">···</button></td></tr>
 								<tr><td>
 									<div class='is-border'>
 										<div class='add-div' id='add-btn'>+</div>
@@ -164,9 +165,11 @@
 								</td></tr>
 							</table>
 						</div>
+					</div>
+					<div style="float: left;">
 						<div class="incategory-div">
 							<table id="income-t2">
-								<tr><td><div class="key-div">상여금</div>
+								<tr><td><div class="key-div">저축</div>
 								<button class="manage-btn">···</button></td></tr>
 								<tr><td>
 									<div class='is-border'>
@@ -180,44 +183,6 @@
 					<div style="float: left;">
 						<div class="incategory-div">
 							<table id="income-t3">
-								<tr><td><div class="key-div">부수입</div>
-								<button class="manage-btn">···</button></td></tr>
-								<tr><td>
-									<div class='is-border'>
-										<div class='add-div' id='add-btn'>+</div>
-										<div><input class='input inner' id='add-outcate'></div>
-									</div>
-								</td></tr>
-							</table>
-						</div>
-						<div class="incategory-div">
-							<table id="income-t4">
-								<tr><td><div class="key-div">이자</div>
-								<button class="manage-btn">···</button></td></tr>
-								<tr><td>
-									<div class='is-border'>
-										<div class='add-div' id='add-btn'>+</div>
-										<div><input class='input inner' id='add-outcate'></div>
-									</div>
-								</td></tr>
-							</table>
-						</div>
-					</div>
-					<div style="float: left;">
-						<div class="incategory-div">
-							<table id="income-t5">
-								<tr><td><div class="key-div">용돈</div>
-								<button class="manage-btn">···</button></td></tr>
-								<tr><td>
-									<div class='is-border'>
-										<div class='add-div' id='add-btn'>+</div>
-										<div><input class='input inner' id='add-outcate'></div>
-									</div>
-								</td></tr>
-							</table>
-						</div>
-						<div class="incategory-div">
-							<table id="income-t6">
 								<tr><td><div class="key-div">기타</div>
 								<button class="manage-btn">···</button></td></tr>
 								<tr><td>
@@ -272,7 +237,7 @@
 						</div>
 						<div class="outcategory-div">
 							<table id="spend-t4">
-								<tr><td><div class="key-div">교육</div>
+								<tr><td><div class="key-div">공과금</div>
 								<button class="manage-btn">···</button></td></tr>
 								<tr><td>
 									<div class='is-border'>
@@ -322,7 +287,7 @@
 						</div>
 						<div class="outcategory-div">
 							<table id="spend-t8">
-								<tr><td><div class="key-div">구독</div>
+								<tr><td><div class="key-div">교육</div>
 								<button class="manage-btn">···</button></td></tr>
 								<tr><td>
 									<div class='is-border'>

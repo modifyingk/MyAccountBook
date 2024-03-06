@@ -66,28 +66,19 @@ public class MemberController {
 		emailSvc.sendCode(email);
 	}
 	
-	// 아이디 찾기
-	@ResponseBody
-	@RequestMapping("member/findId")
-	public boolean findId(MemberVO memberVO) {
-		List<MemberVO> findList = mDao.findId(memberVO);
-		System.out.println(findList);
-		if(findList.size() > 0) { // 이름과 이메일이 일치하면 메일 전송
-			sendCode(memberVO.getEmail());
-			return true;
-		}
-		else
-			return false;
-	}
-	
 	// 인증번호 확인
 	@ResponseBody
 	@RequestMapping("member/verifyCode")
 	public boolean verifyCode(String email, int code) {
-		return emailSvc.verifyCode(email, code);
+		if(emailSvc.verifyCode(email, code)) {
+			emailSvc.removeCode(email);
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
-	// 찾은 아이디 보여주기
+	// 아이디 찾기
 	@RequestMapping("member/showId")
 	public void showId(MemberVO memberVO, Model model) {
 		List<MemberVO> idList = mDao.findId(memberVO);

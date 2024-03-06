@@ -75,18 +75,12 @@ $(function() {
 		"<button class='update-btn check-btn hide' id='update-btn'><i class='fi fi-rr-check'></i></button>" +
 		"<button class='update-btn cross-btn hide' id='delete-btn'><i class='fi fi-rr-cross'></i></button></div></td></tr>";
 		
-		if(bigVal == "월급") {
+		if(bigVal == "소득") {
 			$("#income-t1").append(list_html);
-		} else if(bigVal == "상여금") {
+		} else if(bigVal == "저축") {
 			$("#income-t2").append(list_html);
-		} else if(bigVal == "부수입") {
-			$("#income-t3").append(list_html);
-		} else if(bigVal == "이자") {
-			$("#income-t4").append(list_html);
-		} else if(bigVal == "용돈") {
-			$("#income-t5").append(list_html);
 		} else {
-			$("#income-t6").append(list_html);
+			$("#income-t3").append(list_html);
 		}
 	}
 	
@@ -103,7 +97,7 @@ $(function() {
 			$("#spend-t2").append(list_html);
 		} else if(bigVal == "패션/뷰티") {
 			$("#spend-t3").append(list_html);
-		} else if(bigVal == "교육") {
+		} else if(bigVal == "공과금") {
 			$("#spend-t4").append(list_html);
 		} else if(bigVal == "마트/편의점") {
 			$("#spend-t5").append(list_html);
@@ -111,7 +105,7 @@ $(function() {
 			$("#spend-t6").append(list_html);
 		} else if(bigVal == "의료/건강") {
 			$("#spend-t7").append(list_html);
-		} else if(bigVal == "구독") {
+		} else if(bigVal == "교육") {
 			$("#spend-t8").append(list_html);
 		} else if(bigVal == "생활용품") {
 			$("#spend-t9").append(list_html);
