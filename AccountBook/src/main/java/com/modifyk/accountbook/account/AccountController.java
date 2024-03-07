@@ -78,6 +78,24 @@ public class AccountController {
 		model.addAttribute("map", map);
 	}
 	
+	// 수입/지출 검색
+	@RequestMapping("account/searchAccount")
+	public String searchAccount(AccountVO accountVO, Model model) {
+		System.out.println(accountVO);
+		List<AccountVO> list = aDao.searchAccount(accountVO);
+		LinkedHashMap<String, List<AccountVO>> map = toMapSvc.accountToMap(list); // 날짜별로 그룹한 map
+		model.addAttribute("map", map);
+		return "account/selectAccount";
+	}
+
+	// 수입/지출 검색 단어 자동완성
+	@RequestMapping("account/autoComplete")
+	public void autoSearch(AccountVO accountVO, Model model) {
+		List<String> list = aDao.autoComplete(accountVO);
+		System.out.println(list);
+		model.addAttribute("list", list);
+	}
+	
 	// 수입/지출 수정
 	@ResponseBody
 	@RequestMapping("account/updateAccount")
@@ -114,6 +132,7 @@ public class AccountController {
 			return false;
 		}
 	}
+	
 	/*
 	// 수입/지출 목록
 	public List<AccountVO> accountList(AccountVO accountVO, String moneytype) {
@@ -199,22 +218,7 @@ public class AccountController {
 		return list;
 	}
 	
-	// 수입/지출 검색
-	@ResponseBody
-	@RequestMapping("account/searchAccount")
-	public HashMap<String, List<AccountVO>> searchAccount(AccountVO accountVO) {
-		List<AccountVO> list = aDao.searchAccount(accountVO);
-		HashMap<String, List<AccountVO>> map = toMapSvc.accountToMap(list);
-		return map;
-	}
-
-	// 수입/지출 검색 단어 자동완성
-	@ResponseBody
-	@RequestMapping("account/autoSearch")
-	public List<String> autoSearch(AccountVO accountVO) {
-		List<String> list = aDao.autoSearch(accountVO);
-		return list;
-	}*/
+	*/
 /*
 	// 반복 내역 가져오기
 	@ResponseBody

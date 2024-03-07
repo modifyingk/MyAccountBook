@@ -1,0 +1,183 @@
+@charset "UTF-8";
+:root {
+	--main-color : #f39c12;
+	--main-color-hover : #f38e12;
+}
+/* 기본 */
+.main-div {
+	margin-top: 10%;
+}
+.table {
+	border-collapse: collapse;
+}
+.table td {
+	border: 1px solid lightgray;
+	padding: 10px;
+	font-size: 20px;
+}
+.table td div {
+	float: left;
+	margin: 5px;
+}
+.table input {
+	border: none;
+	font-size: 18px;
+}
+.table input:focus {
+	outline: none;
+}
+
+.center-table th {
+	width: 15%;
+	height: 60px;
+	text-align: center;
+}
+.center-table td {
+	width: 85%;
+}
+
+#login-btn {
+	font-weight: bold;
+	font-size: 20px;
+}	
+	
+/* main.jsp */
+.main #login-btn {
+	width: 500px;
+	height: 60px;
+}
+
+/* login.jsp */
+.login #login-btn {
+	width: 450px;
+	height: 55px;
+}
+.login .table {
+	width: 450px;
+}
+.login .table td {
+	width: 450px;
+}
+.login .table input {
+	width: 350px;
+}
+
+/* sign_up.jsp */
+.signup.main-div {
+	margin-top: 5%;
+}
+.signup .table {
+	width: 500px;
+}
+.signup .table td {
+	width: 500px;
+}
+.signup .table input {
+	width: 400px;
+}
+#signup-btn {
+	width: 500px;
+	height: 55px;
+	font-weight: bold;
+	font-size: 20px;
+}
+.signup #email-div {
+	margin: 0;
+}
+.signup #email-div input {
+	width: 150px;
+}
+.signup #select-address-btn:hover {
+	cursor: pointer;
+	color: var(--main-color-hover);
+}
+.signup #select-address-div {
+	position: absolute;
+	background: white;
+	display: none;
+}
+.signup #address-table {
+	width: 150px;
+	border-collapse: separate;
+}
+.signup #address-table td {
+	border: 1px solid lightgray;
+	border-radius: 10px;
+}
+.signup #address-table td:hover {
+	background: #F3F3F3;
+	cursor: pointer;
+}
+.signup #send-code-btn {
+	width: 50px;
+	background: var(--main-color);
+	color: white;
+	text-align: center;
+}
+.signup #send-code-btn:hover{
+	cursor: pointer;
+	background-color: var(--main-color-hover);
+}
+
+/* find_id_pw.jsp */
+#find-id-btn, #find-pw-btn {
+	width: 700px;
+	height: 55px;
+	font-size: 20px;
+	font-weight: bold;
+}
+#select-find {
+	margin-left: auto;
+	margin-right: auto;
+}
+#select-find td {
+	width: 300px;
+	height: 30px;
+	padding: 10px;
+	border: 1px solid var(--main-color);
+	border-radius: 10px;
+	color: var(--main-color);
+	font-weight: bold;
+}
+#select-find td:hover {
+	background-color: var(--main-color);
+	color: white;
+	cursor: pointer;
+}	
+#select-find td.active {
+	background-color: var(--main-color);
+	color: white;
+}
+
+/* myInfo.jsp */
+.myinfo.main-div {
+	display: inline-block;
+	margin: 20px 100px;
+}
+.myinfo .table td {
+	width: 90%;
+	padding: 10px;
+	border: none;
+}
+.myinfo .table th {
+	width: 20%;
+	padding: 10px;
+}
+.myinfo .table input {
+	border: 1px solid lightgray;
+	font-size: 17px;
+}
+.myinfo .table input:focus {
+	outline: black;
+}
+#update-btn {
+	width: 300px;
+	font-weight: bold;
+}
+#drop-btn {
+	width: 180px;
+	font-weight: bold;
+}
+#change-pw {
+	width: 375px;
+}

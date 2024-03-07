@@ -6,7 +6,7 @@ $(function() {
 		$("#month-div").html("<i class='h-normal fs-28'>" + year + "년 " + month + "월</i>")
 	}
 	
-	// 수입/지출 내역 가져오기
+	// 수입/지출 내역
 	$.accountList = function(dateVal, useridVal) {
 		$.ajax({
 			type : "post",
@@ -22,48 +22,6 @@ $(function() {
 			}
 		})
 	}
-	// 수입/지출 내역 보여주기
-	$.showAccount = function(today, userid) {
-		$.accountList(today, userid);
-	}
-	/*
-	// 수입/지출 내역 html
-	$.accountHtml = function(map) {
-		if(Object.keys(map).length > 0) {
-			for(const [key, valList] of Object.entries(map)){
-				console.log(key);
-				let income = 0; let spend = 0;
-				let html1 = "<table class='account-table'>";
-				let html2 = "<tr class='tr-date'><td class='td-date'>" + $.removeZero($.getMonth(key)) + "월 " + $.removeZero($.getDay(key)) + "일 " + $.getDayOfWeek(key) + "</td>";
-				let html3 = "";
-				for(let i = 0; i < valList.length; i++) {
-					html3 += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>";
-					html3 += "<td class='hide'>" + valList[i].accountid + "</td>"; // 수입/지출 id
-					html3 += "<td class='hide'>" + valList[i].moneytype + "</td>"; // 수입/지출
-					html3 += "<td class='td-category'><div class='key-div'>" + valList[i].bigcate + "</div>"; // 대분류
-					html3 += "<div style='padding:10px;'>" + valList[i].smallcate + "</div></td>"; // 소분류
-					html3 += "<td class='td-content'>" + valList[i].content + "</td>";
-					html3 += "<td class='td-asset gray'>" + valList[i].assetname + "</td>";
-					if(valList[i].moneytype == "수입") {
-						html3 += "<td class='td-income text-right blue'>" + parseInt(valList[i].total).toLocaleString() + "원</td>"; // 돈
-						income += parseInt(valList[i].total);
-					} else {
-						html3 += "<td class='td-spend text-right red'>" + parseInt(valList[i].total).toLocaleString() + "원</td>";
-						spend += parseInt(valList[i].total);
-					}
-				}
-				
-				html2 += "<td colspan='3'><div class='part-spend'> " + spend + "원</div><div class='part-income'>" + income + "원</div></td></tr>";
-				let html = html1 + html2 + html3 + "</table><br><br>";
-				$("#account-list-div").prepend(html);
-
-			}
-		} else {
-			let html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
-			$("#account-list-div").append(html);
-		}
-	}
-	*/
 
 	// 카테고리별 통계
 	$.categoryStatsList = function(dateVal, useridVal, typeVal) {
@@ -211,6 +169,45 @@ $(function() {
 		$("#income-total").html($("#income-div i").text())
 		$("#spend-total").html($("#spend-div i").text())
 	}
+	
+	/*
+	// 수입/지출 내역 html
+	$.accountHtml = function(map) {
+		if(Object.keys(map).length > 0) {
+			for(const [key, valList] of Object.entries(map)){
+				console.log(key);
+				let income = 0; let spend = 0;
+				let html1 = "<table class='account-table'>";
+				let html2 = "<tr class='tr-date'><td class='td-date'>" + $.removeZero($.getMonth(key)) + "월 " + $.removeZero($.getDay(key)) + "일 " + $.getDayOfWeek(key) + "</td>";
+				let html3 = "";
+				for(let i = 0; i < valList.length; i++) {
+					html3 += "<tr class='tr-content'><td style='display:none;'>" + key + "</td>";
+					html3 += "<td class='hide'>" + valList[i].accountid + "</td>"; // 수입/지출 id
+					html3 += "<td class='hide'>" + valList[i].moneytype + "</td>"; // 수입/지출
+					html3 += "<td class='td-category'><div class='key-div'>" + valList[i].bigcate + "</div>"; // 대분류
+					html3 += "<div style='padding:10px;'>" + valList[i].smallcate + "</div></td>"; // 소분류
+					html3 += "<td class='td-content'>" + valList[i].content + "</td>";
+					html3 += "<td class='td-asset gray'>" + valList[i].assetname + "</td>";
+					if(valList[i].moneytype == "수입") {
+						html3 += "<td class='td-income text-right blue'>" + parseInt(valList[i].total).toLocaleString() + "원</td>"; // 돈
+						income += parseInt(valList[i].total);
+					} else {
+						html3 += "<td class='td-spend text-right red'>" + parseInt(valList[i].total).toLocaleString() + "원</td>";
+						spend += parseInt(valList[i].total);
+					}
+				}
+				
+				html2 += "<td colspan='3'><div class='part-spend'> " + spend + "원</div><div class='part-income'>" + income + "원</div></td></tr>";
+				let html = html1 + html2 + html3 + "</table><br><br>";
+				$("#account-list-div").prepend(html);
+
+			}
+		} else {
+			let html = "<div class='no-data-div'><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>";
+			$("#account-list-div").append(html);
+		}
+	}
+	*/
 	
 	/*
 	// 카테고리별 수입/지출 내역

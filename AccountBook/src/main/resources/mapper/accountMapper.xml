@@ -22,6 +22,16 @@
 		delete from account where accountid = #{accountid} and userid = #{userid};
 	</delete>
 	
+	<!-- 수입/지출 검색 -->
+	<select id="searchAccount" parameterType="accountVO" resultType="accountVO">
+		select * from account where content like concat('%', #{content}, '%') and userid = #{userid} and left(date, 6) = #{date} order by date desc;
+	</select>
+	
+	<!-- 수입/지출 검색 자동완성 -->
+	<select id="autoComplete" parameterType="accountVO" resultType="String">
+		select distinct content from account where content like concat('%', #{content}, '%') and userid = #{userid};
+	</select>
+	
 	<!-- account의 반복 id 업데이트 
 	<update id="updateRepeatid" parameterType="map">
 		update account set repeatid = #{repeatid} where accountid = #{accountid} and userid = #{userid};
@@ -87,15 +97,7 @@
 		select left(date, 7) as date, sum(total) as total from account where userid = #{userid} and moneytype = #{moneytype} and left(date, 4) = #{date} group by left(date, 7) order by date;
 	</select>
 	-->
-	<!-- 수입/지출 검색 
-	<select id="searchAccount" parameterType="accountVO" resultType="accountVO">
-		select * from account where content like concat('%', #{content}, '%') and userid = #{userid} order by date desc;
-	</select>
-	
-	수입/지출 검색 자동완성
-	<select id="autoSearch" parameterType="accountVO" resultType="String">
-		select distinct content from account where content like concat('%', #{content}, '%') and userid = #{userid};
-	</select>
+	<!--
 	
 	반복에 추가 가능한 내역 중복 없이 가져오기
 	<select id="canRepeatInfo" parameterType="String" resultType="accountVO">

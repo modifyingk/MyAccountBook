@@ -93,11 +93,7 @@
 		background: lightgray;
 	}
 	.input.inner {
-		border:none;
 		width: 270px;
-	}
-	.input.inner:focus {
-		outline: none;
 	}
 	.input.inner.update {
 		width: 240px;

@@ -9,17 +9,7 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main-style.css">
-<style type="text/css">
-	#login-btn {
-		width: 500px;
-		height: 60px;
-		font-weight: bold;
-		font-size: 20px;
-	}
-	#main-div {
-		margin-top: 10%;
-	}
-</style>
+<link rel="stylesheet" type="text/css" href="../resources/css/member/main.css">
 </head>
 <body>
 	<% /* 로그인이 되어 있을 때*/
@@ -29,7 +19,7 @@
 	<% }
 	/* 로그인이 되어 있지 않을 때 */
 	else { %>
-	<div class="container" id="main-div">
+	<div class="container main main-div">
 		<div>
 			<img src="../resources/img/piggy-bank.png" width="200px;">
 		</div>

@@ -3,41 +3,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style type="text/css">
-	#nav {
-		box-sizing:border-box;
-		width: 20%;
-		height:990px;
-		float: left;
-		border-radius: 10px;
-		background: #f3f3f3;
-		padding: 20px;
-	}
-	.menu-title {
-		font-size: 20px;
-		padding: 10px 20px;
-		cursor: default;
-	}
-	.menu-group {
-		list-style: none;
-	}
-	.menu-group li {
-		width: 200px;
-		padding: 10px;
-		font-size: 20px;
-		margin: 20px;
-	}
-	.menu-group li:hover {
-		cursor: pointer;
-		color: #f38c12;
-		font-weight: bold;
-	}
-	#myinfo {
-		text-align: center;
-		cursor: pointer;
-		padding: 10px;
-	}
-</style>
 <script type="text/javascript">
 	$(function () {
 		$("#myinfo").click(function () {

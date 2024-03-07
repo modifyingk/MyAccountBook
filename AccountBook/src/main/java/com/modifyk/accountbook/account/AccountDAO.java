@@ -36,6 +36,16 @@ public class AccountDAO {
 		return my.delete("accountMapper.deleteAccount", accountVO);
 	}
 	
+	// 수입/지출 검색
+	public List<AccountVO> searchAccount(AccountVO accountVO) {
+		return my.selectList("accountMapper.searchAccount", accountVO);
+	}
+		
+	// 수입/지출 검색 자동완성
+	public List<String> autoComplete(AccountVO accountVO) {
+		return my.selectList("accountMapper.autoComplete", accountVO);
+	}
+		
 	/*
 	// account의 반복 id 업데이트
 	public int updateRepeatid(HashMap<String, Object> map) {
@@ -118,16 +128,6 @@ public class AccountDAO {
 		return my.selectList("accountMapper.detailsOfYear", accountVO);
 	}
 	/*
-	// 수입/지출 검색
-	public List<AccountVO> searchAccount(AccountVO accountVO) {
-		return my.selectList("accountMapper.searchAccount", accountVO);
-	}
-	
-	// 수입/지출 검색 자동완성
-	public List<String> autoSearch(AccountVO accountVO) {
-		return my.selectList("accountMapper.autoSearch", accountVO);
-	}
-	
 	/* // 월별 카테고리별 수입/지출 내역
 	public List<AccountVO> cateAccount(AccountVO accountVO) {
 		return my.selectList("accountMapper.cateAccount", accountVO);

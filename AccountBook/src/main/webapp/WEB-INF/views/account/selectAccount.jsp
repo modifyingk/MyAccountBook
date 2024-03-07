@@ -25,7 +25,6 @@
 		</c:forEach>
 		
 		<!-- 수입/지출 내역 -->
-		
 		<table class="account-table ${map.key}">
 			<tr class="tr-date">
 				<td class="td-date">
@@ -66,7 +65,6 @@
 			</tr>
 			</c:forEach>
 		</table>
-		<br><br>
 	</c:forEach>
 </body>
 <script>

@@ -1,4 +1,70 @@
 @charset "UTF-8";
+:root {
+	--main-color : #f39c12;
+	--main-color-hover : #f38e12;
+}
+/* header */
+#header {
+	display: flex;
+	height: 70px;
+	box-sizing: border-box;
+	box-shadow: 2px 2px 5px lightgray;
+	border-radius: 10px;
+	background: var(--main-color);
+}
+#logo {
+	margin-left: 30px;
+	padding: 10px;
+}
+#logo h2 {
+	width: 220px;
+	cursor: pointer;
+}
+#logout {
+	font-size: 20px;
+	font-weight: bold;
+	color: white;
+	cursor: pointer;
+	position: absolute;
+	right: 50px;
+	top: 28px;
+}
+
+/* sidebar */
+#nav {
+	box-sizing:border-box;
+	width: 20%;
+	height:990px;
+	float: left;
+	border-radius: 10px;
+	background: #f3f3f3;
+	padding: 20px;
+}
+.menu-title {
+	font-size: 20px;
+	padding: 10px 20px;
+	cursor: default;
+}
+.menu-group {
+	list-style: none;
+}
+.menu-group li {
+	width: 200px;
+	padding: 10px;
+	font-size: 20px;
+	margin: 20px;
+}
+.menu-group li:hover {
+	cursor: pointer;
+	color: #f38e12;
+	font-weight: bold;
+}
+#myinfo {
+	text-align: center;
+	cursor: pointer;
+	padding: 10px;
+}
+
 /* text */
 .h-normal {
 	font-weight: normal;
@@ -136,6 +202,7 @@
 	margin-right: auto;
 	text-align: left;
 }
+/*
 .center-table th {
 	width: 15%;
 	height: 60px;
@@ -143,7 +210,7 @@
 }
 .center-table td {
 	width: 85%;
-}
+}*/
 
 .select-table {
 	width: 100%;
@@ -245,6 +312,12 @@
 .input.small {
 	width: 150px;
 	margin-bottom: 10px;
+}
+.input.inner {
+	border:none;
+}
+.input.inner:focus {
+	outline: none;
 }
 .select input[type="radio"] {
 	display: none;

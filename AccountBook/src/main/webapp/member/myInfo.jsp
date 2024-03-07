@@ -8,6 +8,7 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main-style.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/member/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript" src="../resources/js/member/my_info.js"></script>
 <script>
@@ -48,7 +49,7 @@
 		<%
 		/* 로그인이 되어 있을 때*/
 		if(session.getAttribute("userid") != null) { %>
-			<div id="main-div">
+			<div class="myinfo main-div">
 				<h2 class="fs35 main-color">개인정보 관리</h2>
 				<table class="table">
 					<tr>

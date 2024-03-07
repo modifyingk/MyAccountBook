@@ -9,43 +9,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript" src="../resources/js/member/find_id_pw.js"></script>
 <link rel="stylesheet" type="text/css" href="../resources/css/main-style.css">
-<style type="text/css">
-	#find-id-btn, #find-pw-btn {
-		width: 700px;
-		height: 55px;
-		font-size: 20px;
-		font-weight: bold;
-	}
-	#select-find {
-		margin-left: auto;
-		margin-right: auto;
-	}
-	#select-find td {
-		width: 300px;
-		height: 30px;
-		padding: 10px;
-		border: 1px solid #f29c12;
-		border-radius: 10px;
-		color: #f29c12;
-		font-weight: bold;
-	}
-	#select-find td:hover {
-		background-color: #f39c12;
-		color: white;
-		cursor: pointer;
-	}	
-	#select-find td.active {
-		background-color: #f39c12;
-		color: white;
-	}
-	#main-div {
-		margin-top: 10%;
-	}
-</style>
+<link rel="stylesheet" type="text/css" href="../resources/css/member/main.css">
 </head>
 <body>
 	<div>
-		<div class="container" id="main-div">
+		<div class="container find-id-pw main-div">
 			<table id="select-find">
 				<tr>
 					<td>아이디 찾기</td>
@@ -141,12 +109,6 @@
 					</table>
 					<br><br>
 					<button type="submit" class="btn main-color-btn" id="find-pw-btn">비밀번호 찾기</button>	
-				</div>
-			</div>
-			<!-- 컨텐츠 -->
-			<div class="col-7 is-center">
-				<div class="container margin-big">
-							
 				</div>
 			</div>
 		</div>

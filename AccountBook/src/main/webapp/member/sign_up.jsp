@@ -8,89 +8,19 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main-style.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/member/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript" src="../resources/js/member/sign_up.js"></script>
-<style type="text/css">
-	#main-div {
-		margin-top: 5%;
-	}
-	#signup-btn {
-		width: 500px;
-		height: 55px;
-		font-weight: bold;
-		font-size: 20px;
-	}
-	.signup-table {
-		border-collapse: collapse;
-		border-radius: 10px;
-		width: 500px;
-	}
-	.signup-table td {
-		border: 1px solid lightgray;
-		padding: 10px;
-		font-size: 20px;
-		width: 500px;
-	}
-	.signup-table td div {
-		float: left;
-		margin: 5px;
-	}
-	.signup-table input {
-		border: none;
-		font-size: 18px;
-		width: 400px;
-	}
-	.signup-table input:focus {
-		outline: none;
-	}
-	#email-div {
-		margin: 0;
-	}
-	#email-div input {
-		width: 150px;
-	}
-	#select-address-btn:hover {
-		cursor: pointer;
-		color: #f39c12;
-	}
-	#select-address-div {
-		position: absolute;
-		background: white;
-		display: none;
-	}
-	#address-table {
-		width: 150px;
-		border-collapse: separate;
-	}
-	#address-table td {
-		border: 1px solid lightgray;
-		border-radius: 10px;
-	}
-	#address-table td:hover {
-		background: #F3F3F3;
-		cursor: pointer;
-	}
-	#send-code-btn {
-		width: 50px;
-		background: #f39c12;
-		color: white;
-		text-align: center;
-	}
-	#send-code-btn:hover{
-		cursor: pointer;
-		background-color: #f38e12;
-	}
-</style>
 </head>
 <body>
 	<div>
 		<div>
 			<!-- 컨텐츠 -->
-			<div class="container" id="main-div">
+			<div class="container signup main-div">
 				<div>
 					<h2 class="fs40 main-color"><i class="fi fi-rs-user-add"></i> 회원가입</h2>
 					<br>
-					<table class="center-table signup-table">
+					<table class="table center-table">
 						<tr>
 							<td>
 								<div><i class="fi fi-rr-user"></i></div>
@@ -107,7 +37,7 @@
 					<div id="id-check-div"></div>
 					<div id="pw-check-div"></div>
 					<br>
-					<table class="center-table signup-table">
+					<table class="table center-table">
 						<tr>
 							<td>
 								<div><i class="fi fi-rr-user"></i></div>
@@ -132,7 +62,7 @@
 					<div id="name-check-div"></div>
 					<div id="birth-check-div"></div>
 					<br>
-					<table class="center-table signup-table">
+					<table class="table center-table">
 						<tr>
 							<td>
 								<div><i class="fi fi-rr-envelope"></i></div>
