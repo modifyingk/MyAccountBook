@@ -14,31 +14,6 @@
 <script>
 	var userid = "<%= session.getAttribute("userid") %>";
 </script>
-<style type="text/css">
-	.table td {
-		width: 90%;
-		padding: 10px;
-	}
-	.table th {
-		width: 20%;
-		padding: 10px;
-	}
-	#update-btn {
-		width: 300px;
-		font-weight: bold;
-	}
-	#drop-btn {
-		width: 180px;
-		font-weight: bold;
-	}
-	#change-pw {
-		width: 375px;
-	}
-	#main-div {
-		display: inline-block;
-		margin: 20px 100px;
-	}
-</style>
 </head>
 <body>
 	<div>
@@ -50,7 +25,7 @@
 		/* 로그인이 되어 있을 때*/
 		if(session.getAttribute("userid") != null) { %>
 			<div class="myinfo main-div">
-				<h2 class="fs35 main-color">개인정보 관리</h2>
+				<h2 class="title-text">개인정보 관리</h2>
 				<table class="table">
 					<tr>
 						<th>비밀번호</th>

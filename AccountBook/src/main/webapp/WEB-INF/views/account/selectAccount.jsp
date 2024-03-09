@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
@@ -25,10 +24,12 @@
 		</c:forEach>
 		
 		<!-- 수입/지출 내역 -->
-		<table class="account-table ${map.key}">
+		<fmt:parseDate value="${map.key}" var="dateValue" pattern="yyyyMMdd"></fmt:parseDate>
+		<fmt:formatDate var="yoil" value="${dateValue}" pattern="E"/>
+		
+		<table class="account-table ${map.key} ${yoil}">
 			<tr class="tr-date">
 				<td class="td-date">
-					<fmt:parseDate value="${map.key}" var="dateValue" pattern="yyyyMMdd"></fmt:parseDate>
 					<fmt:formatDate value="${dateValue}" pattern="M월 d일 E"/>
 				</td>
 				<td colspan="3">
@@ -36,7 +37,6 @@
 					<div class="part-income"><fmt:formatNumber value="${income}"></fmt:formatNumber>원</div>
 				</td>
 			</tr>
-			
 			<c:forEach items="${map.value}" var="value">
 			<tr class="tr-content">
 				<td class="hide" id="td-key">${map.key}</td>
@@ -66,22 +66,22 @@
 			</c:forEach>
 		</table>
 	</c:forEach>
-</body>
-<script>
-$(function () {
-	$("#total-div i").html((${income_total} + ${spend_total}).toLocaleString());
-	$("#income-div i").html((${income_total}).toLocaleString());
-	$("#spend-div i").html((${spend_total}).toLocaleString());
-	
-	// 수입/지출 내역 테이블에서 날짜 tr 클릭 시
-	$(document).on("click", "#account-list-div .tr-date", function() {
-		let obj = $(this).parent().children().eq(1).children().eq(0).text();
-		let y = obj.substring(0, 4);
-		let m = obj.substring(4, 6);
-		let d = obj.substring(6, 8);
-		var dateVal = y + "-" + $.insertZero(m) + "-" + $.insertZero(d);
-		$("#add-date").attr("value", dateVal);
+	<script>
+	$(function () {
+		$("#total-div i").html((${income_total} + ${spend_total}).toLocaleString());
+		$("#income-div i").html((${income_total}).toLocaleString());
+		$("#spend-div i").html((${spend_total}).toLocaleString());
+		
+		// 수입/지출 내역 테이블에서 날짜 tr 클릭 시
+		$(document).on("click", "#account-list-div .tr-date", function() {
+			let obj = $(this).parent().children().eq(1).children().eq(0).text();
+			let y = obj.substring(0, 4);
+			let m = obj.substring(4, 6);
+			let d = obj.substring(6, 8);
+			var dateVal = y + "-" + $.insertZero(m) + "-" + $.insertZero(d);
+			$("#add-date").attr("value", dateVal);
+		})
 	})
-})
-</script>
+	</script>
+</body>
 </html>

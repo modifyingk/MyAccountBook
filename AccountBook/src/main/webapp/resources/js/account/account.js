@@ -21,7 +21,7 @@ $(function() {
 		
 		$.setDate(year, month); // 날짜 세팅
 		$.accountList(today, userid); // 월별 수입/지출 목록
-		$("#mini-date-div").html(month + "월"); // 미니 달력
+		$.makeCalendar(today);
 		
 		$("#add-date").attr("value", $.getFullDate(date)); // 현재 날짜로 미리 값 세팅
 		
@@ -53,32 +53,35 @@ $(function() {
 	})
 	
 	// 날짜 선택 창에서 이전 연도 클릭
-	$(document).on("click", "#before-year", function() {
-		year = $.selectBeforeYear(year);
+	$(document).on("click", "#last-year", function() {
+		year = $.selectLastYear(year);
 	})
 	
 	// 날짜 선택 창에서 다음 연도 클릭
-	$(document).on("click", "#after-year", function() {
-		year = $.selectAfterYear(year);
+	$(document).on("click", "#next-year", function() {
+		year = $.selectNextYear(year);
 	})
 	
 	// 날짜 선택 창에서 월 선택
-	$(document).on("click", ".month-td", function() {
+	$(document).on("click", ".select-month td", function() {
+		$("#mini-calendar td").removeClass("active");
 		$(".show-range").removeClass("active");
 		$("#show-all").addClass("active");
 		
-		today = $.selectDate($("#current-year").text(), $(this).text());
+		today = $.selectDate($("#select-year").text(), $(this).text());
 		year = $.getYear(today);
 		month = $.getMonth(today);
 		
 		$.setDate(year, month);
-		$.accountList(today, userid);
+		$.accountList(today, userid)
+		$.makeCalendar(today);
 		
 		$("#select-date").hide();
 	})
 	
 	// 이전 달 클릭
-	$(document).on("click", "#before", function() {
+	$(document).on("click", "#last-month", function() {
+		$("#mini-calendar td").removeClass("active");
 		$(".show-range").removeClass("active");
 		$("#show-all").addClass("active");
 		
@@ -88,10 +91,12 @@ $(function() {
 		
 		$.setDate(year, month);
 		$.accountList(today, userid);
+		$.makeCalendar(today);
 	})
 	
 	// 다음 달 클릭
-	$(document).on("click", "#after", function() {
+	$(document).on("click", "#next-month", function() {
+		$("#mini-calendar td").removeClass("active");
 		$(".show-range").removeClass("active");
 		$("#show-all").addClass("active");
 		
@@ -101,6 +106,7 @@ $(function() {
 		
 		$.setDate(year, month);
 		$.accountList(today, userid);
+		$.makeCalendar(today);
 	})
 
 	// 수입/지출 내역 옵션 (전체/수입/지출)
@@ -183,7 +189,7 @@ $(function() {
 	
 	// 수입/지출 추가 - 자산 선택
 	$(document).on("click", "#add-asset", function() {
-		$.showSelectAsset(".add-asset-list");
+		$.showSelectAsset("#add-asset-list");
 		$(".select-add-asset").show();
 	})
 	$(document).on("click", ".select-add-asset tr", function() {
@@ -194,7 +200,7 @@ $(function() {
 	
 	// 수입/지출 수정 - 자산 선택
 	$(document).on("click", "#update-asset", function() {
-		$.showSelectAsset(".update-asset-list");
+		$.showSelectAsset("#update-asset-list");
 		$(".select-update-asset").show();
 	})
 	$(document).on("click", ".select-update-asset tr", function() {
@@ -228,7 +234,7 @@ $(function() {
 		let mtype = $("input[name=update-mtype]:checked").val(); // 선택된 값 변수에 저장
 		if(mtype == "수입") {
 			$(".select-update-incate").show();
-		} else {
+		} else if(mtype == "지출"){
 			$(".select-update-outcate").show();
 		}
 	})
@@ -488,6 +494,36 @@ $(function() {
 					$("#account-list-div").append(result);
 				}
 			})
+	})
+	
+	// 미니 달력 날짜 선택
+	$(document).on("click", "#mini-calendar .il", function() {
+		let value = $(this).children().children().eq(1).text(); // 선택 날짜
+
+		$("#mini-calendar td").removeClass("active");
+		$(this).addClass("active");
+			
+		let className = today + $.insertZero(value);
+		$(".account-table").show();
+		$(".account-table").not("." + className).hide(); // 선택 날짜 빼고 숨기기
+	})
+	
+	// 미니 달력 요일 선택
+	$(document).on("click", ".yoil td", function() {
+		let value = $(this).text(); // 선택 요일
+
+		$("#mini-calendar td").removeClass("active");
+		$(this).addClass("active");
+			
+		let className = value;
+		$(".account-table").show();
+		$(".account-table").not("." + className).hide(); // 선택 요일 빼고 숨기기
+	})
+	
+	// 미니 달력 월 클릭 시 원래대로
+	$(document).on("click", "#mini-date-div", function() {
+		$("#mini-calendar td").removeClass("active");
+		$(".account-table").show();
 	})
 	
 	/*

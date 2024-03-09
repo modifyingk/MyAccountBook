@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<table class="select-table td-border">
+	<table class="select-table">
 		<c:forEach items="${list}" var="list">
 		<tr>
 			<td>${list}</td>

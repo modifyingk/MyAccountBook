@@ -5,17 +5,42 @@
 <head>
 <script type="text/javascript">
 	$(function () {
-		$("#myinfo").click(function () {
+		$(".myinfo-div").click(function () {
 			location.href = "../member/myInfo.jsp";
+		})
+		
+		$(".menu-group li").click(function() { // li 클릭하면
+			let group = $(this).parent().attr("id");
+			let menu_idx = $(this).index();
+			if(group == "group1") {
+				if(menu_idx == 0) {
+					location.href = "../account/account.jsp";
+				} else if(menu_idx == 1) {
+					location.href = "../calendar/calendar.jsp";
+				} else if(menu_idx == 2) {
+					location.href = "../account/category_stats.jsp";
+					
+				}
+			} else if(group == "group2") {
+				if(menu_idx == 0) {
+					location.href = "../asset/asset.jsp";
+				}
+			} else if(group == "group3") {
+				if(menu_idx == 0) {
+					location.href = "../aim/aim.jsp";
+				} else if(menu_idx == 1) {
+					
+				}
+			}
 		})
 	})
 </script>
 </head>
 <body>
-	<div id="nav">
-		<div id="myinfo">
-			<i class="fi fi-rr-circle-user" style="font-size: 120px; color: #f39c12;"></i>
-			<p style="font-size: 23px; font-weight: bold; margin-top: 0;"><%= session.getAttribute("userid") %></p>
+	<div class="sidebar nav">
+		<div class="myinfo-div">
+			<i class="fi fi-rr-circle-user" id="myinfo-btn"></i>
+			<p id="login-id"><%= session.getAttribute("userid") %></p>
 		</div>
 		<hr>
 		<div>
@@ -43,32 +68,4 @@
 		</div>
 	</div>
 </body>
-<script>
-	$(function() {
-		$(".menu-group li").click(function() { // li 클릭하면
-			let group = $(this).parent().attr("id");
-			let menu_idx = $(this).index();
-			if(group == "group1") {
-				if(menu_idx == 0) {
-					location.href = "../account/account.jsp";
-				} else if(menu_idx == 1) {
-					location.href = "../calendar/calendar.jsp";
-				} else if(menu_idx == 2) {
-					location.href = "../account/category_stats.jsp";
-					
-				}
-			} else if(group == "group2") {
-				if(menu_idx == 0) {
-					location.href = "../asset/asset.jsp";
-				}
-			} else if(group == "group3") {
-				if(menu_idx == 0) {
-					location.href = "../aim/aim.jsp";
-				} else if(menu_idx == 1) {
-					
-				}
-			}
-		});
-	});
-</script>
 </html>

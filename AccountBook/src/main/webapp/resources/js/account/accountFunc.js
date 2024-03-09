@@ -3,7 +3,6 @@ $(function() {
 	$.setDate = function(year, month) {
 		$("#month").html($.removeZero(month) + "월");
 		$("#year").html(year);
-		$("#month-div").html("<i class='h-normal fs-28'>" + year + "년 " + month + "월</i>")
 	}
 	
 	// 수입/지출 내역
@@ -16,13 +15,29 @@ $(function() {
 				userid : useridVal,
 			},
 			success : function(res) {
-				result = res;
-				$("#account-list-div").html("");
-				$("#account-list-div").append(result);
+				$("#account-list-div").html(""); // 비우고
+				$("#account-list-div").append(res); // 추가
 			}
 		})
 	}
 
+	// 미니 달력
+	$.makeCalendar = function(today) {
+		$.ajax({
+			type: "post",
+			url: "makeCalendar",
+			data: {
+				date: today,
+				userid: userid
+			},
+			success: function(res) {
+				$("#left-div1").html(res);
+			}
+		})
+	}
+	
+	// ---------------------------------------------------------------------
+	
 	// 카테고리별 통계
 	$.categoryStatsList = function(dateVal, useridVal, typeVal) {
 		var result;

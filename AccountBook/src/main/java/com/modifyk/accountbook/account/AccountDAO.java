@@ -45,7 +45,12 @@ public class AccountDAO {
 	public List<String> autoComplete(AccountVO accountVO) {
 		return my.selectList("accountMapper.autoComplete", accountVO);
 	}
-		
+
+	// 날짜별 합계
+	public List<AccountVO> sumGroupByDate(AccountVO accountVO) {
+		return my.selectList("accountMapper.sumGroupByDate", accountVO);
+	}
+	
 	/*
 	// account의 반복 id 업데이트
 	public int updateRepeatid(HashMap<String, Object> map) {

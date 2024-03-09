@@ -1,7 +1,13 @@
 @charset "UTF-8";
 :root {
-	--main-color : #f39c12;
-	--main-color-hover : #f38e12;
+	--main-color: #f39c12;
+	--main-color-hover: #f38e12;
+	--red-color: #E34234;
+	--green-color: #2C952C;
+	--blue-color: #0C70F2;
+	--light-blue-color: #6482B9;
+	--light-red-color: #F56E6E;
+	--light-gray-color: #f3f3f3;
 }
 /* header */
 #header {
@@ -31,7 +37,7 @@
 }
 
 /* sidebar */
-#nav {
+.sidebar.nav {
 	box-sizing:border-box;
 	width: 20%;
 	height:990px;
@@ -40,36 +46,115 @@
 	background: #f3f3f3;
 	padding: 20px;
 }
-.menu-title {
+
+.sidebar .menu-title {
 	font-size: 20px;
 	padding: 10px 20px;
 	cursor: default;
 }
-.menu-group {
+.sidebar .menu-group {
 	list-style: none;
 }
-.menu-group li {
+.sidebar .menu-group li {
 	width: 200px;
 	padding: 10px;
 	font-size: 20px;
 	margin: 20px;
 }
-.menu-group li:hover {
+.sidebar .menu-group li:hover {
 	cursor: pointer;
-	color: #f38e12;
+	color: var(--main-color-hover);
 	font-weight: bold;
 }
-#myinfo {
+.sidebar .myinfo-div {
 	text-align: center;
 	cursor: pointer;
 	padding: 10px;
 }
+.sidebar #myinfo-btn {
+	font-size: 120px;
+	color: var(--main-color);
+}
+.sidebar #login-id {
+	font-size: 23px;
+	font-weight: bold;
+	margin-top: 0;
+}
 
+/* 날짜 */
+.angle-icon {
+	cursor: pointer;
+	color: gray;
+	font-size: 28px;
+}
+.angle-icon:hover {
+	color: var(--main-color);
+	font-size: 29px;
+}
+#date-div {
+	font-weight: bold;
+}
+#date-div:hover {
+	cursor: pointer;
+	color: var(--main-color);
+}
+#date-div #month {
+	font-size: 32px;
+}
+#date-div #year {
+	font-size: 25px;
+}
+#select-date {
+	position: absolute;
+	background: white;
+	display: none;
+	padding: 0;
+}
+#select-year {
+	font-size: 18px;
+	font-weight: bold;
+}
+#select-date table {
+	width: 500px;
+	height: 250px;
+	padding: 20px;
+	cursor: pointer;
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+#select-date table td {
+	width: 25%;
+	height: 50px;
+}
+#select-date table tr:not(tr:nth-child(1)) td {
+	border-radius: 10px;
+}
+#select-date table tr:not(tr:nth-child(1)) td:hover {
+	background: var(--main-color);
+	color: white;
+}
+#last-year, #next-year {
+	border-radius: 10px;
+}
+#last-year:hover, #next-year:hover {
+	background: var(--main-color);
+	color: white;
+}
+
+/*-------------------------------------------------------------*/
 /* text */
+.title-text {
+	font-size: 35px;
+	color: var(--main-color);
+}
+
 .h-normal {
 	font-weight: normal;
-	margin: 2%;
 	font-style: normal;
+	margin: 2%;
+}
+.h-bold {
+	font-weight: bold;
 }
 .fs50 {
 	font-size: 50px;
@@ -93,19 +178,28 @@
 	font-size: 18px;
 }
 .main-color {
-	color: #f39c12;
+	color: var(--main-color);
 }
 .red {
-	color: #E34234;
+	color: var(--red-color);
 }
 .blue {
-	color: #0C70F2;
+	color: var(--blue-color);
+}
+.lightred {
+	color: var(--light-red-color);
+}
+.lightblue {
+	color: var(--light-blue-color);
+}
+.lightgray {
+	color: var(--light-gray-color);
 }
 .gray {
 	color: gray;
 }
 .green {
-	color: #2C952C;
+	color: var(--green-color);
 }
 .yellow {
 	color: #FFA500;
@@ -137,33 +231,25 @@
 	background-color: lightgray;
 }
 .main-color-btn {
-	background-color: #f39c12;
+	background-color: var(--main-color);
 	color: white;
 }
 .main-color-btn:hover {
-	background-color: #f38e12;
+	background-color: var(--main-color-hover);
 }
 .main-outline-btn {
-	border: 1px solid #f39c12;
+	border: 1px solid var(--main-color);
 	background-color: white;
 	color: #f39c12;
 }
 .main-outline-btn:hover {
-	background-color: #f39c12;
+	background-color: var(--main-color);
 	color: white;
 }
 .btn:disabled {
 	background: lightgray;
 	color: gray;
 	cursor: default;
-}
-.click-icon {
-	cursor: pointer;
-	color: gray;
-}
-.click-icon:hover {
-	color: #f39c12;
-	font-size: 29px;
 }
 
 /* div */
@@ -197,20 +283,11 @@
 }
 
 /* table */
-.center-table { /* center */
+.center-table {
 	margin-left: auto;
 	margin-right: auto;
 	text-align: left;
 }
-/*
-.center-table th {
-	width: 15%;
-	height: 60px;
-	text-align: center;
-}
-.center-table td {
-	width: 85%;
-}*/
 
 .select-table {
 	width: 100%;
@@ -219,7 +296,16 @@
 	height : 30px;
 	font-size : 18px;
 	padding: 10px;
+	border: 1px solid lightgray;
+	border-radius: 10px;
 }
+.select-table td:hover {
+	background: #f3f3f3;
+	cursor: pointer;
+}
+
+
+
 .list-table {
 	border-collapse: collapse;
 	width: 600px;
@@ -270,38 +356,7 @@
 	text-align: left;
 	padding: 10px;
 }
-.date-table {
-	width: 500px;
-	height: 250px;
-	padding: 10px;
-	margin-bottom: 10px;
-	cursor: pointer;
-}
-.date-table td {
-	width: 25%;
-	height: 50px;
-}
-.date-table .month-td {
-	border-radius: 10px;
-}
-.date-table .month-td:hover {
-	background: #f39c12;
-	color: white;
-}
-#before-year {
-	border-radius: 10px;
-}
-#before-year:hover {
-	background: #f39c12;
-	color: white;
-}
-#after-year {
-	border-radius: 10px;
-}
-#after-year:hover {
-	background: #f39c12;
-	color: white;
-}
+
 .input {
 	width: 350px;
 	padding: 12px 10px;
@@ -333,7 +388,7 @@
     font-size: 16px;
 }
 .select input[type="radio"]:checked+label{
-	border-color: #f39c12;
+	border-color: var(--main-color);
 	color: #f39c12;
 	box-shadow: 2px 2px 5px lightgray;
 }

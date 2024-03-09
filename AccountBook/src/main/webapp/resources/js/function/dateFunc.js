@@ -139,25 +139,26 @@ $(function() {
 	// 날짜 선택 창 보여주기 & 현재 연도 세팅
 	$.showSelectDate = function(year) {
 		$("#select-date").show();
-		$("#current-year").html(year + "년");
+		$("#select-year").html(year + "년");
 	}
 	
 	// 날짜 선택 창에서 이전 연도 클릭
-	$.selectBeforeYear = function(year) {
+	$.selectLastYear = function(year) {
 		year = parseInt(year) - 1;
-		$("#current-year").html(year + "년");
+		$("#select-year").html(year + "년");
 		return year;
 	}
 	
 	// 날짜 선택 창에서 다음 연도 클릭
-	$.selectAfterYear = function(year) {
+	$.selectNextYear = function(year) {
 		year = parseInt(year) + 1;
-		$("#current-year").html(year + "년");
+		$("#select-year").html(year + "년");
 		return year;
 	}
 	
 	// 날짜 선택 창에서 선택한 날짜 반환
 	$.selectDate = function(yearText, monthText) {
+		console.log(yearText + " " + monthText); 
 		var y = yearText.split("년")[0];
 		var m = $.insertZero(monthText.split("월")[0]);
 		return y + m;
@@ -177,57 +178,4 @@ $(function() {
 		}
 		return dayOfWeek;
 	}
-	/*
-	// 현재 연도 가져오기
-	$.currentYear = function() {
-		var today = new Date();
-		var todayYear = today.getFullYear();
-		
-		return todayYear;
-	}
-	
-	// 현재 월 가져오기
-	$.currentMonth = function() {
-		var today = new Date();
-		var todayMonth = today.getMonth() + 1 + "";
-		
-		return todayMonth;
-	}
-	// 현재 일 가져오기
-	$.currentD = function() {
-		var today = new Date();
-		var todayDate = today.getDate();
-		
-		return todayDate;
-	}
-	// 현재 연도와 월 가져오기
-	$.currentYM = function() {
-		var today = new Date();
-		var todayYear = today.getFullYear();
-		var todayMonth = today.getMonth() + 1 + "";
-		
-		if(todayMonth.length == 1) { // 한자리 숫자일 경우 앞에 0 붙여주기
-			todayMonth = "0" + todayMonth;
-		}
-		var todayAll = todayYear + "-" + todayMonth;
-		
-		return todayAll;
-	}
-	
-	// 현재 날짜 가져오기
-	$.currentDate = function() {
-		var today = new Date();
-		var todayYear = today.getFullYear(); // 연도
-		var todayMonth = today.getMonth() + 1 + ""; // 월
-		
-		if(todayMonth.length == 1) { // 한자리 숫자일 경우 앞에 0 붙여주기
-			todayMonth = "0" + todayMonth;
-		}
-		var todayDate = today.getDate(); // 일
-		
-		var todayAll = todayYear + "-" + todayMonth + "-" + todayDate;
-		
-		return todayAll;
-	}
-	*/
 })

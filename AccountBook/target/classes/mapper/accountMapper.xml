@@ -32,6 +32,10 @@
 		select distinct content from account where content like concat('%', #{content}, '%') and userid = #{userid};
 	</select>
 	
+	<!-- 날짜별 합계 -->
+	<select id="sumGroupByDate" parameterType="accountVO" resultType="accountVO">
+		select date, moneytype, sum(total) as total from account where userid = #{userid} and left(date, 6) = #{date} group by date, moneytype;
+	</select>
 	<!-- account의 반복 id 업데이트 
 	<update id="updateRepeatid" parameterType="map">
 		update account set repeatid = #{repeatid} where accountid = #{accountid} and userid = #{userid};

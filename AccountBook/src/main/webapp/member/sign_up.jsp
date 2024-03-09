@@ -18,7 +18,7 @@
 			<!-- 컨텐츠 -->
 			<div class="container signup main-div">
 				<div>
-					<h2 class="fs40 main-color"><i class="fi fi-rs-user-add"></i> 회원가입</h2>
+					<h2 class="title-text"><i class="fi fi-rs-user-add"></i> 회원가입</h2>
 					<br>
 					<table class="table center-table">
 						<tr>

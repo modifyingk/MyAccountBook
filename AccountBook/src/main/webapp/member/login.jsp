@@ -39,7 +39,7 @@
 	<div>
 		<div>
 			<div class="container login main-div">
-				<h2 class="fs40 main-color"><i class="fi fi-rs-user"></i> 로그인</h2>
+				<h2 class="title-text"><i class="fi fi-rs-user"></i> 로그인</h2>
 				<br>
 				<table class="table center-table">
 					<tr>

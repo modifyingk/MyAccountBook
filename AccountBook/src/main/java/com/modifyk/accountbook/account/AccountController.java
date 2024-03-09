@@ -81,7 +81,6 @@ public class AccountController {
 	// 수입/지출 검색
 	@RequestMapping("account/searchAccount")
 	public String searchAccount(AccountVO accountVO, Model model) {
-		System.out.println(accountVO);
 		List<AccountVO> list = aDao.searchAccount(accountVO);
 		LinkedHashMap<String, List<AccountVO>> map = toMapSvc.accountToMap(list); // 날짜별로 그룹한 map
 		model.addAttribute("map", map);
@@ -92,7 +91,6 @@ public class AccountController {
 	@RequestMapping("account/autoComplete")
 	public void autoSearch(AccountVO accountVO, Model model) {
 		List<String> list = aDao.autoComplete(accountVO);
-		System.out.println(list);
 		model.addAttribute("list", list);
 	}
 	
@@ -131,6 +129,14 @@ public class AccountController {
 		} else {
 			return false;
 		}
+	}
+	
+	// 날짜별 합계
+	@RequestMapping("account/makeCalendar")
+	public void makeCalendar(AccountVO accountVO, Model model) {
+		List<AccountVO> list = aDao.sumGroupByDate(accountVO);
+		model.addAttribute("list", list);
+		model.addAttribute("today", accountVO.getDate());
 	}
 	
 	/*

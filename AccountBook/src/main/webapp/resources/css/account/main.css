@@ -1,0 +1,380 @@
+@charset "UTF-8";
+
+/* account.jsp */
+.account .title-text {
+	position: fixed;
+	left: 23%;
+	top: 100px;
+}
+.account #div1 {
+	margin-top: 50px;
+}
+.account #div1 table:first-of-type {
+	display: flex;
+	justify-content: center;
+}
+.account #div1 table:first-of-type td:nth-child(2) { /* < 날짜 > td */
+	width: 500px;
+	text-align: center;
+}
+
+.account #div2 table:first-of-type { /* 수입/지출 추가 */
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+}
+td.input-inner {
+	border: 1px solid lightgray;
+	border-radius: 5px;
+	box-shadow: 2px 2px 5px lightgray;
+}
+td.input-inner input {
+	width: 200px;
+	font-size: 18px;
+	padding: 10px;
+	border: none;
+}
+td.input-inner input:focus {
+	outline: none;
+}
+.account .switch { /* 수입/지출 추가 - 수입/지출 선택 */
+	width:100px;
+	height: 55px;
+	border-radius: 5px;
+	text-align: center;
+	line-height: 50px;
+	font-weight: bold;
+	cursor: pointer;
+	border: none;
+	color: white;
+	box-shadow: 2px 2px 5px lightgray;
+}
+.account .switch input[type=checkbox] {
+	display: none;
+}
+.account .switch label {
+	cursor: pointer;
+}
+.account .switch.income {
+	background: var(--light-blue-color);
+}
+.account .switch.spend {
+	background:  var(--light-red-color);
+}
+.account #add-account-btn {
+	width: 70px;
+	height: 55px;
+	font-size: 30px;
+	box-shadow: 2px 2px 5px lightgray;
+}
+.account #add-smallcate {
+	width: 150px;
+}
+.account #add-smallcate:disabled {
+	background: none;
+}
+.account #add-bigcate {
+	width: 150px;
+	border-right: 1px solid lightgray;
+}
+.account .select-table td {
+	width: 30%;
+}
+.select-div {
+	position:absolute;
+	display: none;
+	background: white;
+	overflow-y: auto;
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	padding: 12px 10px;
+    font-size: 16px;
+}
+.account .select-add-asset.select-div { /* 자산 선택 */
+	width: 200px;
+	height: 300px;
+}
+.account .select-add-incate.select-div { /* 수입 대분류 */
+	width: 200px;
+	height: 150px;
+}
+.account .select-add-outcate.select-div { /* 지출 대분류 */
+	 width:500px;
+	 height:220px;
+}
+.account .select-add-smallcate.select-div { /* 소분류 */
+	width: 330px;
+	height: 220px;
+}
+
+.account .select-update-asset.select-div { /* 자산 선택 */
+	width: 200px;
+	height: 300px;
+}
+.account .select-update-incate.select-div { /* 수입 대분류 */
+	width: 350px;
+	height: 150px;
+}
+.account .select-update-outcate.select-div { /* 지출 대분류 */
+	width: 500px;
+	height: 200px;
+}
+.account .select-update-smallcate.select-div { /* 소분류 */
+	width:350px;
+	height:220px;
+}
+
+.account #div4 { /* 수입/지출 내역 */
+	height: 650px;
+	overflow-y: auto;
+}
+.account #account-list-div table {
+	margin-left: auto;
+	margin-right: auto;
+	width: 55%;
+	font-size: 17px;
+	border-collapse: collapse;
+	border-bottom: 1px solid lightgray;
+	cursor: pointer;
+}
+.account #account-list-div table td{
+	padding: 10px;
+}
+.account #account-list-div table tr:nth-child(1) { /* 날짜 */
+	border-bottom: 1px solid lightgray;
+	height: 60px;
+	text-align: left;
+}
+.account #account-list-div table tr:not(tr:nth-child(1)) { /* 날짜 제외 tr */
+	border-top: 1px solid #f3f3f3;
+}
+.account #account-list-div table tr:not(tr:nth-child(1)):hover {
+	background: #f3f3f3;	
+}
+.account .td-category {
+	width: 32%;
+}
+.account .td-content, .account .td-asset, .account .td-income, .account .td-spend {
+	width: 20%;
+}
+.account .td-date {
+	font-size: 19px;
+	font-weight: bold;
+	color: #464646;
+}
+.account .key-div {
+	width: 120px;
+	color:  white;
+	text-align: center;
+	padding: 10px;
+	border-radius: 50px;
+	font-weight: bold;
+	font-size: 13px;
+	cursor: pointer;
+	float: left;
+	margin-left: 20px;
+	margin-right: 20px;
+	box-shadow: 2px 2px 5px lightgray;
+}
+.account .key-div.income {
+	background: var(--light-blue-color);
+}
+.account .key-div.spend {
+	background: var(--light-red-color);
+}
+.account .td-smallcate.income {
+	color: var(--light-blue-color);
+}
+.account .td-smallcate.spend {
+	color: var(--light-red-color);
+}
+.account .td-smallcate {
+	padding: 10px;
+	font-weight: bold;
+}
+.account .part-income { /* 부분합 */
+	float: right;
+	width: 150px;
+	color: var(--blue-color);
+	text-align: right;
+}
+.account .part-spend {
+	float: right;
+	width: 150px;
+	color: var(--red-color);
+	text-align: right;
+}
+.account #div3 table { /* 총 합계 */
+	width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.account #div3 table td {
+	width: 30%;
+}
+.account #total-div h4, .account #income-div h4, .account #spend-div h4  {
+	float: left;
+	font-size: 20px;
+	color: gray;
+	font-weight: normal;
+	margin: 2%;
+}
+.account #total-div i, .account #income-div i, .account #spend-div i  {
+	float: left;
+	font-size: 20px;
+	color: gray;
+	font-weight: normal;
+	margin-left: 20px;
+	margin: 2%;
+	font-style: normal;
+}
+.account #total-div i {
+	color: black;
+}
+.account #income-div i {
+	color: var(--blue-color);
+}
+.account #spend-div i {
+	color: var(--red-color);
+}
+.show-range { /* 수입/지출 내역 범위 */
+	width: 20px;
+	height: 25px;
+	margin: 5px 10px;
+	border: 1px solid #f39c12;
+	border-radius: 5px;
+	cursor: pointer;
+	float: left;
+	color: white;
+	font-weight: bold;
+}
+.show-range:hover {
+	background: #f39c12;
+	color: white;
+}
+.show-range.active {
+	background: #f39c12;
+	color: white;
+}
+.account #search-btn { /* 검색 */
+	width: 35px;
+	border-radius:10px;
+	background: var(--main-color);
+	float: right;
+	text-align: center;
+	padding: 10px;
+	font-weight: bold;
+	color: white;
+	cursor: pointer;
+}
+.account #search-btn:hover {
+	background: var(--main-color-hover);
+}
+.account #search-div {
+	width: 280px;
+	position: absolute;
+	right: 5%;
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	box-shadow: 2px 2px 5px lightgray;
+}
+.account #search-input {
+	width: 200px;
+	padding: 10px;
+	float: left;
+	border:none;
+	background: transparent;
+	font-size: 17px;
+}
+.account #search-input:focus {
+	outline: none;
+}
+.account #search-list {
+	position:absolute;
+	right: 5%;
+	top: 16%;
+	display: none;
+	background: white;
+	z-index: 1;
+}
+.account #search-list table {
+	width: 280px;
+}
+.account #search-list table tr:hover{
+	background: #f3f3f3;
+}
+
+.account #left-div1 { /* 미니 달력 */
+	width: 270px;
+	height: 300px;
+	position: absolute;
+	left: 22%;
+	top: 40%;
+	background: #f3f3f3;
+	border-radius: 10px;
+	padding: 15px 10px;
+	z-index: 0;
+	box-shadow: 2px 2px 5px lightgray;
+	cursor: pointer;
+}
+.account #mini-date-div {
+	text-align: center;
+	font-size: 20px;
+	font-weight: bold;
+}
+.account #mini-date-div:hover {
+	color: var(--main-color);
+}
+.account #mini-calendar {
+	width: 250px;
+	border-collapse: collapse;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+}
+.account #mini-calendar td {
+	border-radius: 10px;
+	width: 14%;
+	height: 35px;
+}
+.account #mini-calendar tr:nth-child(1) {
+	border-bottom: 1px solid lightgray;
+}
+.account #mini-calendar tr:nth-child(n) td:nth-child(1){
+	color: var(--red-color);
+}
+.account #mini-calendar tr:nth-child(n) td:nth-child(7){
+	color: var(--blue-color);
+}
+.account #mini-calendar td:not(td:empty):hover {
+	background: var(--main-color);
+	color: white;
+}
+.account #mini-calendar td.active:not(td:empty) {
+	background: var(--main-color);
+	color: white;
+}
+.account #mini-calendar p {
+	font-size:5px;
+	float: left;
+	margin-left: 2px;
+}
+.account .flex-column {
+	display: flex;
+	flex-direction: column;
+}
+.account .dot {
+	float: left;
+	margin-left: auto;
+	margin-right: auto;
+	height: 10px;
+}
+.account #mini-calendar p.income {
+	color: var(--light-blue-color);
+}
+.account #mini-calendar p.spend {
+	color: var(--light-red-color);
+}
+.account #mini-calendar i {
+	font-style: normal;
+}

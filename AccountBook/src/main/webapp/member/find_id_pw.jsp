@@ -24,7 +24,7 @@
 			<!-- 아이디 찾기 -->
 			<div id="find-id-div" hidden="hidden">
 				<div>
-					<h2 class="fs40 main-color"><i class="fi fi-rr-search"></i> 아이디 찾기</h2>
+					<h2 class="title-text"><i class="fi fi-rr-search"></i> 아이디 찾기</h2>
 					<p>본인확인 이메일 주소와 입력한 이메일 주소가 같아야, 아이디를 찾으실 수 있습니다.</p><br>
 				</div>
 				<div>
@@ -68,7 +68,7 @@
 			
 			<div id="find-pw-div">
 				<div>
-					<h2 class="fs40 main-color"><i class="fi fi-rr-search"></i> 비밀번호 찾기</h2>
+					<h2 class="title-text"><i class="fi fi-rr-search"></i> 비밀번호 찾기</h2>
 					<p>본인확인 이메일 주소와 입력한 이메일 주소가 같아야, 비밀번호를 찾으실 수 있습니다.</p><br>
 				</div>
 				<div>
