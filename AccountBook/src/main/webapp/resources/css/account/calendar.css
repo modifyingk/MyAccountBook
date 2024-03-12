@@ -1,0 +1,156 @@
+@charset "UTF-8";
+
+/* calendar.jsp */
+.calendar .title-text {
+	position: fixed;
+	left: 23%;
+	top: 100px;
+}
+.calendar #div1 { /* 날짜 */
+	margin-top: 50px;
+	margin-bottom: 1%;
+}
+.calendar #div2 { /* 달력 */
+}
+.calendar #calendar {
+	margin-left: auto;
+	margin-right: auto;
+	width: 70%;
+	height: 800px;
+	border-collapse: collapse;
+}
+.calendar #calendar td {
+	height: 15%;
+	border: 1px solid lightgray;
+}
+.calendar #calendar .yoil td { /* 요일 칸 */
+	height: 5%;
+	background: var(--main-color);
+	color: white;
+	font-weight: bold;
+}
+.calendar #calendar .il { /* 날짜 칸 */
+	width: 12%;
+}
+.calendar #calendar td:empty { /* 빈 칸 */
+	background: #f3f3f3;
+}
+.calendar .il div {
+	height: 100%;
+}
+.calendar .il div div:first-of-type { /* 일 */
+	height: 20%;
+	font-weight: bold;
+	padding-top: 5px;
+}
+.calendar .il div div:nth-of-type(2) { /* 해당 날짜의 수입/지출 합계 */
+	height: 80%;
+	text-align: right;
+	font-size: 18px;
+	padding: 0 15px;
+}
+.calendar .il div div:nth-of-type(2) .income {
+	color: var(--blue-color);
+}
+.calendar .il div div:nth-of-type(2) .spend {
+	color: var(--red-color);
+}
+.calendar .il:hover {
+	cursor: pointer;
+	background: #f3f3f3;
+}
+.calendar .il .today {
+	border-radius: 10px;
+	height: 30px;
+	background: var(--main-color);
+}
+.calendar #side-div1 {
+	position: fixed;
+	top: 1px;
+	right: 1px;
+	width: 850px;
+	height: 1100px;
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	background: white;
+	overflow-y: auto;
+}
+.calendar #account-list-div table {
+	margin-left: auto;
+	margin-right: auto;
+	width: 95%;
+	font-size: 17px;
+	border-collapse: collapse;
+	border-bottom: 1px solid lightgray;
+	cursor: pointer;
+}
+.calendar #account-list-div table td{
+	padding: 10px;
+}
+.calendar #account-list-div table tr:nth-child(1) { /* 날짜 */
+	border-bottom: 1px solid lightgray;
+	height: 60px;
+	text-align: left;
+}
+.calendar #account-list-div table tr:not(tr:nth-child(1)) { /* 날짜 제외 tr */
+	border-top: 1px solid #f3f3f3;
+}
+.calendar #account-list-div table tr:not(tr:nth-child(1)):hover {
+	background: #f3f3f3;	
+}
+.calendar .td-category {
+	width: 32%;
+}
+.calendar .td-content, .calendar .td-asset, .calendar .td-income, .calendar .td-spend {
+	width: 20%;
+}
+.calendar .td-date {
+	font-size: 19px;
+	font-weight: bold;
+	color: #464646;
+}
+.calendar .key-div {
+	width: 120px;
+	text-align: center;
+	padding: 10px;
+	border-radius: 10px;
+	font-weight: bold;
+	font-size: 13px;
+	cursor: pointer;
+	float: left;
+	margin-left: 20px;
+	margin-right: 20px;
+	box-shadow: 2px 2px 5px lightgray;
+}
+.calendar .key-div.income {
+	background: #a4b0cc;
+	color: white;
+/*	color:  var(--light-blue-color);*/
+}
+.calendar .key-div.spend {
+	background: #eb9980;
+	color: white;
+/*	color:  var(--light-red-color);*/
+}
+.calendar .td-smallcate.income {
+	color: var(--light-blue-color);
+}
+.calendar .td-smallcate.spend {
+	color: var(--light-red-color);
+}
+.calendar .td-smallcate {
+	padding: 10px;
+	font-weight: bold;
+}
+.calendar .part-income { /* 부분합 */
+	float: right;
+	width: 150px;
+	color: var(--blue-color);
+	text-align: right;
+}
+.calendar .part-spend {
+	float: right;
+	width: 150px;
+	color: var(--red-color);
+	text-align: right;
+}

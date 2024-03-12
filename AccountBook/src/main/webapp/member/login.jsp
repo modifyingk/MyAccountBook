@@ -38,20 +38,20 @@
 <body>
 	<div>
 		<div>
-			<div class="container login main-div">
+			<div class="container login">
 				<h2 class="title-text"><i class="fi fi-rs-user"></i> 로그인</h2>
 				<br>
-				<table class="table center-table">
+				<table class="center-table">
 					<tr>
 						<td>
 							<div><i class="fi fi-rr-user"></i></div>
-							<div><input type="text" id="userid" placeholder="아이디" maxlength="20"></div>
+							<div><input class="input-inner" type="text" id="userid" placeholder="아이디" maxlength="20"></div>
 						</td>
 					</tr>
 					<tr>
 						<td>
 							<div><i class="fi fi-rr-lock"></i></div>
-							<div><input type="password" id="pw" placeholder="비밀번호" maxlength="20"></div>
+							<div><input class="input-inner" type="password" id="pw" placeholder="비밀번호" maxlength="20"></div>
 						</td>
 					</tr>
 				</table>

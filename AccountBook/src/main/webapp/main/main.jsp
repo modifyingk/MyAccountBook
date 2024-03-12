@@ -11,6 +11,9 @@
 <link rel="stylesheet" type="text/css" href="../resources/css/main-style.css">
 <link rel="stylesheet" type="text/css" href="../resources/css/member/main.css">
 </head>
+<style>
+	
+</style>
 <body>
 	<% /* 로그인이 되어 있을 때*/
 	if(session.getAttribute("userid") != null) { %>
@@ -19,7 +22,7 @@
 	<% }
 	/* 로그인이 되어 있지 않을 때 */
 	else { %>
-	<div class="container main main-div">
+	<div class="container main">
 		<div>
 			<img src="../resources/img/piggy-bank.png" width="200px;">
 		</div>

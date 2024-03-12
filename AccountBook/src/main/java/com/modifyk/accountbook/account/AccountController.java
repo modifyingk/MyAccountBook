@@ -37,7 +37,7 @@ public class AccountController {
 	// 수입/지출 추가
 	@ResponseBody
 	@RequestMapping("account/insertAccount")
-	public boolean insertAccount(AccountVO accountVO) {
+	public int insertAccount(AccountVO accountVO) {
 		System.out.println(accountVO);
 		if(accountVO.getMoneytype().equals("지출")) // 지출인 경우 마이너스 붙이기
 			accountVO.setTotal(accountVO.getTotal() * -1);
@@ -64,9 +64,9 @@ public class AccountController {
 		}
 */
 		if(insertRes > 0) {
-			return true;
+			return accountVO.getAccountid();
 		} else {
-			return false;
+			return 0;
 		}
 	}
 	
@@ -133,12 +133,27 @@ public class AccountController {
 	
 	// 날짜별 합계
 	@RequestMapping("account/makeCalendar")
-	public void makeCalendar(AccountVO accountVO, Model model) {
+	public String makeCalendar(AccountVO accountVO, String type, Model model) {
 		List<AccountVO> list = aDao.sumGroupByDate(accountVO);
+		System.out.println(list);
 		model.addAttribute("list", list);
 		model.addAttribute("today", accountVO.getDate());
+		if(type.equals("mini")) {
+			return "account/miniCalendar";
+		} else {
+			return "account/makeCalendar";
+		}
 	}
 	
+	// 특정 날짜의 수입/지출 내역
+	@RequestMapping("account/detailsOfDate")
+	public String detailsOfDate(AccountVO accountVO, Model model) {
+		List<AccountVO> list = aDao.detailsOfDate(accountVO);
+		LinkedHashMap<String, List<AccountVO>> map = toMapSvc.accountToMap(list); // 날짜별로 그룹한 map
+		model.addAttribute("map", map);
+		return "account/selectAccount";
+	}
+		
 	/*
 	// 수입/지출 목록
 	public List<AccountVO> accountList(AccountVO accountVO, String moneytype) {

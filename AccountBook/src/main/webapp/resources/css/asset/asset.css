@@ -1,0 +1,85 @@
+@charset "UTF-8";
+
+/* asset.jsp */
+.asset .title-text {
+	position: fixed;
+	left: 23%;
+	top: 100px;
+}
+.asset #div1 {
+	margin-top: 5%;
+}
+.asset #asset-list-div {
+	width: 1300px;
+	margin-left: 3%;
+	float: left;
+}
+.asset #asset1-div, .asset #asset2-div {
+	width: 50%;
+	float: left;
+}
+.asset .key-div { /* 자산 그룹 */
+	width:150px;
+	color:white;
+	text-align: center;
+	padding:10px;
+	background: #f39c12;
+	border-radius: 50px;
+	font-weight: bold;
+	margin: 10px 0;
+	cursor: pointer;
+	margin-top: 10%;
+}
+.asset #open-add-asset { /* 자산 추가 */
+	position: absolute;
+	right: 40px;
+	top: 100px;
+	border: 1px solid var(--main-color);
+	color: var(--main-color);
+	background: white;
+	width: 75px;
+	height: 70px;
+	border-radius: 50px;
+	font-size: 40px;
+	cursor: pointer;
+	box-shadow: 2px 2px 5px lightgray;
+}
+.asset #open-add-asset:hover {
+	background: var(--main-color);
+	color: white;
+}
+.asset .transfer-icon { /* 이체 아이콘 */
+	cursor: pointer;
+	height: 50px;
+	width: 50px;
+	background: white;
+	color: #f39c12;
+	border: 1px solid #f39c12;
+	border-radius: 10px;
+}
+.asset #div1 .tr-asset td:nth-child(3) {
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	text-align: left;
+	width: 400px;
+	padding: 0 15px;
+}
+.asset .transfer-icon:hover {
+	background: #f38e12;
+	color: white;
+}
+.asset .tr-asset:hover {
+	background: #F3F3F3;
+	border-color: lightgray;
+	cursor: pointer;
+}
+.asset #total-div p {
+	text-align: left;
+	font-size: 23px;
+	color: gray;
+}
+.asset #total-div i {
+	margin-left: 1%;
+	color: black;
+	font-style: normal;
+}

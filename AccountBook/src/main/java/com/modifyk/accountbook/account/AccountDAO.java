@@ -51,6 +51,11 @@ public class AccountDAO {
 		return my.selectList("accountMapper.sumGroupByDate", accountVO);
 	}
 	
+	// 특정 날짜의 수입/지출 내역
+	public List<AccountVO> detailsOfDate(AccountVO accountVO) {
+		return my.selectList("accountMapper.detailsOfDate", accountVO);
+	}
+	
 	/*
 	// account의 반복 id 업데이트
 	public int updateRepeatid(HashMap<String, Object> map) {

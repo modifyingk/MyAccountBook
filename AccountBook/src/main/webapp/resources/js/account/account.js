@@ -13,53 +13,53 @@ $(function() {
 	
 	$(document).ready(function() {
 		// 현재 날짜 가져오기
-		date = $.createDate();
-		today = $.getYearMonth(date); // yyyymm
+		date = createDate();
+		today = getYearMonth(date); // yyyymm
 		year = date.getFullYear(); 
 		month = date.getMonth() + 1;
 		
 		
-		$.setDate(year, month); // 날짜 세팅
-		$.accountList(today, userid); // 월별 수입/지출 목록
-		$.makeCalendar(today);
+		setDate(year, month); // 날짜 세팅
+		accountList(today, userid); // 월별 수입/지출 목록
+		makeCalendar(today);
 		
-		$("#add-date").attr("value", $.getFullDate(date)); // 현재 날짜로 미리 값 세팅
+		$("#add-date").attr("value", makeDateFmt(date)); // 현재 날짜로 미리 값 세팅
 		
 		// 금액에 숫자만 입력되도록
-		$.onlyNum("#update-total");
-		$.onlyNum("#add-total");
+		onlyNum("#update-total");
+		onlyNum("#add-total");
 		
 		// 금액 세 자리마다 콤마
-		$.moneyFmt("#update-total");
-		$.moneyFmt("#add-total");
-		
+		moneyFmt("#update-total");
+		moneyFmt("#add-total");
+	
 		// 다른 영역 클릭 시 창 닫기
-		$.autoClose("#select-date"); // 날짜 선택 닫기
-		$.autoClose(".select-add-asset"); // 자산 선택 닫기
-		$.autoClose(".select-add-incate"); // 분류 선택 닫기
-		$.autoClose(".select-add-outcate"); // 분류 선택 닫기
-		$.autoClose(".select-add-smallcate"); // 분류 선택 닫기
-		$.autoClose(".select-update-asset"); // 자산 선택 닫기
-		$.autoClose(".select-update-incate"); // 분류 선택 닫기
-		$.autoClose(".select-update-outcate"); // 분류 선택 닫기
-		$.autoClose(".select-update-smallcate"); // 분류 선택 닫기
-		$.autoClose("#search-list"); // 검색 자동완성 닫기
+		autoClose("#select-date"); // 날짜 선택 닫기
+		autoClose(".select-add-asset"); // 자산 선택 닫기
+		autoClose(".select-add-incate"); // 분류 선택 닫기
+		autoClose(".select-add-outcate"); // 분류 선택 닫기
+		autoClose(".select-add-smallcate"); // 분류 선택 닫기
+		autoClose(".select-update-asset"); // 자산 선택 닫기
+		autoClose(".select-update-incate"); // 분류 선택 닫기
+		autoClose(".select-update-outcate"); // 분류 선택 닫기
+		autoClose(".select-update-smallcate"); // 분류 선택 닫기
+		autoClose("#search-list"); // 검색 자동완성 닫기
 		
 	})
 
 	// 날짜 선택 창 보여주기
 	$(document).on("click", "#date-div", function() {
-		$.showSelectDate(year);
+		showSelectDate(year);
 	})
 	
 	// 날짜 선택 창에서 이전 연도 클릭
 	$(document).on("click", "#last-year", function() {
-		year = $.selectLastYear(year);
+		year = selectLastYear(year);
 	})
 	
 	// 날짜 선택 창에서 다음 연도 클릭
 	$(document).on("click", "#next-year", function() {
-		year = $.selectNextYear(year);
+		year = selectNextYear(year);
 	})
 	
 	// 날짜 선택 창에서 월 선택
@@ -68,13 +68,13 @@ $(function() {
 		$(".show-range").removeClass("active");
 		$("#show-all").addClass("active");
 		
-		today = $.selectDate($("#select-year").text(), $(this).text());
-		year = $.getYear(today);
-		month = $.getMonth(today);
+		today = selectDate($("#select-year").text(), $(this).text());
+		year = getYear(today);
+		month = getMonth(today);
 		
-		$.setDate(year, month);
-		$.accountList(today, userid)
-		$.makeCalendar(today);
+		setDate(year, month);
+		accountList(today, userid)
+		makeCalendar(today);
 		
 		$("#select-date").hide();
 	})
@@ -85,13 +85,13 @@ $(function() {
 		$(".show-range").removeClass("active");
 		$("#show-all").addClass("active");
 		
-		today = $.beforeDate(today);
-		year = $.getYear(today);
-		month = $.getMonth(today);
+		today = lastMonth(today);
+		year = getYear(today);
+		month = getMonth(today);
 		
-		$.setDate(year, month);
-		$.accountList(today, userid);
-		$.makeCalendar(today);
+		setDate(year, month);
+		accountList(today, userid);
+		makeCalendar(today);
 	})
 	
 	// 다음 달 클릭
@@ -100,13 +100,13 @@ $(function() {
 		$(".show-range").removeClass("active");
 		$("#show-all").addClass("active");
 		
-		today = $.afterDate(today);
-		year = $.getYear(today);
-		month = $.getMonth(today);
+		today = nextMonth(today);
+		year = getYear(today);
+		month = getMonth(today);
 		
-		$.setDate(year, month);
-		$.accountList(today, userid);
-		$.makeCalendar(today);
+		setDate(year, month);
+		accountList(today, userid);
+		makeCalendar(today);
 	})
 
 	// 수입/지출 내역 옵션 (전체/수입/지출)
@@ -189,7 +189,7 @@ $(function() {
 	
 	// 수입/지출 추가 - 자산 선택
 	$(document).on("click", "#add-asset", function() {
-		$.showSelectAsset("#add-asset-list");
+		showSelectAsset("#add-asset-list");
 		$(".select-add-asset").show();
 	})
 	$(document).on("click", ".select-add-asset tr", function() {
@@ -200,7 +200,7 @@ $(function() {
 	
 	// 수입/지출 수정 - 자산 선택
 	$(document).on("click", "#update-asset", function() {
-		$.showSelectAsset("#update-asset-list");
+		showSelectAsset("#update-asset-list");
 		$(".select-update-asset").show();
 	})
 	$(document).on("click", ".select-update-asset tr", function() {
@@ -271,7 +271,7 @@ $(function() {
 		$("#update-smallcate").attr("value", "");
 	})
 	
-	$.smallcateList = function(bigcate, mtype, divID) {
+	smallcateList = function(bigcate, mtype, divID) {
 		$.ajax({
 			type: "post",
 			url: "smallcateList",
@@ -294,7 +294,7 @@ $(function() {
 	$(document).on("click", "#add-smallcate", function() {
 		let mtype = $("input[name='add-moneytype']+label").text();
 		let bigcate = $("#add-bigcate").val();
-		$.smallcateList(bigcate, mtype, ".select-add-smallcate");
+		smallcateList(bigcate, mtype, ".select-add-smallcate");
 		$(".select-add-smallcate").show();
 	})
 	// 수입/지출 추가 - 소분류 선택 및 값 자동 입력
@@ -308,7 +308,7 @@ $(function() {
 	$(document).on("click", "#update-smallcate", function() {
 		let mtype = $("input[name='update-moneytype']+label").text();
 		let bigcate = $("#update-bigcate").val();
-		$.smallcateList(bigcate, mtype, ".select-update-smallcate");
+		smallcateList(bigcate, mtype, ".select-update-smallcate");
 		$(".select-update-smallcate").show();
 	})
 	// 수입/지출 수정 - 소분류 선택 및 값 자동 입력
@@ -328,7 +328,7 @@ $(function() {
 		let content = $("#add-content").val();
 		let total = $("#add-total").val().replaceAll(",", "");
 		
-		if(!$.checkMustReg("#add-date") || !$.checkMustReg("#add-asset") || !$.checkMustReg("#add-bigcate") || !$.checkMustReg("#add-total")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
+		if(!checkMustReg("#add-date") || !checkMustReg("#add-asset") || !checkMustReg("#add-bigcate") || !checkMustReg("#add-total")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
 			alert("입력 값을 확인해주세요.")
 		} else {
 			$.ajax({
@@ -345,8 +345,32 @@ $(function() {
 					userid : userid,
 				},
 				success : function(res) { // 수입/지출 추가 시 포인트 적립
-					if(res == true) {
-						window.location.reload();
+					if(res > 0) {
+						let html = "<tr class='tr-content'>" +
+								"<td class='hide' id='td-key'>" + date + "</td>" +
+								"<td class='hide'>" + res + "</td>" +
+								"<td class='hide'>" + mtype + "</td><td class='td-category'>";
+						if(mtype == "수입") {
+							html += "<div class='key-div income'>" + bigcate + "</div>" +
+									"<div class='td-smallcate income'>" + smallcate + "</div>";
+						} else if(mtype == "지출") {
+							html += "<div class='key-div spend'>" + bigcate + "</div>" +
+							"<div class='td-smallcate spend'>" + smallcate + "</div>";
+						}
+						html += "<td class='td-content'>" + content + "</td>" +
+								"<td class='td-asset gray'>" + asset + "</td>";
+						if(mtype == "수입") {
+							html += "<td class='td-income text-right blue'>" + parseInt(total).toLocaleString() + "원</td></tr>";
+						} else if(mtype == "지출") {
+							html += "<td class='td-spend text-right red'>" + (parseInt(total) * -1).toLocaleString() + "원</td></tr>";
+						}
+						
+						if($("#account-list-div table").hasClass(date)) {  // 해당 날짜 내역이 존재한다면
+							$("." + date).append(html);
+						} else { // 해당 날짜 내역이 존재하지 않는다면
+							window.location.reload();
+						}
+						
 					} else {
 						alert("다시 시도해주세요.")
 					}
@@ -364,12 +388,12 @@ $(function() {
 		let mtype = $(this).children().eq(2).text();
 		let bigcate = $(this).children().eq(3).children().eq(0).text();
 		let smallcate = $(this).children().eq(3).children().eq(1).text();
-		let content = $(this).children().eq(4).text();
-		let asset = $(this).children().eq(5).text();
+		let asset = $(this).children().eq(4).text();
+		let content = $(this).children().eq(5).text();
 		let total = $(this).children().eq(6).text().replace("-", "");
 		
 		// 수정 모달 값 setting
-		$("#update-date").attr("value", $.getDateFmt(date));
+		$("#update-date").attr("value", getDateFmt(date));
 		$("#update-id").attr("value", id);
 		$("#update-bigcate").attr("value", bigcate);
 		$("#update-smallcate").attr("value", smallcate);
@@ -383,8 +407,8 @@ $(function() {
 			$("#update-out").attr("checked", true);
 			$("#update-in").attr("checked", false);
 		}
-		$.pickAsset("#update-asset"); // 자산 선택 및 값 자동 입력
-		$.pickBigcate("#update-bigcate"); // 대분류 선택 및 값 자동 입력
+		pickAsset("#update-asset"); // 자산 선택 및 값 자동 입력
+		pickBigcate("#update-bigcate"); // 대분류 선택 및 값 자동 입력
 	})
 	
 	// 수입/지출 수정 div 닫기
@@ -402,7 +426,7 @@ $(function() {
 		let asset = $("#update-asset").val();
 		let total = $("#update-total").val().replaceAll(",", "");
 		
-		if(!$.checkMustReg("#update-date") || !$.checkMustReg("#up-dateasset") || !$.checkMustReg("#update-bigcate") || !$.checkMustReg("#update-total")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
+		if(!checkMustReg("#update-date") || !checkMustReg("#up-dateasset") || !checkMustReg("#update-bigcate") || !checkMustReg("#update-total")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
 			alert("입력 값을 확인해주세요.")
 		} else {
 			$.ajax({
@@ -503,7 +527,7 @@ $(function() {
 		$("#mini-calendar td").removeClass("active");
 		$(this).addClass("active");
 			
-		let className = today + $.insertZero(value);
+		let className = today + twoDigits(value);
 		$(".account-table").show();
 		$(".account-table").not("." + className).hide(); // 선택 날짜 빼고 숨기기
 	})

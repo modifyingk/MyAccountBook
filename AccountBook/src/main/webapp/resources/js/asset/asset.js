@@ -6,28 +6,28 @@ document.write('<script src="../resources/js/asset/transferFunc.js"></script>');
 
 $(function() {
 	var date;
-	var today; // yyyy-mm 변수
+	var today;
 
 	var before_assetname;
 	
 	$(document).ready(function() {
 		// 현재 날짜 가져오기
-		date = $.createDate();
+		date = createDate();
 		
 		// 금액에 숫자만 입력되도록
-		$.onlyNumHypen("#update-asset-total");
-		$.onlyNumHypen("#add-asset-total");
-		$.onlyNumHypen("#add-transfer-total");
+		onlyNumHypen("#update-asset-total");
+		onlyNumHypen("#add-asset-total");
+		onlyNumHypen("#add-transfer-total");
 		
 		// 금액 세 자리마다 콤마
-		$.moneyFmt("#update-asset-total");
-		$.moneyFmt("#add-asset-total");
-		$.moneyFmt("#add-transfer-total");
+		moneyFmt("#update-asset-total");
+		moneyFmt("#add-asset-total");
+		moneyFmt("#add-transfer-total");
 		
 		// 전체 자산 목록 및 금액 그룹별로 가져오기
-		$.showAsset(userid);
+		showAsset(userid);
 		
-		$.autoClose(".select-group-div"); // 자산 그룹 선택 닫기
+		autoClose(".select-group-div"); // 자산 그룹 선택 닫기
 
 	})
 	
@@ -40,7 +40,7 @@ $(function() {
 		$("#add-asset-total").attr("value", "0");
 		
 		$("#add-asset-modal").show();
-		$.pickGroup("#add-asset-group");
+		pickGroup("#add-asset-group");
 	})
 	
 	$(document).on("click", ".key-div", function() {
@@ -50,15 +50,15 @@ $(function() {
 		$("#add-asset-total").attr("value", "0");
 		
 		$("#add-asset-modal").show();
-		$.pickGroup("#add-asset-group");
+		pickGroup("#add-asset-group");
 	})
 	
 	// 자산 추가
 	$(document).on("click", "#add-asset-btn", function() {
-		if(!$.checkMustReg("#add-asset-name") || !$.checkMustReg("#add-asset-group") || !$.checkMustReg("#add-asset-total")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
+		if(!checkMustReg("#add-asset-name") || !checkMustReg("#add-asset-group") || !checkMustReg("#add-asset-total")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
 			alert("입력 값을 확인해주세요.")
 		} else {
-			var chkName = $.overlapAsset($("#add-asset-name").val()); // 자산명 중복 확인
+			var chkName = overlapAsset($("#add-asset-name").val()); // 자산명 중복 확인
 			if(chkName) { // 중복되지 않으면 추가
 				$.ajax({
 					type : "post",
@@ -107,17 +107,17 @@ $(function() {
 		$("#update-asset-total").attr("value", assettotal);
 		
 		$("#update-asset-modal").show(); // 자산 수정 div 열기
-		$.pickGroup("#update-asset-group");
+		pickGroup("#update-asset-group");
 	})
 
 	// 자산 수정
 	$(document).on("click", "#update-asset-btn", function() {
-		if(!$.checkMustReg($("#update-asset-name").val()) || !$.checkMustReg($("#update-asset-group").val()) || !$.checkMustReg($("#update-asset-total").val())){ // 정규식에 맞지 않을 때 (빈 값인 경우)
+		if(!checkMustReg($("#update-asset-name").val()) || !checkMustReg($("#update-asset-group").val()) || !checkMustReg($("#update-asset-total").val())){ // 정규식에 맞지 않을 때 (빈 값인 경우)
 			alert("입력 값을 확인해주세요.")
 		} else {
 			var chkName;
 			if(before_assetname != $("#update-asset-name").val()) { // 자산명이 변경되었다면
-				chkName = $.overlapAsset($("#update-asset-name").val()); // 중복 확인
+				chkName = overlapAsset($("#update-asset-name").val()); // 중복 확인
 			} else {
 				chkName = true;
 			}
@@ -197,13 +197,13 @@ $(function() {
 	$(document).on("click", ".transfer-icon", function() {
 		var id = $(this).parent().parent().children().eq(0).text();
 		var withdraw = $(this).parent().parent().children().eq(2).children().eq(0).text();
-		$("#add-transfer-date").attr("value", $.getFullDate(date));
+		$("#add-transfer-date").attr("value", getFullDate(date));
 		$("#add-withdraw-id").attr("value", id);
 		$("#add-withdraw").attr("value", withdraw);
 		
 		$("#add-transfer-modal").show(); // 자산 추가 div 열기
 		
-		$.pickAsset("#add-deposit-id", "#add-deposit");
+		pickAsset("#add-deposit-id", "#add-deposit");
 	})
 	
 	// 자산 이체 modal 닫기
@@ -245,3 +245,36 @@ $(function() {
 		location.href = "transfer.jsp";
 	})
 })
+
+// 자산 중복 확인 함수
+function overlapAsset(nameVal) {
+	var result;
+	$.ajax({ 
+		type : "post",
+		url : "overlapAsset",
+		async : false,
+		data : {
+			assetname : nameVal,
+			userid : userid
+		},
+		success : function(res) {
+			result = res;
+		}
+	})
+	return result;
+}
+
+// 자산 목록
+function showAsset() {
+	$.ajax({
+		type : "post",
+		url : "selectAsset",
+		async : false,
+		data : {
+			userid : userid,
+		},
+		success : function(res) {
+			$("#asset-list-div").html(res);
+		}
+	})
+}

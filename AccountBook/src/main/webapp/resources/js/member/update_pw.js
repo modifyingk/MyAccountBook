@@ -6,8 +6,8 @@ $(function () {
 	
 	// 비밀번호 확인
 	$(document).on("blur", "#pw, #pw2", function () {
-		pwChk = $.checkPw("#pw", "#pwRegCheck");
-		pwChk2 = $.checkPw2("#pw", "#pw2", "#pwCheck");
+		pwChk = checkPw("#pw", "#pwRegCheck");
+		pwChk2 = checkPw2("#pw", "#pw2", "#pwCheck");
 	})
 	
 	// 비밀번호 변경

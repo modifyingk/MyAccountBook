@@ -1,79 +1,63 @@
 @charset "UTF-8";
-:root {
-	--main-color : #f39c12;
-	--main-color-hover : #f38e12;
-}
 /* 기본 */
-.main-div {
-	margin-top: 10%;
-}
-.table {
+table {
 	border-collapse: collapse;
 }
-.table td {
+table td {
 	border: 1px solid lightgray;
 	padding: 10px;
 	font-size: 20px;
 }
-.table td div {
+table td div {
 	float: left;
 	margin: 5px;
 }
-.table input {
-	border: none;
-	font-size: 18px;
-}
-.table input:focus {
-	outline: none;
-}
 
-.center-table th {
-	width: 15%;
-	height: 60px;
-	text-align: center;
-}
-.center-table td {
-	width: 85%;
-}
-
-#login-btn {
-	font-weight: bold;
-	font-size: 20px;
-}	
-	
 /* main.jsp */
+.main {
+	margin-top: 10%;
+}
 .main #login-btn {
 	width: 500px;
 	height: 60px;
+	font-weight: bold;
+	font-size: 20px;
 }
 
 /* login.jsp */
+.login {
+	margin-top: 10%;
+}
 .login #login-btn {
 	width: 450px;
 	height: 55px;
+	font-weight: bold;
+	font-size: 20px;
 }
-.login .table {
+.login table {
 	width: 450px;
 }
-.login .table td {
+.login table td {
 	width: 450px;
 }
-.login .table input {
+.login table input {
 	width: 350px;
+	font-size: 18px;
 }
 
 /* sign_up.jsp */
-.signup.main-div {
+.signup {
 	margin-top: 5%;
 }
-.signup .table {
+.signup table {
 	width: 500px;
 }
-.signup .table td {
+.signup table td {
 	width: 500px;
 }
-.signup .table input {
+.signup table input {
 	width: 400px;
+	font-size: 18px;
 }
 #signup-btn {
 	width: 500px;
@@ -120,6 +104,26 @@
 }
 
 /* find_id_pw.jsp */
+.find-id-pw {
+	margin-top: 10%;
+}
+.find-id-pw table {
+	border-collapse: separate;
+	text-align: center;
+}
+.find-id-pw table th {
+	width: 10%;
+}
+.find-id-pw table td {
+	border: none;
+	padding: 0;
+}
+.find-id-pw #find-id-div table {
+	width: 800px;
+}
+.find-id-pw .input.email {
+	width: 150px;
+}
 #find-id-btn, #find-pw-btn {
 	width: 700px;
 	height: 55px;
@@ -150,25 +154,18 @@
 }
 
 /* myInfo.jsp */
-.myinfo.main-div {
+.myinfo {
 	display: inline-block;
 	margin: 20px 100px;
 }
-.myinfo .table td {
+.myinfo table td {
 	width: 90%;
 	padding: 10px;
 	border: none;
 }
-.myinfo .table th {
+.myinfo table th {
 	width: 20%;
 	padding: 10px;
-}
-.myinfo .table input {
-	border: 1px solid lightgray;
-	font-size: 17px;
-}
-.myinfo .table input:focus {
-	outline: black;
 }
 #update-btn {
 	width: 300px;

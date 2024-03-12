@@ -30,12 +30,12 @@
 	</delete>
 	
 	<!-- 자산 목록 -->
-	<select id="assetList" parameterType="String" resultType="assetVO">
+	<select id="selectAsset" parameterType="String" resultType="assetVO">
 		select * from asset where userid = #{userid};
 	</select>
 	
 	<!-- 자산 목록 -->
-	<select id="assetnameList" parameterType="String" resultType="String">
+	<select id="selectAssetName" parameterType="String" resultType="String">
 		select assetname from asset where userid = #{userid};
 	</select>
 	

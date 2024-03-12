@@ -24,9 +24,9 @@
 		<%
 		/* 로그인이 되어 있을 때*/
 		if(session.getAttribute("userid") != null) { %>
-			<div class="myinfo main-div">
+			<div class="myinfo">
 				<h2 class="title-text">개인정보 관리</h2>
-				<table class="table">
+				<table>
 					<tr>
 						<th>비밀번호</th>
 						<td><button class="btn" id="change-pw">비밀번호 변경</button></td>

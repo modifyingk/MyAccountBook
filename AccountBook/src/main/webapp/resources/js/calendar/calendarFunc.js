@@ -1,5 +1,11 @@
-$(function() {
-	/* 달력 생성 */
+/*/$(function() {
+	// 날짜 세팅
+	$.setDate = function(year, month) {
+		$("#month").html($.oneDigits(month) + "월");
+		$("#year").html(year);
+	}
+	
+	/달력 생성 *
 	$.calendar = function(today, y, m, d) {
 
 		// 연도와 월 보여주기
@@ -35,7 +41,7 @@ $(function() {
 		$.calendarList(today);
 	}
 	
-	/* 날짜별 수입/지출 내역  */
+	/날짜별 수입/지출 내역  *
 	$.calendarList = function(today) {
 		$.ajax({
 			type : "post",
@@ -78,3 +84,4 @@ $(function() {
 		}
 	}
 })
+*/

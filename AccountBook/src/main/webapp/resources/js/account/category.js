@@ -3,19 +3,19 @@ document.write('<script src="../resources/js/function/regFunc.js"></script>'); /
 
 $(function() {
 	$(document).ready(function() {
-		$.showIncategory(); // 수입 소분류 목록 보여주기
+		showIncategory(); // 수입 소분류 목록 보여주기
 //		$.showCategory("수입", "#in-category-list-div");
 //		$.showCategory("지출", "#out-category-list-div");
 	})
 	
 	// 수입 카테고리 추가
 	$(document).on("click", "#add-income-btn", function() {
-		$.addCategory("수입", "#income-catename");
+		addCategory("수입", "#income-catename");
 	})
 	
 	// 지출 카테고리 추가
 	$(document).on("click", "#add-spend-btn", function() {
-		$.addCategory("지출", "#spend-catename");
+		addCategory("지출", "#spend-catename");
 	})
 	
 	// 카테고리 수정 가능
@@ -39,10 +39,10 @@ $(function() {
 		var typeVal = $(this).parent().parent().children().eq(1).text(); // 수입/지출
 		var nameVal = $(this).parent().children().eq(0).val(); // 입력한 카테고리명
 		
-		if(!$.checkMustReg(nameVal)) { // 카테고리명 빈 값인지 확인
+		if(!checkMustReg(nameVal)) { // 카테고리명 빈 값인지 확인
 			alert("카테고리명을 확인해주세요.")
 		} else {
-			var chkName = $.overlapCategory(typeVal, nameVal, userid); // 카테고리 중복 확인
+			var chkName = overlapCategory(typeVal, nameVal, userid); // 카테고리 중복 확인
 			if(chkName) {
 				$.ajax({
 					type : "post",

@@ -15,27 +15,15 @@ $(function () {
 	})
 	
 	$(document).ready(function() {
-		$.selectAddress("#select-email-id", "#email2-id");
-		$.selectAddress("#select-email-pw", "#email2-pw");
+		selectAddress("#select-email-id", "#email2-id");
+		selectAddress("#select-email-pw", "#email2-pw");
 	})
-	
-	// 이메일 주소 선택
-	$.selectAddress = function(chgVal, attrVal) {
-		$(document).on("change", chgVal, function() {
-			// 직접입력을 선택한 경우
-			if($(this).val() == "self") {
-				$(attrVal).val("");
-			} else { // 직접입력이 아닌 주소를 선택한 경우
-				$(attrVal).val($(this).val());
-			}
-		})
-	}
 	
 	// 인증번호 전송
 	$(document).on("click", "#send-code-btn", function() {
 		let email = $("#email1-id").val() + "@" + $("#email2-id").val();
 		if($("#email1-id").val() != "" && $("#email2-id").val() != "")
-			$.sendCode(email);
+			sendCode(email);
 		else
 			alert("이메일을 정확히 입력해주세요.")
 	})
@@ -109,3 +97,15 @@ $(function () {
 		}
 	})
 })
+
+//이메일 주소 선택
+function selectAddress(chgVal, attrVal) {
+	$(document).on("change", chgVal, function() {
+		// 직접입력을 선택한 경우
+		if($(this).val() == "self") {
+			$(attrVal).val("");
+		} else { // 직접입력이 아닌 주소를 선택한 경우
+			$(attrVal).val($(this).val());
+		}
+	})
+}

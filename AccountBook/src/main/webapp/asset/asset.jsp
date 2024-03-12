@@ -9,83 +9,12 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main-style.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/asset/asset.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript" src="../resources/js/asset/asset.js"></script>
 <script>
 	var userid = "<%= session.getAttribute("userid") %>";
 </script>
-<style type="text/css">
-	.key-div {
-		width:150px;
-		color:white;
-		text-align: center;
-		padding:10px;
-		background: #f39c12;
-		border-radius: 50px;
-		font-weight: bold;
-		margin: 10px 0;
-		cursor: pointer;
-	}
-	#asset-list-div {
-		width: 1300px;
-	}
-	#asset1-div, #asset2-div {
-		width: 50%;
-		float: left;
-	}
-	.transfer-icon { /* 이체 아이콘 버튼 */
-		cursor: pointer;
-		height: 50px;
-		width: 50px;
-		background: white;
-		color: #f39c12;
-		border: 1px solid #f39c12;
-		border-radius: 10px;
-	}
-	.transfer-icon:hover {
-		background: #f38e12;
-		color: white;
-	}
-	#open-add-asset {
-		position: absolute;
-		right: 40px;
-		top: 100px;
-		border: 1px solid #f39c12;
-		color: #f39c12;
-		background: white;
-		width: 75px;
-		height: 70px;
-		border-radius: 50px;
-		font-size: 40px;
-		cursor: pointer;
-	}
-	#open-add-asset:hover {
-		background: #f39c12;
-		color: white;
-	}
-	#main-div {
-		display: inline-block;
-		margin: 20px 100px;
-	}
-	.td-select:hover {
-		background: #F3F3F3;
-		border-color: lightgray;
-		cursor: pointer;
-	}
-	.td-border td {
-		border: 1px solid lightgray;
-		border-radius: 10px;
-	}
-	.tr-hover tr:hover {
-		background: #F3F3F3;
-		border-color: lightgray;
-		cursor: pointer;
-	}
-	.td-select {
-		width: 350px;
-		padding: 0 15px;
-	}
-</style>
 </head>
 <body>
 	<div>
@@ -93,20 +22,17 @@
 		<jsp:include page="../main/sidebar.jsp"></jsp:include>
 
 		<!-- 컨텐츠 -->
-		<div class="col-8">
+		<div class="container asset">
 			<%
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
-			<div id="main-div">
-				<h2 class="fs35 main-color"><i class="fi fi-rr-hands-usd"></i> 자산관리</h2>
-				<button class="is-shadow" id="open-add-asset">+</button>
+			<div>
+				<h2 class="title-text"><i class="fi fi-rr-hands-usd"></i> 자산관리</h2>
+				<button id="open-add-asset">+</button>
+				
 				<!-- 자산 목록 -->
-				<div>
-					<div id="asset-total-div"></div><br> <!-- 총 금액 -->
-					<div id="asset-list-div"> <!-- 목록 -->
-						<div id="asset1-div"></div>
-						<div id="asset2-div"></div>
-					</div> 
+				<div id="div1">
+					<div id="asset-list-div"></div> <!-- 목록 -->
 				</div>
 			</div>
 			<% }
@@ -129,7 +55,7 @@
 					<tr>
 						<th>그룹</th>
 						<td>
-							<input class='input' id='add-asset-group' placeholder="그룹선택" readonly>
+							<input class="input" id="add-asset-group" placeholder="그룹선택" readonly>
 							<div class="input is-scroll select-group-div hide" style="position:absolute; background: white; height:380px;">
 								<table class="select-table td-border tr-hover" id="asset-group-table">
 									<tr><td>계좌·현금</td></tr>

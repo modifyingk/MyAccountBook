@@ -37,13 +37,13 @@ public class AssetDAO {
 	}
 	
 	// 자산 목록
-	public List<AssetVO> assetList(String userid) {
-		return my.selectList("assetMapper.assetList", userid);
+	public List<AssetVO> selectAsset(String userid) {
+		return my.selectList("assetMapper.selectAsset", userid);
 	}
 	
 	// 자산 목록
-	public List<String> assetnameList(String userid) {
-		return my.selectList("assetMapper.assetnameList", userid);
+	public List<String> selectAssetName(String userid) {
+		return my.selectList("assetMapper.selectAssetName", userid);
 	}
 	/*
 	// 자산 활성화/비활성화

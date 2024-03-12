@@ -8,7 +8,8 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
-<link rel="stylesheet" type="text/css" href="../resources/css/main.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/main-style.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/account/calendar.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript" src="../resources/js/calendar/calendar.js"></script>
 <script>
@@ -17,75 +18,78 @@
 </head>
 <body>
 	<div>
-		<!-- 사이드바 -->
-		<div class="col-2 height-1050 is-border is-shadow">
-			<jsp:include page="../main/sidebar.jsp"></jsp:include>
-			<img src="../resources/img/logo.png" style="width: 90%;" onclick="location.href='../main/main.jsp'">
-			<ul class="menu-group">
-				<li class="menu"><i class="fi fi-rr-home"></i> 메인페이지</li>
-				<li class="menu"><i class="fi fi-rr-money-check-edit"></i> 수입/지출 관리</li>		
-				<li class="menu"><i class="fi fi-rr-coins"></i> 자산관리</li>		
-				<li class="menu active"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
-				<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표 관리</li>
-				<li class="menu"><i class="fi fi-rr-sign-out-alt"></i> 로그아웃</li>
-			</ul>
-		</div>
+		<jsp:include page="../main/header.jsp"></jsp:include>
+		<jsp:include page="../main/sidebar.jsp"></jsp:include>
 
 		<!-- 컨텐츠 -->
-		<div class="col-8">
+		<div class="container calendar">
 			<%
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
-				<h3 class="h-normal fs-28"><i class="fi fi-rs-calendar-check"></i> 캘린더</h3>
+				<h3 class="title-text"><i class="fi fi-rs-calendar-check"></i> 캘린더</h3>
 				
 				<!-- 날짜 -->
-				<div style="margin-bottom: 2%;">
-					<table style="width: 100%;">
+				<div id="div1">
+					<table class="date-table">
 						<tr>
-							<td style="width: 33%; text-align: center;">
-								<i class="fi fi-rr-angle-circle-left fs-28 click-icon" id="before"></i>
+							<td>
+								<i class="fi fi-rr-angle-left angle-icon" id="last-month"></i>
 							</td>
-							<td style="width: 33%; text-align: center;">
-								<div id="month-div" style="width: 100%; margin: 10px; cursor: pointer;"></div>
+							<td>
+								<!-- 날짜 -->
+								<div id="date-div">
+									<div id="month"></div>
+									<div id="year"></div>
+								</div>
 								
 								<!-- 날짜 선택 div -->
-								<div class="is-border" id="select-month" style="position: absolute; background: white; display: none;">
-									<table class="date-table">
+								<div class="is-border" id="select-date">
+									<table>
 										<tr>
-											<td id="before-year"><i class="fi fi-rr-angle-left"></i></td>
-											<td colspan="2" style="text-align: center;">
-												<div class="h-bold fs-18" id="current-year"></div>
+											<td id="last-year"><i class="fi fi-rr-angle-left"></i></td>
+											<td colspan="2">
+												<div id="select-year"></div>
 											</td>
-											<td id="after-year"><i class="fi fi-rr-angle-right"></i></td>
+											<td id="next-year"><i class="fi fi-rr-angle-right"></i></td>
 										</tr>
-										<tr>
-											<td class="month-td">01월</td>
-											<td class="month-td">02월</td>
-											<td class="month-td">03월</td>
-											<td class="month-td">04월</td>
+										<tr class="select-month">
+											<td>1월</td>
+											<td>2월</td>
+											<td>3월</td>
+											<td>4월</td>
 										</tr>
-										<tr>
-											<td class="month-td">05월</td>
-											<td class="month-td">06월</td>
-											<td class="month-td">07월</td>
-											<td class="month-td">08월</td>
+										<tr class="select-month">
+											<td>5월</td>
+											<td>6월</td>
+											<td>7월</td>
+											<td>8월</td>
 										</tr>
-									<tr>
-											<td class="month-td">09월</td>
-											<td class="month-td">10월</td>
-											<td class="month-td">11월</td>
-											<td class="month-td">12월</td>
+										<tr class="select-month">
+											<td>9월</td>
+											<td>10월</td>
+											<td>11월</td>
+											<td>12월</td>
 										</tr>
 									</table>
 								</div>
 							</td>
-							<td style="width: 33%; text-align: center;">
-								<i class="fi fi-rr-angle-circle-right fs-28 click-icon" id="after"></i>
+							<td>
+								<i class="fi fi-rr-angle-right angle-icon" id="next-month"></i>
 							</td>
 						</tr>
 					</table>
-				</div>	
+				</div>
+				
 				<!-- 달력 -->
+				<div id="div2"></div>
+				
+				<!-- 특정 날짜의 수입/지출 내역 -->
+				<div class="hide" id="side-div1">
+					<h2>상세 내역</h2>
+					<button class="x-btn" id="close-side-div1">x</button>
+					<div id="account-list-div"></div>
+				</div>
+				<!-- 달력 
 				<div style="margin-left: 5%;">
 					<table class="calendar-table">
 						<tr style="height: 50px;">
@@ -153,7 +157,7 @@
 						</tr>
 					</table>
 				</div>
-				
+				-->
 				<!-- 해당 날짜의 내역 모달 -->
 				<div class="modal" id="date-account-modal" hidden="true">
 					<div class="modal-content wide">

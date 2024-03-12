@@ -13,7 +13,7 @@
 </head>
 <body>
 	<div>
-		<div class="container find-id-pw main-div">
+		<div class="container find-id-pw">
 			<table id="select-find">
 				<tr>
 					<td>아이디 찾기</td>
@@ -42,9 +42,9 @@
 								<th>이메일</th>
 								<td>
 									<div>
-										<input class="input small" type="text" id="email1-id"> @
-										<input class="input small" type="text" id="email2-id">
-										<select class="input small" id="select-email-id">
+										<input class="input email" type="text" id="email1-id"> @
+										<input class="input email" type="text" id="email2-id">
+										<select class="input email" id="select-email-id">
 											<option value="self">직접입력</option>
 											<option value="naver.com">naver.com</option>
 											<option value="google.com">google.com</option>
@@ -94,9 +94,9 @@
 							<th>이메일</th>
 							<td>
 								<div>
-									<input class="input small" type="text" id="email1-pw"> @
-									<input class="input small" type="text" id="email2-pw">
-									<select class="input small" id="select-email-pw">
+									<input class="input email" type="text" id="email1-pw"> @
+									<input class="input email" type="text" id="email2-pw">
+									<select class="input email" id="select-email-pw">
 										<option value="self">직접입력</option>
 										<option value="naver.com">naver.com</option>
 										<option value="google.com">google.com</option>

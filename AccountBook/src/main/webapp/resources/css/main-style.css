@@ -1,6 +1,6 @@
 @charset "UTF-8";
 :root {
-	--main-color: #f39c12;
+	--main-color: #f39c12; /* 88ae87 */
 	--main-color-hover: #f38e12;
 	--red-color: #E34234;
 	--green-color: #2C952C;
@@ -20,7 +20,6 @@
 }
 #logo {
 	margin-left: 30px;
-	padding: 10px;
 }
 #logo h2 {
 	width: 220px;
@@ -82,6 +81,14 @@
 }
 
 /* 날짜 */
+.date-table {
+	display: flex;
+	justify-content: center;
+}
+.date-table td:nth-child(2) { /* < 날짜 > td */
+	width: 500px;
+	text-align: center;
+}
 .angle-icon {
 	cursor: pointer;
 	color: gray;
@@ -368,10 +375,10 @@
 	width: 150px;
 	margin-bottom: 10px;
 }
-.input.inner {
+.input-inner {
 	border:none;
 }
-.input.inner:focus {
+.input-inner:focus {
 	outline: none;
 }
 .select input[type="radio"] {
@@ -408,14 +415,14 @@
 	top: 50%;
 	left: 50%;
 	width: 500px;
-	height: 800px;
+	/*height: 800px;*/
 	padding: 20px;
 	background-color: white;
 	border-radius: 10px;
 	transform: translateX(-50%) translateY(-50%);
 }
 .modal-body {
-	height: 580px;
+	/*height: 580px;*/
 	overflow-y: auto;
 	border: 1px solid lightgray;
 	border-radius: 10px;

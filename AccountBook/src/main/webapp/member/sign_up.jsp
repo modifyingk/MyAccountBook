@@ -16,38 +16,38 @@
 	<div>
 		<div>
 			<!-- 컨텐츠 -->
-			<div class="container signup main-div">
+			<div class="container signup">
 				<div>
 					<h2 class="title-text"><i class="fi fi-rs-user-add"></i> 회원가입</h2>
 					<br>
-					<table class="table center-table">
+					<table class="center-table">
 						<tr>
 							<td>
 								<div><i class="fi fi-rr-user"></i></div>
-								<div><input type="text" id="userid" placeholder="아이디" maxlength="20"></div>
+								<div><input class="input-inner" type="text" id="userid" placeholder="아이디" maxlength="20"></div>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<div><i class="fi fi-rr-lock"></i></div>
-								<div><input type="password" id="pw" placeholder="비밀번호" maxlength="20"></div>
+								<div><input class="input-inner" type="password" id="pw" placeholder="비밀번호" maxlength="20"></div>
 							</td>
 						</tr>
 					</table>
 					<div id="id-check-div"></div>
 					<div id="pw-check-div"></div>
 					<br>
-					<table class="table center-table">
+					<table class="center-table">
 						<tr>
 							<td>
 								<div><i class="fi fi-rr-user"></i></div>
-								<div><input placeholder="이름" id="username" maxlength="10"></div>
+								<div><input class="input-inner" placeholder="이름" id="username" maxlength="10"></div>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<div><i class="fi fi-rs-calendar"></i></div>
-								<div><input placeholder="생년월일 8자리 (YYYYMMDD)" id="birth" maxlength="8"></div>
+								<div><input class="input-inner" placeholder="생년월일 8자리 (YYYYMMDD)" id="birth" maxlength="8"></div>
 							</td>
 						</tr>
 						<tr>
@@ -62,14 +62,14 @@
 					<div id="name-check-div"></div>
 					<div id="birth-check-div"></div>
 					<br>
-					<table class="table center-table">
+					<table class="center-table">
 						<tr>
 							<td>
 								<div><i class="fi fi-rr-envelope"></i></div>
 								<div id="email-div">
-									<div><input type="text" placeholder="이메일" id="email">@</div>
+									<div><input class="input-inner" type="text" placeholder="이메일" id="email">@</div>
 									<div>
-										<input type="text" id="address"><i class="fi fi-rr-angle-square-down" id="select-address-btn"></i>
+										<input class="input-inner" type="text" id="address"><i class="fi fi-rr-angle-square-down" id="select-address-btn"></i>
 										<div id="select-address-div">
 											<table id="address-table">
 												<tr><td>naver.com</td></tr>
@@ -86,7 +86,7 @@
 						<tr>
 							<td colspan="2">
 								<div><i class="fi fi-rr-lock"></i></div>
-								<div><input placeholder="인증번호" id="code" maxlength="6"></div>
+								<div><input class="input-inner" placeholder="인증번호" id="code" maxlength="6"></div>
 							</td>
 						</tr>
 					</table>

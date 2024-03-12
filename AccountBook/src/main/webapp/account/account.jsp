@@ -9,7 +9,7 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main-style.css">
-<link rel="stylesheet" type="text/css" href="../resources/css/account/main.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/account/account.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript" src="../resources/js/account/account.js"></script>
 <script>
@@ -36,7 +36,7 @@
 				<div id="search-list"></div>
 				
 				<div id="div1">
-					<table>
+					<table class="date-table">
 						<tr>
 							<td>
 								<i class="fi fi-rr-angle-left angle-icon" id="last-month"></i>
@@ -167,14 +167,16 @@
 				</table>
 			</div>
 			
-			<!-- right -->
-			<div class="is-border" style="width: 280px; height: 300px; position: absolute; right: 2%;">
-				<div></div>
-			</div>
 	
 			<!-- 미니 달력 -->
-			<div id="left-div1">
-				<div id="mini-date-div"></div>
+			<div id="left-div1"></div>
+
+			<!-- 금융 일정 -->
+			<div id="right-div1">
+				<div>
+					<div id="schedule"><i class="fi fi-rs-calendar"></i> 금융 일정</div>
+					<div id="add-schedule">+</div>
+				</div>
 			</div>
 
 			<!-- 수입/지출 내역 -->
@@ -190,13 +192,13 @@
 						<button class="x-btn" id="close-update-account">x</button>
 					</div>
 					<div class="modal-body">
-						<table class="table">
+						<table>
 							<tr class="hide">
 								<th>ID</th>
 								<td><input type="text" class="input" id="update-id" ></td>
 							</tr>
 							<tr>
-								<td colspan="2">
+								<td colspan="3">
 									<div class="select">
 										<input class="" type="radio" name="update-mtype" id="update-in" value="수입"><label for="update-in">수입</label>
 										<input class="" type="radio" name="update-mtype" id="update-out" value="지출"><label for="update-out">지출</label>
@@ -205,7 +207,7 @@
 							</tr>
 							<tr>
 								<th>날짜</th>
-								<td><input type="date" class="input" id="update-date" ></td>
+								<td colspan="2"><input type="date" class="input" id="update-date" ></td>
 							</tr>
 							<tr>
 								<td colspan="2" class="hide">
@@ -214,7 +216,7 @@
 							</tr>
 							<tr>
 								<th>자산</th>
-								<td>
+								<td colspan="2">
 									<input type="text" class="input" id="update-asset" placeholder="분류선택" readonly>
 									<div class="select-update-asset select-div">
 										<div id="update-asset-list"></div>
@@ -222,7 +224,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>대분류</th>
+								<th>분류</th>
 								<td>
 									<input type="text" class="input" id="update-bigcate" placeholder="분류선택" readonly>
 									<div class="select-update-incate select-div" >
@@ -257,9 +259,6 @@
 										</table>
 									</div>
 								</td>
-							</tr>
-							<tr>
-								<th>소분류</th>
 								<td>
 									<input type="text" class="input" id="update-smallcate" placeholder="분류선택" readonly>
 									<div class="select-update-smallcate select-div"></div>
@@ -267,11 +266,11 @@
 							</tr>
 							<tr>
 								<th>내용</th>
-								<td><input type="text" class="input" id="update-content" maxlength="20"></td>
+								<td colspan="2"><input type="text" class="input" id="update-content" maxlength="20"></td>
 							</tr>
 							<tr>
 								<th>금액</th>
-								<td><input type="text" class="input" id="update-total"></td>
+								<td colspan="2"><input type="text" class="input" id="update-total"></td>
 							</tr>
 						</table>
 						<button class="btn main-color-btn" id="update-account-btn">수정</button>

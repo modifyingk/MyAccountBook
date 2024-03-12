@@ -5,10 +5,10 @@ document.write('<script src="../resources/js/function/idFunc.js"></script>'); //
 
 $(function () {
 	$(document).ready(function() {
-		$.onlyNum("#birth"); // 생년월일 숫자만 입력
-		$.onlyLetter("#username"); // 이름 영어, 한글만 입력
+		onlyNum("#birth"); // 생년월일 숫자만 입력
+		onlyLetter("#username"); // 이름 영어, 한글만 입력
 		
-		$.autoClose("#select-address-div"); // 이메일 주소 선택 닫기
+		autoClose("#select-address-div"); // 이메일 주소 선택 닫기
 	})
 	
 	// 이메일 주소 선택
@@ -40,7 +40,7 @@ $(function () {
 	$(document).on("click", "#send-code-btn", function () {
 		let email = $("#email").val() + "@" + $("#address").val();
 		if(checkEmail())
-			$.sendCode(email);
+			sendCode(email);
 		else
 			alert("이메일을 정확히 입력해주세요.")
 	})
@@ -90,10 +90,10 @@ function checkId() {
 	let id = $("#userid").val();
 	let div = $("#id-check-div");
 	
-	let idChk = $.checkIDReg(id); // 아이디 형식 확인
+	let idChk = checkIDReg(id); // 아이디 형식 확인
 	if(idChk) {
 		div.hide();
-		idChk = $.checkOverlapID(id); // 아이디 중복 확인
+		idChk = checkOverlapID(id); // 아이디 중복 확인
 		if(idChk) {
 			div.hide();
 			return true;
@@ -113,7 +113,7 @@ function checkPw() {
 	let pw = $("#pw").val();
 	let div = $("#pw-check-div");
 	
-	let pwChk = $.checkPwReg(pw);
+	let pwChk = checkPwReg(pw);
 	if(pwChk) {
 		div.hide();
 		return true;
@@ -128,7 +128,7 @@ function checkName() {
 	let name = $("#username").val();
 	let div = $("#name-check-div");
 	
-	let nameChk = $.checkNameReg(name);
+	let nameChk = checkNameReg(name);
 	if(nameChk) {
 		div.hide();
 		return true;
@@ -143,7 +143,7 @@ function checkBirth() {
 	let birth = $("#birth").val();
 	let div = $("#birth-check-div");
 	
-	let birthChk = $.checkBirthReg(birth);
+	let birthChk = checkBirthReg(birth);
 	if(birthChk) {
 		div.hide();
 		return true;

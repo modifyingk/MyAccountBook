@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -84,26 +85,17 @@ public class AssetController {
 	}
 	
 	// 자산 목록
-	@ResponseBody
-	@RequestMapping("asset/assetList")
-	public HashMap<String, List<AssetVO>> assetList(String userid) {
-		List<AssetVO> assetList = aDao.assetList(userid);
-		HashMap<String, List<AssetVO>> map = toMapSvc.toMap(assetList);
-		return map;
+	@RequestMapping("asset/selectAsset")
+	public void selectAsset(String userid, Model model) {
+		List<AssetVO> list = aDao.selectAsset(userid);
+		HashMap<String, List<AssetVO>> map = toMapSvc.toMap(list);
+		model.addAttribute("map", map);
 	}
-	/*
-	// 자산 목록 자산그룹별로 그룹화
-	@ResponseBody
-	@RequestMapping("asset/groupByGroup")
-	public HashMap<String, List<AssetVO>> groupByGroup(AssetVO assetVO) {
-		List<AssetVO> assetList = assetList(assetVO);
-	}
-	*/
-	// 자산 목록
-	@ResponseBody
-	@RequestMapping("asset/assetnameList")
-	public List<String> assetnameList(String userid) {
-		List<String> assetnames = aDao.assetnameList(userid);
-		return assetnames;
+	
+	// 자산 이름 목록
+	@RequestMapping("asset/selectAssetName")
+	public void selectAssetName(String userid, Model model) {
+		List<String> list = aDao.selectAssetName(userid);
+		model.addAttribute("list", list);
 	}
 }

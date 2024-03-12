@@ -5,8 +5,8 @@ document.write('<script src="../resources/js/function/birthFunc.js"></script>');
 
 $(function () {
 	$(document).ready(function() {
-		$.onlyLetter("#username"); // 영어, 한글만 입력
-		$.onlyNum("#date"); // 숫자만 입력
+		onlyLetter("#username"); // 영어, 한글만 입력
+		onlyNum("#date"); // 숫자만 입력
 	})
 
 	// 현재 세션의 정보 가져오기
@@ -36,7 +36,6 @@ $(function () {
 		let name = $("#username").val();
 		let gender = $("input[name=gender]:checked").val();
 		let birth = $("#birth").val();
-		alert(birth)
 		if(checkName() && checkGender() && checkBirth()) {
 			$.ajax({
 				type : "post",
@@ -95,7 +94,7 @@ $(function () {
 
 function checkName() {
 	let name = $("#username").val();
-	let nameChk = $.checkNameReg(name);
+	let nameChk = checkNameReg(name);
 	if(nameChk) {
 		return true;
 	} else {
@@ -105,7 +104,7 @@ function checkName() {
 
 function checkBirth() {
 	let birth = $("#birth").val();
-	let birthChk = $.checkBirthReg(birth);
+	let birthChk = checkBirthReg(birth);
 	if(birthChk) {
 		return true;
 	} else {

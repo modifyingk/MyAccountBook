@@ -3,8 +3,8 @@ document.write('<script src="../resources/js/function/regFunc.js"></script>'); /
 
 $(function() {
 	$(document).ready(function() {
-		$.showIncategory(); // 수입 소분류 목록 보여주기
-		$.showOutcategory(); // 수입 소분류 목록 보여주기
+		showIncategory(); // 수입 소분류 목록 보여주기
+		showOutcategory(); // 수입 소분류 목록 보여주기
 	})
 	
 	// 수입 카테고리 목록
@@ -35,12 +35,12 @@ $(function() {
 			mtype = "지출";
 		}
 		
-		if(!$.checkMustReg(smallcate)) { // 카테고리명 빈 값인지 확인
+		if(!checkMustReg(smallcate)) { // 카테고리명 빈 값인지 확인
 			alert("카테고리명을 확인해주세요.")
 		} else {
-			let chkName = $.overlapCategory(smallcate, mtype); // 카테고리 중복 확인
+			let chkName = overlapCategory(smallcate, mtype); // 카테고리 중복 확인
 			if(chkName) {
-				$.insertCategory(bigcate, smallcate, mtype);
+				insertCategory(bigcate, smallcate, mtype);
 			} else { // 카테고리가 중복되는 경우
 				alert("중복되는 카테고리입니다.");
 			}
@@ -75,12 +75,12 @@ $(function() {
 			mtype = "지출";
 		}
 		
-		if(!$.checkMustReg(smallcate)) { // 카테고리명 빈 값인지 확인
+		if(!checkMustReg(smallcate)) { // 카테고리명 빈 값인지 확인
 			alert("카테고리명을 확인해주세요.")
 		} else {
-			let chkName = $.overlapCategory(smallcate, mtype); // 카테고리 중복 확인
+			let chkName = overlapCategory(smallcate, mtype); // 카테고리 중복 확인
 			if(chkName) {
-				$.updateCategory(categoryid, smallcate, mtype);
+				updateCategory(categoryid, smallcate, mtype);
 			} else { // 카테고리가 중복되는 경우
 				alert("중복되는 카테고리입니다.");
 			}

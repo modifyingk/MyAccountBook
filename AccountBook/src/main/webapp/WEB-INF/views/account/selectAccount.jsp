@@ -52,8 +52,8 @@
 						<div class="td-smallcate spend">${value.smallcate}</div> <!-- 소분류 -->
 					</c:if>
 				</td>
-				<td class="td-content">${value.content}</td> <!-- 내용 -->
 				<td class="td-asset gray">${value.assetname}</td> <!-- 자산 -->
+				<td class="td-content">${value.content}</td> <!-- 내용 -->
 				<c:if test="${value.moneytype == '수입'}">
 					<td class='td-income text-right blue'><fmt:formatNumber value="${value.total}"></fmt:formatNumber>원</td>
 					<c:set var="income_total" value="${income_total + value.total}"></c:set>
@@ -78,7 +78,7 @@
 			let y = obj.substring(0, 4);
 			let m = obj.substring(4, 6);
 			let d = obj.substring(6, 8);
-			var dateVal = y + "-" + $.insertZero(m) + "-" + $.insertZero(d);
+			var dateVal = y + "-" + twoDigits(m) + "-" + twoDigits(d);
 			$("#add-date").attr("value", dateVal);
 		})
 	})
