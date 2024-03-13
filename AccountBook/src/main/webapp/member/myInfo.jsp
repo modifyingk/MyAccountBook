@@ -21,10 +21,10 @@
 		<jsp:include page="../main/sidebar.jsp"></jsp:include>	
 		
 		<!-- 컨텐츠 -->
+		<div class="myinfo">
 		<%
 		/* 로그인이 되어 있을 때*/
 		if(session.getAttribute("userid") != null) { %>
-			<div class="myinfo">
 				<h2 class="title-text">개인정보 관리</h2>
 				<table>
 					<tr>
@@ -56,12 +56,12 @@
 				<br><br>
 				<button class="btn main-color-btn" id="update-btn">개인정보 수정</button>
 				<button class="btn main-outline-btn" id="drop-btn">회원탈퇴</button>
-			</div>
 		<% }
 		/* 로그인이 되어 있지 않을 때 */
 		else { %>
 			<script>location.href = "../member/login.jsp";</script>
 		<% } %>
+		</div>
 	</div>
 </body>
 </html>

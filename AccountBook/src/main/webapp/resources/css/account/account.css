@@ -1,10 +1,14 @@
 @charset "UTF-8";
-
 /* account.jsp */
+.account {
+	float: right;
+	width: 80%;
+	margin-top: 3%;
+}
 .account .title-text {
 	position: fixed;
 	left: 23%;
-	top: 100px;
+	top: 80px;
 }
 .account #div1 {
 	margin-top: 50px;
@@ -119,23 +123,17 @@ td.input-inner input:focus {
 	overflow-y: auto;
 }
 .account #account-list-div table {
-	margin-left: auto;
-	margin-right: auto;
 	width: 55%;
-	font-size: 17px;
-	border-collapse: collapse;
-	border-bottom: 1px solid lightgray;
-	cursor: pointer;
 }
-.account #account-list-div table td{
+/* .account #account-list-div table td{
 	padding: 10px;
 }
-.account #account-list-div table tr:nth-child(1) { /* 날짜 */
+.account #account-list-div table tr:nth-child(1) { 날짜
 	border-bottom: 1px solid lightgray;
 	height: 60px;
 	text-align: left;
 }
-.account #account-list-div table tr:not(tr:nth-child(1)) { /* 날짜 제외 tr */
+.account #account-list-div table tr:not(tr:nth-child(1)) { 날짜 제외 tr
 	border-top: 1px solid #f3f3f3;
 }
 .account #account-list-div table tr:not(tr:nth-child(1)):hover {
@@ -168,12 +166,12 @@ td.input-inner input:focus {
 .account .key-div.income {
 	background: #a4b0cc;
 	color: white;
-/*	color:  var(--light-blue-color);*/
+	color:  var(--light-blue-color);
 }
 .account .key-div.spend {
 	background: #eb9980;
 	color: white;
-/*	color:  var(--light-red-color);*/
+	color:  var(--light-red-color);
 }
 .account .td-smallcate.income {
 	color: var(--light-blue-color);
@@ -185,7 +183,7 @@ td.input-inner input:focus {
 	padding: 10px;
 	font-weight: bold;
 }
-.account .part-income { /* 부분합 */
+.account .part-income { 부분합
 	float: right;
 	width: 150px;
 	color: var(--blue-color);
@@ -196,7 +194,7 @@ td.input-inner input:focus {
 	width: 150px;
 	color: var(--red-color);
 	text-align: right;
-}
+} */
 .account #div3 table { /* 총 합계 */
 	width: 700px;
 	margin-left: auto;

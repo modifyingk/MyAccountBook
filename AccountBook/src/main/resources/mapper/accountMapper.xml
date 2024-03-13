@@ -36,13 +36,30 @@
 	</select>
 	
 	<!-- 날짜별 합계 -->
-	<select id="sumGroupByDate" parameterType="accountVO" resultType="accountVO">
+	<select id="groupByDate" parameterType="accountVO" resultType="accountVO">
 		select date, moneytype, sum(total) as total from account where userid = #{userid} and left(date, 6) = #{date} group by date, moneytype;
 	</select>
 	
 	<!-- 특정 날짜의 수입/지출 내역 -->
 	<select id="detailsOfDate" parameterType="accountVO" resultType="accountVO">
 		select * from account where date = #{date} and userid = #{userid};
+	</select>
+	
+	<!-- 대분류별 합계 (지출인 경우 양수로 변환)-->
+	<select id="groupByBigcate" parameterType="accountVO" resultType="accountVO">
+		select moneytype, bigcate, if(moneytype="지출", sum(total)*-1, sum(total)) as total from account
+		where userid = #{userid} and left(date, 6)= #{date} and moneytype = #{moneytype} group by bigcate;
+	</select>
+	
+	<!-- 특정 대분류의 수입/지출 내역 -->
+	<select id="detailsOfBigcate" parameterType="accountVO" resultType="accountVO">
+		select * from account where userid = #{userid} and left(date, 6)= #{date} and moneytype = #{moneytype} and bigcate = #{bigcate} order by date desc;
+	</select>
+	
+	<!-- 소분류별 합계 (지출인 경우 양수로 변환)-->
+	<select id="groupBySmallcate" parameterType="accountVO" resultType="accountVO">
+		select if(smallcate="", "분류없음", smallcate) as smallcate, if(moneytype="지출", sum(total)*-1, sum(total)) as total from account
+		where userid = #{userid} and left(date, 6)= #{date} and moneytype = #{moneytype} and bigcate = #{bigcate} group by smallcate;
 	</select>
 	
 	<!-- account의 반복 id 업데이트 

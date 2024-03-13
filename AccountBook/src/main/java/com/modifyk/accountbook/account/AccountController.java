@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -134,7 +136,7 @@ public class AccountController {
 	// 날짜별 합계
 	@RequestMapping("account/makeCalendar")
 	public String makeCalendar(AccountVO accountVO, String type, Model model) {
-		List<AccountVO> list = aDao.sumGroupByDate(accountVO);
+		List<AccountVO> list = aDao.groupByDate(accountVO);
 		System.out.println(list);
 		model.addAttribute("list", list);
 		model.addAttribute("today", accountVO.getDate());
@@ -154,6 +156,37 @@ public class AccountController {
 		return "account/selectAccount";
 	}
 		
+	// 대분류별 합계
+	@RequestMapping("account/makeBigcateStats")
+	public void groupByBigcate(AccountVO accountVO, Model model) {
+		List<AccountVO> list = aDao.groupByBigcate(accountVO);
+		model.addAttribute("list", list);
+		
+		String data = toMapSvc.makeBigcateData(list);
+		model.addAttribute("data", data);
+	}
+	
+	// 특정 대분류의 수입/지출 내역
+	@RequestMapping("account/detailsOfBigcate")
+	public String detailsOfBigcate(AccountVO accountVO, Model model) {
+		List<AccountVO> list = aDao.detailsOfBigcate(accountVO);
+		LinkedHashMap<String, List<AccountVO>> map = toMapSvc.accountToMap(list); // 날짜별로 그룹한 map
+		model.addAttribute("map", map);
+		return "account/selectAccount";
+	}
+	
+	// 소분류별 합계
+	@RequestMapping("account/makeSmallcateStats")
+	public void groupBySmallcate(AccountVO accountVO, Model model) {
+		List<AccountVO> list = aDao.groupBySmallcate(accountVO);
+		model.addAttribute("list", list);
+		
+		String data = toMapSvc.makeSmallcateData(list);
+		model.addAttribute("data", data);
+
+		model.addAttribute("moneytype", accountVO.getMoneytype());
+		model.addAttribute("bigcate", accountVO.getBigcate());
+	}
 	/*
 	// 수입/지출 목록
 	public List<AccountVO> accountList(AccountVO accountVO, String moneytype) {

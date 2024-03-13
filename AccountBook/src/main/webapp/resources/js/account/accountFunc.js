@@ -35,15 +35,14 @@ function makeCalendar(today) {
 		}
 	})
 }
+
 $(function() {
 	
 	// 카테고리별 통계
-	$.categoryStatsList = function(dateVal, useridVal, typeVal) {
-		var result;
+	/*$.make = function(dateVal, useridVal, typeVal) {
 		$.ajax({
 			type : "post",
-			url : "groupByCategory",
-			async : false,
+			url : "makeStats",
 			data : {
 				date : dateVal,
 				userid : useridVal,
@@ -53,8 +52,7 @@ $(function() {
 				result = res;
 			}
 		})
-		return result;
-	}
+	}*/
 	
 	// 자산별 통계
 	$.assetStatsList = function(dateVal, useridVal, typeVal) {

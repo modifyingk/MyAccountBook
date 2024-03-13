@@ -20,9 +20,10 @@
 </head>
 <body>
 	<div>
-		<jsp:include page="../main/header.jsp"></jsp:include>
-		<jsp:include page="../main/sidebar.jsp"></jsp:include>
-
+		<div>
+			<jsp:include page="../main/header.jsp"></jsp:include>
+			<jsp:include page="../main/sidebar.jsp"></jsp:include>
+		</div>
 		<!-- 컨텐츠 -->
 		<div class="container category-stats">
 			<%
@@ -45,7 +46,7 @@
 								</div>
 								
 								<!-- 날짜 선택 div -->
-								<div class="is-border" id="select-date">
+								<div class="is-border" id="select-date" style="z-index: 1;">
 									<table>
 										<tr>
 											<td id="last-year"><i class="fi fi-rr-angle-left"></i></td>
@@ -82,31 +83,22 @@
 					</table>
 				</div> 
 				
-				<div>
-					<div class="col-5">
-					
-						<!-- 수입/지출 통계 -->
-						<div id="stats-div" class="">
-							<table class="button-table" style="margin-left: 10%;">
-								<tr>
-									<td class="" id="in-stats-btn">수입</td>
-									<td class="active" id="out-stats-btn">지출</td>
-								</tr>
-							</table>
-							<div style="margin-left: 10%;">
-								<div id="piechart" style="width: 500px; height: 400px; margin-left: 50px; margin-top: 50px;"></div>
-								<div id="stats-list-div"></div>
-							</div>
-						</div>
+				<div id="div2">
+					<!-- 대분류 통계 -->
+					<div id="top-div1">
+						<!-- 차트 및 합계 -->
+						<div id="inner-div1"></div>
+						<!-- 다른 통계 보기 버튼 -->
+						<div class="angle-icon" id="next-div"><i class="fi fi-rr-angle-right"></i></div>
 					</div>
-					<div class="col-5">
-						<!-- 카테고리 내역 -->
-						<div class="add-div is-border is-shadow hide" id="details-div">
-							<button class="x-btn" id="close-category-account">x</button>
-							<h3 class="h-normal fs-28" id="name-div"></h3>
-							<div id="account-total-div"></div>
-							<div id="account-list-div"></div>
+					
+					<!-- 카테고리 상세 -->
+					<div id="top-div2" class="hide">
+						<div id="inner-div2">
+							
 						</div>
+						<div class="angle-icon" id="up-div"><i class="fi fi-rr-angle-up"></i></div>
+						<div class="angle-icon" id="next-div2"><i class="fi fi-rr-angle-right"></i></div>
 					</div>
 				</div>
 			</div>	

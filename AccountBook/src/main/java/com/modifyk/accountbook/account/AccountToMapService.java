@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
 @Service
 public class AccountToMapService {
 	
+	// 수입/지출 내역 월별 그룹화
 	public LinkedHashMap<String, List<AccountVO>> accountToMap(List<AccountVO> accountList) {
 		LinkedHashMap<String, List<AccountVO>> map = new LinkedHashMap<>();
 
@@ -27,24 +30,45 @@ public class AccountToMapService {
 		return map;
 	}
 	
-	public HashMap<String, Object> categoryToMap(List<AccountVO> accountList) {
-		
+	// 수입/지출 내역 대분류별 그룹화(구글 차트 형식 변환)
+	public String makeBigcateData(List<AccountVO> list) {
 		// 카테고리별 사용 금액 합계
-		HashMap<String, Object> map = new HashMap<String, Object>();
+		Map<String, Integer> map = new HashMap<String, Integer>();
 		
 		String tmpKey; // map의 key값이 될 날짜
-		for(int i = 0; i < accountList.size(); i++) {
-			tmpKey = accountList.get(i).getCatename();
-			if(map.get(tmpKey) != null) { // 해당 카테고리가 이미 있다면
-				// 해당 카테고리의 value값(금액)에다가 금액 더하기
-				int value = (int) map.get(tmpKey) + accountList.get(i).getTotal();
-				map.put(tmpKey, value);
-			} else { 
-				// 카테고리를 key값으로 하고, 금액 저장 
-				map.put(tmpKey, accountList.get(i).getTotal());
-			}
+		for(int i = 0; i < list.size(); i++) {
+			tmpKey = list.get(i).getBigcate();
+			map.put(tmpKey, list.get(i).getTotal());
 		}
-		return map;
+		
+		return transformMap(map);
+	}
+	
+	// 수입/지출 내역 소분류별 그룹화(구글 차트 형식 변환)
+	public String makeSmallcateData(List<AccountVO> list) {
+		// 카테고리별 사용 금액 합계
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		
+		String tmpKey; // map의 key값이 될 날짜
+		for(int i = 0; i < list.size(); i++) {
+			tmpKey = list.get(i).getSmallcate();
+			map.put(tmpKey, list.get(i).getTotal());
+		}
+		
+		return transformMap(map);
+	}
+	
+	// 구글 차트 형식 변환
+	public String transformMap(Map<String, Integer> map) {
+		String data = "";
+		Set<String> keys = map.keySet(); // 키 값 보관
+		
+		for(String key : keys) { // map을 ['키', 값], ['키', 값], ... 형태로 변환
+			if(data != "")
+				data += ",";
+			data += "['" + key + "', " + map.get(key) + "]";
+		}
+		return data;
 	}
 	
 	public HashMap<String, Object> assetToMap(List<AccountVO> accountList) {

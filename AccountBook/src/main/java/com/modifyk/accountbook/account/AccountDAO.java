@@ -47,8 +47,8 @@ public class AccountDAO {
 	}
 
 	// 날짜별 합계
-	public List<AccountVO> sumGroupByDate(AccountVO accountVO) {
-		return my.selectList("accountMapper.sumGroupByDate", accountVO);
+	public List<AccountVO> groupByDate(AccountVO accountVO) {
+		return my.selectList("accountMapper.groupByDate", accountVO);
 	}
 	
 	// 특정 날짜의 수입/지출 내역
@@ -56,6 +56,20 @@ public class AccountDAO {
 		return my.selectList("accountMapper.detailsOfDate", accountVO);
 	}
 	
+	// 대분류별 합계
+	public List<AccountVO> groupByBigcate(AccountVO accountVO) {
+		return my.selectList("accountMapper.groupByBigcate", accountVO);
+	}
+	
+	// 특정 대분류의 수입/지출 내역
+	public List<AccountVO> detailsOfBigcate(AccountVO accountVO) {
+		return my.selectList("accountMapper.detailsOfBigcate", accountVO);
+	}
+	
+	// 소분류별 합계
+	public List<AccountVO> groupBySmallcate(AccountVO accountVO) {
+		return my.selectList("accountMapper.groupBySmallcate", accountVO);
+	}
 	/*
 	// account의 반복 id 업데이트
 	public int updateRepeatid(HashMap<String, Object> map) {

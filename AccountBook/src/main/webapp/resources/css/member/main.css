@@ -155,8 +155,13 @@ table td div {
 
 /* myInfo.jsp */
 .myinfo {
-	display: inline-block;
-	margin: 20px 100px;
+	margin-left: 23%;
+	margin-top: 10%;
+}
+.myinfo .title-text {
+	position: fixed;
+	left: 23%;
+	top: 80px;
 }
 .myinfo table td {
 	width: 90%;
