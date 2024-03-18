@@ -21,23 +21,22 @@
 	margin-top: 0;
 }
 .category-stats #div2 {
-	width: 100%;
 	margin-top: 2%;
+	overflow-x: auto;
 	overflow-y: auto;
 	z-index: 0;
 }
-.category-stats #top-div1 { /* 대분류 통계 div */
-	float: right;
-	width: 100%;
+.category-stats #top-div1, .category-stats #top-div2, .category-stats #top-div3, .category-stats #top-div4 { /* 대분류 통계 div */
+	width: 3200px;
+	float: left;
+	overflow-x: scroll;
 	height: 800px;
 	margin-top: 3%;
+	margin-left: 7%;
 }
-.category-stats #top-div2 { /* 대분류 상세 div */
-	float: right;
-	width: 100%;
-}
-.category-stats #top-div1 #inner-div1 { /* 대분류 통계 border div */
-	width: 80%;
+.category-stats #top-div1 .stats-div, .category-stats #inner-div1, .category-stats #inner-div2 {
+	float: left;
+	width: 45%;
 	height: 90%;
 	margin-left: auto;
 	margin-right: auto;
@@ -46,18 +45,20 @@
 	box-sizing: border-box;
 	box-shadow: 0 0 15px lightgray;
 }
-.category-stats #top-div2 #inner-div2 { /* 대분류 상세 border div */
-	margin-bottom: 30px;
-	width: 80%;
-	height: 720px;
-	margin-left: auto;
-	margin-right: auto;
-	border: 1px solid lightgray;
-	border-radius: 20px;
-	box-sizing: border-box;
-	box-shadow: 0 0 15px lightgray;
+.category-stats #top-div1 #in-stats-div, .category-stats #top-div2 #inner-div2 {
+	margin-left: 5%;
 }
-.category-stats #stats-div h2 { 
+.category-stats #top-div3 #inner-div2, .category-stats #top-div4 #inner-div2 {
+	margin-left: 7%;
+}
+.category-stats .scroll-x { /* 통계 div 넘기기 */
+	position: sticky;
+	float: left;
+	top: 38%;
+	padding-left: 15px;
+	
+}
+.category-stats .stats-div h2 { 
 	margin-top: 3%;
 }
 .category-stats .piechart { /* 차트 */
@@ -67,39 +68,39 @@
 	margin-left: 3%;
 	z-index: 0;
 }
-.category-stats #stats-list { /* 차트 합계 list */
+.category-stats .stats-list { /* 차트 합계 list */
 	float: left;
 	width: 45%;
 	height: 450px;
 	overflow-y: auto;
 }
-.category-stats #stats-list table {
+.category-stats .stats-list table {
 	position: relative;
 	top: 50%;
 	transform: translate(0, -50%);
 }
-.category-stats #stats-list td:nth-child(2) {
+.category-stats .stats-list td:nth-child(2) {
 	text-align: right;
 	padding-right: 50px;
 }
-.category-stats #stats-list table {
+.category-stats .stats-list table {
 	border-collapse: collapse;
 	margin-left: auto;
 	margin-right: auto;
 	width: 70%;
 }
-.category-stats #stats-list table td {
+.category-stats .stats-list table td {
 	width: 30%;
 	padding: 10px;
 	height: 35px;
 }
-.category-stats #stats-list table tr {
+.category-stats .stats-list table tr {
 	border: 1px solid lightgray;
 	border-radius: 10px;
 	border-left: 0;
 	border-right: 0;
 }
-.category-stats #stats-list table tr:hover {
+.category-stats .stats-list table tr:hover {
 	background: #F3F3F3;
 	border-color: lightgray;
 	cursor: pointer;
@@ -112,46 +113,46 @@
 .category-stats #div2 .angle-icon i:hover {
 	color: var(--main-color);
 }
-.category-stats #next-div {
-	position: absolute;
-	right: 4%;
-	top: 50%;
+.category-stats #top-div2 #inner-div1 { /* 대분류 상세 */
+	padding: 10px;
 }
-.category-stats #next-div2 {
-	position: sticky;
-	float: right;
-	right: 4%;
-	bottom: 28%;
-}
-.category-stats #up-div {
-	position: absolute;
-	right: 4%;
-}
-.category-stats #account-list-div { /* 대분류 상세 border div */
+.category-stats #account-list-div { /* 대분류 상세 수입/지출 내역 */
 	height: 550px;
 	overflow-y: auto;
-	float: none;
+	margin-top: 10px;
 }
 .category-stats #account-list-div table {
 	width: 90%;
 }
-.category-stats #total-div {
+.category-stats .total-div {
 	width: 100%;
 	font-size: 24px;
 }
-.category-stats #total-div table {
+.category-stats .total-div table {
 	margin-left: auto;
 	margin-right: auto;
 }
-.category-stats #total-div table td {
+.category-stats .total-div table td {
 	padding-right: 30px;
 }
-.category-stats #total-div p {
-	color: gray;
+.category-stats .total-div p {
+	font-weight: bold;
 }
-.category-stats #total-div i {
+.category-stats .total-div i {
 	font-style: normal;
 }
+#scroll-top {
+	position: fixed;
+	right: 1%;
+	bottom: 2%;
+	font-size: 40px;
+	color: gray;	
+}
+#scroll-top i:hover {
+	color: var(--main-color);
+	cursor: pointer;
+}
+
 /* asset_stats.jsp */
 .asset-stats {
 }

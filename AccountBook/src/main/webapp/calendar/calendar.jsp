@@ -158,7 +158,7 @@
 					</table>
 				</div>
 				-->
-				<!-- 해당 날짜의 내역 모달 -->
+				<!-- 해당 날짜의 내역 모달
 				<div class="modal" id="date-account-modal" hidden="true">
 					<div class="modal-content wide">
 						<div class="modal-title">
@@ -166,7 +166,7 @@
 						</div>
 						<hr>
 						<div class="modal-body wide">
-							<!-- 총 금액 -->
+							<!-- 총 금액 
 							<div style="margin-bottom: 15px;">
 								<table style="text-align: center;">
 									<tr>
@@ -182,7 +182,7 @@
 							<button class="btn right outline-green" id="close-date-account">닫기</button>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			<% }
 			/* 로그인이 되어 있지 않을 때 */
 			else { %>

@@ -85,22 +85,31 @@
 				
 				<div id="div2">
 					<!-- 대분류 통계 -->
-					<div id="top-div1">
-						<!-- 차트 및 합계 -->
-						<div id="inner-div1"></div>
-						<!-- 다른 통계 보기 버튼 -->
-						<div class="angle-icon" id="next-div"><i class="fi fi-rr-angle-right"></i></div>
+					<div id="top-div1"></div>
+					
+					<!-- 대분류 상세 -->
+					<div id="top-div2" class="hide">
+						<div id="inner-div1"></div> <!-- 지출 -->
+						<div class="angle-icon scroll-x" id="scroll-smallcate"><i class="fi fi-rr-angle-right"></i></div>
+						
+						<div id="inner-div2"></div> <!-- 수입 -->
+						<div class="angle-icon scroll-x" id="scroll-smallcate"><i class="fi fi-rr-angle-right"></i></div>
 					</div>
 					
-					<!-- 카테고리 상세 -->
-					<div id="top-div2" class="hide">
-						<div id="inner-div2">
-							
-						</div>
-						<div class="angle-icon" id="up-div"><i class="fi fi-rr-angle-up"></i></div>
-						<div class="angle-icon" id="next-div2"><i class="fi fi-rr-angle-right"></i></div>
+					<!-- 소분류 통계 -->
+					<div id="top-div3" class="hide">
+						<div id="inner-div1"></div>
+						<div id="inner-div2"></div>
+					</div>
+					
+					<!-- 소분류 상세 -->
+					<div id="top-div4" class="hide">
+						<div id="inner-div1"></div>
+						<div id="inner-div2"></div>
 					</div>
 				</div>
+				
+				<div id="scroll-top"><i class="fi fi-rr-arrow-alt-square-up"></i></div>
 			</div>	
 				
 			<% }

@@ -159,11 +159,17 @@ public class AccountController {
 	// 대분류별 합계
 	@RequestMapping("account/makeBigcateStats")
 	public void groupByBigcate(AccountVO accountVO, Model model) {
-		List<AccountVO> list = aDao.groupByBigcate(accountVO);
-		model.addAttribute("list", list);
+		accountVO.setMoneytype("지출");
+		List<AccountVO> spendList = aDao.groupByBigcate(accountVO);
+		model.addAttribute("spendList", spendList);
+		String spendData = toMapSvc.makeBigcateData(spendList);
+		model.addAttribute("spendData", spendData);
 		
-		String data = toMapSvc.makeBigcateData(list);
-		model.addAttribute("data", data);
+		accountVO.setMoneytype("수입");
+		List<AccountVO> incomeList = aDao.groupByBigcate(accountVO);
+		model.addAttribute("incomeList", incomeList);
+		String incomeData = toMapSvc.makeBigcateData(incomeList);
+		model.addAttribute("incomeData", incomeData);
 	}
 	
 	// 특정 대분류의 수입/지출 내역
@@ -186,6 +192,15 @@ public class AccountController {
 
 		model.addAttribute("moneytype", accountVO.getMoneytype());
 		model.addAttribute("bigcate", accountVO.getBigcate());
+	}
+	
+	// 특정 소분류의 수입/지출 내역
+	@RequestMapping("account/detailsOfSmallcate")
+	public String detailsOfSmallcate(AccountVO accountVO, Model model) {
+		List<AccountVO> list = aDao.detailsOfSmallcate(accountVO);
+		LinkedHashMap<String, List<AccountVO>> map = toMapSvc.accountToMap(list); // 날짜별로 그룹한 map
+		model.addAttribute("map", map);
+		return "account/selectAccount";
 	}
 	/*
 	// 수입/지출 목록

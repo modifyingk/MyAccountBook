@@ -70,14 +70,16 @@
 }
 .calendar #side-div1 {
 	position: fixed;
-	top: 1px;
-	right: 1px;
+	top: 75px;
+	right: 2px;
 	width: 850px;
-	height: 1100px;
+	height: 990px;
 	border: 1px solid lightgray;
 	border-radius: 10px;
 	background: white;
 	overflow-y: auto;
+	box-shadow: 0 0 15px lightgray;
+	transform: translateX(500px)
 }
 .calendar #account-list-div table {
 	width: 95%;

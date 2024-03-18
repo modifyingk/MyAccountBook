@@ -3,7 +3,37 @@ document.write('<script src="../resources/js/function/regFunc.js"></script>'); /
 document.write('<script src="../resources/js/function/dateFunc.js"></script>'); // 날짜 함수
 document.write('<script src="../resources/js/asset/assetFunc.js"></script>'); // 자산 함수
 
-document.write('<script src="../resources/js/account/accountFunc.js"></script>'); // 수입/지출 내역 함수
+//수입/지출 내역
+function accountList(dateVal, useridVal) {
+	$.ajax({
+		type : "post",
+		url : "selectAccount",
+		data : {
+			date : dateVal,
+			userid : useridVal,
+		},
+		success : function(res) {
+			$("#account-list-div").html(""); // 비우고
+			$("#account-list-div").append(res); // 추가
+		}
+	})
+}
+
+// 미니 달력
+function makeCalendar(today) {
+	$.ajax({
+		type: "post",
+		url: "makeCalendar",
+		data: {
+			date: today,
+			userid: userid,
+			type: "mini"
+		},
+		success: function(res) {
+			$("#left-div1").html(res);
+		}
+	})
+}
 
 $(function() {
 	var date;

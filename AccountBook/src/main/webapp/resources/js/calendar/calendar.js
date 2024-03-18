@@ -89,9 +89,10 @@ $(function() {
 				$("#account-list-div").html(res);
 			}
 		})
+		
 		$("#side-div1").show();
-	})
-	
+		$("#side-div1").animate({right:"500px"}, 400);
+	})	
 	$(document).on("click", "#close-side-div1", function() {
 		$("#side-div1").hide();
 	})

@@ -8,38 +8,52 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div id="stats-div">
-		<c:set var="mtype" value="${list[0].moneytype}"></c:set>
-		<h2>${mtype} 통계</h2>
-		<div class="piechart" id="piechart"></div>
-		<div id="stats-list">
+	<div class="stats-div" id="out-stats-div">
+		<h2>지출 통계</h2>
+		<div class="piechart" id="piechart1"></div>
+		<div class="stats-list">
 			<table>
-				<c:forEach items="${list}" var="list">
+				<c:forEach items="${spendList}" var="spendList">
 					<tr>
-						<td>${list.bigcate}</td>		
-						<c:if test="${mtype == '수입'}">
-							<td class="blue"><fmt:formatNumber value="${list.total}"></fmt:formatNumber>원</td>			
-						</c:if>
-						<c:if test="${mtype == '지출'}">
-							<td class="red">-<fmt:formatNumber value="${list.total}"></fmt:formatNumber>원</td>			
-						</c:if>
-				</tr>
+						<td>${spendList.bigcate}</td>		
+						<td class="red">-<fmt:formatNumber value="${spendList.total}"></fmt:formatNumber>원</td>			
+					</tr>
 				</c:forEach>
 			</table>
 		</div>
 	</div>
+	
+	<div class="angle-icon scroll-x" id="scroll-instats"><i class="fi fi-rr-angle-right"></i></div>
+	
+	<div class="stats-div" id="in-stats-div">
+		<h2>수입 통계</h2>
+		<div class="piechart" id="piechart2"></div>
+		<div class="stats-list">
+			<table>
+				<c:forEach items="${incomeList}" var="incomeList">
+					<tr>
+						<td>${incomeList.bigcate}</td>		
+						<td class="blue"><fmt:formatNumber value="${incomeList.total}"></fmt:formatNumber>원</td>			
+					</tr>
+				</c:forEach>
+			</table>
+		</div>
+	</div>
+	
+	<div class="angle-icon scroll-x" id="scroll-outstats"><i class="fi fi-rr-angle-right"></i></div>
 </body>
 <script>
 	google.charts.load("current", {packages:["corechart"]});
-	google.charts.setOnLoadCallback(drawChart);
+	google.charts.setOnLoadCallback(drawChart1);
+	google.charts.setOnLoadCallback(drawChart2);
 
-	function drawChart() {
-	    var data = google.visualization.arrayToDataTable([
+	function drawChart1() {
+		let data = google.visualization.arrayToDataTable([
 	    	['분류', '합계'],
-	    	${data}
+	    	${spendData}
 	    ]);
 	
-	    var options = {
+		let options = {
 	            legend: {position: 'labeled', textStyle: {color: 'black', fontSize: 17}},
 	            pieSliceText: 'label',
 	            pieSliceTextStyle: {fontSize: 17},
@@ -47,7 +61,26 @@
 	            chartArea:{width:'100%',height:'75%'}
 	          };
 	
-	    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+		let chart = new google.visualization.PieChart(document.getElementById('piechart1'));
+	
+	    chart.draw(data, options);
+	}
+	
+	function drawChart2() {
+	    let data = google.visualization.arrayToDataTable([
+	    	['분류', '합계'],
+	    	${incomeData}
+	    ]);
+	
+	    let options = {
+	            legend: {position: 'labeled', textStyle: {color: 'black', fontSize: 17}},
+	            pieSliceText: 'label',
+	            pieSliceTextStyle: {fontSize: 17},
+	            pieStartAngle: 0,
+	            chartArea:{width:'100%',height:'75%'}
+	          };
+	
+	    let chart = new google.visualization.PieChart(document.getElementById('piechart2'));
 	
 	    chart.draw(data, options);
 	}

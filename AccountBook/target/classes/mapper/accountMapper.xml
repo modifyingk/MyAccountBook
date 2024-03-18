@@ -61,6 +61,11 @@
 		select if(smallcate="", "분류없음", smallcate) as smallcate, if(moneytype="지출", sum(total)*-1, sum(total)) as total from account
 		where userid = #{userid} and left(date, 6)= #{date} and moneytype = #{moneytype} and bigcate = #{bigcate} group by smallcate;
 	</select>
+
+	<!-- 특정 대분류의 수입/지출 내역 -->
+	<select id="detailsOfSmallcate" parameterType="accountVO" resultType="accountVO">
+		select * from account where userid = #{userid} and left(date, 6)= #{date} and moneytype = #{moneytype} and bigcate = #{bigcate} and smallcate = #{smallcate} order by date desc;
+	</select>
 	
 	<!-- account의 반복 id 업데이트 
 	<update id="updateRepeatid" parameterType="map">

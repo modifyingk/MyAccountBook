@@ -1,3 +1,9 @@
+//날짜 세팅
+function setDate(year, month) {
+	$("#month").html(oneDigits(month) + "월");
+	$("#year").html(year);
+}
+
 // 현재 날짜
 function createDate() {
 	let date = new Date();

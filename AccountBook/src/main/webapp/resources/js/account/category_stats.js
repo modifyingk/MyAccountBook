@@ -1,6 +1,5 @@
 document.write('<script src="../resources/js/function/htmlFunc.js"></script>'); // html 함수
 document.write('<script src="../resources/js/function/dateFunc.js"></script>'); // 날짜 함수
-document.write('<script src="../resources/js/account/accountFunc.js"></script>'); // 수입/지출 내역 함수
 
 $(function() {
 	var date;
@@ -15,7 +14,7 @@ $(function() {
 		month = date.getMonth() + 1;
 
 		setDate(year, month); // 날짜 세팅
-		makeBigcateStats(today, "지출", "#inner-div1") // 카테고리 통계
+		makeBigcateStats(today, "#top-div1") // 카테고리 통계
 		
 		
 		// 다른 영역 클릭 시 창 닫기
@@ -47,7 +46,6 @@ $(function() {
 		makeBigcateStats(today, "지출", "#inner-div1")
 		
 		$("#select-date").hide();
-		//$("#details-category-div").hide();
 	})
 	
 	// 이전 달 클릭
@@ -60,7 +58,6 @@ $(function() {
 		makeBigcateStats(today, "지출", "#inner-div1")
 		
 		$("#select-date").hide();
-		//$("#details-category-div").hide();
 	})
 	
 	// 다음 달 클릭
@@ -73,53 +70,83 @@ $(function() {
 		makeBigcateStats(today, "지출", "#inner-div1")
 		
 		$("#select-date").hide();
-		//$("#details-category-div").hide();
 	})
 	
+	// 수입 통계로 넘기기 (옆으로)
+	$(document).on("click", "#scroll-instats", function() {
+		let offset = $("#in-stats-div").offset();
+		$("#div2").scrollLeft(offset.left);
+	})
 	
-	// 통계 카테고리 클릭 시 해당 카테고리 지출 내역
-	$(document).on("click", "#inner-div1 #stats-list tr", function() {
+	// 지출 통계로 넘기기 (옆으로)
+	$(document).on("click", "#scroll-outstats", function() {
+		let offset = $("#out-stats-div").offset();
+		$("#div2").scrollLeft(offset.left);
+	})
+	
+	// 대분류 선택 시 상세 내역
+	$(document).on("click", "#top-div1 .stats-list tr", function() {
+		let divType = $(this).closest("div").parent().attr("id");
+		let totalVal = $(this).children().eq(1).text();
+
 		let bigcate = $(this).children().eq(0).text();
-		let mtype = $("#inner-div1 h2").text().substring(0, 2);
-		
-		detailsOfBigcate(today, mtype, bigcate, "#inner-div2");
-
-		// 대분류 상세 div로 넘기기 (아래로)
+		let mtype;
+		if(divType == "out-stats-div") {
+			mtype = "지출";
+			detailsOfBigcate(today, mtype, bigcate, totalVal, "#top-div2 #inner-div1");
+			makeSmallcateStats(today, mtype, bigcate, "#top-div3 #inner-div1");
+		} else if(divType == "in-stats-div") {
+			mtype = "수입";
+			detailsOfBigcate(today, mtype, bigcate, totalVal, "#top-div2 #inner-div2");
+			makeSmallcateStats(today, mtype, bigcate, "#top-div3 #inner-div2");
+		}
 		$("#top-div2").show();
+		$("#top-div3").show();
 		let offset = $("#top-div2").offset();
-		$("html, body").animate({scrollTop:offset.top}, 400);
+		$("html, body").animate({scrollTop:offset.top-270}, 400);
 	})
-
-	// 대분류 통계 div로 넘기기 (위로)
-	$(document).on("click", "#up-div", function() {
+	
+	// 스크롤 제일 위로 이동
+	$(document).on("click", "#scroll-top", function() {
 		$("html, body").animate({scrollTop:0}, 400);
 	})
 	
-	// 소분류 통계 div로 넘기기 (옆으로)
-	$(document).on("click", "#next-div2", function() {
-		console.log($("#inner-div2 h2").text());
-		if($("#inner-div2 h2").text() == "") {
-			let typeVal = $("#typeVal").text();
-			let bigcateVal = $("#bigcateVal").text();
-			makeSmallcateStats(today, typeVal, bigcateVal, "#inner-div2")
-		} else {
-			let bigcateVal = $("#inner-div2 h2").text().split(" ")[0];
-			let typeVal = $("#typeVal").text();
-			console.log(bigcateVal + " " + typeVal);
-			detailsOfBigcate(today, typeVal, bigcateVal, "#inner-div2");
+	// 소분류 통계
+	$(document).on("click", "#scroll-smallcate", function() {
+		let offset = $("#top-div3").offset();
+		$("html, body").animate({scrollTop:offset.top-270}, 400);
+	})
+	
+	// 소분류 선택 시 상세 내역
+	$(document).on("click", "#top-div3 .stats-list tr", function() {
+		let divType = $(this).closest("div").parent().parent().attr("id");
+		let totalVal = $(this).children().eq(1).text();
+		let bigcate = $(this).closest("div").parent().children().eq(0).text().split(" 통계")[0];
+		let smallcate = $(this).children().eq(0).text();
+		if(smallcate == "분류없음")
+			smallcate = "";
+		let mtype;
+		if(divType == "inner-div1") { // 지출
+			mtype = "지출";
+			detailsOfSmallcate(today, mtype, bigcate, smallcate, totalVal, "#top-div4 #inner-div1");
+		} else if(divType == "inner-div2"){ // 수입
+			mtype = "수입";
+			detailsOfSmallcate(today, mtype, bigcate, smallcate, totalVal, "#top-div4 #inner-div2");
 		}
+		$("#top-div4").show();
+		let offset = $("#top-div4").offset();
+		$("html, body").animate({scrollTop:offset.top}, 400);
 	})
 })
 
 // 대분류 통계
-function makeBigcateStats(dateVal, typeVal, divID) {
+function makeBigcateStats(dateVal, divID) {
 	$.ajax({
 		type: "post",
 		url: "makeBigcateStats",
 		data: {
 			date: dateVal,
-			userid: userid,
-			moneytype: typeVal
+			userid: userid
 		},
 		success: function(res) {
 			$(divID).html(res);
@@ -145,7 +172,7 @@ function makeSmallcateStats(dateVal, typeVal, bigcateVal, divID) {
 }
 
 // 대분류 상세
-function detailsOfBigcate(dateVal, typeVal, bigcateVal, divID) {
+function detailsOfBigcate(dateVal, typeVal, bigcateVal, totalVal,divID) {
 	$.ajax({
 		type: "post",
 		url: "detailsOfBigcate",
@@ -156,11 +183,34 @@ function detailsOfBigcate(dateVal, typeVal, bigcateVal, divID) {
 			userid: userid
 		},
 		success: function(res) {
-			let html = "<div id='total-div'>" +
-						"<table><tr><td><p>합계</p></td>" +
-						"<td><i></i></td></tr></table></div>" +
-						"<div class='hide' id='typeVal'>" + typeVal + "</div>" +
-						"<div class='hide' id='bigcateVal'>" + bigcateVal + "</div>";
+			let html = "<div class='total-div'>" +
+						"<table><tr><td><p>" + bigcateVal + "</p></td>" +
+						"<td><i>"+ totalVal + "</i></td></tr></table></div>";
+			html += "<div id='account-list-div'>" + res + "</div>";
+			$(divID).html(html);
+		}
+	})
+}
+
+// 소분류 상세
+function detailsOfSmallcate(dateVal, typeVal, bigcateVal, smallcateVal, totalVal,divID) {
+	$.ajax({
+		type: "post",
+		url: "detailsOfSmallcate",
+		data: {
+			date: dateVal,
+			moneytype: typeVal,
+			bigcate: bigcateVal,
+			smallcate: smallcateVal,
+			userid: userid
+		},
+		success: function(res) {
+			if(smallcateVal == "") {
+				smallcateVal = "분류없음";
+			}
+			let html = "<div class='total-div'>" +
+			"<table><tr><td><p>" + smallcateVal + "</p></td>" +
+			"<td><i>"+ totalVal + "</i></td></tr></table></div>";
 			html += "<div id='account-list-div'>" + res + "</div>";
 			$(divID).html(html);
 		}

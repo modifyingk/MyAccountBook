@@ -1,41 +1,3 @@
-// 날짜 세팅
-function setDate(year, month) {
-	$("#month").html(oneDigits(month) + "월");
-	$("#year").html(year);
-}
-
-//수입/지출 내역
-function accountList(dateVal, useridVal) {
-	$.ajax({
-		type : "post",
-		url : "selectAccount",
-		data : {
-			date : dateVal,
-			userid : useridVal,
-		},
-		success : function(res) {
-			$("#account-list-div").html(""); // 비우고
-			$("#account-list-div").append(res); // 추가
-		}
-	})
-}
-
-// 미니 달력
-function makeCalendar(today) {
-	$.ajax({
-		type: "post",
-		url: "makeCalendar",
-		data: {
-			date: today,
-			userid: userid,
-			type: "mini"
-		},
-		success: function(res) {
-			$("#left-div1").html(res);
-		}
-	})
-}
-
 $(function() {
 	
 	// 카테고리별 통계
@@ -53,7 +15,7 @@ $(function() {
 			}
 		})
 	}*/
-	
+	/*
 	// 자산별 통계
 	$.assetStatsList = function(dateVal, useridVal, typeVal) {
 		var result;
@@ -175,7 +137,7 @@ $(function() {
 			$(categoryID).attr("value", "");
 		})
 	}*/
-	
+	/*
 	// 수입/지출 현황
 	$.info = function() {
 		$("#income-total").html($("#income-div i").text())
