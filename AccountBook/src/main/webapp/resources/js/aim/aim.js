@@ -1,54 +1,66 @@
 document.write('<script src="../resources/js/function/htmlFunc.js"></script>'); // html 함수
 document.write('<script src="../resources/js/function/regFunc.js"></script>'); // 유효성 검사 함수
 document.write('<script src="../resources/js/function/dateFunc.js"></script>'); // 날짜 함수
-document.write('<script src="../resources/js/account/categoryFunc.js"></script>'); // 카테고리
-document.write('<script src="../resources/js/aim/aimFunc.js"></script>'); // 목표 목록 js
+
+//목표 중복 확인 함수
+function overlapAim(bigcateVal) {
+	var result;
+	$.ajax({
+		type: "post",
+		url: "overlapAim",
+		async: false,
+		data: {
+			bigcate: bigcateVal,
+			userid: userid
+		},
+		success: function(res) {
+			result = res;
+		}
+	})
+	return result;
+}
+
+// 목표 가져오기
+function aimList(today) {
+	$.ajax({
+		type: "post",
+		url: "selectAim",
+		data: {
+			date: today,
+			userid: userid
+		},
+		success: function(res) {
+			$("#div1").html(res);
+		}
+	})
+}
 
 $(function() {
 	var date;
 	var today; // 현재 날짜 저장할 변수
-	var year; // 현재 연도 저장할 변수
 	
 	$(document).ready(function() {
 		// 현재 날짜 가져오기
-		date = $.createDate();
-		today = $.getYearMonth(date);
-		year = date.getFullYear();
+		date = createDate();
+		today = getYearMonth(date); // yyyymm
 		
 		// 숫자만 입력되도록
-		$.onlyNum("#add-year");
-		$.onlyNum("#add-total");
-		$.onlyNum("#up-total");
+		onlyNum("#add-year");
+		onlyNum("#add-total");
+		onlyNum("#up-total");
 		
 		// 금액 세 자리마다 콤마
-		$.moneyFmt("#add-total");
-		$.moneyFmt("#up-total");
+		moneyFmt("#add-total");
+		moneyFmt("#up-total");
 		
-		// 목표 가져오기
-		$.aimList(today, userid, "#month-div", "#aim-list-div"); // 지출 목표
-		$.inaimList(today, userid, "#aim-in-list-div"); // 수입 목표
+		aimList(today);
 		
-		// 목표 선택 및 값 자동 입력
-		$.pickAim("#out-aim-table tr");
-		$.pickAim("#in-aim-table tr");
-		
-		// 카테고리 목록 가져오기
-		$.categoryList(userid, "#in-category-list-div", "#out-category-list-div"); // 카테고리 목록
-		$.categoryList(userid, "#select-incate-list-div", "#select-outcate-list-div"); // 카테고리 선택 모달
-		
-		// 카테고리 선택 및 값 자동 입력 (목표 추가)
-		//$.openSelectCate("#add-catename", "select-mtype");
-		$.pickCategory("#in-category-table tr", "#add-catename", "#select-incate-modal");
-		$.pickCategory("#out-category-table tr", "#add-catename", "#select-outcate-modal");
-		
-		// 모달 닫기
-		//$.closeModal("#close-add-aim", "#add-aim-modal"); // 목표 추가 모달 닫기
-		//$.closeModal("#close-up-aim", "#up-aim-modal"); // 목표 수정 모달 닫기
-		//$.closeModal("#close-select-incate", "#select-incate-modal"); // 수입 카테고리 선택 모달 닫기
-		//$.closeModal("#close-select-outcate", "#select-outcate-modal"); // 지출 카테고리 선택 모달 닫기
-		
-		// 다른 영역 클릭 시 창 닫기
-		$.autoClose("#select-month"); // 날짜 선택 닫기
+		autoClose(".select-add-bigcate"); // 분류 선택 닫기
+	})
+	
+	// 목표 추가
+	$(document).on("click", "#open-add-aim", function() {
+		$("#add-aim-modal").show();
 	})
 	
 	// 목표 추가 모달 닫기
@@ -56,6 +68,48 @@ $(function() {
 		$("#add-aim-modal").hide();
 	})
 	
+	// 목표 추가 - 뷴류 선택
+	$(document).on("click", "#add-bigcate", function() {
+		$(".select-div").show();
+	})
+	$(document).on("click", ".select-add-bigcate td", function() {
+		let categoryVal = $(this).text();
+		$("#add-bigcate").attr("value", categoryVal);
+		$(".select-add-bigcate").hide();
+	})
+	
+	// 목표 추가
+	$(document).on("click", "#add-aim-btn", function() {
+		let bigcate = $("#add-bigcate").val();
+		let total = $("#add-total").val().replaceAll(",", "");
+		
+		if(!checkMustReg(bigcate) || !checkMustReg(total)) { // 입력값 확인
+			alert("입력 값을 확인해주세요.");
+		} else {
+			if(overlapAim(bigcate)) { // 중복확인
+				$.ajax({
+					type : "post",
+					url : "insertAim",
+					data : {
+						bigcate : bigcate,
+						total : total,
+						userid : userid
+					},
+					success : function(res) {
+						if(res == true) {
+							window.location.reload();
+						} else {
+							alert("다시 시도해주세요.");
+						}
+					}
+				})
+			} else {
+				alert("이미 목표가 존재합니다.")
+			}
+		}
+		
+	})
+	/*
 	// 목표 수정 모달 닫기
 	$(document).on("click", "#close-up-aim", function() {
 		$("#up-aim-modal").hide();
@@ -215,5 +269,5 @@ $(function() {
 				}
 			}
 		})
-	})
+	})*/
 })

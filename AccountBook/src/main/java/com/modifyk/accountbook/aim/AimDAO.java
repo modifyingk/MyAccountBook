@@ -12,14 +12,19 @@ public class AimDAO {
 	@Autowired
 	SqlSessionTemplate my;
 	
+	// 목표 카테고리 중복 확인
+	public String overlapAim(AimVO aimVO) {
+		return my.selectOne("aimMapper.overlapAim", aimVO);
+	}
+
 	// 목표 추가
 	public int insertAim(AimVO aimVO) {
 		return my.insert("aimMapper.insertAim", aimVO);
 	}
 	
 	// 목표 가져오기
-	public List<AimJoinVO> aimInfo(AimVO aimVO) {
-		return my.selectList("aimMapper.aimInfo", aimVO);
+	public List<AimJoinVO> selectAim(AimVO aimVO) {
+		return my.selectList("aimMapper.selectAim", aimVO);
 	}
 	
 	// 목표 수정
@@ -32,11 +37,7 @@ public class AimDAO {
 		return my.delete("aimMapper.deleteAim", aimVO);
 	}
 	
-	// 목표 카테고리 중복 확인
-	public String isOverlapAim(AimVO aimVO) {
-		return my.selectOne("aimMapper.isOverlapAim", aimVO);
-	}
-	
+	/*
 	// 유저별 카테고리별 목표, 총 금액
 	public List<AimJoinVO> aimAll(AimVO aimVO) {
 		return my.selectList("aimMapper.aimAll", aimVO);
@@ -50,5 +51,5 @@ public class AimDAO {
 	// 총 지출 목표 중 달성 개수
 	public List<AimRateVO> achieveRate(String aimdate) {
 		return my.selectList("aimMapper.achieveRate", aimdate);
-	}
+	}*/
 }

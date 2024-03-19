@@ -2,51 +2,53 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="aimMapper">
+	<!-- 목표 카테고리 중복 확인 -->
+	<select id="overlapAim" parameterType="aimVO" resultType="String">
+		select bigcate from aim where bigcate = #{bigcate} and userid = #{userid};
+	</select>
+
 	<!-- 목표 추가 -->
 	<insert id="insertAim" parameterType="aimVO">
-		insert into aim values (#{aimid}, #{aimdate}, #{moneytype}, #{catename}, #{total}, #{userid}, "x");
+		insert into aim values (#{aimid}, #{bigcate}, #{total}, #{userid});
 	</insert>
-	
-	<!-- 목표 가져오기 -->
-	<select id="aimInfo" parameterType="aimVO" resultType="aimjoinVO">
-		select aimid, moneytype, catename, total as aim_money, userid,
-		ifnull((select sum(total) from account where account.userid = aim.userid and account.catename = aim.catename and account.moneytype = aim.moneytype and left(account.date, 7) = aim.aimdate), 0) as total
-		from aim where aimdate = #{aimdate} and userid = #{userid} and moneytype = #{moneytype};
-	</select>
 	
 	<!-- 목표 수정 -->
 	<update id="updateAim" parameterType="aimVO">
 		update aim set total = #{total} where aimid = #{aimid} and userid = #{userid};
 	</update>
 	
-	<!-- 목표 달성 -->
-	<update id="achieveAim" parameterType="aimVO">
-		update aim set achieveaim = #{achieveaim} where aimid = #{aimid};
-	</update>
-
-	<!-- 총 지출 목표 중 달성 개수 -->
-	<select id="achieveRate" parameterType="String" resultType="aimrateVO">
-		select userid, count(*) as achieve_num,
-		(select count(*) as achieve from aim where moneytype = "지출" and userid = aim2.userid and aimdate = aim2.aimdate) as aim_num
-		from aim as aim2 where aimdate = #{aimdate} and moneytype = "지출" and achieveaim = "o" group by userid;
-	</select>
-		
 	<!-- 목표 삭제 -->
 	<delete id="deleteAim" parameterType="aimVO">
 		delete from aim where aimid = #{aimid} and userid = #{userid};
 	</delete>
-	
-	<!-- 목표 카테고리 중복 확인 -->
-	<select id="isOverlapAim" parameterType="aimVO" resultType="String">
-		select catename from aim where aimdate = #{aimdate} and catename = #{catename} and userid = #{userid};
+
+	<!-- 목표 가져오기 -->
+	<select id="selectAim" parameterType="aimVO" resultType="aimjoinVO">
+		select aimid, bigcate, total as aim, userid,
+		ifnull((select (sum(total) * -1) from account where account.userid = aim.userid and account.bigcate = aim.bigcate and account.moneytype = "지출" and left(account.date, 6) = #{date}), 0) as spend
+		from aim where userid = #{userid};
 	</select>
+
+	<!-- 목표 달성
+	<update id="achieveAim" parameterType="aimVO">
+		update aim set achieveaim = #{achieveaim} where aimid = #{aimid};
+	</update>
+
+	 총 지출 목표 중 달성 개수 
+	<select id="achieveRate" parameterType="String" resultType="aimrateVO">
+		select userid, count(*) as achieve_num,
+		(select count(*) as achieve from aim where moneytype = "지출" and userid = aim2.userid and aimdate = aim2.aimdate) as aim_num
+		from aim as aim2 where aimdate = #{aimdate} and moneytype = "지출" and achieveaim = "o" group by userid;
+	</select>  -->
+		
 	
-	<!-- 유저별 카테고리별 목표, 총 금액 -->
+	
+	<!-- 유저별 카테고리별 목표, 총 금액
 	<select id="aimAll" parameterType="aimVO" resultType="aimjoinVO">
 		select aimid, moneytype, catename, total as aim_money, userid,
 		ifnull((select sum(total) from account where account.userid = aim.userid and account.catename = aim.catename 
 		and account.moneytype = aim.moneytype and left(account.date, 7) = aim.aimdate), 0) as total
 		from aim where aimdate = #{aimdate} and moneytype = #{moneytype};
-	</select>
+	</select>  -->
 	
 </mapper>

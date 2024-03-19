@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -22,6 +23,18 @@ public class AimController {
 	@Autowired
 	AimToMapService toMapSvc;
 	
+	// 목표 카테고리 중복 확인
+	@ResponseBody
+	@RequestMapping("aim/overlapAim")
+	public boolean overlapAim(AimVO aimVO) {
+		String result = aDao.overlapAim(aimVO);
+		if(result != null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	// 목표 추가
 	@ResponseBody
 	@RequestMapping("aim/insertAim")
@@ -35,12 +48,11 @@ public class AimController {
 	}
 	
 	// 목표 가져오기
-	@ResponseBody
-	@RequestMapping("aim/aimInfo")
-	public HashMap<String, AimJoinVO> aimInfo(AimVO aimVO) {
-		List<AimJoinVO> aimList = aDao.aimInfo(aimVO);
-		HashMap<String, AimJoinVO> map = toMapSvc.toMap(aimList);
-		return map;
+	@RequestMapping("aim/selectAim")
+	public void selectAim(AimVO aimVO, Model model) {
+		List<AimJoinVO> list = aDao.selectAim(aimVO);
+		System.out.println(list);
+		model.addAttribute("list", list);
 	}
 	
 	// 목표 수정
@@ -64,18 +76,6 @@ public class AimController {
 			return true;
 		} else {
 			return false;
-		}
-	}
-	
-	// 목표 카테고리 중복 확인
-	@ResponseBody
-	@RequestMapping("aim/isOverlapAim")
-	public boolean isOverlapAim(AimVO aimVO) {
-		String result = aDao.isOverlapAim(aimVO);
-		if(result != null) {
-			return false;
-		} else {
-			return true;
 		}
 	}
 }

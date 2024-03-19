@@ -5,6 +5,7 @@
 	--red-color: #E34234;
 	--green-color: #2C952C;
 	--blue-color: #0C70F2;
+	--yellow-color: #f38e12;
 	--light-blue-color: #6482B9;
 	--light-red-color: #F56E6E;
 	--light-gray-color: #f3f3f3;
@@ -293,8 +294,8 @@
 .green {
 	color: var(--green-color);
 }
-.yellow {
-	color: #FFA500;
+.orange {
+	color: var(--yellow-color);
 }
 .text-left {
 	text-align: left;

@@ -2,12 +2,10 @@ package com.modifyk.accountbook.aim;
 
 public class AimVO {
 	private int aimid;
-	private String aimdate;
-	private String moneytype;
-	private String catename;
+	private String bigcate;
 	private String total;
 	private String userid;
-	private char achieveaim;
+	private String date;
 	
 	public int getAimid() {
 		return aimid;
@@ -15,23 +13,11 @@ public class AimVO {
 	public void setAimid(int aimid) {
 		this.aimid = aimid;
 	}
-	public String getAimdate() {
-		return aimdate;
+	public String getBigcate() {
+		return bigcate;
 	}
-	public void setAimdate(String aimdate) {
-		this.aimdate = aimdate;
-	}
-	public String getMoneytype() {
-		return moneytype;
-	}
-	public void setMoneytype(String moneytype) {
-		this.moneytype = moneytype;
-	}
-	public String getCatename() {
-		return catename;
-	}
-	public void setCatename(String catename) {
-		this.catename = catename;
+	public void setBigcate(String bigcate) {
+		this.bigcate = bigcate;
 	}
 	public String getTotal() {
 		return total;
@@ -45,18 +31,16 @@ public class AimVO {
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
-	public char isAchieveaim() {
-		return achieveaim;
+	public String getDate() {
+		return date;
 	}
-	public void setAchieveaim(char achieveaim) {
-		this.achieveaim = achieveaim;
+	public void setDate(String date) {
+		this.date = date;
 	}
 	
 	@Override
 	public String toString() {
-		return String.format(
-				"AimVO [aimid=%s, aimdate=%s, moneytype=%s, catename=%s, total=%s, userid=%s, achieveaim=%s]", aimid,
-				aimdate, moneytype, catename, total, userid, achieveaim);
+		return String.format("AimVO [aimid=%s, bigcate=%s, total=%s, userid=%s, date=%s]", aimid, bigcate, total,
+				userid, date);
 	}
-	
 }

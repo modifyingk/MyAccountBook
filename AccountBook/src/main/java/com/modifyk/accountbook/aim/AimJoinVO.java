@@ -2,10 +2,9 @@ package com.modifyk.accountbook.aim;
 
 public class AimJoinVO {
 	private int aimid;
-	private String moneytype;
-	private String catename;
-	private int aim_money;
-	private int total;
+	private String bigcate;
+	private int aim;
+	private int spend;
 	private String userid;
 	
 	public int getAimid() {
@@ -14,29 +13,23 @@ public class AimJoinVO {
 	public void setAimid(int aimid) {
 		this.aimid = aimid;
 	}
-	public String getMoneytype() {
-		return moneytype;
+	public String getBigcate() {
+		return bigcate;
 	}
-	public void setMoneytype(String moneytype) {
-		this.moneytype = moneytype;
+	public void setBigcate(String bigcate) {
+		this.bigcate = bigcate;
 	}
-	public String getCatename() {
-		return catename;
+	public int getAim() {
+		return aim;
 	}
-	public void setCatename(String catename) {
-		this.catename = catename;
+	public void setAim(int aim) {
+		this.aim = aim;
 	}
-	public int getAim_money() {
-		return aim_money;
+	public int getSpend() {
+		return spend;
 	}
-	public void setAim_money(int aim_money) {
-		this.aim_money = aim_money;
-	}
-	public int getTotal() {
-		return total;
-	}
-	public void setTotal(int total) {
-		this.total = total;
+	public void setSpend(int spend) {
+		this.spend = spend;
 	}
 	public String getUserid() {
 		return userid;
@@ -47,8 +40,8 @@ public class AimJoinVO {
 	
 	@Override
 	public String toString() {
-		return String.format("AimJoinVO [aimid=%s, moneytype=%s, catename=%s, aim_money=%s, total=%s, userid=%s]",
-				aimid, moneytype, catename, aim_money, total, userid);
+		return String.format("AimJoinVO [aimid=%s, bigcate=%s, aim=%s, spend=%s, userid=%s]", aimid, bigcate, aim,
+				spend, userid);
 	}
 	
 }

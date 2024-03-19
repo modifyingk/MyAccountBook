@@ -1,4 +1,5 @@
 $(function() {
+	/*
 	// 목표 중복 확인 함수
 	$.overlapAim = function(aimdate) {
 		var result;
@@ -108,5 +109,5 @@ $(function() {
 				$(aimlistDiv).html(html);
 			}
 		})
-	}
+	}*/
 })

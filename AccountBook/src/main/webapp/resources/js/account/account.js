@@ -358,7 +358,7 @@ $(function() {
 		let content = $("#add-content").val();
 		let total = $("#add-total").val().replaceAll(",", "");
 		
-		if(!checkMustReg("#add-date") || !checkMustReg("#add-asset") || !checkMustReg("#add-bigcate") || !checkMustReg("#add-total")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
+		if(!checkMustReg(date) || !checkMustReg(asset) || !checkMustReg(bigcate) || !checkMustReg(total)){ // 정규식에 맞지 않을 때 (빈 값인 경우)
 			alert("입력 값을 확인해주세요.")
 		} else {
 			$.ajax({
@@ -456,7 +456,7 @@ $(function() {
 		let asset = $("#update-asset").val();
 		let total = $("#update-total").val().replaceAll(",", "");
 		
-		if(!checkMustReg("#update-date") || !checkMustReg("#up-dateasset") || !checkMustReg("#update-bigcate") || !checkMustReg("#update-total")){ // 정규식에 맞지 않을 때 (빈 값인 경우)
+		if(!checkMustReg(date) || !checkMustReg(asset) || !checkMustReg(bigcate) || !checkMustReg(total)){ // 정규식에 맞지 않을 때 (빈 값인 경우)
 			alert("입력 값을 확인해주세요.")
 		} else {
 			$.ajax({
