@@ -24,6 +24,8 @@
 			} else if(group == "group2") {
 				if(menu_idx == 0) {
 					location.href = "../asset/asset.jsp";
+				} else if(menu_idx == 1) {
+					location.href = "../asset/asset_stats.jsp";
 				}
 			} else if(group == "group3") {
 				if(menu_idx == 0) {
@@ -56,6 +58,7 @@
 			<div class="menu-title">자산</div>
 			<ul class="menu-group" id="group2">
 				<li><i class="fi fi-rr-hands-usd"></i> 자산 관리</li>
+				<li><i class="fi fi-rs-chart-pie-alt"></i> 자산 분석</li>
 			</ul>
 		</div>
 		<hr>

@@ -9,10 +9,10 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main-style.css">
-<link rel="stylesheet" type="text/css" href="../resources/css/account/stats.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/asset/stats.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript" src="../resources/js/account/asset_stats.js"></script>
+<script type="text/javascript" src="../resources/js/asset/asset_stats.js"></script>
 <script>
 	var userid = "<%= session.getAttribute("userid") %>";
 	var today = "<%= request.getParameter("today") %>";
@@ -20,16 +20,18 @@
 </head>
 <body>
 	<div>
-		<jsp:include page="../main/header.jsp"></jsp:include>
-		<jsp:include page="../main/sidebar.jsp"></jsp:include>
+		<div>
+			<jsp:include page="../main/header.jsp"></jsp:include>
+			<jsp:include page="../main/sidebar.jsp"></jsp:include>
+		</div>
 
 		<!-- 컨텐츠 -->
-		<div class="container asset-stats">
+		<div class="container stats asset-stats">
 			<%
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
 			<div>
-				<h3 class="title-text"><i class="fi fi-rr-chart-pie-alt"></i> 자산 통계</h3>
+				<h3 class="title-text"><i class="fi fi-rr-chart-pie-alt"></i> 자산 분석</h3>
 				
 				<div id="div1">
 					<table class="date-table">
@@ -82,32 +84,18 @@
 					</table>
 				</div> 
 				
-				<div>
-					<div class="col-5">
-						<!-- 수입/지출 통계 -->
-						<div id="stats-div" class="">
-							<table class="button-table" style="margin-left: 10%;">
-								<tr>
-									<td class="" id="in-stats-btn">수입</td>
-									<td class="active" id="out-stats-btn">지출</td>
-								</tr>
-							</table>
-							<div style="margin-left: 10%;">
-								<div id="piechart" style="width: 500px; height: 400px; margin-left: 50px; margin-top: 50px;"></div>
-								<div id="stats-list-div"></div>
-							</div>
-						</div>
-					</div>
-					<div class="col-5">
-						<!-- 자산별 내역 -->
-						<div class="add-div is-border is-shadow hide" id="details-div">
-							<button class="x-btn" id="close-asset-account">x</button>
-							<h3 class="h-normal fs-28" id="name-div"></h3>
-							<div id="account-total-div"></div>
-							<div id="account-list-div"></div>
-						</div>
+				<div id="div2">
+					<!-- 자산 통계 -->
+					<div id="top-div1"></div>
+					
+					<!-- 자산 상세 -->
+					<div id="top-div2" class="hide">
+						<div id="inner-div1"></div> <!-- 지출 -->
+						<div id="inner-div2"></div> <!-- 수입 -->
 					</div>
 				</div>
+				
+				<div id="scroll-top"><i class="fi fi-rr-arrow-alt-square-up"></i></div>
 			</div>	
 				
 			<% }

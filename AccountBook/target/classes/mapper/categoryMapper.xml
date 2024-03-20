@@ -3,12 +3,12 @@
 
 <mapper namespace="categoryMapper">
 	<!-- 수입 소분류 목록 -->
-	<select id="incategoryList" parameterType="String" resultType="categoryVO">
+	<select id="selectIncategory" parameterType="String" resultType="categoryVO">
 		select categoryid, bigcate, smallcate from incategory where userid = #{userid};
 	</select>
 
 	<!-- 지출 소분류 목록 -->
-	<select id="outcategoryList" parameterType="String" resultType="categoryVO">
+	<select id="selectOutcategory" parameterType="String" resultType="categoryVO">
 		select categoryid, bigcate, smallcate from outcategory where userid = #{userid};
 	</select>
 	
@@ -59,12 +59,12 @@
 	</delete>
 	
 	<!-- 특정 수입 대분류의 소분류 목록  -->
-	<select id="inSmallcateList" parameterType="categoryVO" resultType="String">
+	<select id="selectInSmallcate" parameterType="categoryVO" resultType="String">
 		select smallcate from incategory where bigcate = #{bigcate} and userid = #{userid};
 	</select>
 	
 	<!-- 특정 지출 대분류의 소분류 목록  -->
-	<select id="outSmallcateList" parameterType="categoryVO" resultType="String">
+	<select id="selectOutSmallcate" parameterType="categoryVO" resultType="String">
 		select smallcate from outcategory where bigcate = #{bigcate} and userid = #{userid};
 	</select>
 </mapper>

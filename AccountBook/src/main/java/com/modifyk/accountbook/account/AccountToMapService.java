@@ -58,6 +58,20 @@ public class AccountToMapService {
 		return transformMap(map);
 	}
 	
+	// 수입/지출 내역 자산별 그룹화(구글 차트 형식 변환)
+	public String makeAssetData(List<AccountVO> list) {
+		// 카테고리별 사용 금액 합계
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		
+		String tmpKey; // map의 key값이 될 날짜
+		for(int i = 0; i < list.size(); i++) {
+			tmpKey = list.get(i).getAssetname();
+			map.put(tmpKey, list.get(i).getTotal());
+		}
+		
+		return transformMap(map);
+	}
+	
 	// 구글 차트 형식 변환
 	public String transformMap(Map<String, Integer> map) {
 		String data = "";

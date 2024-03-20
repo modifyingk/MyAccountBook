@@ -25,12 +25,12 @@
 			<jsp:include page="../main/sidebar.jsp"></jsp:include>
 		</div>
 		<!-- 컨텐츠 -->
-		<div class="container category-stats">
+		<div class="container stats category-stats">
 			<%
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
 			<div>
-				<h3 class="title-text"><i class="fi fi-rr-chart-pie-alt"></i> 카테고리 통계</h3>
+				<h3 class="title-text"><i class="fi fi-rr-chart-pie-alt"></i> 카테고리 분석</h3>
 				
 				<div id="div1">
 					<table class="date-table">

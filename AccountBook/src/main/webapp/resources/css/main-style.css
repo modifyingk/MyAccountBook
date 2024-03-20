@@ -234,6 +234,134 @@
 	color: var(--red-color);
 	text-align: right;
 }
+
+/* 통계 */
+.stats #top-div1, .stats #top-div2, .stats #top-div3, .stats #top-div4 { /* 통계 div */
+	width: 3200px;
+	float: left;
+	overflow-x: scroll;
+	height: 800px;
+	margin-top: 3%;
+	margin-left: 7%;
+}
+.stats #top-div1 .stats-div, .stats #inner-div1, .stats #inner-div2 {
+	float: left;
+	width: 45%;
+	height: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px solid lightgray;
+	border-radius: 20px;
+	box-sizing: border-box;
+	box-shadow: 0 0 15px lightgray;
+}
+.stats #top-div1 #in-stats-div, .stats #top-div2 #inner-div2 {
+	margin-left: 5%;
+}
+.stats #top-div3 #inner-div2, .stats #top-div4 #inner-div2 {
+	margin-left: 7%;
+}
+.stats .scroll-x { /* 통계 div 넘기기 */
+	position: sticky;
+	float: left;
+	top: 38%;
+	padding-left: 15px;
+	
+}
+.stats .stats-div h2 { 
+	margin-top: 3%;
+}
+.stats .piechart { /* 차트 */
+	float: left;
+	width: 50%;
+	height: 500px;
+	margin-left: 3%;
+	z-index: 0;
+}
+.stats .stats-list { /* 차트 합계 list */
+	float: left;
+	width: 45%;
+	height: 450px;
+	overflow-y: auto;
+}
+.stats .stats-list table {
+	position: relative;
+	top: 50%;
+	transform: translate(0, -50%);
+}
+.stats .stats-list td:nth-child(2) {
+	text-align: right;
+	padding-right: 50px;
+}
+.stats .stats-list table {
+	border-collapse: collapse;
+	margin-left: auto;
+	margin-right: auto;
+	width: 70%;
+}
+.stats .stats-list table td {
+	width: 30%;
+	padding: 10px;
+	height: 35px;
+}
+.stats .stats-list table tr {
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	border-left: 0;
+	border-right: 0;
+}
+.stats .stats-list table tr:hover {
+	background: #F3F3F3;
+	border-color: lightgray;
+	cursor: pointer;
+}
+.stats #div2 .angle-icon { /* 다른 div로 이동 버튼 */
+	cursor: pointer;
+	font-size: 50px;
+	color: gray;
+}
+.stats #div2 .angle-icon i:hover {
+	color: var(--main-color);
+}
+.stats #top-div2 #inner-div1 { /* 상세 */
+	padding: 10px;
+}
+.stats #account-list-div { /* 통계 상세 수입/지출 내역 */
+	height: 550px;
+	overflow-y: auto;
+	margin-top: 10px;
+}
+.stats #account-list-div table {
+	width: 90%;
+}
+.stats .total-div {
+	width: 100%;
+	font-size: 24px;
+}
+.stats .total-div table {
+	margin-left: auto;
+	margin-right: auto;
+}
+.stats .total-div table td {
+	padding-right: 30px;
+}
+.stats .total-div p {
+	font-weight: bold;
+}
+.stats .total-div i {
+	font-style: normal;
+}
+.stats #scroll-top {  /* 젤 위로 이동 */
+	position: fixed;
+	right: 1%;
+	bottom: 2%;
+	font-size: 40px;
+	color: gray;	
+}
+.stats #scroll-top i:hover { 
+	color: var(--main-color);
+	cursor: pointer;
+}
 /*-------------------------------------------------------------*/
 /* text */
 .title-text {

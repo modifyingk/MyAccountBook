@@ -62,9 +62,20 @@
 		where userid = #{userid} and left(date, 6)= #{date} and moneytype = #{moneytype} and bigcate = #{bigcate} group by smallcate;
 	</select>
 
-	<!-- 특정 대분류의 수입/지출 내역 -->
+	<!-- 특정 소분류의 수입/지출 내역 -->
 	<select id="detailsOfSmallcate" parameterType="accountVO" resultType="accountVO">
 		select * from account where userid = #{userid} and left(date, 6)= #{date} and moneytype = #{moneytype} and bigcate = #{bigcate} and smallcate = #{smallcate} order by date desc;
+	</select>
+	
+	<!-- 자산별 합계 -->
+	<select id="groupByAsset" parameterType="accountVO" resultType="accountVO">
+		select moneytype, assetname, if(moneytype="지출", sum(total)*-1, sum(total)) as total from account
+		where userid = #{userid} and left(date, 6)= #{date} and moneytype = #{moneytype} group by assetname;
+	</select>
+	
+	<!-- 특정 자산의 수입/지출 내역 -->
+	<select id="detailsOfAsset" parameterType="accountVO" resultType="accountVO">
+		select * from account where userid = #{userid} and left(date, 6)= #{date} and moneytype = #{moneytype} and assetname = #{assetname} order by date desc;
 	</select>
 	
 	<!-- account의 반복 id 업데이트 

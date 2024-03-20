@@ -195,6 +195,31 @@ public class AccountController {
 		model.addAttribute("map", map);
 		return "account/selectAccount";
 	}
+	
+	// 자산별 합계
+	@RequestMapping("account/makeAssetStats")
+	public void groupByAsset(AccountVO accountVO, Model model) {
+		accountVO.setMoneytype("지출");
+		List<AccountVO> spendList = aDao.groupByAsset(accountVO);
+		model.addAttribute("spendList", spendList);
+		String spendData = toMapSvc.makeAssetData(spendList);
+		model.addAttribute("spendData", spendData);
+		
+		accountVO.setMoneytype("수입");
+		List<AccountVO> incomeList = aDao.groupByAsset(accountVO);
+		model.addAttribute("incomeList", incomeList);
+		String incomeData = toMapSvc.makeAssetData(incomeList);
+		model.addAttribute("incomeData", incomeData);
+	}
+	
+	// 특정 자산의 수입/지출 내역
+	@RequestMapping("account/detailsOfAsset")
+	public String detailsOfAsset(AccountVO accountVO, Model model) {
+		List<AccountVO> list = aDao.detailsOfAsset(accountVO);
+		LinkedHashMap<String, List<AccountVO>> map = toMapSvc.accountToMap(list); // 날짜별로 그룹한 map
+		model.addAttribute("map", map);
+		return "account/selectAccount";
+	}
 	/*
 	// 수입/지출 목록
 	public List<AccountVO> accountList(AccountVO accountVO, String moneytype) {

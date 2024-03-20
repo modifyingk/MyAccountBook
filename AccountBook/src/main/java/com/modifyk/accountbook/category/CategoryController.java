@@ -21,16 +21,16 @@ public class CategoryController {
 	
 	// 수입 소분류 목록
 	@RequestMapping("category/selectIncategory")
-	public void incategoryList(String userid, Model model) {
-		List<CategoryVO> list = cDao.incategoryList(userid);
+	public void selectIncategory(String userid, Model model) {
+		List<CategoryVO> list = cDao.selectIncategory(userid);
 		HashMap<String, List<CategoryVO>> map = toMapSvc.categoryToMap(list);
 		model.addAttribute("map", map);
 	}
 	
 	// 지출 소분류 목록
 	@RequestMapping("category/selectOutcategory")
-	public void outcategoryList(String userid, Model model) {
-		List<CategoryVO> list = cDao.outcategoryList(userid);
+	public void selectOutcategory(String userid, Model model) {
+		List<CategoryVO> list = cDao.selectOutcategory(userid);
 		HashMap<String, List<CategoryVO>> map = toMapSvc.categoryToMap(list);
 		model.addAttribute("map", map);
 	}
@@ -101,13 +101,13 @@ public class CategoryController {
 	
 	// 특정 수입 대분류의 소분류 목록
 	@ResponseBody
-	@RequestMapping("category/smallcateList")
-	public List<String> smallcateList(CategoryVO categoryVO, String mtype) {
+	@RequestMapping("category/selectSmallcate")
+	public List<String> selectSmallcate(CategoryVO categoryVO, String mtype) {
 		List<String> list = new ArrayList<String>();
 		if(mtype.equals("수입")) {
-			list = cDao.inSmallcateList(categoryVO);
+			list = cDao.selectInSmallcate(categoryVO);
 		} else {
-			list = cDao.outSmallcateList(categoryVO);
+			list = cDao.selectOutSmallcate(categoryVO);
 		}
 		return list;
 	}

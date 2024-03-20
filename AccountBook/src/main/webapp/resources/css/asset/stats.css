@@ -14,15 +14,18 @@
 	padding: 50px;
 }
 
-/* category_stats.jsp */
-.category-stats {
+/* asset_stats.jsp */
+.asset-stats {
 	float: right;
 	width: 80%;
-	margin-top: 0;
+	margin-top: 3%;
 }
-.category-stats #div2 {
+.asset-stats #div2 {
 	margin-top: 2%;
 	overflow-x: auto;
 	overflow-y: auto;
 	z-index: 0;
+}
+.asset-stats #top-div1, .asset-stats #top-div2 { /* 자산 통계 div */
+	margin-top: 0;
 }

@@ -35,6 +35,26 @@ function makeCalendar(today) {
 	})
 }
 
+// 소분류
+function smallcateList(bigcate, mtype, divID) {
+	$.ajax({
+		type: "post",
+		url: "../category/selectSmallcate",
+		data: {
+			bigcate: bigcate,
+			userid: userid,
+			mtype: mtype
+		},
+		success: function(list) {
+			let html = "<table class='select-table td-border td-hover'>";
+			for(let i = 0; i < list.length; i++) {
+				html += "<tr><td>" + list[i] + "</td></tr>";
+			}
+			$(divID).html(html);
+		}
+	})
+}
+
 $(function() {
 	var date;
 	var today; // 현재 날짜 저장할 변수
@@ -300,25 +320,6 @@ $(function() {
 		}
 		$("#update-smallcate").attr("value", "");
 	})
-	
-	smallcateList = function(bigcate, mtype, divID) {
-		$.ajax({
-			type: "post",
-			url: "smallcateList",
-			data: {
-				bigcate: bigcate,
-				userid: userid,
-				mtype: mtype
-			},
-			success: function(list) {
-				let html = "<table class='select-table td-border td-hover'>";
-				for(let i = 0; i < list.length; i++) {
-					html += "<tr><td>" + list[i] + "</td></tr>";
-				}
-				$(divID).html(html);
-			}
-		})
-	}
 	
 	// 수입/지출 추가 - 소분류 보여주기
 	$(document).on("click", "#add-smallcate", function() {

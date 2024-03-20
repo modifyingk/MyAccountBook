@@ -13,13 +13,13 @@ public class CategoryDAO {
 	SqlSessionTemplate my;
 
 	// 수입 소분류 목록
-	public List<CategoryVO> incategoryList(String userid) {
-		return my.selectList("categoryMapper.incategoryList", userid);
+	public List<CategoryVO> selectIncategory(String userid) {
+		return my.selectList("categoryMapper.selectIncategory", userid);
 	}
 	
 	// 지출 소분류 목록
-	public List<CategoryVO> outcategoryList(String userid) {
-		return my.selectList("categoryMapper.outcategoryList", userid);
+	public List<CategoryVO> selectOutcategory(String userid) {
+		return my.selectList("categoryMapper.selectOutcategory", userid);
 	}
 	
 	// 수입 소분류 중복 확인
@@ -63,12 +63,12 @@ public class CategoryDAO {
 	}
 	
 	// 특정 수입 대분류의 소분류 목록
-	public List<String> inSmallcateList(CategoryVO categoryVO) {
-		return my.selectList("categoryMapper.inSmallcateList", categoryVO);
+	public List<String> selectInSmallcate(CategoryVO categoryVO) {
+		return my.selectList("categoryMapper.selectInSmallcate", categoryVO);
 	}
 	
 	// 특정 지출 대분류의 소분류 목록
-	public List<String> outSmallcateList(CategoryVO categoryVO) {
-		return my.selectList("categoryMapper.outSmallcateList", categoryVO);
+	public List<String> selectOutSmallcate(CategoryVO categoryVO) {
+		return my.selectList("categoryMapper.selectOutSmallcate", categoryVO);
 	}
 }

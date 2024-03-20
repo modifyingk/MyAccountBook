@@ -75,6 +75,16 @@ public class AccountDAO {
 	public List<AccountVO> detailsOfSmallcate(AccountVO accountVO) {
 		return my.selectList("accountMapper.detailsOfSmallcate", accountVO);
 	}
+	
+	// 자산별 합계
+	public List<AccountVO> groupByAsset(AccountVO accountVO) {
+		return my.selectList("accountMapper.groupByAsset", accountVO);
+	}
+	
+	// 특정 자산의 수입/지출 내역
+	public List<AccountVO> detailsOfAsset(AccountVO accountVO) {
+		return my.selectList("accountMapper.detailsOfAsset", accountVO);
+	}
 	/*
 	// account의 반복 id 업데이트
 	public int updateRepeatid(HashMap<String, Object> map) {

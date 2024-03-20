@@ -16,7 +16,6 @@ $(function() {
 		setDate(year, month); // 날짜 세팅
 		makeBigcateStats(today, "#top-div1") // 카테고리 통계
 		
-		
 		// 다른 영역 클릭 시 창 닫기
 		autoClose("#select-date"); // 날짜 선택 닫기
 	})
