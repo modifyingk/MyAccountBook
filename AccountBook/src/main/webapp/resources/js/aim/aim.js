@@ -109,6 +109,71 @@ $(function() {
 		}
 		
 	})
+	
+	// 목표 수정 모달 열기
+	$(document).on("click", ".gage-div", function() {
+		let bigcate = $(this).children().eq(1).text();
+		let total = $(this).children().eq(2).text().split("/ ")[1];
+
+		$("#update-bigcate").attr("value", bigcate);
+		$("#update-total").attr("value", total);
+
+		$("#update-aim-modal").show();
+	})
+	
+	// 목표 수정 모달 닫기
+	$(document).on("click", "#close-update-aim", function() {
+		$("#update-aim-modal").hide();
+	})
+	
+	// 목표 수정
+	$(document).on("click", "#update-aim-btn", function() {
+		let bigcate = $("#update-bigcate").val();
+		let total = $("#update-total").val().replaceAll(",", "");
+		
+		$.ajax({
+			type: "post",
+			url: "updateAim",
+			data: {
+				bigcate: bigcate,
+				total: total,
+				userid: userid
+			},
+			success: function(res) {
+				if(res == true) {
+					window.location.reload();
+				} else {
+					alert("다시 시도해주세요.");
+				}
+			}
+		})
+	})
+	
+	// 목표 삭제
+	$(document).on("click", "#delete-aim-btn", function() {
+		let bigcate = $("#update-bigcate").val();
+		let total = $("#update-total").val().replaceAll(",", "");
+		
+		let op = confirm("정말로 삭제하시겠습니까?");
+		if(op) {
+			$.ajax({
+				type: "post",
+				url: "deleteAim",
+				data: {
+					bigcate: bigcate,
+					userid: userid
+				},
+				success: function(res) {
+					if(res == true) {
+						window.location.reload();
+					} else {
+						alert("다시 시도해주세요.");
+					}
+				}
+			})
+		}
+	})
+	
 	/*
 	// 목표 수정 모달 닫기
 	$(document).on("click", "#close-up-aim", function() {

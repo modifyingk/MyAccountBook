@@ -14,12 +14,12 @@
 	
 	<!-- 목표 수정 -->
 	<update id="updateAim" parameterType="aimVO">
-		update aim set total = #{total} where aimid = #{aimid} and userid = #{userid};
+		update aim set total = #{total} where bigcate = #{bigcate} and userid = #{userid};
 	</update>
 	
 	<!-- 목표 삭제 -->
 	<delete id="deleteAim" parameterType="aimVO">
-		delete from aim where aimid = #{aimid} and userid = #{userid};
+		delete from aim where bigcate = #{bigcate} and userid = #{userid};
 	</delete>
 
 	<!-- 목표 가져오기 -->

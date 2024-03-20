@@ -12,6 +12,7 @@
 	<div id="total-aim">
 		목표 금액<i></i>
 		<p></p>
+		<div id="total-gage-div"><div id="total-gage"></div></div>
 	</div>
 	<div id="aim-list">
 		<c:set var="totalAim" value="0"></c:set>
@@ -64,10 +65,18 @@
 </body>
 <script>
 	$("#total-aim i").html(parseInt(${totalSpend}).toLocaleString() + "원 / " + parseInt(${totalAim}).toLocaleString() + "원");
+	let percent = Math.round(${totalSpend / totalAim * 100});
+	$("#total-gage").css("width", percent + "%");
+	if(percent > 50 && percent <= 80) {
+		$("#total-gage").css("background", "#FFA500");
+	} else if(percent > 80) {
+		$("#total-gage").css("background", "var(--red-color)");
+	}
+	
 	if(${totalAim - totalSpend} > 0) {
 		$("#total-aim p").html("아직 <b>" + parseInt(${totalAim - totalSpend}).toLocaleString() + "</b>원 더 사용할 수 있습니다.");
 	} else {
-		$("#total-aim p").html("소비를 멈춰주세요 !");
+		$("#total-aim p").html(parseInt(${(totalAim - totalSpend) * -1}).toLocaleString() + "원 초과했습니다. 소비를 멈춰주세요 !");
 		$("#total-aim p").css("color", "var(--red-color)");
 	}
 </script>

@@ -1,26 +1,118 @@
-document.write('<script src="../resources/js/account/categoryFunc.js"></script>'); // 카테고리
-document.write('<script src="../resources/js/function/regFunc.js"></script>'); // 카테고리
+document.write('<script src="../resources/js/function/regFunc.js"></script>'); // 정규식
+
+//수입 소분류 목록
+function selectIncategory() {
+	$.ajax({
+		type: "post",
+		url: "selectIncategory",
+		data : {
+			userid: userid
+		},
+		success: function(res) {
+			$("#div2").html(res);
+		}
+	})
+}
+
+// 지출 소분류 목록
+function selectOutcategory() {
+	$.ajax({
+		type: "post",
+		url: "selectOutcategory",
+		data : {
+			userid: userid
+		},
+		success: function(res) {
+			$("#div3").html(res);
+		}
+	})
+}
+
+// 카테고리 중복 확인
+function overlapCategory(cateVal, mtype) {
+	var result;
+	$.ajax({ // 카테고리가 중복되는지 확인
+		type: "post",
+		url: "overlapCategory",
+		async: false,
+		data: {
+			smallcate: cateVal,
+			userid: userid,
+			mtype: mtype
+		},
+		success: function(res) {
+			result = res;
+		}
+	})
+	return result;
+}
+
+// 카테고리 추가
+function insertCategory(bigVal, smallVal, mtype) {
+	$.ajax({
+		type: "post",
+		url: "insertCategory",
+		data: {
+			bigcate: bigVal,
+			smallcate: smallVal,
+			userid: userid,
+			mtype: mtype
+		},
+		success: function(res) {
+			if(res > 0) {
+				/*
+				if(mtype == "수입")
+					checkIncate(res, bigVal, smallVal);
+				else {
+					checkOutcate(res, bigVal, smallVal);
+				}*/
+				window.location.reload();
+			} else {
+				alert("다시 시도해주세요.");
+			}
+		}
+	})
+}
+
+// 카테고리 수정
+function updateCategory(idVal, cateVal, mtype) {
+	$.ajax({
+		type: "post",
+		url: "updateCategory",
+		data: {
+			categoryid: idVal,
+			smallcate: cateVal,
+			userid: userid,
+			mtype: mtype
+		},
+		success: function(res) {
+			if(res != true) { // 카테고리 수정 실패
+				alert("다시 시도해주세요");
+			}
+		}
+	})
+}
 
 $(function() {
 	$(document).ready(function() {
-		showIncategory(); // 수입 소분류 목록 보여주기
-		showOutcategory(); // 수입 소분류 목록 보여주기
+		selectIncategory(); // 수입 소분류 목록 보여주기
+		selectOutcategory(); // 수입 소분류 목록 보여주기
 	})
 	
 	// 수입 카테고리 목록
 	$(document).on("click", "#select-in", function() {
 		$("#select-out").removeClass("active");
 		$("#select-in").addClass("active");
-		$("#outcategory-list").hide();
-		$("#incategory-list").show();
+		$("#div3").hide();
+		$("#div2").show();
 	})
 	
 	// 지출 카테고리 목록
 	$(document).on("click", "#select-out", function() {
 		$("#select-in").removeClass("active");
 		$("#select-out").addClass("active");
-		$("#incategory-list").hide();
-		$("#outcategory-list").show();
+		$("#div2").hide();
+		$("#div3").show();
 	})
 	
 	// 카테고리 추가
@@ -49,7 +141,7 @@ $(function() {
 	})
 	
 	// 카테고리 수정 가능
-	$(document).on("click", ".input.inner.update", function() {
+	$(document).on("click", ".input-inner.update", function() {
 		let clickObj = $(this);
 		$(this).parent().children().eq(1).removeClass("hide");
 		$(this).parent().children().eq(2).removeClass("hide");
@@ -99,7 +191,6 @@ $(function() {
 			mtype = "지출";
 		}
 
-		
 		var op = confirm("정말로 삭제하시겠습니까?");
 		if(op) {
 			$(this).closest("tr").remove();

@@ -1,4 +1,4 @@
-package com.modifyk.accountbook.account;
+package com.modifyk.accountbook.category;
 
 import java.util.List;
 

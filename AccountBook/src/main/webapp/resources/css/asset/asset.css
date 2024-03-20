@@ -1,17 +1,22 @@
 @charset "UTF-8";
-
 /* asset.jsp */
+.asset {
+	float: right;
+	width: 80%;
+	margin-top: 3%;
+}
 .asset .title-text {
 	position: fixed;
 	left: 23%;
 	top: 100px;
 }
 .asset #div1 {
-	margin-top: 5%;
+	margin-top: 50px;
 }
 .asset #asset-list-div {
 	width: 1300px;
-	margin-left: 3%;
+	margin-top: 4%;
+	margin-left: 5%;
 	float: left;
 }
 .asset #asset1-div, .asset #asset2-div {

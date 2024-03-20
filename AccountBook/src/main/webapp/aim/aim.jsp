@@ -88,6 +88,39 @@
 					</div>
 				</div>
 			</div>
+			<!-- 목표 수정 모달 -->
+			<div class="modal" id="update-aim-modal" hidden="true">
+				<div class="modal-content">
+					<div class="modal-title">
+						<h3 class="h-normal fs28">목표 수정</h3>
+						<button class="x-btn" id="close-update-aim">x</button>
+					</div>
+					<hr>
+					<div class="modal-body">
+						<div>
+							<table>
+								<tr>
+									<td>분류</td>
+									<td>
+										<input type="text" class="input" id="update-bigcate" placeholder="분류선택" disabled="disabled">
+									</td>
+									
+								</tr>
+								<tr>
+									<td>금액</td>
+									<td><input type="text" class="input" id="update-total"></td>
+								</tr>
+							</table>
+							<button class="btn main-color-btn" id="update-aim-btn">수정</button>
+							<button class="btn main-outline-btn" id="delete-aim-btn">삭제</button>
+						</div>
+					</div>
+					<hr>
+					<div class="modal-footer">
+						<button class="btn right main-outline-btn" id="close-update-aim">닫기</button>
+					</div>
+				</div>
+			</div>
 			<% }
 			/* 로그인이 되어 있지 않을 때 */
 			else { %>

@@ -152,6 +152,11 @@ table td div {
 	background-color: var(--main-color);
 	color: white;
 }
+/* mypage.jsp */
+.mypage {
+	margin-left: 23%;
+	margin-top: 10%;
+}
 
 /* myInfo.jsp */
 .myinfo {

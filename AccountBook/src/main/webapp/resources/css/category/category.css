@@ -1,0 +1,122 @@
+@charset "UTF-8";
+/* category.jsp */
+.category {
+	float: right;
+	width: 80%;
+	margin-top: 3%;
+}
+.category .title-text {
+	position: fixed;
+	left: 23%;
+	top: 80px;
+}
+.category #div1 { /* 수입/지출 카테고리 선택 */
+	margin-top: 120px;
+	margin-left: 5%;
+}
+.category #div1 table td {
+	width: 300px;
+	height: 30px;
+	padding: 10px;
+	border: 1px solid #f29c12;
+	border-radius: 10px;
+	color: #f29c12;
+	font-weight: bold;
+	text-align: center;
+}
+.category #div1 table td:hover {
+	background-color: #f39c12;
+	color: white;
+	cursor: pointer;
+}	
+.category #div1 table td.active {
+	background-color: #f39c12;
+	color: white;
+}
+.category #div2, .category #div3 {
+	margin-left: 5%;
+}
+.category #div2, .category #div3 {
+	overflow-y: auto;
+	height: 700px;
+}
+
+.key-div { /* 대분류 */
+	width:150px;
+	color:white;
+	text-align: center;
+	padding:10px;
+	border-radius: 50px;
+	font-weight: bold;
+	margin: 10px 0;
+	cursor: pointer;
+	float: left;
+}
+.incategory-div, .outcategory-div { /* */
+	width: 470px;
+	height: 350px;
+	overflow-y: auto;
+}
+.incategory-div .key-div {
+	background: #6482B9;
+}
+.outcategory-div .key-div {
+	background: #F56E6E;
+}
+.manage-btn {
+	margin: 12px 10px;	
+	width: 35px;
+	height: 35px;
+	border-radius: 30px;
+	border: none;
+	font-size: 20px;
+	cursor: pointer;
+}
+.manage-btn:hover {
+	background: lightgray;
+}
+
+#income-t1, #income-t2, #income-t3, #income-t4, #income-t5, #income-t6 td {
+	width: 350px;
+}
+#spend-t1, #spend-t2, #spend-t3, #spend-t4, #spend-t5, #spend-t6, #spend-t7, #spend-t8, #spend-t9, #spend-t10, #spend-t11, #spend-t12 td {
+	width: 350px;
+}
+.add-div {
+	float:left;
+	width: 50px;
+	height:40px;
+	border-radius:10px;
+	font-size:25px;
+	text-align:center;
+	background:#f3f3f3;
+	cursor: pointer;
+}
+.add-div:hover {
+	background: lightgray;
+}
+.category .is-border {
+	height: 40px;
+}
+.input-inner {
+	width: 270px;
+	border: 1px solid gray;
+	border-radius: 10px;
+	padding: 10px;
+	border: none;
+	background: transparent;
+	font-size: 16px;
+}
+.input-inner.update {
+	width: 240px;
+	float: left;
+}
+.update-btn {
+	border: none;
+	border-radius: 10px;
+	background: white;
+	width: 35px;
+	height: 35px;
+	background: transparent;
+	cursor: pointer;
+}

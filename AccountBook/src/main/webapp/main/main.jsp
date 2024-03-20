@@ -18,7 +18,7 @@
 	<% /* 로그인이 되어 있을 때*/
 	if(session.getAttribute("userid") != null) { %>
 	<jsp:include page="../main/header.jsp"></jsp:include>
-	<jsp:include page="../main/sidebar.jsp"></jsp:include>	
+	<jsp:include page="../main/sidebar.jsp"></jsp:include>
 	<% }
 	/* 로그인이 되어 있지 않을 때 */
 	else { %>

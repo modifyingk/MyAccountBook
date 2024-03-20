@@ -8,6 +8,7 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
 <link rel="stylesheet" type="text/css" href="../resources/css/main-style.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/member/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript" src="../resources/js/member/my_page.js"></script>
 <script>
@@ -20,11 +21,13 @@
 		<jsp:include page="../main/sidebar.jsp"></jsp:include>
 		
 		<!-- 컨텐츠 -->
-		<div class="col-8">
+		<div class="mypage">
 		
 			<%
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
+				<a href="myInfo.jsp"><button>개인정보 관리</button></a>
+				<a href="../category/category.jsp"><button>카테고리 관리</button></a>
 				<!-- <img src="https://cdn.pixabay.com/photo/2023/02/13/23/07/tree-7788512_1280.jpg" style="opacity: 0.5;" width="100%"> -->
 					<!-- 
 				<div>

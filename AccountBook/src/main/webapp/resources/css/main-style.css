@@ -344,6 +344,22 @@
 	color: gray;
 	cursor: default;
 }
+.check-btn {
+	font-size: 20px;
+	color: #2C952C;
+}
+.check-btn:hover {
+	background: #2C952C;
+	color: white;
+}
+.cross-btn {
+	font-size: 18px;
+	color:#E34234;
+}
+.cross-btn:hover {
+	background: #E34234;
+	color: white;
+}
 
 /* div */
 .container { /* center */
