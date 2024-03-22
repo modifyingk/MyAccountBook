@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 public class AssetToMapService {
 	public HashMap<String, List<AssetVO>> toMap(List<AssetVO> assetList) {
 		HashMap<String, List<AssetVO>> map = new LinkedHashMap<String, List<AssetVO>>();
-		
 		String tmpKey; // map의 key값이 될 그룹
 		for(int i = 0; i < assetList.size(); i++) {
 			tmpKey = assetList.get(i).getAssetgroup();

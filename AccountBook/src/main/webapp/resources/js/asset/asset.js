@@ -17,16 +17,17 @@ $(function() {
 		// 금액에 숫자만 입력되도록
 		onlyNumHypen("#update-asset-total");
 		onlyNumHypen("#add-asset-total");
-		onlyNumHypen("#add-transfer-total");
+		//onlyNumHypen("#add-transfer-total");
 		
 		// 금액 세 자리마다 콤마
 		moneyFmt("#update-asset-total");
 		moneyFmt("#add-asset-total");
-		moneyFmt("#add-transfer-total");
+		//moneyFmt("#add-transfer-total");
 		
 		// 전체 자산 목록 및 금액 그룹별로 가져오기
 		showAsset(userid);
 		
+		// 다른 영역 클릭 시 창 닫기
 		autoClose(".select-group-div"); // 자산 그룹 선택 닫기
 
 	})
@@ -150,32 +151,14 @@ $(function() {
 	
 	// 자산 삭제
 	$(document).on("click", "#delete-asset-btn", function() {
-		var p = prompt("** 자산을 삭제하면 해당 자산과 관련된 모든 내역이 삭제됩니다. **\n\n내역을 남겨두고 싶으시다면 [비활성화]를 입력해주시고,\n내역을 모두 삭제하시려면 입력란에 [삭제]를 입력해주세요.");
-		if(p == "삭제") {
+		let op = confirm("정말로 삭제하시겠습니까?");
+		if(op) {
 			$.ajax({
 				type : "post",
 				url : "deleteAsset",
 				data : {
 					assetid : $("#update-assetid").val(),
 					userid : userid
-				},
-				success : function(res) {
-					if(res == 1) {
-						window.location.reload();
-					} else {
-						alert("다시 시도해주세요")
-					}
-				}
-			})
-		} else if(p == "비활성화") {
-			// 숨기기
-			$.ajax({
-				type : "post",
-				url : "activeAsset",
-				data : {
-					assetid : $("#update-assetid").val(),
-					userid : userid,
-					active : false
 				},
 				success : function(res) {
 					if(res == 1) {

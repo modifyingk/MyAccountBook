@@ -7,7 +7,6 @@ public class AssetVO {
 	private int total;
 	private String memo;
 	private String userid;
-	private boolean active;
 	
 	public int getAssetid() {
 		return assetid;
@@ -45,17 +44,11 @@ public class AssetVO {
 	public void setTotal(int total) {
 		this.total = total;
 	}
-	public boolean isActive() {
-		return active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
-	}
 	
 	@Override
 	public String toString() {
 		return String.format(
-				"AssetVO [assetid=%s, assetgroup=%s, assetname=%s, total=%s, memo=%s, userid=%s, active=%s]", assetid,
-				assetgroup, assetname, total, memo, userid, active);
+				"AssetVO [assetid=%s, assetgroup=%s, assetname=%s, total=%s, memo=%s, userid=%s", assetid,
+				assetgroup, assetname, total, memo, userid);
 	}
 }

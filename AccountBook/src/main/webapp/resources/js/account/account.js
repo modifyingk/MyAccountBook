@@ -35,6 +35,21 @@ function makeCalendar(today) {
 	})
 }
 
+// 금융 일정
+function selectRepeat(month) {
+	$.ajax({
+		type: "post",
+		url: "../repeat/selectRepeat",
+		data: {
+			date: month,
+			userid: userid,
+		},
+		success: function(res) {
+			$("#schedule-list").html(res);
+		}
+	})
+}
+
 // 소분류
 function smallcateList(bigcate, mtype, divID) {
 	$.ajax({
@@ -55,6 +70,75 @@ function smallcateList(bigcate, mtype, divID) {
 	})
 }
 
+//반복 중복확인
+function overlapRepeat(mtype, date, asset, bigcate, smallcate, content, total) {
+	var result;
+	$.ajax({
+		type: "post",
+		url: "../repeat/overlapRepeat",
+		async: false,
+		data: {
+			moneytype: mtype,
+			date: date,
+			assetname: asset,
+			bigcate: bigcate,
+			smallcate: smallcate,
+			content: content,
+			total: total.replaceAll(",", ""),
+			userid: userid
+		},
+		success: function(res) {
+			result = res;
+		}
+	})
+	return result;
+}
+
+// 반복 추가
+function insertRepeat(mtype, date, asset, bigcate, smallcate, content, total) {
+	$(document).on("click", "#set-repeat tr", function() {
+		let select = $(this).text();
+		let repeatcycle;
+		if(select == "매월 반복") {
+			repeatcycle = "매월";
+		} else if(select == "매년 반복") {
+			repeatcycle = "매년";
+		}
+		let op = confirm("해당 내역을 " + repeatcycle + " 반복하시겠습니까?");
+		if(op) {
+			let chk = overlapRepeat(mtype, date, asset, bigcate, smallcate, content, total);
+			if(chk) {
+				$.ajax({
+					type: "post",
+					url: "../repeat/insertRepeat",
+					data: {
+						repeatcycle: repeatcycle,
+						moneytype: mtype,
+						date: date,
+						assetname: asset,
+						bigcate: bigcate,
+						smallcate: smallcate,
+						content: content,
+						total: total.replaceAll(",", ""),
+						userid: userid
+					},
+					success: function(res) {
+						if(res == true) {
+							window.location.reload();
+						} else {
+							alert("다시 시도해주세요");
+						}
+					}
+				})
+			} else {
+				alert("반복이 설정되어 있는 내역입니다.");
+			}
+			
+		}
+		$(".repeatMenu").hide();
+	})
+}
+
 $(function() {
 	var date;
 	var today; // 현재 날짜 저장할 변수
@@ -72,6 +156,7 @@ $(function() {
 		setDate(year, month); // 날짜 세팅
 		accountList(today, userid); // 월별 수입/지출 목록
 		makeCalendar(today);
+		selectRepeat(twoDigits(month));
 		
 		$("#add-date").attr("value", makeDateFmt(date)); // 현재 날짜로 미리 값 세팅
 		
@@ -94,7 +179,7 @@ $(function() {
 		autoClose(".select-update-outcate"); // 분류 선택 닫기
 		autoClose(".select-update-smallcate"); // 분류 선택 닫기
 		autoClose("#search-list"); // 검색 자동완성 닫기
-		
+		autoClose(".repeatMenu"); // 반복 선택 닫기 
 	})
 
 	// 날짜 선택 창 보여주기
@@ -125,6 +210,7 @@ $(function() {
 		setDate(year, month);
 		accountList(today, userid)
 		makeCalendar(today);
+		selectRepeat(twoDigits(month));
 		
 		$("#select-date").hide();
 	})
@@ -142,6 +228,7 @@ $(function() {
 		setDate(year, month);
 		accountList(today, userid);
 		makeCalendar(today);
+		selectRepeat(twoDigits(month));
 	})
 	
 	// 다음 달 클릭
@@ -157,6 +244,7 @@ $(function() {
 		setDate(year, month);
 		accountList(today, userid);
 		makeCalendar(today);
+		selectRepeat(twoDigits(month));
 	})
 
 	// 수입/지출 내역 옵션 (전체/수입/지출)
@@ -438,8 +526,8 @@ $(function() {
 			$("#update-out").attr("checked", true);
 			$("#update-in").attr("checked", false);
 		}
-		pickAsset("#update-asset"); // 자산 선택 및 값 자동 입력
-		pickBigcate("#update-bigcate"); // 대분류 선택 및 값 자동 입력
+		//pickAsset("#update-asset"); // 자산 선택 및 값 자동 입력
+		//pickBigcate("#update-bigcate"); // 대분류 선택 및 값 자동 입력
 	})
 	
 	// 수입/지출 수정 div 닫기
@@ -580,6 +668,36 @@ $(function() {
 		$("#mini-calendar td").removeClass("active");
 		$(".account-table").show();
 	})
+	
+	// 반복 설정
+	$(document).on("mousedown", "#account-list-div .tr-content", function(e) {
+		let date = $(this).children().eq(0).text();
+		let mtype = $(this).children().eq(2).text();
+		let bigcate = $(this).children().eq(3).children().eq(0).text();
+		let smallcate = $(this).children().eq(3).children().eq(1).text();
+		let asset = $(this).children().eq(4).text();
+		let content = $(this).children().eq(5).text();
+		let total = $(this).children().eq(6).text().split("원")[0];
+		
+		if(event.button == 2) { // 우클릭
+			window.oncontextmenu = function() {
+				return false;
+			}
+			let x = e.pageX + 'px';
+			let y = e.pageY + 'px';
+			
+			const repeatMenu = $(".repeatMenu");
+			repeatMenu.css("position", "absolute");
+			repeatMenu.css("left", x);
+			repeatMenu.css("top", y);
+			repeatMenu.css("display", "block");
+			
+			insertRepeat(mtype, date, asset, bigcate, smallcate, content, total);
+			event.stopImmediatePropagation();
+		}
+	})
+	
+	
 	
 	/*
 	// 카테고리 통계 보여주기 버튼

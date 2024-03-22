@@ -5,17 +5,15 @@
 	<!-- SQL문 정의 시 VO 간단히 표현 -->
 	<typeAliases>
     	<typeAlias type="com.modifyk.accountbook.member.MemberVO" alias="memberVO"></typeAlias>
+   	   	<typeAlias type="com.modifyk.accountbook.member.MoneyVO" alias="moneyVO"></typeAlias>
       	<typeAlias type="com.modifyk.accountbook.asset.AssetVO" alias="assetVO"></typeAlias>
    	   	<typeAlias type="com.modifyk.accountbook.category.CategoryVO" alias="categoryVO"></typeAlias>
    	   	<typeAlias type="com.modifyk.accountbook.account.AccountVO" alias="accountVO"></typeAlias>
-   	   	<typeAlias type="com.modifyk.accountbook.account.BookmarkVO" alias="bookmarkVO"></typeAlias>
    	   	<typeAlias type="com.modifyk.accountbook.aim.AimVO" alias="aimVO"></typeAlias>
    	   	<typeAlias type="com.modifyk.accountbook.aim.AimJoinVO" alias="aimjoinVO"></typeAlias>
 		<typeAlias type="com.modifyk.accountbook.aim.AimRateVO" alias="aimrateVO"></typeAlias>
    	   	<typeAlias type="com.modifyk.accountbook.transfer.TransferVO" alias="transferVO"></typeAlias>
-   	   	<typeAlias type="com.modifyk.accountbook.account.RepeatVO" alias="repeatVO"></typeAlias>
-   	   	<typeAlias type="com.modifyk.accountbook.account.AccountRepeatVO" alias="accountRepeatVO"></typeAlias>
-   	   	<typeAlias type="com.modifyk.accountbook.member.MoneyVO" alias="moneyVO"></typeAlias>
+   	   	<typeAlias type="com.modifyk.accountbook.repeat.RepeatVO" alias="repeatVO"></typeAlias>
 	</typeAliases>
 	
    	<!-- SQL문 정의하는 파일들의 목록 -->
@@ -24,7 +22,6 @@
     	<mapper resource="mapper/assetMapper.xml" />
       	<mapper resource="mapper/categoryMapper.xml" />
      	<mapper resource="mapper/accountMapper.xml" />
-      	<mapper resource="mapper/bookmarkMapper.xml" />
       	<mapper resource="mapper/aimMapper.xml" />
       	<mapper resource="mapper/transferMapper.xml" />
       	<mapper resource="mapper/repeatMapper.xml" />

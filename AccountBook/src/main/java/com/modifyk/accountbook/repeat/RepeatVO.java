@@ -1,13 +1,13 @@
-package com.modifyk.accountbook.account;
+package com.modifyk.accountbook.repeat;
 
-public class AccountRepeatVO {
+public class RepeatVO {
 	private int repeatid;
 	private String repeatcycle;
-	private String date;
 	private String moneytype;
-	private int assetid;
+	private String date;
 	private String assetname;
-	private String catename;
+	private String bigcate;
+	private String smallcate;
 	private String content;
 	private int total;
 	private String userid;
@@ -24,23 +24,17 @@ public class AccountRepeatVO {
 	public void setRepeatcycle(String repeatcycle) {
 		this.repeatcycle = repeatcycle;
 	}
-	public String getDate() {
-		return date;
-	}
-	public void setDate(String date) {
-		this.date = date;
-	}
 	public String getMoneytype() {
 		return moneytype;
 	}
 	public void setMoneytype(String moneytype) {
 		this.moneytype = moneytype;
 	}
-	public int getAssetid() {
-		return assetid;
+	public String getDate() {
+		return date;
 	}
-	public void setAssetid(int assetid) {
-		this.assetid = assetid;
+	public void setDate(String date) {
+		this.date = date;
 	}
 	public String getAssetname() {
 		return assetname;
@@ -48,11 +42,17 @@ public class AccountRepeatVO {
 	public void setAssetname(String assetname) {
 		this.assetname = assetname;
 	}
-	public String getCatename() {
-		return catename;
+	public String getBigcate() {
+		return bigcate;
 	}
-	public void setCatename(String catename) {
-		this.catename = catename;
+	public void setBigcate(String bigcate) {
+		this.bigcate = bigcate;
+	}
+	public String getSmallcate() {
+		return smallcate;
+	}
+	public void setSmallcate(String smallcate) {
+		this.smallcate = smallcate;
 	}
 	public String getContent() {
 		return content;
@@ -76,7 +76,7 @@ public class AccountRepeatVO {
 	@Override
 	public String toString() {
 		return String.format(
-				"AccountRepeatVO [repeatid=%s, repeatcycle=%s, date=%s, moneytype=%s, assetid=%s, assetname=%s, catename=%s, content=%s, total=%s, userid=%s]",
-				repeatid, repeatcycle, date, moneytype, assetid, assetname, catename, content, total, userid);
+				"RepeatVO [repeatid=%s, repeatcycle=%s, moneytype=%s, date=%s, assetname=%s, bigcate=%s, smallcate=%s, content=%s, total=%s, userid=%s]",
+				repeatid, repeatcycle, moneytype, date, assetname, bigcate, smallcate, content, total, userid);
 	}
 }

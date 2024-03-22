@@ -30,7 +30,8 @@
 			} else if(group == "group3") {
 				if(menu_idx == 0) {
 					location.href = "../aim/aim.jsp";
-				} else if(menu_idx == 1) {
+				}
+				else if(menu_idx == 1) {
 					
 				}
 			}

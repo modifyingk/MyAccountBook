@@ -28,7 +28,7 @@
 		</div>
 		<div>
 			<div>
-				<h1 class="main-color fs50">WHERE IS THE MONEY</h1>
+				<h1 class="main-color fs50">ACCOUNTBOOK</h1>
 				<h1 class="fs40">내 돈 어디로 사라진걸까?</h1>
 				<h2>가계부로 사라진 돈을 찾아보세요!</h2>
 				<br>

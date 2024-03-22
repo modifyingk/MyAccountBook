@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.modifyk.accountbook.asset.AssetDAO;
+import com.modifyk.accountbook.repeat.RepeatDAO;
 
 @Controller
 public class AccountController {
@@ -18,16 +19,7 @@ public class AccountController {
 	AccountDAO aDao;
 	
 	@Autowired
-	AssetDAO astDao;
-	
-	@Autowired
-	RepeatDAO rDao;
-	
-	@Autowired
 	AccountToMapService toMapSvc;
-	
-	@Autowired
-	AssetService assetSvc;
 	
 	// 수입/지출 추가
 	@ResponseBody
@@ -220,6 +212,7 @@ public class AccountController {
 		model.addAttribute("map", map);
 		return "account/selectAccount";
 	}
+	
 	/*
 	// 수입/지출 목록
 	public List<AccountVO> accountList(AccountVO accountVO, String moneytype) {

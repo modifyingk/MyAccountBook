@@ -36,13 +36,10 @@ function aimList(today) {
 }
 
 $(function() {
-	var date;
-	var today; // 현재 날짜 저장할 변수
-	
 	$(document).ready(function() {
 		// 현재 날짜 가져오기
-		date = createDate();
-		today = getYearMonth(date); // yyyymm
+		let date = createDate();
+		let today = getYearMonth(date); // yyyymm
 		
 		// 숫자만 입력되도록
 		onlyNum("#add-year");

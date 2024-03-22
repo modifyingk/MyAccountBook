@@ -2,26 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="repeatMapper">
+	<!-- 반복 중복 확인 -->
+	<select id="overlapRepeat" parameterType="repeatVO" resultType="repeatVO">
+		select repeatid from repetition where moneytype = #{moneytype} and date = #{date} and assetname = #{assetname}
+		and bigcate = #{bigcate} and smallcate = #{smallcate} and content = #{content} and total = #{total} and userid = #{userid};
+	</select>
+
 	<!-- 반복 추가 -->
 	<insert id="insertRepeat" parameterType="repeatVO">
-		insert into repetition values (#{repeatid}, #{repeatcycle}, #{date}, #{accountid}, #{userid});
-		<selectKey keyProperty="repeatid" resultType="int" order="AFTER">
-			select MAX(repeatid) from repetition;
-		</selectKey>
+		insert into repetition values (#{repeatid}, #{repeatcycle}, #{moneytype}, #{date}, #{assetname}, #{bigcate}, #{smallcate}, #{content}, #{total}, #{userid});
 	</insert>
 	
 	<!-- 반복 내역 가져오기 -->
-	<select id="repeatList" parameterType="String" resultType="accountRepeatVO">
-		select r.repeatid, repeatcycle, a.date, moneytype, assetid, assetname, catename, content, total from repetition r join account a on r.accountid = a.accountid where r.userid = #{userid};
+	<select id="selectRepeat" parameterType="repeatVO" resultType="repeatVO">
+		select * from repetition where userid = #{userid} and (repeatcycle = "매월" or substring(date, 5, 2) = #{date} and repeatcycle = "매년") order by date;
 	</select>
 	
 	<!--반복 삭제 -->
 	<delete id="deleteRepeat" parameterType="repeatVO">
 		delete from repetition where repeatid = #{repeatid} and userid = #{userid};
 	</delete>
-	
-	<!--모든 반복 데이터 가져오기 --> 
-	<select id="repeatAll" resultType="accountRepeatVO">
-		select r.repeatid, repeatcycle, a.date, moneytype, assetid, assetname, catename, content, total, a.userid from repetition r join account a on r.accountid = a.accountid;
-	</select>
 </mapper>
