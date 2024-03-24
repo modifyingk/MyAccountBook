@@ -25,10 +25,8 @@ public class AccountController {
 	@ResponseBody
 	@RequestMapping("account/insertAccount")
 	public int insertAccount(AccountVO accountVO) {
-		System.out.println(accountVO);
 		if(accountVO.getMoneytype().equals("지출")) // 지출인 경우 마이너스 붙이기
 			accountVO.setTotal(accountVO.getTotal() * -1);
-		System.out.println(accountVO);
 		int insertRes = aDao.insertAccount(accountVO);
 		/*int accountid = accountVO.getAccountid();*/
 		/*
@@ -122,7 +120,6 @@ public class AccountController {
 	@RequestMapping("account/makeCalendar")
 	public String makeCalendar(AccountVO accountVO, String type, Model model) {
 		List<AccountVO> list = aDao.groupByDate(accountVO);
-		System.out.println(list);
 		model.addAttribute("list", list);
 		model.addAttribute("today", accountVO.getDate());
 		if(type.equals("mini")) {

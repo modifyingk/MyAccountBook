@@ -6,6 +6,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.modifyk.accountbook.account.AccountVO;
+
 @Component
 public class RepeatDAO {
 	@Autowired
@@ -25,10 +27,14 @@ public class RepeatDAO {
 	public List<RepeatVO> selectRepeat(RepeatVO repeatVO) {
 		return my.selectList("repeatMapper.selectRepeat", repeatVO);
 	}
-		
+	
 	// 반복 삭제
 	public int deleteRepeat(RepeatVO repeatVO) {
 		return my.delete("repeatMapper.deleteRepeat", repeatVO);
 	}
 	
+	// 오늘의 반복 내역 가져오기
+	public List<AccountVO> todayRepeat(RepeatVO repeatVO) {
+		return my.selectList("repeatMapper.todayRepeat", repeatVO);
+	}
 }

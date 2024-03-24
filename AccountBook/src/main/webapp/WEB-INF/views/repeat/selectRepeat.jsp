@@ -13,7 +13,8 @@
 	<table>
 		<c:forEach items="${map}" var="map">
 			<tr class="tr-date">
-				<td><div>${fn:substring(map.key, 6, 8)}일</div></td>
+				<c:set var="length" value="${fn:length(map.key)}"></c:set>
+				<td><div>${fn:substring(map.key, length-2, length)}일</div></td>
 			</tr>
 			<c:forEach items="${map.value}" var="value">
 			<tr class="tr-content">
@@ -51,9 +52,12 @@
 		console.log(repeatid + " " + repeatcycle + " " + moneytype + " " + date + " " + assetname + " " + bigcate + " " + smallcate + " " + content + " " + total);
 		
 		$("#repeat-id").attr("value", repeatid);
-		$("#repeat-cycle").attr("value", repeatcycle);
 		$("#repeat-mtype").attr("value", moneytype);
-		$("#repeat-date").attr("value", date);
+		if(repeatcycle == "매년") {
+			$("#repeat-cycle").html(repeatcycle + " " + date.substring(0, 2) + "월 " + date.substring(2, 4) + "일");
+		} else if(repeatcycle == "매월") {
+			$("#repeat-cycle").html(repeatcycle + " " + date + "일");
+		}
 		$("#repeat-asset").attr("value", assetname);
 		$("#repeat-bigcate").attr("value", bigcate);
 		$("#repeat-smallcate").attr("value", smallcate);

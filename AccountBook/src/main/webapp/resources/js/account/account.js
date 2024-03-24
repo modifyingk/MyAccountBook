@@ -35,21 +35,6 @@ function makeCalendar(today) {
 	})
 }
 
-// 금융 일정
-function selectRepeat(month) {
-	$.ajax({
-		type: "post",
-		url: "../repeat/selectRepeat",
-		data: {
-			date: month,
-			userid: userid,
-		},
-		success: function(res) {
-			$("#schedule-list").html(res);
-		}
-	})
-}
-
 // 소분류
 function smallcateList(bigcate, mtype, divID) {
 	$.ajax({
@@ -139,6 +124,22 @@ function insertRepeat(mtype, date, asset, bigcate, smallcate, content, total) {
 	})
 }
 
+
+//반복 내역
+function selectRepeat(month) {
+	$.ajax({
+		type: "post",
+		url: "../repeat/selectRepeat",
+		data: {
+			date: month,
+			userid: userid,
+		},
+		success: function(res) {
+			$("#schedule-list").html(res);
+		}
+	})
+}
+
 $(function() {
 	var date;
 	var today; // 현재 날짜 저장할 변수
@@ -152,7 +153,6 @@ $(function() {
 		year = date.getFullYear(); 
 		month = date.getMonth() + 1;
 		
-		
 		setDate(year, month); // 날짜 세팅
 		accountList(today, userid); // 월별 수입/지출 목록
 		makeCalendar(today);
@@ -163,10 +163,12 @@ $(function() {
 		// 금액에 숫자만 입력되도록
 		onlyNum("#update-total");
 		onlyNum("#add-total");
+		onlyNum("#repeat-date");
 		
 		// 금액 세 자리마다 콤마
 		moneyFmt("#update-total");
 		moneyFmt("#add-total");
+		moneyFmt("#repeat-total");
 	
 		// 다른 영역 클릭 시 창 닫기
 		autoClose("#select-date"); // 날짜 선택 닫기
@@ -697,8 +699,35 @@ $(function() {
 		}
 	})
 	
+	// 반복 삭제
+	$(document).on("click", "#delete-repeat-btn", function() {
+		let op = confirm("정말로 삭제하시겠습니까?");
+		let repeatid = $("#repeat-id").val();
+		if(op) {
+			$.ajax({
+				type: "post",
+				url: "../repeat/deleteRepeat",
+				data: {
+					repeatid: repeatid,
+					userid: userid
+				},
+				success: function(res) {
+					if(res == true) {
+						window.location.reload();
+					} else {
+						alert("다시 시도해주세요");
+					}
+				}
+			})
+		}
+	})
 	
+	// 반복 내역 모달 닫기
+	$(document).on("click", "#close-update-repeat", function() {
+		$("#update-repeat-modal").hide();
+	})
 	
+	//
 	/*
 	// 카테고리 통계 보여주기 버튼
 	$(document).on("click", "#category-stats-btn", function() {

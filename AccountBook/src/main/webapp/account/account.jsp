@@ -291,51 +291,39 @@
 			<div class="modal" id="update-repeat-modal" hidden="true">
 				<div class="modal-content">
 					<div class="modal-title">
-						<h3 class="h-normal fs28">반복 내역</h3>
 						<button class="x-btn" id="close-update-repeat">x</button>
 					</div>
 					<div class="modal-body">
-						<table>
-							<tr class="hide">
-								<td><input class="input" id="repeat-id"></td>
-							</tr>
-							<tr>
-								<th>주기</th>
-								<td colspan="2"><input class="input" id="repeat-cycle" disabled="disabled"></td>
-							</tr>
-							<tr class="hide">
-								<td><input class="input" id="repeat-mtype"></td>
-							</tr>
-							<tr>
-								<th>날짜</th>
-								<td colspan="2"><input class="input" id="repeat-date" disabled="disabled"></td>
-							</tr>
-							<tr>
-								<th>자산</th>
-								<td colspan="2"><input class="input" id="repeat-asset" disabled="disabled"></td>
-							</tr>
-							<tr>
-								<th>분류</th>
-								<td>
-									<input type="text" class="input" id="repeat-bigcate" disabled="disabled">
-								</td>
-								<td>
-									<input type="text" class="input" id="repeat-smallcate" placeholder="분류없음" disabled="disabled">
-								</td>
-							</tr>
-							<tr>
-								<th>내용</th>
-								<td colspan="2"><input class="input" id="repeat-content" disabled="disabled"></td>
-							</tr>
-							<tr>
-								<th>금액</th>
-								<td colspan="2"><input class="input" id="repeat-total" disabled="disabled"></td>
-							</tr>
-						</table>
-						<button class="btn main-outline-btn" id="delete-repeat-btn">삭제</button>
-					</div>
-					<div class="modal-footer">
-						<button class="btn right main-outline-btn" id="close-update-repeat">닫기</button>
+						<div>
+							<div id="repeat-cycle"></div>
+								<table>
+								<tr class="hide">
+									<td><input class="input" id="repeat-id"></td>
+								</tr>
+								<tr>
+									<th>자산</th>
+									<td colspan="2"><input class="input" id="repeat-asset" disabled="disabled"></td>
+								</tr>
+								<tr>
+									<th>분류</th>
+									<td>
+										<input type="text" class="input" id="repeat-bigcate" disabled="disabled">
+									</td>
+									<td>
+										<input type="text" class="input" id="repeat-smallcate" placeholder="분류없음" disabled="disabled">
+									</td>
+								</tr>
+								<tr>
+									<th>내용</th>
+									<td colspan="2"><input class="input" id="repeat-content" disabled="disabled"></td>
+								</tr>
+								<tr>
+									<th>금액</th>
+									<td colspan="2"><input class="input" id="repeat-total" disabled="disabled"></td>
+								</tr>
+							</table>
+						</div>
+						<button class="btn right main-outline-btn" id="delete-repeat-btn">삭제</button>
 					</div>
 				</div>
 			</div>

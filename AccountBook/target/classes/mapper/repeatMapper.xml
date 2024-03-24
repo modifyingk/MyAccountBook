@@ -15,11 +15,17 @@
 	
 	<!-- 반복 내역 가져오기 -->
 	<select id="selectRepeat" parameterType="repeatVO" resultType="repeatVO">
-		select * from repetition where userid = #{userid} and (repeatcycle = "매월" or substring(date, 5, 2) = #{date} and repeatcycle = "매년") order by date;
+		select * from repetition where userid = #{userid} and (repeatcycle = "매월" or substring(date, 1, 2) = #{date} and repeatcycle = "매년") order by date;
 	</select>
 	
 	<!--반복 삭제 -->
 	<delete id="deleteRepeat" parameterType="repeatVO">
 		delete from repetition where repeatid = #{repeatid} and userid = #{userid};
 	</delete>
+	
+	<!-- 오늘의 반복 내역 가져오기 -->
+	<select id="todayRepeat" parameterType="repeatVO" resultType="accountVO">
+		select moneytype, date, assetname, bigcate, smallcate, content, total, userid from repetition
+		where repeatcycle = #{repeatcycle} and date = #{date};
+	</select>
 </mapper>
