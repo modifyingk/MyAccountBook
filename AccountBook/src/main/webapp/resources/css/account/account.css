@@ -4,6 +4,7 @@
 	float: right;
 	width: 80%;
 	margin-top: 3%;
+	background: linear-gradient(to bottom, #eef0eb, white 30%, white);
 }
 .account .title-text {
 	position: fixed;
@@ -17,6 +18,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	text-align: left;
+	background: white;
 }
 td.input-inner {
 	border: 1px solid lightgray;
@@ -51,10 +53,13 @@ td.input-inner input:focus {
 	cursor: pointer;
 }
 .account .switch.income {
-	background: var(--light-blue-color);
+	background: var(--main-color);
 }
 .account .switch.spend {
-	background:  var(--light-red-color);
+	background:  var(--main-color);
+}
+.account .switch:hover {
+	background: var(--main-color-hover);
 }
 .account #add-account-btn {
 	width: 70px;
@@ -85,7 +90,7 @@ td.input-inner input:focus {
 	padding: 12px 10px;
     font-size: 16px;
 }
-.account .select-add-asset.select-div { /* 자산 선택 */
+.account .select-add-asset.select-div { /* 자산 선택 */ /* add */
 	width: 200px;
 	height: 300px;
 }
@@ -102,7 +107,7 @@ td.input-inner input:focus {
 	height: 220px;
 }
 
-.account .select-update-asset.select-div { /* 자산 선택 */
+.account .select-update-asset.select-div { /* 자산 선택 */ /* update */
 	width: 200px;
 	height: 300px;
 }
@@ -118,6 +123,10 @@ td.input-inner input:focus {
 	width: 200px;
 	height: 220px;
 }
+.account .select-withdraw.select-div, .account .select-deposit.select-div { /* 자산 선택 */ /* transfer */
+	width: 200px;
+	height: 300px;
+}
 .account #div4 { /* 수입/지출 내역 */
 	height: 650px;
 	overflow-y: auto;
@@ -125,76 +134,9 @@ td.input-inner input:focus {
 .account #account-list-div table {
 	width: 55%;
 }
-/* .account #account-list-div table td{
-	padding: 10px;
+.account #div3 {
+	margin-bottom: 20px;
 }
-.account #account-list-div table tr:nth-child(1) { 날짜
-	border-bottom: 1px solid lightgray;
-	height: 60px;
-	text-align: left;
-}
-.account #account-list-div table tr:not(tr:nth-child(1)) { 날짜 제외 tr
-	border-top: 1px solid #f3f3f3;
-}
-.account #account-list-div table tr:not(tr:nth-child(1)):hover {
-	background: #f3f3f3;	
-}
-.account .td-category {
-	width: 32%;
-}
-.account .td-content, .account .td-asset, .account .td-income, .account .td-spend {
-	width: 20%;
-}
-.account .td-date {
-	font-size: 19px;
-	font-weight: bold;
-	color: #464646;
-}
-.account .key-div {
-	width: 120px;
-	text-align: center;
-	padding: 10px;
-	border-radius: 10px;
-	font-weight: bold;
-	font-size: 13px;
-	cursor: pointer;
-	float: left;
-	margin-left: 20px;
-	margin-right: 20px;
-	box-shadow: 2px 2px 5px lightgray;
-}
-.account .key-div.income {
-	background: #a4b0cc;
-	color: white;
-	color:  var(--light-blue-color);
-}
-.account .key-div.spend {
-	background: #eb9980;
-	color: white;
-	color:  var(--light-red-color);
-}
-.account .td-smallcate.income {
-	color: var(--light-blue-color);
-}
-.account .td-smallcate.spend {
-	color: var(--light-red-color);
-}
-.account .td-smallcate {
-	padding: 10px;
-	font-weight: bold;
-}
-.account .part-income { 부분합
-	float: right;
-	width: 150px;
-	color: var(--blue-color);
-	text-align: right;
-}
-.account .part-spend {
-	float: right;
-	width: 150px;
-	color: var(--red-color);
-	text-align: right;
-} */
 .account #div3 table { /* 총 합계 */
 	width: 700px;
 	margin-left: auto;
@@ -207,14 +149,14 @@ td.input-inner input:focus {
 	float: left;
 	font-size: 20px;
 	color: gray;
-	font-weight: normal;
+	font-weight: bold;
 	margin: 2%;
 }
 .account #total-div i, .account #income-div i, .account #spend-div i  {
 	float: left;
 	font-size: 20px;
 	color: gray;
-	font-weight: normal;
+	font-weight: bold;
 	margin-left: 20px;
 	margin: 2%;
 	font-style: normal;
@@ -232,7 +174,7 @@ td.input-inner input:focus {
 	width: 20px;
 	height: 25px;
 	margin: 5px 10px;
-	border: 1px solid #f39c12;
+	border: 1px solid var(--main-color);
 	border-radius: 5px;
 	cursor: pointer;
 	float: left;
@@ -240,11 +182,11 @@ td.input-inner input:focus {
 	font-weight: bold;
 }
 .show-range:hover {
-	background: #f39c12;
+	background: var(--main-color);
 	color: white;
 }
 .show-range.active {
-	background: #f39c12;
+	background: var(--main-color);
 	color: white;
 }
 .account #search-btn { /* 검색 */
@@ -268,6 +210,7 @@ td.input-inner input:focus {
 	border: 1px solid lightgray;
 	border-radius: 10px;
 	box-shadow: 2px 2px 5px lightgray;
+	background: white;
 }
 .account #search-input {
 	width: 200px;
@@ -291,7 +234,7 @@ td.input-inner input:focus {
 	width: 280px;
 }
 .account #search-list table tr:hover{
-	background: #f3f3f3;
+	background: var(--light-gray-color);
 }
 
 .account #left-div1 { /* 미니 달력 */
@@ -300,7 +243,7 @@ td.input-inner input:focus {
 	position: absolute;
 	left: 22%;
 	top: 40%;
-	background: #f3f3f3;
+	background: var(--light-gray-color);
 	border-radius: 10px;
 	padding: 15px 10px;
 	box-shadow: 2px 2px 5px lightgray;
@@ -359,10 +302,10 @@ td.input-inner input:focus {
 	height: 10px;
 }
 .account #mini-calendar p.income {
-	color: var(--light-blue-color);
+	color: var(--blue-color);
 }
 .account #mini-calendar p.spend {
-	color: var(--light-red-color);
+	color: var(--red-color);
 }
 .account #mini-calendar i {
 	font-style: normal;
@@ -372,32 +315,35 @@ td.input-inner input:focus {
 	text-align: left;
 }
 .account #update-account-modal .modal-body {
-	height: 490px;
+	height: 480px;
 }
-.account #update-account-modal table {
+.account #update-account-modal table, .account #update-transfer-modal table {
 	margin-bottom: 20px;
 	padding: 0 10px;
 }
-.account #update-account-modal table th {
+.account #update-account-modal table th, .account #update-transfer-modal table th {
 	width: 150px;
 }
-.account #update-account-modal table td {
+.account #update-account-modal table td, .account #update-transfer-modal table td {
 	padding: 10px;
 }
-.account #update-account-modal .input {
+.account #update-account-modal .input, .account #update-transfer-modal .input {
 	width: 320px;
 }
 .account #update-account-modal #update-bigcate, .account #update-account-modal #update-smallcate {
 	width: 140px;
 }
-.account #update-account-btn {
+.account #update-transfer-modal #transfer-withdraw, .account #update-transfer-modal #transfer-deposit {
+	width: 120px;
+}
+.account #update-account-btn, .account #update-transfer-btn {
 	width: 290px;
 }
-.account #delete-account-btn {
+.account #delete-account-btn, .account #delete-transfer-btn {
 	width: 150px;
 }
 .account #close-update-account {
-	margin: 10px;
+	margin: 5px 10px;
 }
 
 .account #right-div1 { /* 금융 일정 */
@@ -409,7 +355,8 @@ td.input-inner input:focus {
 	border-radius: 10px;
 	padding: 15px 10px;
 	box-shadow: 2px 2px 5px lightgray;
-	background: #f3f3f3;
+	background: var(--light-gray-color);
+	font-weight: bold;
 }
 .account #right-div1 h3 {
 	margin-top: 2px;
@@ -440,28 +387,6 @@ td.input-inner input:focus {
 .account #schedule-list table .tr-content:hover {
 	background: white;
 }
-/*
-.account #right-div1 #schedule {
-	float: left;
-	font-weight: bold;
-	font-size: 20px;
-	margin-left: 15px;
-}
-.account #right-div1 #add-schedule {
-	width: 35px;
-	height: 35px;
-	float: right;
-	margin-right: 3px;
-	border-radius: 10px;
-	background: var(--main-color);
-	font-size: 20px;
-	color: white;
-	font-weight: bold;
-	cursor: pointer;
-}
-.account #right-div1 #add-schedule:hover {
-	background: var(--main-color-hover);
-}*/
 .account .repeatMenu {
 	width: 150px;
 	border: 1px solid lightgray;
@@ -484,12 +409,12 @@ td.input-inner input:focus {
 }
 
 .account #update-repeat-modal .modal-content { /* 반복 수정 모달 */
-	height: 450px;
+	height: 500px;
 	text-align: left;
 }
 .account #update-repeat-modal .modal-body {
 	border: none;
-	height: 450px;
+	height: 400px;
 }
 .account #update-repeat-modal table {
 	margin-bottom: 20px;
@@ -514,4 +439,10 @@ td.input-inner input:focus {
 	font-size: 30px;
 	text-align: center;
 	margin-bottom: 20px;
+}
+.account #update-repeat-modal #delete-repeat-btn {
+	width: 450px;
+}
+.account #update-repeat-modal #close-update-repeat {
+	margin: 5px 10px;
 }

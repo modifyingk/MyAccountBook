@@ -25,6 +25,11 @@
 		delete from account where accountid = #{accountid} and userid = #{userid};
 	</delete>
 	
+	<!-- 업데이트 전 수입/지출 -->
+	<select id="beforeAccount" parameterType="accountVO" resultType="accountVO">
+		select assetname, total from account where accountid = #{accountid} and userid = #{userid};
+	</select>
+	
 	<!-- 수입/지출 검색 -->
 	<select id="searchAccount" parameterType="accountVO" resultType="accountVO">
 		select * from account where content like concat('%', #{content}, '%') and userid = #{userid} and left(date, 6) = #{date} order by date desc;
@@ -77,6 +82,11 @@
 	<select id="detailsOfAsset" parameterType="accountVO" resultType="accountVO">
 		select * from account where userid = #{userid} and left(date, 6)= #{date} and moneytype = #{moneytype} and assetname = #{assetname} order by date desc;
 	</select>
+	
+	<!-- 이체 수정 -->
+	<update id="updateTransfer" parameterType="accountVO">
+		update account set date = #{date}, assetname = #{assetname}, content = #{content}, total = #{total} where userid = #{userid} and accountid = #{accountid};
+	</update>
 	
 	<!-- account의 반복 id 업데이트 
 	<update id="updateRepeatid" parameterType="map">

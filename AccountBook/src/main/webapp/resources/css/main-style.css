@@ -1,14 +1,20 @@
 @charset "UTF-8";
 :root {
-	--main-color: #f39c12; /* 88ae87 */
-	--main-color-hover: #f38e12;
-	--red-color: #E34234;
+	--main-color: /*#f39c12; /* #88ae87;*/ #84a98c;
+	--main-color-hover: /*#f38e12*/ #52796f;
+	--charcoal-color: #463f3a;
+	--red-color: #e76f51;
+	--blue-color: #748cab;
 	--green-color: #2C952C;
-	--blue-color: #0C70F2;
-	--yellow-color: #f38e12;
-	--light-blue-color: #6482B9;
-	--light-red-color: #F56E6E;
+	--yellow-color: #fac05e;
+	--orange-color: #f38e12;
+	--light-blue-color: #a4b0cc;
+	--light-red-color: #f28482;
+	--light-green-color: #84a98c;
 	--light-gray-color: #f3f3f3;
+}
+body {
+	color: var(--charcoal-color);
 }
 /* header */
 #header {
@@ -26,8 +32,9 @@
 	margin-left: 30px;
 }
 #logo h2 {
-	width: 220px;
+	width: 250px;
 	cursor: pointer;
+	color: white;
 }
 #logout {
 	font-size: 20px;
@@ -48,9 +55,10 @@
 	height:990px;
 	float: left;
 	border-radius: 10px;
-	background: #f3f3f3;
+	background: var(--light-gray-color);
 	padding: 20px;
 	z-index: 2;
+	box-shadow: 2px 2px 5px lightgray;
 }
 
 .sidebar .menu-title {
@@ -69,7 +77,7 @@
 }
 .sidebar .menu-group li:hover {
 	cursor: pointer;
-	color: var(--main-color-hover);
+	color: var(--main-color);
 	font-weight: bold;
 }
 .sidebar .myinfo-div {
@@ -95,6 +103,7 @@
 .date-table td:nth-child(2) { /* < 날짜 > td */
 	width: 500px;
 	text-align: center;
+	color: var(--charcoal-color);
 }
 .date-table .angle-icon {
 	cursor: pointer;
@@ -173,13 +182,13 @@
 	text-align: left;
 }
 #account-list-div table tr:not(tr:nth-child(1)) { /* 날짜 제외 tr */
-	border-top: 1px solid #f3f3f3;
+	border-top: 1px solid var(--light-gray-color);
 }
 #account-list-div table tr:not(tr:nth-child(1)):hover {
-	background: #f3f3f3;	
+	background: var(--light-gray-color);
 }
 .td-category {
-	width: 32%;
+	width: 35%;
 }
 .td-content, .calendar .td-asset, .calendar .td-income, .calendar .td-spend {
 	width: 20%;
@@ -203,24 +212,29 @@
 	box-shadow: 2px 2px 5px lightgray;
 }
 #account-list-div .key-div.income {
-	background: #a4b0cc;
+	background: var(--light-blue-color);
 	color: white;
-/*	color:  var(--light-blue-color);*/
 }
 #account-list-div .key-div.spend {
-	background: #eb9980;
+	background: var(--light-red-color);
 	color: white;
-/*	color:  var(--light-red-color);*/
+}
+#account-list-div .key-div.transfer {
+	background: var(--light-gray-color);
+	color: gray;
 }
 .td-smallcate.income {
-	color: var(--light-blue-color);
+	color: var(--blue-color);
 }
 .td-smallcate.spend {
-	color: var(--light-red-color);
+	color: var(--red-color);
 }
 .td-smallcate {
 	padding: 10px;
 	font-weight: bold;
+}
+.td-asset {
+	text-align: left;
 }
 .part-income { /* 부분합 */
 	float: right;
@@ -311,7 +325,7 @@
 	border-right: 0;
 }
 .stats .stats-list table tr:hover {
-	background: #F3F3F3;
+	background: var(--light-gray-color);
 	border-color: lightgray;
 	cursor: pointer;
 }
@@ -365,8 +379,8 @@
 /*-------------------------------------------------------------*/
 /* text */
 .title-text {
-	font-size: 35px;
-	color: var(--main-color);
+	font-size: 30px;
+	color: var(--charcoal-color);
 }
 
 .h-normal {
@@ -408,10 +422,10 @@
 	color: var(--blue-color);
 }
 .lightred {
-	color: var(--light-red-color);
+	color: var(--red-color);
 }
 .lightblue {
-	color: var(--light-blue-color);
+	color: var(--blue-color);
 }
 .lightgray {
 	color: var(--light-gray-color);
@@ -423,7 +437,7 @@
 	color: var(--green-color);
 }
 .orange {
-	color: var(--yellow-color);
+	color: var(--orange-color);
 }
 .text-left {
 	text-align: left;
@@ -461,7 +475,7 @@
 .main-outline-btn {
 	border: 1px solid var(--main-color);
 	background-color: white;
-	color: #f39c12;
+	color: var(--main-color);
 }
 .main-outline-btn:hover {
 	background-color: var(--main-color);
@@ -474,18 +488,18 @@
 }
 .check-btn {
 	font-size: 20px;
-	color: #2C952C;
+	color: var(--light-green-color);
 }
 .check-btn:hover {
-	background: #2C952C;
+	background: var(--light-green-color);
 	color: white;
 }
 .cross-btn {
 	font-size: 18px;
-	color:#E34234;
+	color: var(--red-color);
 }
 .cross-btn:hover {
-	background: #E34234;
+	background: var(--red-color);
 	color: white;
 }
 
@@ -537,7 +551,7 @@
 	border-radius: 10px;
 }
 .select-table td:hover {
-	background: #f3f3f3;
+	background: var(--light-gray-color);
 	cursor: pointer;
 }
 /*
@@ -568,12 +582,12 @@
 	border-radius: 10px;
 }
 .td-hover td:hover {
-	background: #F3F3F3;
+	background: var(--light-gray-color);
 	border-color: lightgray;
 	cursor: pointer;
 }
 .tr-hover tr:hover {
-	background: #F3F3F3;
+	background: var(--light-gray-color);
 	border-color: lightgray;
 	cursor: pointer;
 }
@@ -625,7 +639,7 @@
 }
 .select input[type="radio"]:checked+label{
 	border-color: var(--main-color);
-	color: #f39c12;
+	color: var(main-color);
 	box-shadow: 2px 2px 5px lightgray;
 }
 
@@ -639,6 +653,9 @@
 	background-color: rgba(0, 0, 0, 0.5);
 	display: none;
 	z-index: 2;
+}
+.modal-title {
+	text-align: center;
 }
 .modal-content {
 	position: absolute;
@@ -659,12 +676,6 @@
 	padding: 10px;
 	margin: 10px;
 	overflow-y: auto;
-}
-.modal-content.medium { 
-	height: 620px;
-}
-.modal-body.medium {
-	height: 470px;
 }
 .x-btn {
 	position: absolute;

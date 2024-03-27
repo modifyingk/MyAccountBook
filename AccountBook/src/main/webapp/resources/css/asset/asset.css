@@ -8,12 +8,12 @@
 .asset .title-text {
 	position: fixed;
 	left: 23%;
-	top: 100px;
+	top: 90px;
 }
 .asset #div1 {
-	margin-top: 50px;
+	margin-top: 40px;
 }
-.asset #asset-list-div {
+.asset #asset-list-div { /* 자산 목록 */
 	width: 1300px;
 	margin-top: 4%;
 	margin-left: 5%;
@@ -27,15 +27,15 @@
 	width:150px;
 	color:white;
 	text-align: center;
-	padding:10px;
-	background: #f39c12;
+	padding: 10px;
+	background: var(--main-color);
 	border-radius: 50px;
 	font-weight: bold;
 	margin: 10px 0;
 	cursor: pointer;
 	margin-top: 10%;
 }
-.asset #open-add-asset { /* 자산 추가 */
+.asset #open-add-asset { /* 자산 추가 버튼 */
 	position: absolute;
 	right: 40px;
 	top: 100px;
@@ -58,9 +58,13 @@
 	height: 50px;
 	width: 50px;
 	background: white;
-	color: #f39c12;
-	border: 1px solid #f39c12;
+	color: var(--main-color);
+	border: 1px solid var(--main-color);
 	border-radius: 10px;
+}
+.asset .transfer-icon:hover {
+	background: var(--main-color);
+	color: white;
 }
 .asset #div1 .tr-asset td:nth-child(3) {
 	border: 1px solid lightgray;
@@ -69,12 +73,8 @@
 	width: 400px;
 	padding: 0 15px;
 }
-.asset .transfer-icon:hover {
-	background: #f38e12;
-	color: white;
-}
-.asset .tr-asset:hover {
-	background: #F3F3F3;
+.asset .td-asset:hover {
+	background: var(--light-gray-color);
 	border-color: lightgray;
 	cursor: pointer;
 }
@@ -82,9 +82,44 @@
 	text-align: left;
 	font-size: 23px;
 	color: gray;
+	margin-bottom: 0;
 }
 .asset #total-div i {
 	margin-left: 1%;
 	color: black;
 	font-style: normal;
+}
+
+.asset .modal-content { /* 모달 */
+	height: 600px;
+}
+.asset .modal-body {
+	height: 450px;
+}
+.asset #add-asset-btn {
+	width: 450px;
+}
+.asset #update-asset-btn {
+	width: 250px;
+}
+.asset #delete-asset-btn {
+	width: 150px;
+}
+.asset #add-transfer-btn {
+	width: 450px;
+}
+
+.select-group-div { /* 자산 그룹 선택 목록 */
+	 position:absolute;
+	 background: white;
+	 height:380px;
+}
+.select-asset-div { /* 자산 선택 목록 */
+	position:absolute;
+	display: none;
+	background: white;
+	height:400px;
+}
+.select-table td {
+	padding: 12px;
 }

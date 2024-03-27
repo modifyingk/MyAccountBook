@@ -61,7 +61,7 @@
 								</c:if>
 							</td>
 							<td class="hide">${value.memo}</td> <!-- 메모 -->
-							<td id="open-update-asset"><button class="transfer-icon">이체</button></td></tr>
+							<td><button class="transfer-icon">이체</button></td></tr>
 						</c:forEach>
 					</table>
 				</c:if>
@@ -73,9 +73,9 @@
 	</c:if>
 	
 	<script>
-	$(function () {
-		$("#total-div i").html(${total} + "원");
-	})
+		$(function () {
+			$("#total-div i").html((${total}).toLocaleString() + "원");
+		})
 	</script>
 </body>
 </html>

@@ -41,14 +41,9 @@ public class AssetController {
 		int assetRes = aDao.insertAsset(assetVO);
 		if(assetRes > 0) {
 			if(assetVO.getTotal() != 0) { // 입력된 자산의 금액이 0이 아니라면 증가/감소된 금액만큼 수입/지출에 기록
-				int accountRes = accountSvc.insertAccount(assetVO);
-				if(accountRes > 0)
-					return true;
-				else
-					return false;
-			} else {
-				return true;
+				accountSvc.insertAccount(assetVO);
 			}
+			return true;
 		} else {
 			return false;
 		}
@@ -58,7 +53,7 @@ public class AssetController {
 	@ResponseBody
 	@RequestMapping("asset/updateAsset")
 	public boolean updateAsset(AssetVO assetVO) {
-		int beforeTotal = aDao.checkAsset(assetVO); // 업데이트 전 금액
+		int beforeTotal = aDao.beforeAsset(assetVO); // 업데이트 전 금액
 		int afterTotal = assetVO.getTotal(); // 업데이트 후 금액
 		int updateVal = afterTotal - beforeTotal; // 차이
 		

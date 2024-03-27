@@ -36,6 +36,11 @@ public class AccountDAO {
 		return my.delete("accountMapper.deleteAccount", accountVO);
 	}
 	
+	// 업데이트 전 수입/지출
+	public AccountVO beforeAccount(AccountVO accountVO) {
+		return my.selectOne("accountMapper.beforeAccount", accountVO);
+	}
+	
 	// 수입/지출 검색
 	public List<AccountVO> searchAccount(AccountVO accountVO) {
 		return my.selectList("accountMapper.searchAccount", accountVO);
@@ -85,6 +90,12 @@ public class AccountDAO {
 	public List<AccountVO> detailsOfAsset(AccountVO accountVO) {
 		return my.selectList("accountMapper.detailsOfAsset", accountVO);
 	}
+	
+	// 이체 수정
+	public int updateTransfer(AccountVO accountVO) {
+		return my.update("accountMapper.updateTransfer", accountVO);
+	}
+	
 	/*
 	// account의 반복 id 업데이트
 	public int updateRepeatid(HashMap<String, Object> map) {

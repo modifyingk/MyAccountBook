@@ -13,8 +13,8 @@
 		insert into asset values (#{assetid}, #{assetgroup}, #{assetname}, #{total}, #{memo}, #{userid});
 	</insert>
 	
-	<!-- 자산 금액 확인  -->
-	<select id="checkAsset" parameterType="assetVO" resultType="int">
+	<!-- 업데이트 전 자산 금액  -->
+	<select id="beforeAsset" parameterType="assetVO" resultType="int">
 		select total from asset where assetid = #{assetid} and userid = #{userid};
 	</select>
 	
@@ -41,7 +41,7 @@
 	
 	<!-- 자산 금액 업데이트 -->
 	<update id="updateTotal" parameterType="assetVO">
-		update asset set total = total + #{total} where assetid = #{assetid} and userid = #{userid};
+		update asset set total = total + #{total} where assetname = #{assetname} and userid = #{userid};
 	</update>
 	
 </mapper>

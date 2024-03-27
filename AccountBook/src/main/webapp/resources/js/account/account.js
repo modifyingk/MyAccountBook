@@ -180,6 +180,8 @@ $(function() {
 		autoClose(".select-update-incate"); // 분류 선택 닫기
 		autoClose(".select-update-outcate"); // 분류 선택 닫기
 		autoClose(".select-update-smallcate"); // 분류 선택 닫기
+		autoClose(".select-withdraw"); // 출금 자산 선택 닫기
+		autoClose(".select-deposit"); // 입금 자산 선택 닫기
 		autoClose("#search-list"); // 검색 자동완성 닫기
 		autoClose(".repeatMenu"); // 반복 선택 닫기 
 	})
@@ -254,6 +256,7 @@ $(function() {
 		$(".tr-date").show();
 		$(".td-income").parent().show();
 		$(".td-spend").parent().show();
+		$(".td-transfer").parent().show();
 		$(".part-income").show();
 		$(".part-spend").show();
 		$(".show-range").removeClass("active");
@@ -264,10 +267,11 @@ $(function() {
 		let n = $(".part-income").length;
 		for(let i = 0; i < n; i++) {
 			if($(".part-income").eq(i).text() == "0원") {
-				$(".tr-date").eq(i).hide();
+				$(".part-income").eq(i).parent().parent().hide();
 			}
 		}
 		$(".td-spend").parent().hide();
+		$(".td-transfer").parent().hide();
 		$(".td-income").parent().show();
 		$(".part-spend").hide();
 		$(".part-income").show();
@@ -279,10 +283,11 @@ $(function() {
 		let n = $(".part-spend").length;
 		for(let i = 0; i < n; i++) {
 			if($(".part-spend").eq(i).text() == "0원") {
-				$(".tr-date").eq(i).hide();
+				$(".part-spend").eq(i).parent().parent().hide();
 			}
 		}
 		$(".td-income").parent().hide();
+		$(".td-transfer").parent().hide();
 		$(".td-spend").parent().show();
 		$(".part-income").hide();
 		$(".part-spend").show();
@@ -347,6 +352,26 @@ $(function() {
 		let assetVal = $(this).children().eq(0).text();
 		$("#update-asset").attr("value", assetVal);
 		$(".select-update-asset").hide();
+	})
+	
+	// 이체 내역 수정 - 자산 선택
+	$(document).on("click", "#transfer-withdraw", function() {
+		showSelectAsset("#withdraw-list");
+		$(".select-withdraw").show();
+	})
+	$(document).on("click", ".select-withdraw tr", function() {
+		let assetVal = $(this).children().eq(0).text();
+		$("#transfer-withdraw").attr("value", assetVal);
+		$(".select-withdraw").hide();
+	})
+	$(document).on("click", "#transfer-deposit", function() {
+		showSelectAsset("#deposit-list");
+		$(".select-deposit").show();
+	})
+	$(document).on("click", ".select-deposit tr", function() {
+		let assetVal = $(this).children().eq(0).text();
+		$("#transfer-deposit").attr("value", assetVal);
+		$(".select-deposit").hide();
 	})
 	
 	// 수입/지출 추가 - 대분류 선택
@@ -502,39 +527,61 @@ $(function() {
 	
 	// 수입/지출 내역 내용 tr 클릭 시 수정 모달 열기
 	$(document).on("click", "#account-list-div .tr-content", function() {
-		$("#update-account-modal").show();
-		
+		let mtype = $(this).children().eq(2).text();
 		let date = $(this).children().eq(0).text();
 		let id = $(this).children().eq(1).text();
-		let mtype = $(this).children().eq(2).text();
 		let bigcate = $(this).children().eq(3).children().eq(0).text();
 		let smallcate = $(this).children().eq(3).children().eq(1).text();
 		let asset = $(this).children().eq(4).text();
 		let content = $(this).children().eq(5).text();
 		let total = $(this).children().eq(6).text().replace("-", "");
 		
-		// 수정 모달 값 setting
-		$("#update-date").attr("value", getDateFmt(date));
-		$("#update-id").attr("value", id);
-		$("#update-bigcate").attr("value", bigcate);
-		$("#update-smallcate").attr("value", smallcate);
-		$("#update-content").attr("value", content);
-		$("#update-asset").attr("value", asset);
-		$("#update-total").attr("value", total.split("원")[0]);
-		if(mtype == "수입") {
-			$("#update-in").attr("checked", true);
-			$("#update-out").attr("checked", false);
+		if(mtype == "이체") {
+			$("#update-transfer-modal").show();
+			$("#transfer-date").attr("value", getDateFmt(date));
+			$("#transfer-id").attr("value", id);
+			$("#transfer-content").attr("value", content);
+			$("#transfer-withdraw").attr("value", asset.split("→")[0]);
+			$("#transfer-deposit").attr("value", asset.split("→")[1]);
+			$("#transfer-total").attr("value", total.split("원")[0]);
+			
 		} else {
-			$("#update-out").attr("checked", true);
-			$("#update-in").attr("checked", false);
+			$("#update-account-modal").show();
+			
+			let date = $(this).children().eq(0).text();
+			let id = $(this).children().eq(1).text();
+			let bigcate = $(this).children().eq(3).children().eq(0).text();
+			let smallcate = $(this).children().eq(3).children().eq(1).text();
+			let asset = $(this).children().eq(4).text();
+			let content = $(this).children().eq(5).text();
+			let total = $(this).children().eq(6).text().replace("-", "");
+			
+			// 수정 모달 값 setting
+			$("#update-date").attr("value", getDateFmt(date));
+			$("#update-id").attr("value", id);
+			$("#update-bigcate").attr("value", bigcate);
+			$("#update-smallcate").attr("value", smallcate);
+			$("#update-content").attr("value", content);
+			$("#update-asset").attr("value", asset);
+			$("#update-total").attr("value", total.split("원")[0]);
+			if(mtype == "수입") {
+				$("#update-in").attr("checked", true);
+				$("#update-out").attr("checked", false);
+			} else {
+				$("#update-out").attr("checked", true);
+				$("#update-in").attr("checked", false);
+			}
 		}
-		//pickAsset("#update-asset"); // 자산 선택 및 값 자동 입력
-		//pickBigcate("#update-bigcate"); // 대분류 선택 및 값 자동 입력
 	})
 	
-	// 수입/지출 수정 div 닫기
+	// 수입/지출 수정 모달 닫기
 	$(document).on("click", "#close-update-account", function() {
 		$("#update-account-modal").hide();
+	})
+	
+	// 이체 내역 수정 모달 닫기
+	$(document).on("click", "#close-update-transfer", function() {
+		$("#update-transfer-modal").hide();
 	})
 	
 	// 수입/지출 수정
@@ -598,6 +645,65 @@ $(function() {
 		}
 	})
 	
+	// 이체 내역 수정
+	$(document).on("click", "#update-transfer-btn", function() {
+		let date = $("#transfer-date").val().replaceAll("-", "");
+		let id = $("#transfer-id").val();
+		let content = $("#transfer-content").val();
+		let withdraw = $("#transfer-withdraw").val();
+		let deposit = $("#transfer-deposit").val();
+		let total = $("#transfer-total").val().replaceAll(",", "");
+		
+		let asset = withdraw + "→" + deposit;
+		
+		if(!checkMustReg(date) || !checkMustReg(withdraw) || !checkMustReg(deposit) || !checkMustReg(total)){ // 정규식에 맞지 않을 때 (빈 값인 경우)
+			alert("입력 값을 확인해주세요.")
+		} else {
+			$.ajax({
+				type : "post",
+				url : "updateTransfer",
+				data : {
+					accountid: id,
+					date: date,
+					assetname: asset,
+					content: content,
+					total: total,
+					userid : userid
+				},
+				success : function(res) {
+					if(res == true) {
+						window.location.reload();
+					} else {
+						alert("다시 시도해주세요.");
+					}
+				}
+			})
+		}
+	})
+
+	// 이체 내역 삭제
+	$(document).on("click", "#delete-transfer-btn", function() {
+		let id = $("#transfer-id").val();
+		var op = confirm("내역을 삭제하시겠습니까?")
+		if(op) {
+			$.ajax({
+				type : "post",
+				url : "deleteTransfer",
+				data : {
+					accountid : id,
+					userid : userid
+				},
+				success : function(res) {
+					if(res == true) {
+						window.location.reload();
+					} else {
+						alert("다시 시도해주세요.");
+					}
+				}
+			})
+		}
+	})
+
 	// 검색 자동완성
 	$(document).on("keyup", "#search-input", function() {
 		let value = $("#search-input").val();

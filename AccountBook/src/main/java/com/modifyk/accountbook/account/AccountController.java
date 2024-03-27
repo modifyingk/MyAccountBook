@@ -21,6 +21,9 @@ public class AccountController {
 	@Autowired
 	AccountToMapService toMapSvc;
 	
+	@Autowired
+	AssetService assetSvc;
+	
 	// 수입/지출 추가
 	@ResponseBody
 	@RequestMapping("account/insertAccount")
@@ -28,27 +31,9 @@ public class AccountController {
 		if(accountVO.getMoneytype().equals("지출")) // 지출인 경우 마이너스 붙이기
 			accountVO.setTotal(accountVO.getTotal() * -1);
 		int insertRes = aDao.insertAccount(accountVO);
-		/*int accountid = accountVO.getAccountid();*/
-		/*
-		if(!repeatcycle.equals("없음")) {
-			// 반복 값 세팅
-			RepeatVO repeatVO = new RepeatVO();
-			repeatVO.setRepeatcycle(repeatcycle);
-			repeatVO.setDate(accountVO.getDate());
-			repeatVO.setAccountid(accountid);
-			repeatVO.setUserid(accountVO.getUserid());
-			rDao.insertRepeat(repeatVO);
-			int repeatid = repeatVO.getRepeatid();
-			
-			// account테이블에 repeatid 업데이트
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("accountid", accountid);
-			map.put("repeatid", repeatid);
-			map.put("userid", accountVO.getUserid());
-			aDao.updateRepeatid(map);
-		}
-*/
+		
 		if(insertRes > 0) {
+			assetSvc.updateAsset(accountVO); // 자산 업데이트
 			return accountVO.getAccountid();
 		} else {
 			return 0;
@@ -85,11 +70,12 @@ public class AccountController {
 	public boolean updateAccount(AccountVO accountVO) {
 		if(accountVO.getMoneytype().equals("지출")) // 지출인 경우 마이너스 붙이기
 			accountVO.setTotal(accountVO.getTotal() * -1);
-		//AccountVO before = aDao.checkAccount(accountVO);
+		
+		AccountVO before = aDao.beforeAccount(accountVO); // 수정 전 자산 및 금액
 		int updateRes = aDao.updateAccount(accountVO); // 수입/지출 수정
 		
 		if(updateRes > 0) {
-		//	assetSvc.updateAsset(before, accountVO);
+			assetSvc.updateAsset(before, accountVO);
 			return true;
 		} else {
 			return false;
@@ -100,16 +86,13 @@ public class AccountController {
 	@ResponseBody
 	@RequestMapping("account/deleteAccount")
 	public boolean deleteAccount(AccountVO accountVO) {
-		//AccountVO before = aDao.checkAccount(accountVO); // 삭제 전 데이터
-		//System.out.println(before);
+		AccountVO before = aDao.beforeAccount(accountVO); // 삭제 전 자산 및 금액
 		int deleteRes = aDao.deleteAccount(accountVO); // 수입/지출 삭제
 
 		if(deleteRes > 0) {
-			// 수입/지출이 삭제되었을 경우, 자산 금액 업데이트
-			//accountVO.setAssetid(before.getAssetid());
-		//	accountVO.setMoneytype(before.getMoneytype());
-			//accountVO.setTotal(before.getTotal() * (-1));
-			//assetSvc.updateAsset(accountVO);
+			accountVO.setAssetname(before.getAssetname());
+			accountVO.setTotal(before.getTotal() * -1);
+			assetSvc.updateAsset(accountVO);
 			return true;
 		} else {
 			return false;
@@ -210,6 +193,83 @@ public class AccountController {
 		return "account/selectAccount";
 	}
 	
+	// 이체 추가
+	@ResponseBody
+	@RequestMapping("account/insertTransfer")
+	public boolean insertTransfer(AccountVO accountVO) {
+		int insertRes = aDao.insertAccount(accountVO);
+		String withdraw = accountVO.getAssetname().split("→")[0]; // 출금
+		String deposit = accountVO.getAssetname().split("→")[1]; // 입금
+		if(insertRes > 0) {
+			accountVO.setAssetname(deposit); // 입금 자산
+			assetSvc.updateAsset(accountVO);
+
+			accountVO.setAssetname(withdraw); // 출금 자산
+			accountVO.setTotal(accountVO.getTotal() * -1);
+			assetSvc.updateAsset(accountVO);
+				
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	// 이체 수정
+	@ResponseBody
+	@RequestMapping("account/updateTransfer")
+	public boolean updateTransfer(AccountVO accountVO) {
+		AccountVO before = aDao.beforeAccount(accountVO); // 수정 전 자산 및 금액
+
+		int updateRes = aDao.updateTransfer(accountVO);
+		
+		String beforeWithdraw = before.getAssetname().split("→")[0]; // 수정 전 출금
+		String withdraw = accountVO.getAssetname().split("→")[0]; // 출금
+
+		String beforeDeposit = before.getAssetname().split("→")[1]; // 수정 전 입금
+		String deposit = accountVO.getAssetname().split("→")[1]; // 입금
+		
+		if(updateRes > 0) {
+			before.setAssetname(beforeDeposit); // 입금 자산
+			accountVO.setAssetname(deposit);
+			assetSvc.updateAsset(before, accountVO);
+			
+			before.setAssetname(beforeWithdraw); // 출금 자산
+			before.setTotal(before.getTotal() * -1); // 출금 자산에서는 변경된 금액만큼 빼줘야하므로
+			accountVO.setAssetname(withdraw);
+			accountVO.setTotal(accountVO.getTotal() * -1);
+			assetSvc.updateAsset(before, accountVO);
+			
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	// 수입/지출 삭제
+	@ResponseBody
+	@RequestMapping("account/deleteTransfer")
+	public boolean deleteTransfer(AccountVO accountVO) {
+		AccountVO before = aDao.beforeAccount(accountVO); // 삭제 전 자산 및 금액
+		int deleteRes = aDao.deleteAccount(accountVO); // 수입/지출 삭제
+
+		String withdraw = before.getAssetname().split("→")[0]; // 출금
+		String deposit = before.getAssetname().split("→")[1]; // 입금
+
+		if(deleteRes > 0) {
+			accountVO.setAssetname(withdraw); // 출금 내역은 자산에 다시 더해줘야함
+			accountVO.setTotal(before.getTotal());
+			assetSvc.updateAsset(accountVO);
+
+			accountVO.setAssetname(deposit); // 입금 내역은 자산에 빼줘야함
+			accountVO.setTotal(before.getTotal() * -1);
+			assetSvc.updateAsset(accountVO);
+			
+			return true;
+		} else {
+			return false;
+		}
+	}
+		
 	/*
 	// 수입/지출 목록
 	public List<AccountVO> accountList(AccountVO accountVO, String moneytype) {

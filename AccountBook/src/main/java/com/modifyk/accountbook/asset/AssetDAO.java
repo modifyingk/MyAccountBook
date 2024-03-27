@@ -21,9 +21,9 @@ public class AssetDAO {
 		return my.insert("assetMapper.insertAsset", assetVO);
 	}
 
-	// 자산 금액 확인
-	public int checkAsset(AssetVO assetVO) {
-		return my.selectOne("assetMapper.checkAsset", assetVO);
+	// 업데이트 전 자산 금액
+	public int beforeAsset(AssetVO assetVO) {
+		return my.selectOne("assetMapper.beforeAsset", assetVO);
 	}
 	
 	// 자산 수정

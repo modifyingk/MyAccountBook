@@ -27,7 +27,7 @@
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
 			<div>
-				<h2 class="title-text"><i class="fi fi-rs-chart-histogram"></i> 목표 관리</h2>
+				<h2 class="title-text"><i class="fi fi-rs-checkbox"></i> 목표 관리</h2>
 				<button id="open-add-aim">+</button>
 				<div id="div1"></div>
 			</div>

@@ -19,9 +19,9 @@ public class AccountService {
 		// 가계부 탭에 기록
 		AccountVO account = new AccountVO();
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
 		Date date = new Date();
-		String now = sdf.format(date);
+		String now = fmt.format(date);
 		
 		if(assetVO.getTotal() > 0) {
 			account.setMoneytype("수입");
@@ -31,11 +31,10 @@ public class AccountService {
 		
 		account.setDate(now);
 		account.setAssetname(assetVO.getAssetname());
-		account.setCatename("기타");
-		account.setTotal(Math.abs(assetVO.getTotal()));
+		account.setBigcate("차액");;
+		account.setTotal(assetVO.getTotal());
 		account.setUserid(assetVO.getUserid());
-		account.setContent("차액");
-		account.setMemo("");
+		account.setContent("");
 		
 		return aDao.insertAccount(account);
 	}

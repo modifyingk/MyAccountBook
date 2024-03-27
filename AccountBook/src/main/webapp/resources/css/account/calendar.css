@@ -37,7 +37,7 @@
 	width: 12%;
 }
 .calendar #calendar td:empty { /* 빈 칸 */
-	background: #f3f3f3;
+	background: var(--light-gray-color);
 }
 .calendar .il div {
 	height: 100%;
@@ -61,7 +61,7 @@
 }
 .calendar .il:hover {
 	cursor: pointer;
-	background: #f3f3f3;
+	background: var(--light-gray-color);
 }
 .calendar .il .today {
 	border-radius: 10px;

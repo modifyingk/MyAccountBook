@@ -11,57 +11,40 @@ public class AssetService {
 	@Autowired
 	AssetDAO aDao;
 	
-	public void updateAsset(AccountVO account) {
+	// 수입/지출 추가 또는 삭제 시 자산 금액 업데이트
+	public void updateAsset(AccountVO accountVO) {
 		AssetVO assetVO = new AssetVO();
+		assetVO.setAssetname(accountVO.getAssetname()); // 업데이트 할 자산명
+		assetVO.setTotal(accountVO.getTotal()); // 업데이트 할 값
+		assetVO.setUserid(accountVO.getUserid()); // 업데이트 할 유저
 		
-		assetVO.setAssetid(account.getAssetid()); // 업데이트 할 자산 id
-		assetVO.setUserid(account.getUserid()); // 업데이트 할 user
-		
-		// 업데이트 할 금액
-		if(account.getMoneytype().equals("지출")) { // 지출이면 음수로 설정
-			assetVO.setTotal(account.getTotal() * (-1));
-		} else if(account.getMoneytype().equals("수입")) {
-			assetVO.setTotal(account.getTotal());
-		}
-		
-		aDao.updateTotal(assetVO);
+		aDao.updateTotal(assetVO); // 자산 금액 업데이트
 	}
 	
+	// 수입/지출 수정 시 자산 금액 업데이트
 	public void updateAsset(AccountVO before, AccountVO after) {
-		int beforeMoney = before.getTotal();
-		int beforeAsset = before.getAssetid();
-		int afterMoney = after.getTotal();
-		int afterAsset = after.getAssetid();
+		int beforeMoney = before.getTotal(); // 수정 전
+		String beforeAsset = before.getAssetname();
+		
+		int afterMoney = after.getTotal(); // 수정 후
+		String afterAsset = after.getAssetname();
 		
 		AssetVO assetVO = new AssetVO();
 		assetVO.setUserid(after.getUserid());
 		
-		if(beforeAsset != afterAsset) {
-			if(after.getMoneytype().equals("지출")) {
-				assetVO.setAssetid(beforeAsset);
-				assetVO.setTotal(beforeMoney);
-				aDao.updateTotal(assetVO);
+		if(beforeAsset != afterAsset) { // 자산이 변경된 경우
+			assetVO.setAssetname(beforeAsset); // 원래 자산의 금액 복구
+			assetVO.setTotal(beforeMoney * -1);
+			aDao.updateTotal(assetVO);
 				
-				assetVO.setAssetid(afterAsset);
-				assetVO.setTotal(afterMoney * (-1));
-				aDao.updateTotal(assetVO);
-			} else if(after.getMoneytype().equals("수입")) {
-				assetVO.setAssetid(beforeAsset);
-				assetVO.setTotal(beforeMoney * (-1));
-				aDao.updateTotal(assetVO);
-				
-				assetVO.setAssetid(afterAsset);
-				assetVO.setTotal(afterMoney);
-				aDao.updateTotal(assetVO);
-			}
-		} else {
-			int updateValue = afterMoney - beforeMoney;
-			assetVO.setAssetid(afterAsset);
-			if(after.getMoneytype().equals("지출")) {
-				assetVO.setTotal(updateValue * (-1));
-			} else if(after.getMoneytype().equals("수입")) {
-				assetVO.setTotal(updateValue);
-			}
+			assetVO.setAssetname(afterAsset); // 변경한 자산의 값 업데이트
+			assetVO.setTotal(afterMoney);
+			aDao.updateTotal(assetVO);
+			
+		} else { // 자산이 변경되지 않은 경우
+			int updateValue = afterMoney - beforeMoney; // 변경된 금액만 자산 금액에 업데이트
+			assetVO.setAssetname(afterAsset);
+			assetVO.setTotal(updateValue);
 			aDao.updateTotal(assetVO);
 		}
 		

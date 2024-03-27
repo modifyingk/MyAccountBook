@@ -89,7 +89,7 @@ table td div {
 	border-radius: 10px;
 }
 .signup #address-table td:hover {
-	background: #F3F3F3;
+	background: var(--light-gray-color);
 	cursor: pointer;
 }
 .signup #send-code-btn {
@@ -160,13 +160,11 @@ table td div {
 
 /* myInfo.jsp */
 .myinfo {
-	margin-left: 23%;
+	margin-left: 10%;
 	margin-top: 10%;
 }
-.myinfo .title-text {
-	position: fixed;
-	left: 23%;
-	top: 80px;
+.myinfo table {
+	margin-bottom: 20px;
 }
 .myinfo table td {
 	width: 90%;
@@ -187,4 +185,49 @@ table td div {
 }
 #change-pw {
 	width: 375px;
+}
+
+/* check_pw.jsp */
+.checkpw {
+	margin-left: 10%;
+	margin-top: 10%;
+}
+.checkpw table {
+	width: 450px;
+	margin-bottom: 20px;
+}
+.checkpw table td {
+	width: 450px;
+}
+.checkpw table input {
+	width: 350px;
+	font-size: 18px;
+}
+.checkpw .input-inner:disabled {
+	background: none;
+}
+.checkpw #check-pw-btn {
+	width: 450px;
+	height: 55px;
+	font-weight: bold;
+	font-size: 20px;
+}
+/* update_pw.jsp */
+.updatepw {
+	margin-left: 10%;
+	margin-top: 10%;
+}
+.updatepw table {
+	width: 450px;
+	margin-bottom: 20px;
+}
+.updatepw table input {
+	width: 350px;
+	font-size: 18px;
+}
+.updatepw #update-pw-btn {
+	width: 450px;
+	height: 55px;
+	font-weight: bold;
+	font-size: 20px;
 }

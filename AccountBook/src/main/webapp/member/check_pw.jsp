@@ -7,11 +7,12 @@
 <title>가계부 | 비밀번호 확인</title>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
-<link rel="stylesheet" type="text/css" href="../resources/css/main.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/main-style.css">
+<link rel="stylesheet" type="text/css" href="../resources/css/member/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
 	$(function() {
-		$("#checkPwBtn").click(function() {
+		$("#check-pw-btn").click(function() {
 			$.ajax({
 				type : "post",
 				url : "checkPw",
@@ -33,38 +34,32 @@
 </head>
 <body>
 	<div>
-		<!-- 사이드바 -->
-		<div class="col-2 height-1050 is-border is-shadow">
-			<jsp:include page="../main/sidebar.jsp"></jsp:include>
-			<img src="../resources/img/logo.png" style="width: 90%;" onclick="location.href='../main/main.jsp'">
-			<ul class="menu-group">
-				<li class="menu active"><i class="fi fi-rr-home"></i> 메인페이지</li>
-				<li class="menu"><i class="fi fi-rr-money-check-edit"></i> 수입/지출 관리</li>		
-				<li class="menu"><i class="fi fi-rr-coins"></i> 자산관리</li>		
-				<li class="menu"><i class="fi fi-rs-calendar-check"></i> 캘린더</li>		
-				<li class="menu"><i class="fi fi-rs-chart-histogram"></i> 목표 관리</li>
-				<li class="menu"><i class="fi fi-rr-sign-out-alt"></i> 로그아웃</li>
-			</ul>
-		</div>
+		<jsp:include page="../main/header.jsp"></jsp:include>
+		<jsp:include page="../main/sidebar.jsp"></jsp:include>
 		
 		<!-- 컨텐츠 -->
-		<div class="col-8 is-center">
+		<div class="container checkpw">
 			<%
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
-				<div class="container margin-medium is-border width-50">
-					<h3 class="h-normal fs-28"><i class="fi fi-rr-key"></i> 비밀번호 확인</h3>
-					<table class="table">
+				<div>
+					<h3 class="title-text"><i class="fi fi-rr-key"></i> 비밀번호 확인</h3>
+					<table class="center-table">
 						<tr>
-							<th>아이디</th>
-							<td><input class="input" type="text" value="<%= session.getAttribute("userid") %>" disabled="true" id="userid"></td>
+							<td>
+								<div><i class="fi fi-rr-user"></i></div>
+								<div><input class="input-inner" type="text" value="<%= session.getAttribute("userid") %>" disabled="disabled" id="userid"></div>
+							</td>
 						</tr>
 						<tr>
-							<th>비밀번호</th>
-							<td><input class="input" type="password" id="pw"></td>
+							<td>
+								<div><i class="fi fi-rr-lock"></i></div>
+								<div><input class="input-inner" type="password" id="pw" placeholder="비밀번호" maxlength="20"></div>
+							</td>
 						</tr>
 					</table>
-					<button class="btn long green" id="checkPwBtn">확인</button>
+				
+					<button class="btn main-color-btn" id="check-pw-btn">확인</button>
 				</div>
 			<% }
 			/* 로그인이 되어 있지 않을 때 */

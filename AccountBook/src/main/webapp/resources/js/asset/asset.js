@@ -2,7 +2,6 @@ document.write('<script src="../resources/js/function/htmlFunc.js"></script>'); 
 document.write('<script src="../resources/js/function/regFunc.js"></script>'); // 유효성 검사 함수
 document.write('<script src="../resources/js/function/dateFunc.js"></script>'); // 날짜 함수
 document.write('<script src="../resources/js/asset/assetFunc.js"></script>'); // 자산 함수
-document.write('<script src="../resources/js/asset/transferFunc.js"></script>'); // 이체
 
 $(function() {
 	var date;
@@ -17,7 +16,6 @@ $(function() {
 		// 금액에 숫자만 입력되도록
 		onlyNumHypen("#update-asset-total");
 		onlyNumHypen("#add-asset-total");
-		//onlyNumHypen("#add-transfer-total");
 		
 		// 금액 세 자리마다 콤마
 		moneyFmt("#update-asset-total");
@@ -29,6 +27,7 @@ $(function() {
 		
 		// 다른 영역 클릭 시 창 닫기
 		autoClose(".select-group-div"); // 자산 그룹 선택 닫기
+		autoClose(".select-asset-div"); // 자산 선택 닫기
 
 	})
 	
@@ -180,13 +179,22 @@ $(function() {
 	$(document).on("click", ".transfer-icon", function() {
 		var id = $(this).parent().parent().children().eq(0).text();
 		var withdraw = $(this).parent().parent().children().eq(2).children().eq(0).text();
-		$("#add-transfer-date").attr("value", getFullDate(date));
+		$("#add-transfer-date").attr("value", makeDateFmt(date));
 		$("#add-withdraw-id").attr("value", id);
 		$("#add-withdraw").attr("value", withdraw);
 		
 		$("#add-transfer-modal").show(); // 자산 추가 div 열기
-		
-		pickAsset("#add-deposit-id", "#add-deposit");
+	})
+	
+	// 이체 자산 선택
+	$(document).on("click", "#add-deposit", function() {
+		showSelectAsset(".select-asset-list");
+		$(".select-asset-div").show();
+	})
+	$(document).on("click", ".select-asset-div tr", function() {
+		let assetVal = $(this).children().eq(0).text();
+		$("#add-deposit").attr("value", assetVal);
+		$(".select-asset-div").hide();
 	})
 	
 	// 자산 이체 modal 닫기
@@ -196,24 +204,30 @@ $(function() {
 	
 	// 자산 이체
 	$(document).on("click", "#add-transfer-btn", function() {
-		if($("#add-withdraw-id").val() == $("#add-deposit-id").val()) {
-			alert("이체가 불가능합니다.")
+		if($("#add-withdraw").val() == $("#add-deposit").val()) {
+			alert("같은 자산으로는 이체가 불가능합니다.")
 		} else {
+			let date = $("#add-transfer-date").val().replaceAll("-", "");
+			let asset = $("#add-withdraw").val() + "→" + $("#add-deposit").val();
+			let content = $("#add-transfer-memo").val();
+			let total = $("#add-transfer-total").val().replaceAll(",", "");
+			console.log(date + " " + asset + " " + content + " " + total);
 			$.ajax({
 				type : "post",
-				url : "../transfer/insertTransfer",
+				url : "../account/insertTransfer",
 				data : {
-					date: $("#add-transfer-date").val(),
-					withdrawid: $("#add-withdraw-id").val(),
-					withdraw: $("#add-withdraw").val(),
-					depositid: $("#add-deposit-id").val(),
-					deposit: $("#add-deposit").val(),
-					total: $("#add-transfer-total").val().replaceAll(",", ""),
-					memo: $("#add-transfer-memo").val(),
+					moneytype: "이체",
+					date: date,
+					assetname: asset,
+					bigcate: "이체",
+					smallcate: "",
+					content: content,
+					total: total,
 					userid: userid
 				},
 				success: function(res) {
 					if(res == true) {
+						alert("이체 내역 등록이 완료되었습니다.");
 						window.location.reload();
 					} else {
 						alert("다시 시도해주세요")
@@ -221,11 +235,6 @@ $(function() {
 				}
 			})
 		}
-	})
-	
-	// 자산 이체 내역 페이지 열기
-	$(document).on("click", "#open-transfer-list", function() {
-		location.href = "transfer.jsp";
 	})
 })
 

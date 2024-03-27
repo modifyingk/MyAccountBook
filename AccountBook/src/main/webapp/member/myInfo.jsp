@@ -21,12 +21,13 @@
 		<jsp:include page="../main/sidebar.jsp"></jsp:include>	
 		
 		<!-- 컨텐츠 -->
-		<div class="myinfo">
+		<div class="container myinfo">
 		<%
 		/* 로그인이 되어 있을 때*/
 		if(session.getAttribute("userid") != null) { %>
-				<h2 class="title-text">개인정보 관리</h2>
-				<table>
+			<div>
+				<h2 class="title-text"><i class="fi fi-rr-user"></i> 개인정보 관리</h2>
+				<table class="center-table">
 					<tr>
 						<th>비밀번호</th>
 						<td><button class="btn" id="change-pw">비밀번호 변경</button></td>
@@ -53,9 +54,9 @@
 						</td>
 					</tr>
 				</table>
-				<br><br>
 				<button class="btn main-color-btn" id="update-btn">개인정보 수정</button>
 				<button class="btn main-outline-btn" id="drop-btn">회원탈퇴</button>
+			</div>
 		<% }
 		/* 로그인이 되어 있지 않을 때 */
 		else { %>

@@ -27,12 +27,12 @@
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
 			<div>
-				<h2 class="title-text"><i class="fi fi-rr-money-check-edit"></i> 수입/지출 내역</h2>
+				<h2 class="title-text"><i class="fi fi-rs-file-invoice-dollar"></i> 수입/지출 내역</h2>
 				<!-- 검색 -->
 				<div id="search-div">
 					<div><input id="search-input" type="text"></div>
 					<div id="search-btn"><i class="fi fi-rr-search"></i></div>
-				</div>			
+				</div>		
 				<div id="search-list"></div>
 				
 				<div id="div1">
@@ -146,7 +146,7 @@
 				</div>
 			</div>
 			<br>
-
+			<hr style="background: lightgray; height: 1px; border: 0;">
 			<!-- 합계 -->
 			<div id="div3">
 				<table>
@@ -167,7 +167,6 @@
 				</table>
 			</div>
 			
-	
 			<!-- 미니 달력 -->
 			<div id="left-div1"></div>
 
@@ -196,6 +195,7 @@
 						<h3 class="h-normal fs28">수입/지출 수정</h3>
 						<button class="x-btn" id="close-update-account">x</button>
 					</div>
+					<hr>
 					<div class="modal-body">
 						<table>
 							<tr class="hide">
@@ -281,6 +281,7 @@
 						<button class="btn main-color-btn" id="update-account-btn">수정</button>
 						<button class="btn main-outline-btn" id="delete-account-btn">삭제</button>
 					</div>
+					<hr>
 					<div class="modal-footer">
 						<button class="btn right main-outline-btn" id="close-update-account">닫기</button>
 					</div>
@@ -323,7 +324,64 @@
 								</tr>
 							</table>
 						</div>
-						<button class="btn right main-outline-btn" id="delete-repeat-btn">삭제</button>
+						<button class="btn main-color-btn" id="delete-repeat-btn">삭제</button>
+					</div>
+					<hr>
+					<div class="modal-footer">
+						<button class="btn right main-outline-btn" id="close-update-repeat">닫기</button>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 이체 수정 modal -->
+			<div class="modal" id="update-transfer-modal" hidden="true">
+				<div class="modal-content">
+					<div class="modal-title">
+						<h3 class="h-normal fs28">이체 내역 수정</h3>
+						<button class="x-btn" id="close-update-transfer">x</button>
+					</div>
+					<hr>
+					<div class="modal-body">
+						<table>
+							<tr class="hide">
+								<th>ID</th>
+								<td><input type="text" class="input" id="transfer-id" ></td>
+							</tr>
+							<tr>
+								<th>날짜</th>
+								<td colspan="3"><input type="date" class="input" id="transfer-date" ></td>
+							</tr>
+							<tr>
+								<th>자산</th>
+								<td>
+									<input type="text" class="input" id="transfer-withdraw" placeholder="분류선택" readonly>
+									<div class="select-withdraw select-div">
+										<div id="withdraw-list"></div>
+									</div>
+								</td>
+								<td>→</td>
+								<td>
+									<input type="text" class="input" id="transfer-deposit" placeholder="분류선택" readonly>
+									<div class="select-deposit select-div">
+										<div id="deposit-list"></div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th>내용</th>
+								<td colspan="3"><input type="text" class="input" id="transfer-content" maxlength="20"></td>
+							</tr>
+							<tr>
+								<th>금액</th>
+								<td colspan="3"><input type="text" class="input" id="transfer-total"></td>
+							</tr>
+						</table>
+						<button class="btn main-color-btn" id="update-transfer-btn">수정</button>
+						<button class="btn main-outline-btn" id="delete-transfer-btn">삭제</button>
+					</div>
+					<hr>
+					<div class="modal-footer">
+						<button class="btn right main-outline-btn" id="close-update-transfer">닫기</button>
 					</div>
 				</div>
 			</div>

@@ -49,7 +49,7 @@
 		<div>
 			<div class="menu-title">가계부</div>
 			<ul class="menu-group" id="group1">
-				<li><i class="fi fi-rr-rectangle-list"></i> 수입/지출 내역</li>
+				<li><i class="fi fi-rs-file-invoice-dollar"></i> 수입/지출 내역</li>
 				<li><i class="fi fi-rr-calendar-check"></i> 캘린더</li>
 				<li><i class="fi fi-rs-chart-pie-alt"></i> 분석</li>
 			</ul>

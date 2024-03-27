@@ -15,7 +15,7 @@
 </script>
 <div id="header">
 	<div id="logo">
-		<h2>MONEY PLANT <i class="fi fi-rs-seedling"></i></h2>
+		<h2><i class="fi fi-rr-sack-dollar"></i> 나의 가계부</h2>
 	</div>
 	<div>
 		<a id="logout">로그아웃</a>

@@ -36,7 +36,9 @@ $(function () {
 		let name = $("#username").val();
 		let gender = $("input[name=gender]:checked").val();
 		let birth = $("#birth").val();
-		if(checkName() && checkGender() && checkBirth()) {
+		
+		console.log(name + " " + gender + " " + birth);
+		if(checkName() && checkGender() && checkBirth(birth)) {
 			$.ajax({
 				type : "post",
 				url : "updateMember",
@@ -96,16 +98,6 @@ function checkName() {
 	let name = $("#username").val();
 	let nameChk = checkNameReg(name);
 	if(nameChk) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-function checkBirth() {
-	let birth = $("#birth").val();
-	let birthChk = checkBirthReg(birth);
-	if(birthChk) {
 		return true;
 	} else {
 		return false;

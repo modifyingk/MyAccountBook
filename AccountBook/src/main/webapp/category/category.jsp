@@ -28,7 +28,7 @@
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
 			<div>
-				<h2 class="title-text"> 카테고리 관리</h2>
+				<h2 class="title-text"><i class="fi fi-rr-rectangle-list"></i> 카테고리 관리</h2>
 				<div id="div1">
 					<table>
 						<tr>
