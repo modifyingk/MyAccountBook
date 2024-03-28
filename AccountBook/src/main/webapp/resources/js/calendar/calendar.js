@@ -18,9 +18,6 @@ $(function() {
 		setDate(year, month); // 날짜 세팅
 		makeCalendar(today); // 달력 생성
 		
-		// 모달 닫기
-		//$.closeModal("#close-date-account", "#date-account-modal");
-		
 		// 다른 영역 클릭 시 창 닫기
 		autoClose("#select-date"); // 날짜 선택 닫기
 		autoClose("#side-div1"); // 상세 내역 닫기

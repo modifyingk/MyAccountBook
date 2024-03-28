@@ -45,31 +45,5 @@
 	<!-- 회원탈퇴  -->
 	<delete id="deleteMember" parameterType="String">
 		delete from member where userid = #{userid}
-	</delete>
-	
-	<!-- 회원 가입 시 포인트 셋팅 -->
-	<insert id="insertMoney" parameterType="moneyVO">
-		insert into money values (#{userid}, #{userpoint}, #{plantstep}, #{usercash});
-	</insert>
-	
-	<!-- 포인트 적립 -->
-	<update id="updatePoint" parameterType="moneyVO">
-		update money set userpoint = userpoint + #{userpoint} where userid = #{userid};
-	</update>
-	
-	<!-- 회원 포인트 정보 -->
-	<select id="userMoneyInfo" parameterType="String" resultType="moneyVO">
-		select * from money where userid = #{userid};
-	</select>
-	
-	<!-- 물 주기 -->
-	<update id="usePoint" parameterType="String">
-		update money set userpoint = userpoint - 10, plantstep = plantstep + 1 where userid = #{userid};
-	</update>
-	
-	<!-- 캐시 적립 및 단계 리셋 -->
-	<update id="updatePlant" parameterType="moneyVO">
-		update money set usercash = usercash + #{usercash}, plantstep = 0 where userid = #{userid};
-	</update>
-	
+	</delete>	
 </mapper>

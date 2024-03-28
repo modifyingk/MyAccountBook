@@ -43,9 +43,11 @@ body {
 	cursor: pointer;
 	position: absolute;
 	right: 50px;
-	top: 28px;
+	top: 20px;
 }
-
+#logo h2:hover, #logout:hover {
+	color: #2f3e46;
+}
 /* sidebar */
 .sidebar.nav {
 	position: fixed;
@@ -71,9 +73,9 @@ body {
 }
 .sidebar .menu-group li {
 	width: 200px;
-	padding: 10px;
+	padding: 9px;
 	font-size: 20px;
-	margin: 20px;
+	margin: 10px;
 }
 .sidebar .menu-group li:hover {
 	cursor: pointer;
@@ -86,8 +88,11 @@ body {
 	padding: 10px;
 }
 .sidebar #myinfo-btn {
-	font-size: 120px;
+	font-size: 80px;
 	color: var(--main-color);
+}
+.sidebar #myinfo-btn:hover {
+	color: var(--main-color-hover);
 }
 .sidebar #login-id {
 	font-size: 23px;

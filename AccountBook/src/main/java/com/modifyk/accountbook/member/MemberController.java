@@ -1,5 +1,9 @@
 package com.modifyk.accountbook.member;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -10,19 +14,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.modifyk.accountbook.account.AccountDAO;
+import com.modifyk.accountbook.account.AccountVO;
+
 @Controller
 public class MemberController {
 	@Autowired
 	MemberDAO mDao;
 	
 	@Autowired
+	AccountDAO aDao;
+	
+	@Autowired
 	EmailService emailSvc;
 	
 	@Autowired
 	AutoInsertService insertSvc;
-	
-	@Autowired
-	RandomCashService rCashSvc;
 	
 	// 아이디 중복 확인
 	@ResponseBody
@@ -175,41 +182,33 @@ public class MemberController {
 		}
 	}
 	
-	// 회원 포인트 정보
-	@ResponseBody
-	@RequestMapping("member/userMoneyInfo")
-	public MoneyVO userMoneyInfo(String userid) {
-		MoneyVO money = mDao.userMoneyInfo(userid);
-		return money;
+	LocalDate now = LocalDate.now();
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
+	String date = now.format(formatter);
+	
+	// 이번 달 수입/지출 합계
+	@RequestMapping("member/monthAccount")
+	public void monthAccount(AccountVO accountVO, Model model) {
+		accountVO.setDate(date); // 오늘 날짜
+		List<AccountVO> list = aDao.monthAccount(accountVO);
+		model.addAttribute("list", list);
 	}
 	
-	// 물 주기
-	@ResponseBody
-	@RequestMapping("member/usePoint")
-	public int usePoint(String userid) {
-		MoneyVO moneyVO = mDao.userMoneyInfo(userid);
-		if(moneyVO.getUserpoint() < 10) { // 포인트 부족
-			return -1;
-		} else {
-			mDao.usePoint(userid);
-			return 0;
-		}
-	}
-	
-	// 캐시 적립 및 단계 리셋
-	@ResponseBody
-	@RequestMapping("member/randomCash")
-	public int randomCash(MoneyVO moneyVO) {
-		// 랜덤 cash 뽑기 및 값 setting
-		int cash = rCashSvc.makeCash();
-		moneyVO.setUsercash(cash);
+	// 최근 수입/지출 합계
+	@RequestMapping("member/recentAccount")
+	public void recentAccount(AccountVO accountVO, Model model) {
+		// 오늘 날짜
+		LocalDate nextNow = now.plusMonths(1);
+		String nextMonth = nextNow.format(formatter);
+		accountVO.setDate(nextMonth); // 내일 날짜로 세팅
 		
-		// 캐시 적립 및 단계 리셋
-		int result = mDao.updatePlant(moneyVO);
-		if(result > 0) {
-			return cash;
-		} else {
-			return 0;
-		}
+		accountVO.setMoneytype("수입");
+		List<AccountVO> incomeList = aDao.recentAccount(accountVO);
+		model.addAttribute("incomeList", incomeList);
+		
+		accountVO.setMoneytype("지출");
+		List<AccountVO> spendList = aDao.recentAccount(accountVO);
+		model.addAttribute("spendList", spendList);
 	}
+	
 }

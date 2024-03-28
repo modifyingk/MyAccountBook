@@ -5,13 +5,11 @@
 	<!-- SQL문 정의 시 VO 간단히 표현 -->
 	<typeAliases>
     	<typeAlias type="com.modifyk.accountbook.member.MemberVO" alias="memberVO"></typeAlias>
-   	   	<typeAlias type="com.modifyk.accountbook.member.MoneyVO" alias="moneyVO"></typeAlias>
       	<typeAlias type="com.modifyk.accountbook.asset.AssetVO" alias="assetVO"></typeAlias>
    	   	<typeAlias type="com.modifyk.accountbook.category.CategoryVO" alias="categoryVO"></typeAlias>
    	   	<typeAlias type="com.modifyk.accountbook.account.AccountVO" alias="accountVO"></typeAlias>
    	   	<typeAlias type="com.modifyk.accountbook.aim.AimVO" alias="aimVO"></typeAlias>
    	   	<typeAlias type="com.modifyk.accountbook.aim.AimJoinVO" alias="aimjoinVO"></typeAlias>
-		<typeAlias type="com.modifyk.accountbook.aim.AimRateVO" alias="aimrateVO"></typeAlias>
    	   	<typeAlias type="com.modifyk.accountbook.transfer.TransferVO" alias="transferVO"></typeAlias>
    	   	<typeAlias type="com.modifyk.accountbook.repeat.RepeatVO" alias="repeatVO"></typeAlias>
 	</typeAliases>

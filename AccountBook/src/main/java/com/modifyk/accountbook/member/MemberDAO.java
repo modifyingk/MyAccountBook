@@ -55,30 +55,5 @@ public class MemberDAO {
 	// 회원 탈퇴
 	public int deleteMember(String userid) {
 		return my.delete("memberMapper.deleteMember", userid);
-	}
-	
-	// 회원 포인트 셋팅
-	public int insertMoney(MoneyVO moneyVO) {
-		return my.insert("memberMapper.insertMoney", moneyVO);
-	}
-	
-	// 포인트 적립
-	public int updatePoint(MoneyVO moneyVO) {
-		return my.update("memberMapper.updatePoint", moneyVO);
-	}
-	
-	// 회원 포인트 정보
-	public MoneyVO userMoneyInfo(String userid) {
-		return my.selectOne("memberMapper.userMoneyInfo", userid);
-	}
-	
-	// 물 주기
-	public int usePoint(String userid) {
-		return my.update("memberMapper.usePoint", userid);
-	}
-	
-	// 캐시 적립 및 단계 리셋
-	public int updatePlant(MoneyVO moneyVO) {
-		return my.update("memberMapper.updatePlant", moneyVO);
-	}
+	}	
 }

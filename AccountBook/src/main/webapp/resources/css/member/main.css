@@ -23,6 +23,9 @@ table td div {
 	font-weight: bold;
 	font-size: 20px;
 }
+.main img {
+	animation: rotate 1s infinite;
+}
 
 /* login.jsp */
 .login {
@@ -154,8 +157,97 @@ table td div {
 }
 /* mypage.jsp */
 .mypage {
-	margin-left: 23%;
-	margin-top: 10%;
+	float: right;
+	width: 80%;
+	height: 1060px;
+	background-image: url("https://cdn.pixabay.com/photo/2023/02/13/23/07/tree-7788512_1280.jpg");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	opacity: 0.6;
+	z-index: 0;
+}
+.mypage .title-text {
+	margin: 7% 0 0 5%;
+	color: black;
+}
+.mypage #div1 { /* 이번 달 수입/지출 */
+	margin-top: 30px;
+	display: flex;
+	flex-direction: row;
+	margin-left: 2%;
+}
+.mypage #div1 div {
+/*	border: 1px solid black;*/
+	border-radius: 10px;
+	padding: 10px;
+	width: 300px;
+	margin: 2%;
+	text-align: center;
+	background: white;
+	box-shadow: 2px 2px 5px lightgray;
+}
+.mypage #left, .mypage #right {
+	width: 47%;
+	box-sizing: border-box;
+	float: left;
+	margin: 3% 0 0 3%;
+}
+.mypage #left #div1 div h2 {
+	font-size: 25px;
+	color: black;
+}
+.mypage #left #div1 div p {
+	font-size: 23px;
+	font-weight: bold;
+}
+.mypage #left #div2 {
+	display: flex;
+	flex-direction: row;
+	margin-left: 2%;
+}
+.mypage #left #div2 #left-div1, .mypage #left #div2 #left-div2 { /* 수입/지출 비교 */
+/*	border: 1px solid black;*/
+	border-radius: 10px;
+	margin: 0 2%;
+	padding: 10px;
+	background: white;
+	box-shadow: 2px 2px 5px lightgray;
+}
+.mypage #left #div2 #left-div1 h2, .mypage #left #div2 #left-div2 h2 { /* 수입/지출 비교 */
+	color: black;
+	text-align: center;
+	margin-bottom: 30px;
+}
+.mypage #left #div2 #left-div1 #top-div1, .mypage #left #div2 #left-div2 #top-div1 { /* 수입/지출 비교 */
+	width: 300px;
+	display: flex;
+	flex-direction: row;
+}
+.mypage #left #div2 .graph-group {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+.mypage #left #div2 .graph {
+	width: 50px;
+	height: 200px;
+	border-radius: 10px;
+}
+.mypage #left #div2 .label {
+	font-weight: bold;
+	margin-top: 10px;
+}
+.mypage #left #div2 .back-paint {
+	background: transparent;
+	border-radius: 10px;
+}
+.mypage #left #div2 #left-div1 .paint {
+	background: var(--blue-color);
+	border-radius: 10px;
+}
+.mypage #left #div2 #left-div2 .paint {
+	background: var(--red-color);
+	border-radius: 10px;
 }
 
 /* myInfo.jsp */

@@ -1,98 +1,5 @@
 document.write('<script src="../resources/js/function/regFunc.js"></script>'); // 정규식
 
-//수입 소분류 목록
-function selectIncategory() {
-	$.ajax({
-		type: "post",
-		url: "selectIncategory",
-		data : {
-			userid: userid
-		},
-		success: function(res) {
-			$("#div2").html(res);
-		}
-	})
-}
-
-// 지출 소분류 목록
-function selectOutcategory() {
-	$.ajax({
-		type: "post",
-		url: "selectOutcategory",
-		data : {
-			userid: userid
-		},
-		success: function(res) {
-			$("#div3").html(res);
-		}
-	})
-}
-
-// 카테고리 중복 확인
-function overlapCategory(cateVal, mtype) {
-	var result;
-	$.ajax({ // 카테고리가 중복되는지 확인
-		type: "post",
-		url: "overlapCategory",
-		async: false,
-		data: {
-			smallcate: cateVal,
-			userid: userid,
-			mtype: mtype
-		},
-		success: function(res) {
-			result = res;
-		}
-	})
-	return result;
-}
-
-// 카테고리 추가
-function insertCategory(bigVal, smallVal, mtype) {
-	$.ajax({
-		type: "post",
-		url: "insertCategory",
-		data: {
-			bigcate: bigVal,
-			smallcate: smallVal,
-			userid: userid,
-			mtype: mtype
-		},
-		success: function(res) {
-			if(res > 0) {
-				/*
-				if(mtype == "수입")
-					checkIncate(res, bigVal, smallVal);
-				else {
-					checkOutcate(res, bigVal, smallVal);
-				}*/
-				window.location.reload();
-			} else {
-				alert("다시 시도해주세요.");
-			}
-		}
-	})
-}
-
-// 카테고리 수정
-function updateCategory(idVal, cateVal, mtype) {
-	$.ajax({
-		type: "post",
-		url: "updateCategory",
-		data: {
-			categoryid: idVal,
-			smallcate: cateVal,
-			userid: userid,
-			mtype: mtype
-		},
-		success: function(res) {
-			if(res != true) { // 카테고리 수정 실패
-				alert("다시 시도해주세요");
-			}
-		}
-	})
-}
-
 $(function() {
 	$(document).ready(function() {
 		selectIncategory(); // 수입 소분류 목록 보여주기
@@ -212,3 +119,96 @@ $(function() {
 		}
 	})
 })
+
+//수입 소분류 목록
+function selectIncategory() {
+	$.ajax({
+		type: "post",
+		url: "selectIncategory",
+		data : {
+			userid: userid
+		},
+		success: function(res) {
+			$("#div2").html(res);
+		}
+	})
+}
+
+// 지출 소분류 목록
+function selectOutcategory() {
+	$.ajax({
+		type: "post",
+		url: "selectOutcategory",
+		data : {
+			userid: userid
+		},
+		success: function(res) {
+			$("#div3").html(res);
+		}
+	})
+}
+
+// 카테고리 중복 확인
+function overlapCategory(cateVal, mtype) {
+	var result;
+	$.ajax({ // 카테고리가 중복되는지 확인
+		type: "post",
+		url: "overlapCategory",
+		async: false,
+		data: {
+			smallcate: cateVal,
+			userid: userid,
+			mtype: mtype
+		},
+		success: function(res) {
+			result = res;
+		}
+	})
+	return result;
+}
+
+// 카테고리 추가
+function insertCategory(bigVal, smallVal, mtype) {
+	$.ajax({
+		type: "post",
+		url: "insertCategory",
+		data: {
+			bigcate: bigVal,
+			smallcate: smallVal,
+			userid: userid,
+			mtype: mtype
+		},
+		success: function(res) {
+			if(res > 0) {
+				/*
+				if(mtype == "수입")
+					checkIncate(res, bigVal, smallVal);
+				else {
+					checkOutcate(res, bigVal, smallVal);
+				}*/
+				window.location.reload();
+			} else {
+				alert("다시 시도해주세요.");
+			}
+		}
+	})
+}
+
+// 카테고리 수정
+function updateCategory(idVal, cateVal, mtype) {
+	$.ajax({
+		type: "post",
+		url: "updateCategory",
+		data: {
+			categoryid: idVal,
+			smallcate: cateVal,
+			userid: userid,
+			mtype: mtype
+		},
+		success: function(res) {
+			if(res != true) { // 카테고리 수정 실패
+				alert("다시 시도해주세요");
+			}
+		}
+	})
+}

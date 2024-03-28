@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="assetMapper">
-	
 	<!-- 자산 중복 확인 -->
 	<select id="overlapAsset" parameterType="assetVO" resultType="String">
 		select assetname from asset where assetname = #{assetname} and userid = #{userid};
@@ -43,5 +42,4 @@
 	<update id="updateTotal" parameterType="assetVO">
 		update asset set total = total + #{total} where assetname = #{assetname} and userid = #{userid};
 	</update>
-	
 </mapper>

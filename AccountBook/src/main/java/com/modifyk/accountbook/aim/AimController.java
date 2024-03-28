@@ -1,6 +1,5 @@
 package com.modifyk.accountbook.aim;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +18,6 @@ public class AimController {
 	
 	@Autowired
 	MemberDAO mDao;
-	
-	@Autowired
-	AimToMapService toMapSvc;
 	
 	// 목표 카테고리 중복 확인
 	@ResponseBody

@@ -1,86 +1,26 @@
 $(function () {
 	$(document).ready(function() {
-		$.moneyInfo(); // 현재 세션의 포인트 정보 가져오기
-	})
-	
-	// 현재 세션의 포인트 정보 가져오기
-	$.moneyInfo = function() {
 		$.ajax({
-			type : "post",
-			url : "userMoneyInfo",
-			data : {
-				userid : userid
+			type: "post",
+			url: "monthAccount",
+			data: {
+				userid: userid
 			},
-			success : function(info) {
-				$("#point-div").html(info.userpoint);
-				if(info.plantstep < 10) {
-					$("#plant-step-div").html("<img src='../resources/img/moneyseed.png' id='plant-step' width='200px;'>");
-					$("#water-btn").show();
-				} else if(info.plantstep < 25) {
-					$("#plant-step-div").html("<img src='../resources/img/moneyleaf.png' id='plant-step' width='200px;'>");
-					$("#water-btn").show();
-				} else if(info.plantstep < 50) {
-					$("#plant-step-div").html("<img src='../resources/img/moneyflower.png' id='plant-step' width='200px;'>");
-					$("#water-btn").show();
-				} else {
-					$("#plant-step-div").html("<img src='../resources/img/moneyfruit.png' id='plant-step' class='money' width='200px;' style='right:35%; cursor:pointer;'>");
-					$("#water-btn").hide(); // 물 못 주도록 하기
-				}
+			success: function(res) {
+				$("#left #div1").html(res);
 			}
 		})
-	}
-	
-	// 아이디 클릭 시 회원 정보 보기
-	$(document).on("click", "#myinfo-btn", function() {
-		location.href = "../member/myInfo.jsp";
-	})
-	
-	// 물 주기
-	$(document).on("click", "#water-btn", function() {
+		
 		$.ajax({
-			type : "post",
-			url : "usePoint",
-			data : {
-				userid : userid,
+			type: "post",
+			url: "recentAccount",
+			data: {
+				userid: userid
 			},
-			success : function (res) {
-				if(res == -1) {
-					alert("포인트가 부족합니다!");
-				} else {
-					// 물 뿌리개 움직이기
-					$("#water-btn").animate({rotate : "-45deg"}, 1000);
-					$("#water-btn").animate({rotate : "0deg"}, 1000);
-					
-					// 물 나왔다 사라지기 
-					$("#water-img").show(1200);
-					$("#water-img").fadeOut(300);
-					
-					$.moneyInfo(); // 현재 세션의 포인트 정보 가져오기
-				}
+			success: function(res) {
+				$("#left #div2").html(res);
 			}
 		})
 	})
 	
-	// 랜덤 포인트 발생
-	$(document).on("click", ".money", function() {
-		// plant-step이 money일 때
-		// 랜덤 cash 뽑기 및 plant-step 0으로 설정
-		$.ajax({
-			type : "post",
-			url : "randomCash",
-			data : {
-				usercash : 0,
-				plantstep : 0,
-				userid : userid
-			},
-			success : function(res) {
-				if(res > 0) {
-					alert(res + "원 획득!");
-					window.location.reload();
-				} else {
-					alert("다시 시도해주세요.");
-				}
-			}
-		})
-	})
 })

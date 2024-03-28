@@ -15,6 +15,7 @@
 	margin-bottom: 1%;
 }
 .calendar #div2 { /* 달력 */
+	font-weight: bold;
 }
 .calendar #calendar {
 	margin-left: auto;

@@ -34,6 +34,10 @@
 				else if(menu_idx == 1) {
 					
 				}
+			} else if(group == "group4") {
+				if(menu_idx == 0) {
+					location.href = "../category/category.jsp";
+				}
 			}
 		})
 	})
@@ -68,6 +72,13 @@
 			<ul class="menu-group" id="group3">
 				<li><i class="fi fi-rs-checkbox"></i> 목표 관리</li>
 				<li><i class="fi fi-rr-trophy"></i> 목표 달성</li>
+			</ul>
+		</div>
+		<hr>
+		<div>
+			<div class="menu-title">카테고리</div>
+			<ul class="menu-group" id="group4">
+				<li><i class="fi fi-rr-rectangle-list"></i> 카테고리 관리</li>
 			</ul>
 		</div>
 	</div>

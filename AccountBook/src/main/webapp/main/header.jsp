@@ -3,7 +3,7 @@
 <script type="text/javascript">
 	$(function () {
 		$("#logo h2").click(function () {
-			location.href = "../main/main.jsp";
+			location.href = "../member/mypage.jsp";
 		})
 		
 		$("#logout").click(function () {
