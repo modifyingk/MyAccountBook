@@ -26,16 +26,59 @@
 			/* 로그인이 되어 있을 때*/
 			if(session.getAttribute("userid") != null) { %>
 				<div id="left">
-					<h2 class="title-text"><i class="fi fi-rr-usd-circle"></i> 이번 달 수입과 지출을 확인해보세요!</h2>
 					<div id="div1"></div> <!-- 이번 달 수입/지출 -->
-					<div id="div2"></div> <!-- 최근 수입/지출 비교 -->
-					<div id="div3">
-						<h2 class="title-text"><i class="fi fi-rr-usd-circle"></i> 내 또래의 수입 대비 지출은 ?</h2>
-					</div>
+					<div id="div2"></div>
 				</div>
 				<div id="right">
-					<h2 class="title-text" style="color: white;"><i class="fi fi-rr-usd-circle"></i> 목표를 잡고 돈을 모아보세요!</h2>
 					<div id="div1">
+					</div>
+				</div>
+				
+				<!-- 총 목표 추가 모달 -->
+				<div class="modal" id="add-aimtotal-modal" hidden="true">
+					<div class="modal-content">
+						<div class="modal-title">
+							<button class="x-btn" id="close-add-aimtotal">x</button>
+						</div>
+						<div class="modal-body">
+							<h2>자산 목표를 설정해주세요!</h2>
+							<p>모으고자 하는 금액을 입력해주세요.</p>
+							<div>
+								<table>
+									<tr>
+										<td><i class="fi fi-rs-won-sign"></i> <input type="text" class="input" id="add-aimtotal"></td>
+									</tr>
+								</table>
+								<button class="btn main-color-btn" id="add-aimtotal-btn">추가</button>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn right main-outline-btn" id="close-add-aimtotal">닫기</button>
+						</div>
+					</div>
+				</div>
+				
+				<!-- 총 목표 수정 모달 -->
+				<div class="modal" id="update-aimtotal-modal" hidden="true">
+					<div class="modal-content">
+						<div class="modal-title">
+							<button class="x-btn" id="close-update-aimtotal">x</button>
+						</div>
+						<div class="modal-body">
+							<h2>자산 목표를 설정해주세요!</h2>
+							<p>모으고자 하는 금액을 입력해주세요.</p>
+							<div>
+								<table>
+									<tr>
+										<td><i class="fi fi-rs-won-sign"></i> <input type="text" class="input" id="update-aimtotal"></td>
+									</tr>
+								</table>
+								<button class="btn main-color-btn" id="update-aimtotal-btn">수정</button>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn right main-outline-btn" id="close-update-aimtotal">닫기</button>
+						</div>
 					</div>
 				</div>
 			<% }

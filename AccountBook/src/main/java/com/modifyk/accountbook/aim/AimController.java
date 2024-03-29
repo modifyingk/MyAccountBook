@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.modifyk.accountbook.account.AccountDAO;
 import com.modifyk.accountbook.member.MemberDAO;
 
 @Controller
@@ -18,6 +19,12 @@ public class AimController {
 	
 	@Autowired
 	MemberDAO mDao;
+	
+	@Autowired
+	AimTotalDAO atDao;
+	
+	@Autowired
+	AccountDAO actDao;
 	
 	// 목표 카테고리 중복 확인
 	@ResponseBody
@@ -47,7 +54,6 @@ public class AimController {
 	@RequestMapping("aim/selectAim")
 	public void selectAim(AimVO aimVO, Model model) {
 		List<AimJoinVO> list = aDao.selectAim(aimVO);
-		System.out.println(list);
 		model.addAttribute("list", list);
 	}
 	
@@ -73,5 +79,52 @@ public class AimController {
 		} else {
 			return false;
 		}
+	}
+	
+	// 총 목표 값 가져오기
+	@ResponseBody
+	@RequestMapping("aim/selectTotal")
+	public String selectTotal(AimTotalVO aimtotalVO) {
+		String aimtotal = atDao.selectTotal(aimtotalVO);
+		if(aimtotal == null)
+			aimtotal = "0";
+		return aimtotal;
+	}
+		
+	// 총 목표 값 추가
+	@ResponseBody
+	@RequestMapping("aim/insertTotal")
+	public boolean insertTotal(AimTotalVO aimTotalVO) {
+		System.out.println(aimTotalVO);
+		int result = atDao.insertTotal(aimTotalVO);
+		if(result > 0)
+			return true;
+		else
+			return false;
+	}
+	
+	// 총 목표 값 수정
+	@ResponseBody
+	@RequestMapping("aim/updateTotal")
+	public boolean updateTotal(AimTotalVO aimTotalVO) {
+		int result = atDao.updateTotal(aimTotalVO);
+		if(result > 0)
+			return true;
+		else
+			return false;
+	}
+	
+	// 총 목표 값과 총 지출 값 가져오기
+	@RequestMapping("aim/selectAimTotal")
+	public void monthTotal(AimTotalVO aimtotalVO, Model model) {
+		AimJoinVO aimjoinVO = atDao.spendPerAim(aimtotalVO);
+		model.addAttribute("vo", aimjoinVO);
+	}
+	
+	// 분배 가능한 금액
+	@RequestMapping("aim/selectBalance")
+	public void selectBalance(String userid, Model model) {
+		int balance = atDao.selectBalance(userid);
+		model.addAttribute("balance", balance);
 	}
 }

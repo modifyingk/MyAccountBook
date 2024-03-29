@@ -69,7 +69,7 @@
 		</div>
 	</c:if>
 	<c:if test="${map.size() <= 0}">
-		<div class="no-data-div"><i class='fi fi-rr-cloud-question fs-35'></i><br>데이터가 없습니다.</div>
+		<div class="no-data-div"><i class='fi fi-rr-cloud-question fs35'></i><br>데이터가 없습니다.</div>
 	</c:if>
 	
 	<script>

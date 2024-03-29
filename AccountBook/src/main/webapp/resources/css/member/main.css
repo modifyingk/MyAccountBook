@@ -170,84 +170,173 @@ table td div {
 	margin: 7% 0 0 5%;
 	color: black;
 }
-.mypage #div1 { /* 이번 달 수입/지출 */
-	margin-top: 30px;
-	display: flex;
-	flex-direction: row;
-	margin-left: 2%;
-}
-.mypage #div1 div {
-/*	border: 1px solid black;*/
-	border-radius: 10px;
-	padding: 10px;
-	width: 300px;
-	margin: 2%;
-	text-align: center;
-	background: white;
-	box-shadow: 2px 2px 5px lightgray;
-}
-.mypage #left, .mypage #right {
+.mypage #left, .mypage #right { /* 화면 왼쪽 오른쪽 분리 */
 	width: 47%;
 	box-sizing: border-box;
 	float: left;
-	margin: 3% 0 0 3%;
+	margin: 5% 0 0 3%;
 }
-.mypage #left #div1 div h2 {
-	font-size: 25px;
-	color: black;
-}
-.mypage #left #div1 div p {
-	font-size: 23px;
-	font-weight: bold;
-}
-.mypage #left #div2 {
+.mypage #left #div1 {
 	display: flex;
 	flex-direction: row;
 	margin-left: 2%;
 }
-.mypage #left #div2 #left-div1, .mypage #left #div2 #left-div2 { /* 수입/지출 비교 */
+.mypage #left #div1 #left-div1, .mypage #left #div1 #left-div2 { /* 이번 달 수입/지출 div */
 /*	border: 1px solid black;*/
 	border-radius: 10px;
-	margin: 0 2%;
+	margin: 5% 2%;
 	padding: 10px;
-	background: white;
+	background: rgba(255, 255, 255, 0.7);
 	box-shadow: 2px 2px 5px lightgray;
 }
-.mypage #left #div2 #left-div1 h2, .mypage #left #div2 #left-div2 h2 { /* 수입/지출 비교 */
+.mypage #left #div1 #left-div1 h2, .mypage #left #div1 #left-div2 h2 {
 	color: black;
 	text-align: center;
-	margin-bottom: 30px;
+	font-size: 25px;
 }
-.mypage #left #div2 #left-div1 #top-div1, .mypage #left #div2 #left-div2 #top-div1 { /* 수입/지출 비교 */
+.mypage #left #div1 #left-div1 #top-div1, .mypage #left #div1 #left-div2 #top-div1 { /* 최근 수입/지출 합계  */
+	text-align: center;
+	font-size: 23px;
+	font-weight: bold;
+	margin-bottom: 5%;
+}
+.mypage #left #div1 #left-div1 #top-div1 { /* 수입 합계 */
+	color: var(--blue-color);
+}
+.mypage #left #div1 #left-div2 #top-div1 { /* 지출 합계 */
+	color: var(--red-color);
+}
+.mypage #left #div1 #left-div1 #top-div2, .mypage #left #div1 #left-div2 #top-div2 { /* 최근 수입/지출 비교 그래프  */
 	width: 300px;
 	display: flex;
 	flex-direction: row;
+	margin-top: 30px;
+	margin-bottom: 30px;
 }
-.mypage #left #div2 .graph-group {
+.mypage #left #div1 .graph-group {
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
 }
-.mypage #left #div2 .graph {
+.mypage #left #div1 .graph {
 	width: 50px;
 	height: 200px;
 	border-radius: 10px;
 }
-.mypage #left #div2 .label {
+.mypage #left #div1 .label {
 	font-weight: bold;
 	margin-top: 10px;
 }
-.mypage #left #div2 .back-paint {
+.mypage #left #div1 .back-paint {
 	background: transparent;
 	border-radius: 10px;
+	
 }
-.mypage #left #div2 #left-div1 .paint {
+.mypage #left #div1 #left-div1 .paint {
 	background: var(--blue-color);
 	border-radius: 10px;
 }
-.mypage #left #div2 #left-div2 .paint {
+.mypage #left #div1 #left-div2 .paint {
 	background: var(--red-color);
 	border-radius: 10px;
+}
+.mypage #right #div1 {
+	width: 600px;
+	height: 400px;
+	border-radius: 10px;
+	margin: 5% 2%;
+	padding: 10px;
+	background: rgba(255, 255, 255, 0.7);
+	box-shadow: 2px 2px 5px lightgray;
+}
+.mypage #right #div1 #top-div1 {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+.mypage #right #div1 #top-div1 div:first-of-type {
+	font-size: 23px;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+.mypage .gage-div {
+	float: none;
+}
+.mypage .no-data-div {
+	text-align: center;
+	color: gray;
+}
+.mypage #left #div1 .no-data-div {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 130px;
+}
+.mypage #add-aim-btn {
+	background: black;
+	width: 230px;
+	font-size: 18px;
+	color: white;
+	font-weight: bold;
+}
+.mypage #add-aim-btn:hover {
+	width: 231px;
+	height: 46px;
+}
+.mypage .modal-content { /* 목표 추가 모달 */
+	height: 400px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+.mypage .modal-body {
+	height: 350px;
+}
+.mypage .modal-body table {
+	margin-bottom: 20px;
+	padding: 0 10px;
+}
+.mypage .modal-body table td {
+	padding: 10px;
+	border: 0;
+}
+.mypage .modal-body .input {
+	width: 330px;
+}
+.mypage #add-aimtotal-modal .modal-content, .mypage #update-aimtotal-modal .modal-content {
+	height: 450px;
+}
+.mypage #add-aimtotal-modal .modal-body, .mypage #update-aimtotal-modal .modal-body { /* 총 목표 설정 모달 */
+	height: 350px;
+}
+.mypage #add-aimtotal-modal h2, .mypage #update-aimtotal-modal h2 {
+	margin-top: 40px;
+}
+.mypage #add-aimtotal-modal p, .mypage .mypage #update-aimtotal-modal p {
+	font-size: 18px;
+}
+.mypage #add-aimtotal-modal td, .mypage #update-aimtotal-modal td {
+	font-size: 23px;
+	font-weight: bold;
+}
+.mypage #add-aimtotal-modal .input, .mypage #update-aimtotal-modal .input {
+	width: 330px;
+	height: 30px;
+	font-size: 20px;
+	text-align: center;
+	margin-left: 10px;
+}
+.mypage #add-aimtotal-btn, .mypage #update-aimtotal-btn  {
+	width: 80%;
+	height: 50px;
+	font-size: 20px;
+	font-weight: bold;
+}
+.mypage button #close-add-aimtotal {
+	margin: 2%;
+}
+.mypage #aim:hover {
+	color: var(--main-color-hover);
+	cursor: pointer;
 }
 
 /* myInfo.jsp */

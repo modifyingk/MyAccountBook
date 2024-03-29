@@ -29,7 +29,50 @@
 			<div>
 				<h2 class="title-text"><i class="fi fi-rs-checkbox"></i> 목표 관리</h2>
 				<button id="open-add-aim">+</button>
-				<div id="div1"></div>
+				<div id="div1"></div> <!-- 총 목표 -->
+				<div id="div2"></div> <!-- 분배 가능한 금액 -->
+				<div id="div3"></div> <!-- 카테고리별 목표 -->
+			</div>
+			
+			<!-- 총 목표 추가 모달 -->
+			<div class="modal" id="add-aimtotal-modal" hidden="true">
+				<div class="modal-content">
+					<div class="modal-body">
+						<h2>예산을 설정해주세요!</h2>
+						<p>한 달동안 지출할 목표 금액을 입력해주세요.</p>
+						<div>
+							<table>
+								<tr>
+									<td><i class="fi fi-rs-won-sign"></i> <input type="text" class="input" id="add-aimtotal"></td>
+								</tr>
+							</table>
+							<button class="btn main-color-btn" id="add-aimtotal-btn">등록</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 총 목표 수정 모달 -->
+			<div class="modal" id="update-aimtotal-modal" hidden="true">
+				<div class="modal-content">
+					<div class="modal-title">
+						<button class="x-btn" id="close-update-aimtotal">x</button>
+					</div>
+					<div class="modal-body">
+						<h2>예산을 설정해주세요!</h2>
+						<p>한 달동안 지출할 목표 금액을 입력해주세요.</p>
+						<div>
+							<table>
+								<tr>
+									<td><i class="fi fi-rs-won-sign"></i> <input type="text" class="input" id="update-aimtotal"></td>
+								</tr>
+							</table>
+							<button class="btn main-color-btn" id="update-aimtotal-btn">수정</button>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn right main-outline-btn" id="close-update-aimtotal">닫기</button>
+					</div>
+				</div>
 			</div>
 			
 			<!-- 목표 추가 모달 -->
@@ -88,6 +131,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<!-- 목표 수정 모달 -->
 			<div class="modal" id="update-aim-modal" hidden="true">
 				<div class="modal-content">

@@ -1,9 +1,5 @@
 package com.modifyk.accountbook.member;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -16,6 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.modifyk.accountbook.account.AccountDAO;
 import com.modifyk.accountbook.account.AccountVO;
+import com.modifyk.accountbook.aim.AimJoinVO;
+import com.modifyk.accountbook.aim.AimTotalDAO;
+import com.modifyk.accountbook.aim.AimTotalVO;
 
 @Controller
 public class MemberController {
@@ -24,6 +23,9 @@ public class MemberController {
 	
 	@Autowired
 	AccountDAO aDao;
+	
+	@Autowired
+	AimTotalDAO atDao;
 	
 	@Autowired
 	EmailService emailSvc;
@@ -182,33 +184,44 @@ public class MemberController {
 		}
 	}
 	
-	LocalDate now = LocalDate.now();
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
-	String date = now.format(formatter);
-	
-	// 이번 달 수입/지출 합계
-	@RequestMapping("member/monthAccount")
-	public void monthAccount(AccountVO accountVO, Model model) {
-		accountVO.setDate(date); // 오늘 날짜
-		List<AccountVO> list = aDao.monthAccount(accountVO);
-		model.addAttribute("list", list);
-	}
-	
 	// 최근 수입/지출 합계
 	@RequestMapping("member/recentAccount")
 	public void recentAccount(AccountVO accountVO, Model model) {
-		// 오늘 날짜
-		LocalDate nextNow = now.plusMonths(1);
-		String nextMonth = nextNow.format(formatter);
-		accountVO.setDate(nextMonth); // 내일 날짜로 세팅
-		
 		accountVO.setMoneytype("수입");
 		List<AccountVO> incomeList = aDao.recentAccount(accountVO);
 		model.addAttribute("incomeList", incomeList);
+		System.out.println(incomeList);
 		
 		accountVO.setMoneytype("지출");
 		List<AccountVO> spendList = aDao.recentAccount(accountVO);
 		model.addAttribute("spendList", spendList);
+		System.out.println(spendList);
+		
+		int monthIncome = 0;
+		int monthSpend = 0;
+		
+		if(incomeList.size() > 0)
+			monthIncome = incomeList.get(incomeList.size() - 1).getTotal();
+		if(spendList.size() > 0)
+			monthSpend = spendList.get(spendList.size() - 1).getTotal();
+			
+		model.addAttribute("monthIncome", monthIncome);
+		model.addAttribute("monthSpend", monthSpend);
+	}
+	
+	// 나의 목표
+	@RequestMapping("member/selectAim")
+	public void selectAim(String userid, Model model) {
+		AimTotalVO aimtotalVO = new AimTotalVO();
+		aimtotalVO.setMoneytype("수입");
+		aimtotalVO.setUserid(userid);
+		String total = atDao.selectTotal(aimtotalVO);
+		
+		AimJoinVO aimjoinVO = atDao.incomePerAim(userid);
+		
+		System.out.println(aimjoinVO);
+		model.addAttribute("vo", aimjoinVO);
+		model.addAttribute("aimtotal", total);
 	}
 	
 }

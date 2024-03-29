@@ -58,71 +58,38 @@
 	width: 500px;
 	height: 20px;
 }
+.aim #total-gage-div .orange {
+	background: var(--orange-color);
+}
+.aim #total-gage-div .red {
+	background: var(--red-color);
+}
 .aim #total-gage {
 	background: green;
 	border-radius: 10px;
 	height: 20px;
+	font-size: 14px;
+	text-align: right;
+	color: white;
 }
 .aim #total-aim i { /* 목표 대비 지출량 */
 	font-style: normal;
 	font-weight: normal;
 	margin-left: 1%;
 }
+.aim #total-aim #aim {
+	cursor: pointer;
+	font-weight: bold;
+	color: var(--main-color);
+}
+.aim #total-aim #aim:hover {
+	color: var(--main-color-hover);
+}
 .aim #total-aim p { /* 남은 금액*/
 	font-size: 21px;
 	font-weight: normal;
 	margin-top: 3%;
 	margin-bottom: 1%;
-}
-.aim .gage-chart { /* 게이지 차트 */
-	position: relative;
-	display: inline-block;
-	width: 180px;
-	height: 180px;
-	border-radius: 50%;
-	background: yellow;
-}
-.aim span { /* 게이지 차트 내부 퍼센트 */
-	display: block;
-	position: absolute;
-	background: white;
-	top: 50px;
-	left: 50px;
-	width: 80px;
-	height: 80px;
-	border-radius: 50%;
-	text-align: center;
-	line-height: 80px;
-	font-size: 25px;
-	transform: tanslate(-50%, -50%);
-}
-.aim .gage-div {
-	float: left;
-	margin: 1% 3%;
-	cursor: pointer;
-}
-.aim .gage-div p {
-	font-size: 20px;
-	font-weight: bold;
-}
-.aim .gage-div .gage-total { /* 목표 금액 및 사용 금액 */
-	font-size: 20px;
-	font-weight: bold;
-}
-.aim .gage-div .gage-total input {
-	font-size: 20px;
-	font-weight: bold;
-	border-radius: 10px;
-	border: none;
-	width: 120px;
-	padding: 5px;
-}
-.aim .gage-div .gage-total input:first-of-type {
-	text-align: right;
-	outline: none;
-}
-.aim .gage-div .gage-total input:disabled {
-	background: none;
 }
 .aim .modal-content { /* 목표 추가 모달 */
 	height: 400px;
@@ -152,6 +119,39 @@
 .aim .modal-body #delete-aim-btn {
 	width: 30%;
 }
+.aim #update-aimtotal-modal .modal-content {
+	height: 450px;
+}
+.aim #add-aimtotal-modal .modal-body, .aim #update-aimtotal-modal .modal-body { /* 총 목표 설정 모달 */
+	height: 350px;
+}
+.aim #add-aimtotal-modal h2, .aim #update-aimtotal-modal h2 {
+	margin-top: 40px;
+}
+.aim #add-aimtotal-modal p, .aim #update-aimtotal-modal p {
+	font-size: 18px;
+}
+.aim #add-aimtotal-modal td, .aim #update-aimtotal-modal td {
+	font-size: 23px;
+	font-weight: bold;
+}
+.aim #add-aimtotal-modal .input, .aim #update-aimtotal-modal .input {
+	width: 330px;
+	height: 30px;
+	font-size: 20px;
+	text-align: center;
+	margin-left: 10px;
+}
+.aim #add-aimtotal-btn, .aim #update-aimtotal-btn {
+	width: 80%;
+	height: 50px;
+	font-size: 20px;
+	font-weight: bold;
+}
+.aim button #close-update-aimtotal {
+	margin: 2%;
+}
+
 .select-div { /* 대분류 목록 */
 	width: 500px;
 	height: 220px;

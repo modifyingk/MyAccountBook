@@ -9,9 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.modifyk.accountbook.asset.AssetDAO;
-import com.modifyk.accountbook.repeat.RepeatDAO;
-
 @Controller
 public class AccountController {
 	

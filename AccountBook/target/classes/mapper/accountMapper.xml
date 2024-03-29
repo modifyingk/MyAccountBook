@@ -89,8 +89,8 @@
 	</update>
 	
 	<!-- 이번 달 수입/지출 합계 -->
-	<select id="monthAccount" parameterType="accountVO" resultType="accountVO">
-		select moneytype, sum(total) as total from account where userid = #{userid} and left(date, 6) = #{date} and moneytype != "이체" group by moneytype;
+	<select id="monthTotal" parameterType="accountVO" resultType="String">
+		select if(moneytype="지출", sum(total) * -1, sum(total)) as total from account where userid = #{userid} and left(date, 6) = #{date} and moneytype = #{moneytype};
 	</select>
 	
 	<!-- 최근 수입/지출 합계 -->

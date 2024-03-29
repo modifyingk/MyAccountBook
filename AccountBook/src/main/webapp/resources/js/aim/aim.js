@@ -12,14 +12,87 @@ $(function() {
 		onlyNum("#add-year");
 		onlyNum("#add-total");
 		onlyNum("#up-total");
+		onlyNum("#add-aimtotal");
+		onlyNum("#update-aimtotal");
 		
 		// 금액 세 자리마다 콤마
 		moneyFmt("#add-total");
 		moneyFmt("#up-total");
+		moneyFmt("#add-aimtotal");
+		moneyFmt("#update-aimtotal");
 		
-		aimList(today);
+		if(selectTotal() == '0') { // 총 목표 금액을 설정하지 않은 경우
+			$("#add-aimtotal-modal").show();
+		} else {
+			selectAim(today);
+			selectAimTotal(today);
+			selectBalance();
+		}
 		
 		autoClose(".select-add-bigcate"); // 분류 선택 닫기
+	})
+	
+	// 총 목표 값 추가
+	$(document).on("click", "#add-aimtotal-btn", function() {
+		let total = $("#add-aimtotal").val().replaceAll(",", "");
+		if(!checkMustReg(total)) {
+			alert("입력 값을 확인해주세요.");
+		} else {
+			$.ajax({
+				type : "post",
+				url : "insertTotal",
+				data : {
+					moneytype: "지출",
+					total : total,
+					userid : userid
+				},
+				success : function(res) {
+					if(res == true) {
+						window.location.reload();
+					} else {
+						alert("다시 시도해주세요.");
+					}
+				}
+			})
+		}
+	})
+	
+	// 총 목표 값 수정 모달 열기
+	$(document).on("click", "#total-aim #aim", function() {
+		let total = $(this).text().split("원")[0];
+		$("#update-aimtotal").attr("value", total);
+		$("#update-aimtotal-modal").show();
+	})
+	
+	// 총 목표 값 수정 모달 닫기
+	$(document).on("click", "#close-update-aimtotal", function() {
+		$("#update-aimtotal-modal").hide();
+	})
+	
+	// 총 목표 값 수정
+	$(document).on("click", "#update-aimtotal-btn", function() {
+		let total = $("#update-aimtotal").val().replaceAll(",", "");
+		
+		if(!checkMustReg(total)) {
+			alert("입력 값을 확인해주세요.");
+		} else {
+			$.ajax({
+				type : "post",
+				url : "updateTotal",
+				data : {
+					moneytype: "지출",
+					total : total,
+					userid : userid
+				},
+				success : function(res) {
+					if(res == true) {
+						window.location.reload();
+					} else {
+						alert("다시 시도해주세요.");
+					}
+				}
+			})
+		}
 	})
 	
 	// 목표 추가
@@ -159,7 +232,7 @@ function overlapAim(bigcateVal) {
 }
 
 // 목표 가져오기
-function aimList(today) {
+function selectAim(today) {
 	$.ajax({
 		type: "post",
 		url: "selectAim",
@@ -168,7 +241,54 @@ function aimList(today) {
 			userid: userid
 		},
 		success: function(res) {
+			$("#div3").html(res);
+		}
+	})
+}
+
+// 총 목표 값 가져오기
+function selectTotal() {
+	let result;
+	$.ajax({
+		type: "post",
+		url: "selectTotal",
+		async: false,
+		data: {
+			moneytype: "지출",
+			userid: userid
+		},
+		success: function(res) {
+			result = res;
+		}
+	})
+	return result;
+}
+
+// 총 목표 및 지출 가져오기
+function selectAimTotal(today) {
+	$.ajax({
+		type: "post",
+		url: "selectAimTotal",
+		data: {
+			date: today,
+			userid: userid
+		},
+		success: function(res) {
 			$("#div1").html(res);
+		}
+	})
+}
+
+// 분배 가능한 금액
+function selectBalance() {
+	$.ajax({
+		type: "post",
+		url: "selectBalance",
+		data: {
+			userid: userid
+		},
+		success: function(res) {
+			$("#div2").html(res);
 		}
 	})
 }

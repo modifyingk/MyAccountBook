@@ -10,6 +10,7 @@
    	   	<typeAlias type="com.modifyk.accountbook.account.AccountVO" alias="accountVO"></typeAlias>
    	   	<typeAlias type="com.modifyk.accountbook.aim.AimVO" alias="aimVO"></typeAlias>
    	   	<typeAlias type="com.modifyk.accountbook.aim.AimJoinVO" alias="aimjoinVO"></typeAlias>
+   	   	<typeAlias type="com.modifyk.accountbook.aim.AimTotalVO" alias="aimtotalVO"></typeAlias>
    	   	<typeAlias type="com.modifyk.accountbook.transfer.TransferVO" alias="transferVO"></typeAlias>
    	   	<typeAlias type="com.modifyk.accountbook.repeat.RepeatVO" alias="repeatVO"></typeAlias>
 	</typeAliases>
@@ -21,6 +22,7 @@
       	<mapper resource="mapper/categoryMapper.xml" />
      	<mapper resource="mapper/accountMapper.xml" />
       	<mapper resource="mapper/aimMapper.xml" />
+      	<mapper resource="mapper/aimtotalMapper.xml" />
       	<mapper resource="mapper/transferMapper.xml" />
       	<mapper resource="mapper/repeatMapper.xml" />
    	</mappers>

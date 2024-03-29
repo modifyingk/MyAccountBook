@@ -23,22 +23,19 @@
 				}
 			} else if(group == "group2") {
 				if(menu_idx == 0) {
+					location.href = "../category/category.jsp";
+				}
+			} else if(group == "group3") {
+				if(menu_idx == 0) {
 					location.href = "../asset/asset.jsp";
 				} else if(menu_idx == 1) {
 					location.href = "../asset/asset_stats.jsp";
 				}
-			} else if(group == "group3") {
+			} else if(group == "group4") {
 				if(menu_idx == 0) {
 					location.href = "../aim/aim.jsp";
 				}
-				else if(menu_idx == 1) {
-					
-				}
-			} else if(group == "group4") {
-				if(menu_idx == 0) {
-					location.href = "../category/category.jsp";
-				}
-			}
+			} 
 		})
 	})
 </script>
@@ -60,8 +57,15 @@
 		</div>
 		<hr>
 		<div>
-			<div class="menu-title">자산</div>
+			<div class="menu-title">카테고리</div>
 			<ul class="menu-group" id="group2">
+				<li><i class="fi fi-rr-rectangle-list"></i> 카테고리 관리</li>
+			</ul>
+		</div>
+		<hr>
+		<div>
+			<div class="menu-title">자산</div>
+			<ul class="menu-group" id="group3">
 				<li><i class="fi fi-rr-hands-usd"></i> 자산 관리</li>
 				<li><i class="fi fi-rs-chart-pie-alt"></i> 자산 분석</li>
 			</ul>
@@ -69,16 +73,9 @@
 		<hr>
 		<div>
 			<div class="menu-title">목표</div>
-			<ul class="menu-group" id="group3">
-				<li><i class="fi fi-rs-checkbox"></i> 목표 관리</li>
-				<li><i class="fi fi-rr-trophy"></i> 목표 달성</li>
-			</ul>
-		</div>
-		<hr>
-		<div>
-			<div class="menu-title">카테고리</div>
 			<ul class="menu-group" id="group4">
-				<li><i class="fi fi-rr-rectangle-list"></i> 카테고리 관리</li>
+				<li><i class="fi fi-rs-checkbox"></i> 목표 관리</li>
+				<!-- <li><i class="fi fi-rr-trophy"></i> 목표 달성</li> -->
 			</ul>
 		</div>
 	</div>

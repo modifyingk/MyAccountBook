@@ -24,41 +24,60 @@
 			<c:set var="spendMax" value="${spendList.total}"></c:set>
 		</c:if>
 	</c:forEach>
-			
+	
 	<div id="left-div1"> <!-- 수입 -->
-		<h2>최근 수입 비교</h2>
+		<h2>이번 달 수입</h2>
+		<div id="top-div1"><fmt:formatNumber value="${monthIncome}"></fmt:formatNumber>원</div>
+		
 		<!-- 그래프 -->
-		<div id="top-div1">
-			<c:forEach items="${incomeList}" var="incomeList">
-				<div class="graph-group">
-					<c:set var="percent" value="${incomeList.total / incomeMax * 100}"></c:set>
-					<div>
-						<div class="graph">
-							<div class="back-paint" style="height: ${100-percent}%"></div>
-							<div class="paint" style="height: ${percent}%"></div>
+		<div id="top-div2">
+			<c:choose>
+				<c:when test="${incomeList.size() > 0}">
+					<c:forEach items="${incomeList}" var="incomeList">
+						<div class="graph-group">
+							<c:set var="percent" value="${incomeList.total / incomeMax * 100}"></c:set>
+							<div>
+								<div class="graph">
+									<div class="back-paint" style="height: ${100-percent}%"></div>
+									<div class="paint" style="height: ${percent}%"></div>
+								</div>
+							</div>
+							<div class="label"><span title="<fmt:formatNumber value="${incomeList.total}"></fmt:formatNumber>원">${fn:substring(incomeList.date, 4, 6)}월</span></div>
 						</div>
-					</div>
-					<div class="label">${fn:substring(incomeList.date, 4, 6)}월</div>
-				</div>
-			</c:forEach>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<div class="no-data-div"><i class='fi fi-rr-cloud-question fs35'></i><br>데이터가 없습니다.</div>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</div>
 	<div id="left-div2"> <!-- 지출 -->
-		<h2>최근 지출 비교</h2>
+		<h2>이번 달 지출</h2>
+		<div id="top-div1"><fmt:formatNumber value="${monthSpend}"></fmt:formatNumber>원</div>
+		
 		<!-- 그래프 -->
-		<div id="top-div1">
-			<c:forEach items="${spendList}" var="spendList">
-				<div class="graph-group">
-					<c:set var="percent" value="${spendList.total / spendMax * 100}"></c:set>
-					<div>
-						<div class="graph">
-							<div class="back-paint" style="height: ${100-percent}%"></div>
-							<div class="paint" style="height: ${percent}%"></div>
+		
+		<div id="top-div2">
+			<c:choose>
+				<c:when test="${spendList.size() > 0}">
+					<c:forEach items="${spendList}" var="spendList">
+						<div class="graph-group">
+							<c:set var="percent" value="${spendList.total / spendMax * 100}"></c:set>
+							<div>
+								<div class="graph">
+									<div class="back-paint" style="height: ${100-percent}%"></div>
+									<div class="paint" style="height: ${percent}%"></div>
+								</div>
+							</div>
+							<div class="label"><span title="<fmt:formatNumber value="${spendList.total}"></fmt:formatNumber>원">${fn:substring(spendList.date, 4, 6)}월</span></div>
 						</div>
-					</div>
-					<div class="label">${fn:substring(spendList.date, 4, 6)}월</div>
-				</div>
-			</c:forEach>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<div class="no-data-div"><i class='fi fi-rr-cloud-question fs35'></i><br>데이터가 없습니다.</div>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</div>
 	

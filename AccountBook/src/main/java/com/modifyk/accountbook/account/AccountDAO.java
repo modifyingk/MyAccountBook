@@ -96,13 +96,14 @@ public class AccountDAO {
 		return my.update("accountMapper.updateTransfer", accountVO);
 	}
 	
-	// 이번 달 수입/지출 합계
-	public List<AccountVO> monthAccount(AccountVO accountVO) {
-		return my.selectList("accountMapper.monthAccount", accountVO);
+	// 이번 달 수입/지출 합계 (가져올 moneytype 지정)
+	public String monthTotal(AccountVO accountVO) {
+		return my.selectOne("accountMapper.monthTotal", accountVO);
 	}
 	
 	// 최근 수입/지출 합계
 	public List<AccountVO> recentAccount(AccountVO accountVO) {
 		return my.selectList("accountMapper.recentAccount", accountVO);
 	}
+	
 }

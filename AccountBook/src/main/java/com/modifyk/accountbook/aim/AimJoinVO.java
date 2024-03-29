@@ -4,7 +4,7 @@ public class AimJoinVO {
 	private int aimid;
 	private String bigcate;
 	private int aim;
-	private int spend;
+	private int total;
 	private String userid;
 	
 	public int getAimid() {
@@ -25,11 +25,11 @@ public class AimJoinVO {
 	public void setAim(int aim) {
 		this.aim = aim;
 	}
-	public int getSpend() {
-		return spend;
+	public int getTotal() {
+		return total;
 	}
-	public void setSpend(int spend) {
-		this.spend = spend;
+	public void setTotal(int total) {
+		this.total = total;
 	}
 	public String getUserid() {
 		return userid;
@@ -41,7 +41,7 @@ public class AimJoinVO {
 	@Override
 	public String toString() {
 		return String.format("AimJoinVO [aimid=%s, bigcate=%s, aim=%s, spend=%s, userid=%s]", aimid, bigcate, aim,
-				spend, userid);
+				total, userid);
 	}
 	
 }

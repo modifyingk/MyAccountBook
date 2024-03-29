@@ -169,6 +169,13 @@ body {
 	color: white;
 }
 
+.no-data-div {
+	font-weight: bold;
+	font-size: 23px;
+	color: lightgray;
+	margin: 10% 0;
+}
+
 /* 수입/지출 내역 */
 #account-list-div table {
 	margin-left: auto;
@@ -380,6 +387,57 @@ body {
 .stats #scroll-top i:hover { 
 	color: var(--main-color);
 	cursor: pointer;
+}
+
+/* 목표 게이지 */
+.gage-chart { /* 게이지 차트 */
+	position: relative;
+	display: inline-block;
+	width: 180px;
+	height: 180px;
+	border-radius: 50%;
+}
+.gage-chart span { /* 게이지 차트 내부 퍼센트 */
+	display: block;
+	position: absolute;
+	background: white;
+	top: 50px;
+	left: 50px;
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	text-align: center;
+	line-height: 80px;
+	font-size: 25px;
+	transform: tanslate(-50%, -50%);
+}
+.gage-div {
+	float: left;
+	margin: 1% 3%;
+	cursor: pointer;
+}
+.gage-div p {
+	font-size: 20px;
+	font-weight: bold;
+}
+.gage-div .gage-total { /* 목표 금액 및 사용 금액 */
+	font-size: 20px;
+	font-weight: bold;
+}
+.gage-div .gage-total input {
+	font-size: 20px;
+	font-weight: bold;
+	border-radius: 10px;
+	border: none;
+	width: 120px;
+	padding: 5px;
+}
+.gage-div .gage-total input:first-of-type {
+	text-align: right;
+	outline: none;
+}
+.gage-div .gage-total input:disabled {
+	background: none;
 }
 /*-------------------------------------------------------------*/
 /* text */
