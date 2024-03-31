@@ -6,7 +6,7 @@
 <script type="text/javascript">
 	$(function () {
 		$(".myinfo-div").click(function () {
-			location.href = "../member/mypage.jsp";
+			location.href = "../member/myInfo.jsp";
 		})
 		
 		$(".menu-group li").click(function() { // li 클릭하면

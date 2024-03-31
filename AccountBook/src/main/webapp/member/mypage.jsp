@@ -30,8 +30,7 @@
 					<div id="div2"></div>
 				</div>
 				<div id="right">
-					<div id="div1">
-					</div>
+					<div id="div1"></div> <!-- 나의 목표 자산 -->
 				</div>
 				
 				<!-- 총 목표 추가 모달 -->
