@@ -10,6 +10,11 @@
 		</selectKey>
 	</insert>
 	
+	<!-- 차액 및 이체 추가 (자산 추가 및 이체 시 사용) -->
+	<insert id="insertAccount2" parameterType="accountVO">
+		insert into account values (#{accountid}, #{moneytype}, #{date}, #{assetname}, #{bigcate}, "", #{content}, #{total}, #{userid});
+	</insert>
+	
 	<!-- 수입/지출 내역 -->
 	<select id="selectAccount" parameterType="accountVO" resultType="accountVO">
 		select * from account where left(date, 6) = #{date} and userid = #{userid} order by date desc;

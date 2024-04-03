@@ -194,7 +194,7 @@ public class AccountController {
 	@ResponseBody
 	@RequestMapping("account/insertTransfer")
 	public boolean insertTransfer(AccountVO accountVO) {
-		int insertRes = aDao.insertAccount(accountVO);
+		int insertRes = aDao.insertAccount2(accountVO);
 		String withdraw = accountVO.getAssetname().split("→")[0]; // 출금
 		String deposit = accountVO.getAssetname().split("→")[1]; // 입금
 		if(insertRes > 0) {
@@ -242,7 +242,7 @@ public class AccountController {
 			return false;
 	}
 	
-	// 수입/지출 삭제
+	// 이체 삭제
 	@ResponseBody
 	@RequestMapping("account/deleteTransfer")
 	public boolean deleteTransfer(AccountVO accountVO) {

@@ -15,7 +15,7 @@
 </script>
 <div id="header">
 	<div id="logo">
-		<h2><i class="fi fi-rr-sack-dollar"></i> 나의 가계부</h2>
+		<h2><i class="fi fi-rr-sack-dollar"></i> 가계부</h2>
 	</div>
 	<div>
 		<a id="logout">로그아웃</a>

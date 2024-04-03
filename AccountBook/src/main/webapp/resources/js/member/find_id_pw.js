@@ -82,7 +82,7 @@ $(function () {
 					email : email
 				},
 				success : function(res) {
-					if(res == "ok") {
+					if(res == true) {
 						$("html").css("cursor", "default");
 						alert("입력하신 이메일로 임시 비밀번호가 전송되었습니다.")
 						location.href = "../member/login.jsp";

@@ -220,7 +220,6 @@ $(function() {
 					date: date,
 					assetname: asset,
 					bigcate: "이체",
-					smallcate: "",
 					content: content,
 					total: total,
 					userid: userid

@@ -51,12 +51,11 @@ public class EmailService {
 	public void sendCode(String email) {
 		if(checkEmail(email)) {
 			int code = makeCode(); // 6자리 인증번호 생성
-			String subject = "[MoneyPlant] 이메일 인증번호";
-			String text = "[MoneyPlant] 이메일 인증을 위한 인증번호입니다.\n 인증번호 : " + code;
+			String subject = "[가계부] 이메일 인증번호";
+			String text = "[가계부] 이메일 인증을 위한 인증번호입니다.\n 인증번호 : " + code;
 			sendMail(email, subject, text);
 			
 			codeMap.put(email, code);
-			System.out.println(codeMap);
 		}
 	}
 	
@@ -69,8 +68,8 @@ public class EmailService {
 			memberVO.setPw(tmpPw);
 			int result = mDao.updatePw(memberVO); // 비밀번호 업데이트
 			if(result > 0) {
-				String subject = "[MoneyPlant] 임시 비밀번호 발급";
-				String text = "[MoneyPlant] 임시 비밀번호입니다. 로그인 후 변경해주세요!\n 임시 비밀번호 : " + tmpPw;
+				String subject = "[가계부] 임시 비밀번호 발급";
+				String text = "[가계부] 임시 비밀번호입니다. 로그인 후 변경해주세요!\n 임시 비밀번호 : " + tmpPw;
 				sendMail(email, subject, text);
 			}
 		}
@@ -117,7 +116,6 @@ public class EmailService {
 			code += ch[rand.nextInt(ch.length)];
 		}
 		
-		System.out.println("생성된 코드 : " + code);
 		return code;
 	}
 }

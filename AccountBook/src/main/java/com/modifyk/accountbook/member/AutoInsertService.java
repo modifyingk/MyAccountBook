@@ -19,7 +19,7 @@ public class AutoInsertService {
 	public void insertAsset(String userid) {
 		AssetVO assetVO = new AssetVO();
 		assetVO.setUserid(userid);
-		assetVO.setAssetgroup("현금");
+		assetVO.setAssetgroup("계좌·현금");
 		assetVO.setAssetname("현금");
 		assetVO.setTotal(0);
 		aDao.insertAsset(assetVO);

@@ -90,20 +90,22 @@ public class MemberController {
 	// 아이디 찾기
 	@RequestMapping("member/showId")
 	public void showId(MemberVO memberVO, Model model) {
+		System.out.println("아이디 찾기 요청 : " + memberVO);
 		List<MemberVO> idList = mDao.findId(memberVO);
+		System.out.println("아이디 찾기 결과 : " + idList);
 		model.addAttribute("idList", idList);
 	}
 	
 	// 비밀번호 찾기
 	@ResponseBody
 	@RequestMapping("member/findPw")
-	public String findPw(MemberVO memberVO) {
+	public boolean findPw(MemberVO memberVO) {
 		String result = mDao.findPw(memberVO);
 		if(result != null) {
 			emailSvc.sendPw(memberVO);
-			return "ok";
+			return true;
 		} else {
-			return "fail";
+			return false;
 		}
 	}
 	

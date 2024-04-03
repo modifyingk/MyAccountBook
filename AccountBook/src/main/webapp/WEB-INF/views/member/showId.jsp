@@ -47,7 +47,7 @@
 			<!-- 컨텐츠 -->
 			<div>
 				<div class="container" id="main-div">
-					<h2 class="fs40 main-color"><i class="fi fi-rr-search"></i> 아이디 찾기</h2>
+					<h2 class="title-text"><i class="fi fi-rr-search"></i> 아이디 찾기</h2>
 					<c:if test="${fn:length(idList) > 0}">
 						<table class="center-table list-table">
 							<tr>

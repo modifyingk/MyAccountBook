@@ -55,9 +55,11 @@
 								<div class="col-5">${value.assetname}</div> <!-- 자산명 -->
 								<c:if test="${value.total < 0}"> <!-- 금액 음수 -->
 									<div class="col-5 text-right red"><money><fmt:formatNumber value="${value.total}"></fmt:formatNumber></money>원</div>
+									<c:set var="total" value="${total + value.total}"></c:set>
 								</c:if>
 								<c:if test="${value.total >= 0}"> <!-- 금액 양수 -->
 									<div class="col-5 text-right blue"><money><fmt:formatNumber value="${value.total}"></fmt:formatNumber></money>원</div>
+									<c:set var="total" value="${total + value.total}"></c:set>
 								</c:if>
 							</td>
 							<td class="hide">${value.memo}</td> <!-- 메모 -->

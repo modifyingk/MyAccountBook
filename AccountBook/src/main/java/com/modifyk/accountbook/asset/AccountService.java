@@ -31,12 +31,12 @@ public class AccountService {
 		
 		account.setDate(now);
 		account.setAssetname(assetVO.getAssetname());
-		account.setBigcate("차액");;
 		account.setTotal(assetVO.getTotal());
-		account.setUserid(assetVO.getUserid());
+		account.setBigcate("차액");
 		account.setContent("");
+		account.setUserid(assetVO.getUserid());
 		
-		return aDao.insertAccount(account);
+		return aDao.insertAccount2(account);
 	}
 	
 }

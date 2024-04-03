@@ -33,7 +33,7 @@
 		select * from asset where userid = #{userid};
 	</select>
 	
-	<!-- 자산 목록 -->
+	<!-- 자산 이름 목록 -->
 	<select id="selectAssetName" parameterType="String" resultType="String">
 		select assetname from asset where userid = #{userid};
 	</select>

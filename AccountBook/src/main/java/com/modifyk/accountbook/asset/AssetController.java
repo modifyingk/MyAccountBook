@@ -53,9 +53,12 @@ public class AssetController {
 	@ResponseBody
 	@RequestMapping("asset/updateAsset")
 	public boolean updateAsset(AssetVO assetVO) {
+		System.out.println(assetVO);
 		int beforeTotal = aDao.beforeAsset(assetVO); // 업데이트 전 금액
 		int afterTotal = assetVO.getTotal(); // 업데이트 후 금액
 		int updateVal = afterTotal - beforeTotal; // 차이
+		System.out.println(beforeTotal);
+		System.out.println(afterTotal);
 		
 		int assetRes = aDao.updateAsset(assetVO);
 		if(assetRes > 0) { // 자산 수정 성공 시

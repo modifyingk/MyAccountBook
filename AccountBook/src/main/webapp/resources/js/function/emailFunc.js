@@ -1,3 +1,4 @@
+
 // 인증번호 전송
 function sendCode(emailVal) {
 	$.ajax({
@@ -11,3 +12,4 @@ function sendCode(emailVal) {
 		}
 	})
 }
+

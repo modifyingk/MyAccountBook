@@ -1,7 +1,7 @@
 @charset "UTF-8";
 :root {
 	--main-color: /*#f39c12; /* #88ae87;*/ #84a98c;
-	--main-color-hover: /*#f38e12*/ #52796f;
+	--main-color-hover: /*#f38e12*/ /* #52796f */ #59886B;
 	--charcoal-color: #463f3a;
 	--red-color: #e76f51;
 	--blue-color: #748cab;
@@ -744,4 +744,10 @@ body {
 	position: absolute;
 	right: 15px;
 	top: 15px;
+	border-radius: 5px;
+	border: 1px solid lightgray;
+}
+.x-btn:hover {
+	background: lightgray;
+	cursor: pointer;
 }

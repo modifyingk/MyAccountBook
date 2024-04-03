@@ -17,6 +17,11 @@ public class AccountDAO {
 		return my.insert("accountMapper.insertAccount", accountVO);
 	}
 	
+	// 차액 및 이체 추가 (자산 추가 및 이체 시 사용)
+	public int insertAccount2(AccountVO accountVO) {
+		return my.insert("accountMapper.insertAccount2", accountVO);
+	}
+	
 	// 수입/지출 내역
 	public List<AccountVO> selectAccount(AccountVO accountVO) {
 		return my.selectList("accountMapper.selectAccount", accountVO);
