@@ -39,11 +39,13 @@ $(function() {
 		} else {
 			let chkName = overlapCategory(smallcate, mtype); // 카테고리 중복 확인
 			if(chkName) {
-				insertCategory(bigcate, smallcate, mtype);
+				let result_html = insertCategory(bigcate, smallcate, mtype);
+				$(this).closest("table").children().append(result_html);
 			} else { // 카테고리가 중복되는 경우
 				alert("중복되는 카테고리입니다.");
 			}
-			$(this).closest("td").children().eq(0).children().eq(1).children().val("");
+			
+			$(this).closest("td").children().eq(0).children().eq(1).children().val(""); // 추가 입력칸 비우기
 		}
 	})
 	
@@ -169,9 +171,11 @@ function overlapCategory(cateVal, mtype) {
 
 // 카테고리 추가
 function insertCategory(bigVal, smallVal, mtype) {
+	var result;
 	$.ajax({
 		type: "post",
 		url: "insertCategory",
+		async: false,
 		data: {
 			bigcate: bigVal,
 			smallcate: smallVal,
@@ -180,18 +184,20 @@ function insertCategory(bigVal, smallVal, mtype) {
 		},
 		success: function(res) {
 			if(res > 0) {
-				/*
-				if(mtype == "수입")
-					checkIncate(res, bigVal, smallVal);
-				else {
-					checkOutcate(res, bigVal, smallVal);
-				}*/
-				window.location.reload();
+				let html = "<tr><td class='hide'>" + res + "</td>"
+							+ "<td><div class='is-border'>"
+							+ "<input class='input-inner update' value='" + smallVal + "'>"
+							+ "<button class='update-btn check-btn hide' id='update-btn'><i class='fi fi-rr-check'></i></button>"
+							+ "<button class='update-btn cross-btn hide' id='delete-btn'><i class='fi fi-rr-cross'></i></button>"
+							+ "</div></td></tr>";
+				result = html;
+				
 			} else {
 				alert("다시 시도해주세요.");
 			}
 		}
 	})
+	return result;
 }
 
 // 카테고리 수정

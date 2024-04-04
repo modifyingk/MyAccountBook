@@ -42,7 +42,7 @@ $(function() {
 		month = getMonth(today);
 		
 		setDate(year, month);
-		makeBigcateStats(today, "지출", "#inner-div1")
+		makeBigcateStats(today, "#top-div1") // 카테고리 통계
 		
 		$("#select-date").hide();
 	})
@@ -54,7 +54,7 @@ $(function() {
 		month = getMonth(today);
 
 		setDate(year, month);
-		makeBigcateStats(today, "지출", "#inner-div1")
+		makeBigcateStats(today, "#top-div1") // 카테고리 통계
 		
 		$("#select-date").hide();
 	})
@@ -66,7 +66,7 @@ $(function() {
 		month = getMonth(today);
 		
 		setDate(year, month);
-		makeBigcateStats(today, "지출", "#inner-div1")
+		makeBigcateStats(today, "#top-div1") // 카테고리 통계
 		
 		$("#select-date").hide();
 	})

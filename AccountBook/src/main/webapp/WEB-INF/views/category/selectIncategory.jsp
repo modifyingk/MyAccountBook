@@ -27,20 +27,18 @@
 						</div>
 					</td>
 				</tr>
-				<c:forEach items="${map}" var="map">
-					<c:if test="${map.key == '소득'}">
-						<c:forEach items="${map.value}" var="value">
-							<tr>
-								<td class="hide">${value.categoryid}</td>
-								<td>
-									<div class="is-border">
-										<input class="input-inner update" value="${value.smallcate}">
-										<button class="update-btn check-btn hide" id="update-btn"><i class="fi fi-rr-check"></i></button>
-										<button class="update-btn cross-btn hide" id="delete-btn"><i class="fi fi-rr-cross"></i></button>
-									</div>
-								</td>
-							</tr>
-						</c:forEach>
+				<c:forEach items="${list}" var="list">
+					<c:if test="${list.bigcate == '소득'}">
+						<tr>
+							<td class="hide">${list.categoryid}</td>
+							<td>
+								<div class="is-border">
+									<input class="input-inner update" value="${list.smallcate}">
+									<button class="update-btn check-btn hide" id="update-btn"><i class="fi fi-rr-check"></i></button>
+									<button class="update-btn cross-btn hide" id="delete-btn"><i class="fi fi-rr-cross"></i></button>
+								</div>
+							</td>
+						</tr>
 					</c:if>
 				</c:forEach>
 			</table>
@@ -65,20 +63,18 @@
 						</div>
 					</td>
 				</tr>
-				<c:forEach items="${map}" var="map">
-					<c:if test="${map.key == '저축'}">
-						<c:forEach items="${map.value}" var="value">
-							<tr>
-								<td class="hide">${value.categoryid}</td>
-								<td>
-									<div class="is-border">
-										<input class="input-inner update" value="${value.smallcate}">
-										<button class="update-btn check-btn hide" id="update-btn"><i class="fi fi-rr-check"></i></button>
-										<button class="update-btn cross-btn hide" id="delete-btn"><i class="fi fi-rr-cross"></i></button>
-									</div>
-								</td>
-							</tr>
-						</c:forEach>
+				<c:forEach items="${list}" var="list">
+					<c:if test="${list.bigcate == '저축'}">
+						<tr>
+							<td class="hide">${list.categoryid}</td>
+							<td>
+								<div class="is-border">
+									<input class="input-inner update" value="${list.smallcate}">
+									<button class="update-btn check-btn hide" id="update-btn"><i class="fi fi-rr-check"></i></button>
+									<button class="update-btn cross-btn hide" id="delete-btn"><i class="fi fi-rr-cross"></i></button>
+								</div>
+							</td>
+						</tr>
 					</c:if>
 				</c:forEach>
 			</table>
@@ -103,20 +99,18 @@
 						</div>
 					</td>
 				</tr>
-				<c:forEach items="${map}" var="map">
-					<c:if test="${map.key == '기타'}">
-						<c:forEach items="${map.value}" var="value">
-							<tr>
-								<td class="hide">${value.categoryid}</td>
-								<td>
-									<div class="is-border">
-										<input class="input-inner update" value="${value.smallcate}">
-										<button class="update-btn check-btn hide" id="update-btn"><i class="fi fi-rr-check"></i></button>
-										<button class="update-btn cross-btn hide" id="delete-btn"><i class="fi fi-rr-cross"></i></button>
-									</div>
-								</td>
-							</tr>
-						</c:forEach>
+				<c:forEach items="${list}" var="list">
+					<c:if test="${list.bigcate == '기타'}">
+						<tr>
+							<td class="hide">${list.categoryid}</td>
+							<td>
+								<div class="is-border">
+									<input class="input-inner update" value="${list.smallcate}">
+									<button class="update-btn check-btn hide" id="update-btn"><i class="fi fi-rr-check"></i></button>
+									<button class="update-btn cross-btn hide" id="delete-btn"><i class="fi fi-rr-cross"></i></button>
+								</div>
+							</td>
+						</tr>
 					</c:if>
 				</c:forEach>
 			</table>

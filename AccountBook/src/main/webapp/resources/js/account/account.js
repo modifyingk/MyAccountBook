@@ -334,36 +334,36 @@ $(function() {
 					total: total,
 					userid : userid,
 				},
-				success : function(res) { // 수입/지출 추가 시 포인트 적립
-					if(res > 0) {
-						let html = "<tr class='tr-content'>" +
-								"<td class='hide' id='td-key'>" + date + "</td>" +
-								"<td class='hide'>" + res + "</td>" +
-								"<td class='hide'>" + mtype + "</td><td class='td-category'>";
-						if(mtype == "수입") {
-							html += "<div class='key-div income'>" + bigcate + "</div>" +
-									"<div class='td-smallcate income'>" + smallcate + "</div>";
-						} else if(mtype == "지출") {
-							html += "<div class='key-div spend'>" + bigcate + "</div>" +
-							"<div class='td-smallcate spend'>" + smallcate + "</div>";
-						}
-						html += "<td class='td-content'>" + content + "</td>" +
-								"<td class='td-asset gray'>" + asset + "</td>";
-						if(mtype == "수입") {
-							html += "<td class='td-income text-right blue'>" + parseInt(total).toLocaleString() + "원</td></tr>";
-						} else if(mtype == "지출") {
-							html += "<td class='td-spend text-right red'>" + (parseInt(total) * -1).toLocaleString() + "원</td></tr>";
-						}
-						
+				success : function(res) {
 						if($("#account-list-div table").hasClass(date)) {  // 해당 날짜 내역이 존재한다면
-							$("." + date).append(html);
+							$("." + date).append(res); // 내역 append
+
+							let entire = $("#total-div i").text().replaceAll(",", ""); // 총 합계
+							let income = $("#income-div i").text().replaceAll(",", ""); // 총 수입
+							let spend = $("#spend-div i").text().replaceAll(",", ""); // 총 지출
+							
+							if(mtype == "수입") {
+								let partIn = $("." + date + " .part-income").text().split("원")[0].replaceAll(",", "");
+								$("." + date + " .part-income").text((parseInt(partIn) + parseInt(total)).toLocaleString() + "원"); // 부분 합계 업데이트
+								$("#income-div i").html((parseInt(income) + parseInt(total)).toLocaleString()); // 전체 합계 업데이트
+								$("#total-div i").html((parseInt(entire) + parseInt(total)).toLocaleString());
+							} else if(mtype == "지출") {
+								let partOut = $("." + date + " .part-spend").text().split("원")[0].replaceAll(",", "");
+								$("." + date + " .part-spend").text((parseInt(partOut) - parseInt(total)).toLocaleString() + "원");  // 부분 합계 업데이트
+								$("#spend-div i").html((parseInt(spend) - parseInt(total)).toLocaleString()); // 전체 합계 업데이트
+								$("#total-div i").html((parseInt(entire) - parseInt(total)).toLocaleString());
+							}
+							
 						} else { // 해당 날짜 내역이 존재하지 않는다면
 							window.location.reload();
 						}
 						
-					} else {
-						alert("다시 시도해주세요.")
-					}
+						// 수입/지출 추가 입력칸 비우기
+						$("#add-asset").attr("value", "");
+						$("#add-bigcate").attr("value", "");
+						$("#add-smallcate").attr("value", "");
+						$("#add-content").val("");
+						$("#add-total").val("");
 				}
 			})
 		}

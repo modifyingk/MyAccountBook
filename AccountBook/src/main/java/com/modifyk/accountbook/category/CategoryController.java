@@ -1,7 +1,6 @@
 package com.modifyk.accountbook.category;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,23 +15,18 @@ public class CategoryController {
 	@Autowired
 	CategoryDAO cDao;
 
-	@Autowired
-	CategoryToMapService toMapSvc;
-	
 	// 수입 소분류 목록
 	@RequestMapping("category/selectIncategory")
 	public void selectIncategory(String userid, Model model) {
 		List<CategoryVO> list = cDao.selectIncategory(userid);
-		HashMap<String, List<CategoryVO>> map = toMapSvc.categoryToMap(list);
-		model.addAttribute("map", map);
+		model.addAttribute("list", list);
 	}
 	
 	// 지출 소분류 목록
 	@RequestMapping("category/selectOutcategory")
 	public void selectOutcategory(String userid, Model model) {
 		List<CategoryVO> list = cDao.selectOutcategory(userid);
-		HashMap<String, List<CategoryVO>> map = toMapSvc.categoryToMap(list);
-		model.addAttribute("map", map);
+		model.addAttribute("list", list);
 	}
 	
 	// 카테고리 중복 확인

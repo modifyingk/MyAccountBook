@@ -202,7 +202,7 @@ body {
 .td-category {
 	width: 35%;
 }
-.td-content, .calendar .td-asset, .calendar .td-income, .calendar .td-spend {
+.tr-content, .calendar .td-asset, .calendar .td-income, .calendar .td-spend {
 	width: 20%;
 }
 .td-date {
@@ -300,14 +300,14 @@ body {
 .stats .piechart { /* 차트 */
 	float: left;
 	width: 50%;
-	height: 500px;
+	height: 550px;
 	margin-left: 3%;
 	z-index: 0;
 }
 .stats .stats-list { /* 차트 합계 list */
 	float: left;
 	width: 45%;
-	height: 450px;
+	height: 500px;
 	overflow-y: auto;
 }
 .stats .stats-list table {

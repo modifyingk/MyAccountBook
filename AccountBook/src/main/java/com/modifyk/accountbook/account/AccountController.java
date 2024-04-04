@@ -22,18 +22,15 @@ public class AccountController {
 	AssetService assetSvc;
 	
 	// 수입/지출 추가
-	@ResponseBody
 	@RequestMapping("account/insertAccount")
-	public int insertAccount(AccountVO accountVO) {
+	public void insertAccount(AccountVO accountVO, Model model) {
 		if(accountVO.getMoneytype().equals("지출")) // 지출인 경우 마이너스 붙이기
 			accountVO.setTotal(accountVO.getTotal() * -1);
 		int insertRes = aDao.insertAccount(accountVO);
 		
 		if(insertRes > 0) {
 			assetSvc.updateAsset(accountVO); // 자산 업데이트
-			return accountVO.getAccountid();
-		} else {
-			return 0;
+			model.addAttribute("vo", accountVO);
 		}
 	}
 	
