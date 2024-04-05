@@ -89,106 +89,11 @@
 					<button class="x-btn" id="close-side-div1">x</button>
 					<div id="account-list-div"></div>
 				</div>
-				<!-- 달력 
-				<div style="margin-left: 5%;">
-					<table class="calendar-table">
-						<tr style="height: 50px;">
-							<td><div class="red">일</div></td>
-							<td><div>월</div></td>
-							<td><div>화</div></td>
-							<td><div>수</div></td>
-							<td><div>목</div></td>
-							<td><div>금</div></td>
-							<td><div class="blue">토</div></td>
-						</tr>
-						<tr class="tr-content">
-							<td><div class="cal-date-div red"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div blue"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-						</tr>
-						<tr class="tr-content">
-							<td><div class="cal-date-div red"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div blue"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-						</tr>
-						<tr class="tr-content">
-							<td><div class="cal-date-div red"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div blue"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-						</tr>
-						<tr class="tr-content">
-							<td><div class="cal-date-div red"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div blue"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-						</tr>
-						<tr class="tr-content">
-							<td><div class="cal-date-div red"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div blue"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-						</tr>
-						<tr class="tr-content">
-							<td><div class="cal-date-div red"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-							<td><div class="cal-date-div blue"></div><div class="cal-income-div"></div><div class="cal-spend-div"></div></td>
-						</tr>
-					</table>
-				</div>
-				-->
-				<!-- 해당 날짜의 내역 모달
-				<div class="modal" id="date-account-modal" hidden="true">
-					<div class="modal-content wide">
-						<div class="modal-title">
-							<div id="select-date-div">
-						</div>
-						<hr>
-						<div class="modal-body wide">
-							<!-- 총 금액 
-							<div style="margin-bottom: 15px;">
-								<table style="text-align: center;">
-									<tr>
-										<td style="width: 300px;"><div id="total-income-div"></div></td>
-										<td style="width: 300px;"><div id="total-spend-div"></div></td>
-									</tr>
-								</table>
-							</div>
-							<div id="date-account-list-div"></div>
-						</div>
-						<hr>
-						<div class="modal-footer">
-							<button class="btn right outline-green" id="close-date-account">닫기</button>
-						</div>
-					</div>
-				</div> -->
 			<% }
 			/* 로그인이 되어 있지 않을 때 */
 			else { %>
 				<script>location.href = "../member/login.jsp";</script>
 			<% } %>
-			</div>
 		</div>
 	</div>
 </body>

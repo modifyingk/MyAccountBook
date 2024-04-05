@@ -2,22 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="aimtotalMapper">
-	<!-- 총 목표 값 가져오기 -->
+	<!-- 전체 목표 값(예산) 가져오기 -->
 	<select id="selectTotal" parameterType="aimtotalVO" resultType="String">
 		select total from aimtotal where moneytype = #{moneytype} and userid = #{userid};
 	</select>
 
-	<!-- 총 목표 값 추가 -->
+	<!-- 전체 목표 값(예산) 추가 -->
 	<insert id="insertTotal" parameterType="aimtotalVO">
 		insert into aimtotal values (#{moneytype}, #{total}, #{userid});
 	</insert>
 	
-	<!-- 총 목표 값 수정 -->
+	<!-- 전체 목표 값(예산) 수정 -->
 	<update id="updateTotal" parameterType="aimtotalVO">
 		update aimtotal set total = #{total} where moneytype = #{moneytype} and userid = #{userid};
 	</update>
 	
-	<!-- 총 지출 목표 값 대비 지출량 -->
+	<!-- 전체 목표 값(예산) 대비 지출량 -->
 	<select id="spendPerAim" parameterType="aimtotalVO" resultType="aimjoinVO">
 		select sum(account.total) * -1 as total, aimtotal.total as aim
 		from account join aimtotal on account.userid = aimtotal.userid and account.moneytype = aimtotal.moneytype
@@ -25,12 +25,12 @@
 	</select>
 	
 	<!-- 분배 가능한 금액 -->
-	<select id="selectBalance" parameterType="String" resultType="int">
+	<select id="selectBalance" parameterType="String" resultType="String">
 		select (aimtotal.total - sum(aim.total)) as total from aim join aimtotal on aim.userid = aimtotal.userid
 		where aim.userid = #{userid} and moneytype = "지출";
 	</select>
 	
-	<!-- 총 수입 목표 값 대비 총 자산 -->
+	<!-- 전체 수입 목표 값 대비 총 자산 -->
 	<select id="incomePerAim" parameterType="String" resultType="aimjoinVO">
 		select sum(asset.total) as total, aimtotal.total as aim from asset join aimtotal
 		on asset.userid = aimtotal.userid

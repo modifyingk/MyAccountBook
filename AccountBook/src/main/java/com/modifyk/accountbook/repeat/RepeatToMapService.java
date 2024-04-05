@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class RepeatToMapService {
 	
-	// 수입/지출 내역 월별 그룹화
 	public LinkedHashMap<String, List<RepeatVO>> repeatToMap(List<RepeatVO> repeatList) {
 		LinkedHashMap<String, List<RepeatVO>> map = new LinkedHashMap<>();
 
@@ -17,7 +16,7 @@ public class RepeatToMapService {
 		for(int i = 0; i < repeatList.size(); i++) {
 			tmpKey = repeatList.get(i).getDate();
 			if(map.get(tmpKey) != null) { // 해당 날짜가 이미 있다면
-				map.get(tmpKey).add(repeatList.get(i)); // 해당 날짜값의 list에 accountVO 추가
+				map.get(tmpKey).add(repeatList.get(i)); // 해당 날짜값의 list에 repeatVO 추가
 			} else { // 날짜가 없다면
 				List<RepeatVO> list = new ArrayList<RepeatVO>(); // 새로운 list를 만들어서
 				list.add(repeatList.get(i));

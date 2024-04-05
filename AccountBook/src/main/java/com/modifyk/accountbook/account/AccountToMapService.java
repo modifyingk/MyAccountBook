@@ -85,6 +85,7 @@ public class AccountToMapService {
 		return data;
 	}
 	
+	/*
 	public HashMap<String, Object> assetToMap(List<AccountVO> accountList) {
 		
 		// 자산별 사용 금액 합계
@@ -103,7 +104,7 @@ public class AccountToMapService {
 			}
 		}
 		return map;
-	}
+	}*/
 	/*
 	public HashMap<String, Object> repeatToMap(List<RepeatVO> repeatList) {
 		

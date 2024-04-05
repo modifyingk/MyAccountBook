@@ -81,7 +81,7 @@ public class AimController {
 		}
 	}
 	
-	// 총 목표 값 가져오기
+	// 전체 목표 값(예산) 가져오기
 	@ResponseBody
 	@RequestMapping("aim/selectTotal")
 	public String selectTotal(AimTotalVO aimtotalVO) {
@@ -91,11 +91,10 @@ public class AimController {
 		return aimtotal;
 	}
 		
-	// 총 목표 값 추가
+	// 전체 목표 값(예산) 추가
 	@ResponseBody
 	@RequestMapping("aim/insertTotal")
 	public boolean insertTotal(AimTotalVO aimTotalVO) {
-		System.out.println(aimTotalVO);
 		int result = atDao.insertTotal(aimTotalVO);
 		if(result > 0)
 			return true;
@@ -103,7 +102,7 @@ public class AimController {
 			return false;
 	}
 	
-	// 총 목표 값 수정
+	// 전체 목표 값(예산) 수정
 	@ResponseBody
 	@RequestMapping("aim/updateTotal")
 	public boolean updateTotal(AimTotalVO aimTotalVO) {
@@ -114,7 +113,7 @@ public class AimController {
 			return false;
 	}
 	
-	// 총 목표 값과 총 지출 값 가져오기
+	// 전체 목표 값(예산)과 총 지출 값 가져오기
 	@RequestMapping("aim/selectAimTotal")
 	public void monthTotal(AimTotalVO aimtotalVO, Model model) {
 		AimJoinVO aimjoinVO = atDao.spendPerAim(aimtotalVO);
@@ -124,7 +123,9 @@ public class AimController {
 	// 분배 가능한 금액
 	@RequestMapping("aim/selectBalance")
 	public void selectBalance(String userid, Model model) {
-		int balance = atDao.selectBalance(userid);
+		String balance = atDao.selectBalance(userid);
+		if(balance == null)
+			balance = "null";
 		model.addAttribute("balance", balance);
 	}
 }

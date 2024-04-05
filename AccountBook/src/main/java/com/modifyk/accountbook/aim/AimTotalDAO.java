@@ -31,7 +31,7 @@ public class AimTotalDAO {
 	}
 	
 	// 분배 가능한 금액
-	public int selectBalance(String userid) {
+	public String selectBalance(String userid) {
 		return my.selectOne("aimtotalMapper.selectBalance", userid);
 	}
 	
