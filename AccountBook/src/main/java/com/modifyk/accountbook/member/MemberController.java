@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.modifyk.accountbook.account.AccountDAO;
 import com.modifyk.accountbook.account.AccountVO;
-import com.modifyk.accountbook.aim.AimJoinVO;
 import com.modifyk.accountbook.aim.AimTotalDAO;
 import com.modifyk.accountbook.aim.AimTotalVO;
+import com.modifyk.accountbook.asset.AssetDAO;
 
 @Controller
 public class MemberController {
@@ -23,6 +23,9 @@ public class MemberController {
 	
 	@Autowired
 	AccountDAO aDao;
+	
+	@Autowired
+	AssetDAO astDao;
 	
 	@Autowired
 	AimTotalDAO atDao;
@@ -192,12 +195,10 @@ public class MemberController {
 		accountVO.setMoneytype("수입");
 		List<AccountVO> incomeList = aDao.recentAccount(accountVO);
 		model.addAttribute("incomeList", incomeList);
-		System.out.println(incomeList);
 		
 		accountVO.setMoneytype("지출");
 		List<AccountVO> spendList = aDao.recentAccount(accountVO);
 		model.addAttribute("spendList", spendList);
-		System.out.println(spendList);
 		
 		int monthIncome = 0;
 		int monthSpend = 0;
@@ -211,19 +212,20 @@ public class MemberController {
 		model.addAttribute("monthSpend", monthSpend);
 	}
 	
-	// 나의 목표
+	// 목표 자산 대비 총 자산
 	@RequestMapping("member/selectAim")
 	public void selectAim(String userid, Model model) {
 		AimTotalVO aimtotalVO = new AimTotalVO();
 		aimtotalVO.setMoneytype("수입");
 		aimtotalVO.setUserid(userid);
-		String total = atDao.selectTotal(aimtotalVO);
 		
-		AimJoinVO aimjoinVO = atDao.incomePerAim(userid);
-		
-		System.out.println(aimjoinVO);
-		model.addAttribute("vo", aimjoinVO);
-		model.addAttribute("aimtotal", total);
+		String aim = atDao.selectTotal(aimtotalVO); // 목표 자산
+		String total = astDao.assetTotal(userid); // 총 자산
+		if(total == null)
+			total = "0";
+
+		model.addAttribute("aim", aim);
+		model.addAttribute("total", total);
 	}
 	
 }

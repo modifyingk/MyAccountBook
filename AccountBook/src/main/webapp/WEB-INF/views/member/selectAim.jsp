@@ -14,15 +14,15 @@
 		<h2>나의 목표 자산</h2>
 		
 		<c:choose>
-			<c:when test="${aimtotal == null}"> <!-- 목표가 등록되어 있지 않은 경우 -->
+			<c:when test="${aim == null}"> <!-- 목표가 등록되어 있지 않은 경우 -->
 				<div class="no-data-div"><i class='fi fi-rr-cloud-question fs35'></i><br>데이터가 없습니다.</div>
 				<button class="btn" id="add-aim-btn">목표 등록</button>
 			</c:when>
 			
 			<c:otherwise> <!-- 목표가 등록되어있는 경우 -->
-				<div id="aim"><fmt:formatNumber value="${aimtotal}"></fmt:formatNumber>원</div>
+				<div id="aim"><fmt:formatNumber value="${aim}"></fmt:formatNumber>원</div>
 				
-				<c:set var="division" value="${vo.total / vo.aim}"></c:set>
+				<c:set var="division" value="${total / aim}"></c:set>
 				<fmt:formatNumber var="percent" value="${division}" type="percent"></fmt:formatNumber>
 								
 				<!-- 게이지 -->
@@ -30,12 +30,12 @@
 					<c:choose>
 						<c:when test="${division * 100 <= 100}">
 							<div class="gage-chart" style="background: conic-gradient(var(--light-green-color) 0% ${percent}, lightgray ${percent} 100%)">
-								<span title="<fmt:formatNumber value="${vo.total}"></fmt:formatNumber>원">${percent}</span>
+								<span title="<fmt:formatNumber value="${total}"></fmt:formatNumber>원">${percent}</span>
 							</div>
 						</c:when>
 						<c:otherwise>
 							<div class="gage-chart" style="background: conic-gradient(var(--light-green-color) 0% 100%, lightgray 100% 100%)">
-								<span title="<fmt:formatNumber value="${vo.total}"></fmt:formatNumber>원">${percent}</span>
+								<span title="<fmt:formatNumber value="${total}"></fmt:formatNumber>원">${percent}</span>
 							</div>
 						</c:otherwise>
 					</c:choose>

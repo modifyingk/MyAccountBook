@@ -10,24 +10,24 @@
 </head>
 <body>
 	<div id="total-aim">
-		나의 예산 <i><fmt:formatNumber value="${vo.total}" type="number"></fmt:formatNumber></i> /<i id="aim"><fmt:formatNumber value="${vo.aim}" type="number"></fmt:formatNumber>원</i>
-		<c:set var="division" value="${vo.total / vo.aim}"></c:set>
+		나의 예산 <i><fmt:formatNumber value="${spend}" type="number"></fmt:formatNumber></i> /<i id="aim"><fmt:formatNumber value="${aim}" type="number"></fmt:formatNumber>원</i>
+		<c:set var="division" value="${spend / aim}"></c:set>
 		<fmt:formatNumber var="percent" value="${division}" type="percent"></fmt:formatNumber>
 		<c:choose>
 			<c:when test="${division * 100 <= 50}">
-				<p>아직 <b><fmt:formatNumber value="${vo.aim - vo.total}" type="number"></fmt:formatNumber></b>원 더 사용할 수 있습니다.</p>
+				<p>아직 <b><fmt:formatNumber value="${aim - spend}" type="number"></fmt:formatNumber></b>원 더 사용할 수 있습니다.</p>
 				<div id="total-gage-div">
 					<div class="" id="total-gage" style="width:${percent}">${percent}</div>
 				</div>
 			</c:when>
 			<c:when test="${division * 100 <= 80}">
-				<p>아직 <b><fmt:formatNumber value="${vo.aim - vo.total}" type="number"></fmt:formatNumber></b>원 더 사용할 수 있습니다.</p>
+				<p>아직 <b><fmt:formatNumber value="${aim - spend}" type="number"></fmt:formatNumber></b>원 더 사용할 수 있습니다.</p>
 				<div id="total-gage-div">
 					<div class="orange" id="total-gage" style="width:${percent}">${percent}</div>
 				</div>
 			</c:when>
 			<c:when test="${division * 100 < 100}">
-				<p>아직 <b><fmt:formatNumber value="${vo.aim - vo.total}" type="number"></fmt:formatNumber></b>원 더 사용할 수 있습니다.</p>
+				<p>아직 <b><fmt:formatNumber value="${aim - spend}" type="number"></fmt:formatNumber></b>원 더 사용할 수 있습니다.</p>
 				<div id="total-gage-div">
 					<div class="red" id="total-gage" style="width:${percent}">${percent}</div>
 				</div>
@@ -39,7 +39,7 @@
 				</div>
 			</c:when>
 			<c:otherwise>
-				<p><b><fmt:formatNumber value="${vo.total - vo.aim}" type="number"></fmt:formatNumber></b>원 초과했습니다. 소비를 멈춰주세요!</p>
+				<p><b><fmt:formatNumber value="${spend - aim}" type="number"></fmt:formatNumber></b>원 초과했습니다. 소비를 멈춰주세요!</p>
 				<div id="total-gage-div">
 					<div class="red" id="total-gage" style="width:100%">${percent}</div>
 				</div>

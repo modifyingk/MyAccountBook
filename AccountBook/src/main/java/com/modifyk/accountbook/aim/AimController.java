@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.modifyk.accountbook.account.AccountDAO;
+import com.modifyk.accountbook.account.AccountVO;
 import com.modifyk.accountbook.member.MemberDAO;
 
 @Controller
@@ -115,9 +116,19 @@ public class AimController {
 	
 	// 전체 목표 값(예산)과 총 지출 값 가져오기
 	@RequestMapping("aim/selectAimTotal")
-	public void monthTotal(AimTotalVO aimtotalVO, Model model) {
-		AimJoinVO aimjoinVO = atDao.spendPerAim(aimtotalVO);
-		model.addAttribute("vo", aimjoinVO);
+	public void selectAimTotal(AimTotalVO aimtotalVO, Model model) {
+		AccountVO accountVO = new AccountVO();
+		accountVO.setMoneytype(aimtotalVO.getMoneytype());
+		accountVO.setUserid(aimtotalVO.getUserid());
+		accountVO.setDate(aimtotalVO.getDate());
+		
+		String spend = actDao.monthTotal(accountVO); // 이번 달 총 지출
+		String aim = atDao.selectTotal(aimtotalVO); // 예산
+		if(spend == null)
+			spend = "0";
+		
+		model.addAttribute("spend", spend);
+		model.addAttribute("aim", aim);
 	}
 	
 	// 분배 가능한 금액

@@ -42,4 +42,10 @@
 	<update id="updateTotal" parameterType="assetVO">
 		update asset set total = total + #{total} where assetname = #{assetname} and userid = #{userid};
 	</update>
+	
+	<!-- 총 자산 금액 -->
+	<select id="assetTotal" parameterType="String" resultType="String">
+		select sum(total) as total from asset where userid = #{userid}
+	</select>
+	
 </mapper>

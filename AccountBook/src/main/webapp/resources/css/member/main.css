@@ -23,8 +23,10 @@ table td div {
 	font-weight: bold;
 	font-size: 20px;
 }
-.main img {
-	animation: rotate 1s infinite;
+.main #href {
+}
+.main #href a {
+	margin-left: 10px;
 }
 
 /* login.jsp */

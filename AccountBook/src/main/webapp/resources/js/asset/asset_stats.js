@@ -103,6 +103,11 @@ $(function() {
 		let offset = $("#top-div2").offset();
 		$("html, body").animate({scrollTop:offset.top}, 400);
 	})
+	
+	// 스크롤 제일 위로 이동
+	$(document).on("click", "#scroll-top", function() {
+		$("html, body").animate({scrollTop:0}, 400);
+	})
 })
 
 // 자산 통계

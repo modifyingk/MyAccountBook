@@ -270,6 +270,7 @@ function selectAimTotal(today) {
 		type: "post",
 		url: "selectAimTotal",
 		data: {
+			moneytype: "지출",
 			date: today,
 			userid: userid
 		},
