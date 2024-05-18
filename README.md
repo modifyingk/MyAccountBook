@@ -1,5 +1,46 @@
-# MyAccountBook
+# 가계부 💰
+자산과 수입/지출을 카테고리별로 기록하여 손쉽게 돈을 관리할 수 있고, <br>
+목표를 설정하여 소비는 줄이고 자산은 늘릴 수 있도록 도와주는 가계부<br><br>
 
+## 🏷 목차
+<ol>
+  <li>
+    설계
+    <ul>
+      <li>시스템 구성도</li>
+      <li>요약흐름도</li>
+      <li>ERD</li>
+      <li>Project Tree</li>
+    </ul>
+  </li>
+  <br>
+  <li>
+    구현 내용
+    <ul>
+      <li>메인페이지</li>
+      <li>수입/지출 관리</li>
+      <li>캘린더</li>
+      <li>카테고리별 분석</li>
+      <li>카테고리 관리</li>
+      <li>자산 관리</li>
+      <li>자산별 분석</li>
+      <li>목표 관리</li>
+    </ul>
+  </li>
+</ol>
+
+<br>
+
+## 1️⃣ 설계
+![004](https://github.com/modifyingk/MyAccountBook/assets/116068100/e6d5dc76-a825-4f42-96e2-760e4bc37357)
+![005](https://github.com/modifyingk/MyAccountBook/assets/116068100/1ef26efa-80b2-460f-8508-39861dbd594a)
+![006](https://github.com/modifyingk/MyAccountBook/assets/116068100/4422a525-8189-49ba-86b2-33cd865bdb82)
+![007](https://github.com/modifyingk/MyAccountBook/assets/116068100/8851e083-638d-4708-8d06-e2512f0d86df)
+![008](https://github.com/modifyingk/MyAccountBook/assets/116068100/33143085-ef8f-4f21-b1a3-abaf9e486dbd)
+![009](https://github.com/modifyingk/MyAccountBook/assets/116068100/63fd8c2b-09fb-49e0-abf4-f3f1b01621d9)
+![010](https://github.com/modifyingk/MyAccountBook/assets/116068100/942f6b0a-6ef2-41c1-8a3f-96ab94bcdd30)
+
+## 2️⃣ 구현 내용
 ### 메인페이지
 ![image](https://github.com/modifyingk/MyAccountBook/assets/116068100/795d64a9-9f57-4213-a20c-bb2f4923f1e6)
 
